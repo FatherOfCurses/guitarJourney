@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SessionDuringComponent } from './session-during.component';
 import {Router} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
-import {SessionAfterComponent} from '../session-after/session-after.component';
+import {SessionAfterComponent} from '../session-3-after/session-after.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
@@ -26,7 +25,7 @@ describe('SessionDuringComponent', () => {
     fixture.detectChanges();
   });
   // test click finish button
-  it('should navigate to session-after on completion', async () => {
+  it('should navigate to session-3-after on completion', async () => {
     component.finishSession();
     fixture.detectChanges();
     await fixture.whenStable();

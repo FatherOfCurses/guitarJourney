@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Session} from '../../../models/session';
 import dayjs from 'dayjs';
@@ -11,8 +11,13 @@ import dayjs from 'dayjs';
 })
 
 export class SessionBeforeComponent implements OnInit {
-  sessionForm: FormGroup;
-  sessionPlan: Session = {
+  today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
+  sessionForm = this.fb.group({
+    practiceTime: ['', [Validators.required, Validators.min(1)]],
+    whatToPractice: ['', [Validators.required]],
+    sessionIntent: ['', [Validators.required]],
+  });
+  sessionRecord: Session = {
     date: '',
     practiceTime: 0,
     whatToPractice: '',
@@ -24,22 +29,13 @@ export class SessionBeforeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeForm();
   }
 
   onSubmit(): void {
-    this.sessionPlan.date = dayjs(new Date()).format('YYYY-MM-DD h:m a');
-    this.sessionPlan.practiceTime = this.sessionForm.value.practiceTime;
-    this.sessionPlan.whatToPractice = this.sessionForm.value.whatToPractice;
-    this.sessionPlan.sessionIntent = this.sessionForm.value.sessionIntent;
+    this.sessionRecord.date = this.today;
+    this.sessionRecord.practiceTime = this.sessionForm.value.practiceTime;
+    this.sessionRecord.whatToPractice = this.sessionForm.value.whatToPractice;
+    this.sessionRecord.sessionIntent = this.sessionForm.value.sessionIntent;
     this.router.navigate(['sessionDuring']).then();
-  }
-
-  private initializeForm(): void {
-    this.sessionForm = this.fb.group({
-      practiceTime: 0,
-      whatToPractice: '',
-      sessionIntent: ''
-    });
   }
 }

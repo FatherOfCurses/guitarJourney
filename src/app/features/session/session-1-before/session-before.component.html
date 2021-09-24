@@ -24,7 +24,7 @@
         </label>
       </div>
       <div>
-        <button nbButton data-start-button>Start!</button>
+        <button nbButton data-start-button [disabled]="!sessionForm.valid">Start!</button>
       </div>
     </form>
   </nb-card-body>

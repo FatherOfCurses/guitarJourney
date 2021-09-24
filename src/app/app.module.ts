@@ -22,9 +22,8 @@ import {RouterModule} from '@angular/router';
 import {routes} from '@nebular/auth';
 import {SidebarModule} from './base/sidebar/sidebar.module';
 import {SessionModule} from './features/session/session.module';
-import {NbSharedModule} from '@nebular/theme/components/shared/shared.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { SessionDuringComponent } from './features/session/session-during/session-during.component';
+import {SessionComponent} from './features/session/session.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +31,8 @@ import { SessionDuringComponent } from './features/session/session-during/sessio
     LandingPageComponent,
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    SessionComponent
   ],
   imports: [
     BrowserModule,
