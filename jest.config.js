@@ -7,7 +7,7 @@ module.exports = {
   testPathIgnorePatterns: ['/node-modules'],
   setupFilesAfterEnv: ['<rootDir>/src/setup-jest.ts'],
   collectCoverage: true,
-  coverageReporters: ['text-summary'],
+  coverageReporters: ['text'],
   coverageDirectory: 'coverage/my-app',
   verbose: true,
   moduleFileExtensions: [
