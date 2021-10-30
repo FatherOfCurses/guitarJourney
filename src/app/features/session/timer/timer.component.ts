@@ -7,37 +7,31 @@ import {filter} from 'rxjs/operators';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss']
 })
-export class TimerComponent implements OnInit {
-  goalTime: number;
-  isRunning: boolean;
-  isGoalMet: boolean;
-  displayTime: number;
-  currentTimerValue: Observable<any>;
+export class TimerComponent {
 
-  constructor() { }
+  startTime: Date;
+  stopTime: Date;
+  active = false;
+  get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 };
 
-  ngOnInit(): void {
+  timer() {
+    if (this.active) {
+      this.stopTime = new Date()
+      setTimeout(()=>{
+        this.timer();
+      }, 1000)
+    }
   }
 
-  // Basic function here:
-  // User has set a goal time
-  // 1. When user clicks "Start" timer should start running and update view
-  // 2. When timer exceeds goal time, view should update to indicate goal reached
-  // 3. Timer stops when user clicks "Stop"
-  // 4. Provide a "Pause" for user to pause without ending session
+  start() {
+    this.startTime = new Date();
+    this.active = true;
+    this.timer();
+  }
 
-  onClick() {
-    const goalReached = this.currentTimerValue.pipe(
-      filter(time => time > this.goalTime)
-    );
-    if (!this.isRunning) {
-      // change button to pause
-      const currentTimerValue = timer(0, 1000).subscribe(next => this.displayTime);
-    } else {
-      this.isRunning = false;
-      // change button to play
-
-    }
+  stop() {
+    this.stopTime = new Date();
+    this.active = false;
   }
 
 }
