@@ -1,6 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Observable, Subscription} from 'rxjs';
 import {Session} from '../../../models/session';
+import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-session-record',
@@ -8,18 +11,24 @@ import {Session} from '../../../models/session';
   styleUrls: ['./session-after.component.scss']
 })
 export class SessionAfterComponent implements OnInit, OnDestroy {
-  actualSession: Session;
   sessionSubscription: Subscription;
   timerBar: Observable<number>;
-  sessionLength: number;
+  afterSessionForm = this.fb.group({
+    sessionReflection:['', [Validators.required]],
+    goalForNextTime: ['',[Validators.required]]
+  });
 
-  constructor() { }
+  constructor(
+    private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    // this.sessionLength = this.actualSession.practiceTime;
   }
 
   ngOnDestroy() {
     this.sessionSubscription.unsubscribe();
+  }
+
+  onSubmit() {
+    this.router.navigate(['']).then();
   }
 }

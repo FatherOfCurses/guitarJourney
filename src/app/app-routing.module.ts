@@ -7,7 +7,7 @@ import {SessionDuringComponent} from './features/session/session-2-during/sessio
 
 
 const routes: Routes = [
-  {path: '' , component: LandingPageComponent},
+  {path: '', component: LandingPageComponent},
   {path: 'session', component: SessionBeforeComponent},
   {path: 'sessionDuring', component: SessionDuringComponent},
   {path: 'sessionAfter', component: SessionAfterComponent}

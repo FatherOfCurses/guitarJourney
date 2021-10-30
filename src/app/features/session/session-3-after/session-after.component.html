@@ -1,4 +1,22 @@
 <nb-card>
   <nb-layout-header><h2>You did it</h2></nb-layout-header>
+  <form [formGroup]="afterSessionForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>
+        Congratulations on taking some time for yourself to improve your skills! Now take a few minutes to reflect on the session. How did it go?
+        What worked? What didn't work? What surprised you?
+        <textarea nbInput fullWidth type="text" formControlName="sessionReflection"></textarea>
+      </label>
+    </div>
+    <div>
+      <label>
+        What do you want to remember the next time you do a similar practice?
+        <textarea nbInput fullWidth formControlName='goalForNextTime'></textarea>
+      </label>
+    </div>
+    <div>
+      <button nbButton data-finish-button [disabled]="!afterSessionForm.valid">Finish</button>
+    </div>
+  </form>
 </nb-card>
 
