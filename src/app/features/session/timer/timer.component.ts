@@ -1,6 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable, timer} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-timer',
@@ -9,7 +7,7 @@ import {filter} from 'rxjs/operators';
 })
 export class TimerComponent {
 
-  startTime: Date;
+  @Input() startTime: Date;
   stopTime: Date;
   active = false;
   get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 };
@@ -24,7 +22,6 @@ export class TimerComponent {
   }
 
   start() {
-    this.startTime = new Date();
     this.active = true;
     this.timer();
   }

@@ -21,7 +21,7 @@ import { TimerComponent } from './timer/timer.component';
     SessionBeforeComponent,
     SessionDuringComponent,
     SessionAfterComponent,
-    TimerComponent,
+    TimerComponent
   ],
   imports: [
     NbStepperModule,
@@ -37,5 +37,9 @@ import { TimerComponent } from './timer/timer.component';
     CountdownModule
   ],
   providers: [],
+  exports: [
+    SessionBeforeComponent,
+    TimerComponent
+  ]
 })
 export class SessionModule { }

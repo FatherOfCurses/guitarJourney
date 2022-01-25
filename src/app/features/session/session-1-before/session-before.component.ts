@@ -5,7 +5,7 @@ import {Session} from '../../../models/session';
 import dayjs from 'dayjs';
 
 @Component({
-  selector: 'app-session-log',
+  selector: 'app-session-before',
   templateUrl: './session-before.component.html',
   styleUrls: ['./session-before.component.scss']
 })

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-session-record',
+  selector: 'app-session-during',
   templateUrl: './session-during.component.html',
   styleUrls: ['./session-during.component.scss']
 })

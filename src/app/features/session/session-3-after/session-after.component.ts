@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-session-record',
+  selector: 'app-session-after',
   templateUrl: './session-after.component.html',
   styleUrls: ['./session-after.component.scss']
 })

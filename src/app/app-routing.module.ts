@@ -4,11 +4,12 @@ import { LandingPageComponent } from './features/landing-page/landing-page.compo
 import { SessionBeforeComponent } from './features/session/session-1-before/session-before.component';
 import {SessionAfterComponent} from './features/session/session-3-after/session-after.component';
 import {SessionDuringComponent} from './features/session/session-2-during/session-during.component';
+import { SessionComponent } from './features/session/session.component';
 
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
-  {path: 'session', component: SessionBeforeComponent},
+  {path: 'session', component: SessionComponent},
   {path: 'sessionDuring', component: SessionDuringComponent},
   {path: 'sessionAfter', component: SessionAfterComponent}
 ];
