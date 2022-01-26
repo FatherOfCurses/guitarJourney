@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, Output } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Session} from '../../../models/session';
+import {Convertors} from '../../../utilities/Convertors';
 import dayjs from 'dayjs';
 
 @Component({
@@ -23,6 +24,7 @@ export class SessionBeforeComponent implements OnInit {
     whatToPractice: '',
     sessionIntent: ''
   };
+  @Output() desiredPracticeTime: Date;
 
   constructor(
     private fb: FormBuilder, private router: Router) {
