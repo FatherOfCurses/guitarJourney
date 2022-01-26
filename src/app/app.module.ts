@@ -24,6 +24,8 @@ import {SidebarModule} from './base/sidebar/sidebar.module';
 import {SessionModule} from './features/session/session.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SessionComponent} from './features/session/session.component';
+import { Convert } from '@angular-builders/jest/dist/schema';
+import { Convertors } from './utilities/Convertors';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,7 @@ import {SessionComponent} from './features/session/session.component';
     NbCardModule,
     NbListModule,
   ],
-  providers: [],
+  providers: [Convertors],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -37,9 +37,6 @@ import { TimerComponent } from './timer/timer.component';
     CountdownModule
   ],
   providers: [],
-  exports: [
-    SessionBeforeComponent,
-    TimerComponent
-  ]
+  exports: [TimerComponent, SessionBeforeComponent]
 })
 export class SessionModule { }

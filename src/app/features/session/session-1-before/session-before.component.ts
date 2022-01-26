@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, Output } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Session} from '../../../models/session';
 import {Convertors} from '../../../utilities/Convertors';
@@ -12,32 +12,31 @@ import dayjs from 'dayjs';
 })
 
 export class SessionBeforeComponent implements OnInit {
+
   today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
-  sessionForm = this.fb.group({
-    practiceTime: ['', [Validators.required, Validators.min(1)]],
-    whatToPractice: ['', [Validators.required]],
-    sessionIntent: ['', [Validators.required]],
-  });
-  sessionRecord: Session = {
+  @Input() formSessionRecord: Session = {
     date: '',
     practiceTime: 0,
     whatToPractice: '',
     sessionIntent: ''
   };
+  sessionForm = new FormGroup({
+    practiceTime: new FormControl([this.formSessionRecord.practiceTime, [Validators.required, Validators.min(1)]]),
+    whatToPractice: new FormControl([this.formSessionRecord.whatToPractice, [Validators.required]]),
+    sessionIntent: new FormControl([this.formSessionRecord.sessionIntent, [Validators.required]]),
+  });
   @Output() desiredPracticeTime: Date;
 
   constructor(
-    private fb: FormBuilder, private router: Router) {
+    private fb: FormBuilder, private router: Router, private converter: Convertors) {
   }
 
   ngOnInit() {
   }
 
   onSubmit(): void {
-    this.sessionRecord.date = this.today;
-    this.sessionRecord.practiceTime = this.sessionForm.value.practiceTime;
-    this.sessionRecord.whatToPractice = this.sessionForm.value.whatToPractice;
-    this.sessionRecord.sessionIntent = this.sessionForm.value.sessionIntent;
+    this.formSessionRecord.date = this.today;
+    this.desiredPracticeTime = this.converter.convertNumberToTimeValue(1);
     this.router.navigate(['sessionDuring']).then();
   }
 }
