@@ -3,12 +3,12 @@
 </nb-card>
 
 <nb-card>
-  <form (ngSubmit)='onSubmit()'>
+  <form [formGroup]="sessionForm" (ngSubmit)='onSubmit()'>
     <nb-card-body>
       <div>
-        <label>
+        <label for='practiceTime'>
           Enter the time (in minutes) that you want to practice:
-          <input nbInput fullWidth type="text" id="practiceTime" formControlName='practiceTime'>
+          <input nbInput fullWidth type="text" id="practiceTime" formControlName='practiceTime' [formControl]='formSessionRecord.practiceTime'>
         </label>
       </div>
       <div>
@@ -24,7 +24,7 @@
         </label>
       </div>
       <div>
-        <button nbButton data-start-button [disabled]="!sessionForm.valid">Start!</button>
+        <button nbButton data-start-button (click)='onSubmit()'>Start!</button>
       </div>
     </nb-card-body>
   </form>

@@ -7,7 +7,8 @@ import { Component, Input } from '@angular/core';
 })
 export class TimerComponent {
 
-  @Input() startTime: Date;
+  @Input() goalTime: Date;
+  startTime: Date;
   stopTime: Date;
   active = false;
   get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 };

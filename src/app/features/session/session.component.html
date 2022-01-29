@@ -1,7 +1,7 @@
 
-<app-session-before></app-session-before>
+<app-session-before (desiredPracticeTime)="setTimerStartValue($event)"></app-session-before>
 
-<app-timer [startTime]='sessionTargetTime'></app-timer>
+<app-timer [goalTime]="timerStartValue"></app-timer>
 
 <nb-card>
   <nb-layout-header>

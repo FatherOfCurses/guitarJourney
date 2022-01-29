@@ -1,7 +1,7 @@
-<!--<p>Target time: {{this.goalTime}}</p>-->
+Target time: {{this.goalTime | date :"HH:mm:ss":'UTC'}}
 <!--<button nbButton (click)="onClick()">Start!</button>-->
 <!--Progress:-->
 <!--<nb-progress-bar [value]=this.displayTime></nb-progress-bar>-->
-<div>{{display | date :"HH:mm:ss":'UTC'}}</div>
+<div>{{display | date:'mediumTime'}}</div>
 <button (click)="start()" *ngIf="!active">Start</button>
 <button (click)="stop()" *ngIf="active">Stop</button>

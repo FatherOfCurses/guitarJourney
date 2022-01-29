@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Session } from '../../models/session';
+import { SessionBeforeComponent } from './session-1-before/session-before.component';
+
+import { Convertors } from '../../utilities/Convertors';
 
 @Component({
   selector: 'app-session',
@@ -7,18 +10,20 @@ import { Session } from '../../models/session';
   styleUrls: ['./session.component.scss']
 })
 export class SessionComponent implements OnInit {
-
+  @Input() practiceTime: number;
+  timerStartValue: Date;
   sessionRecord: Session = {
     date: '',
     practiceTime: 0,
     whatToPractice: '',
     sessionIntent: ''
   };
-  sessionTargetTime: Date;
 
-  constructor() { }
+  constructor(private convertor: Convertors) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  setTimerStartValue(practiceTime: number) {
+    this.timerStartValue = this.convertor.convertNumberToTimeValue(practiceTime);
   }
-
 }
