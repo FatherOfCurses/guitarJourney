@@ -29,6 +29,7 @@
     "@nebular/eva-icons": "9.0.0",
     "@nebular/security": "9.0.0",
     "@nebular/theme": "9.0.0",
+    "angular-cd-timer": "^1.1.0",
     "codelyzer": "^6.0.2",
     "dayjs": "^1.10.4",
     "eev": "^0.1.5",

@@ -9,6 +9,7 @@ import {
   NbTableModule
 } from '@nebular/theme';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { CdTimerModule } from 'angular-cd-timer';
 import {SessionBeforeComponent} from './session-1-before/session-before.component';
 import {SessionDuringComponent} from './session-2-during/session-during.component';
 import {CommonModule} from '@angular/common';
@@ -34,7 +35,8 @@ import { TimerComponent } from './timer/timer.component';
     NbButtonModule,
     NbTableModule,
     NbProgressBarModule,
-    CountdownModule
+    CountdownModule,
+    CdTimerModule
   ],
   providers: [],
   exports: [TimerComponent, SessionBeforeComponent]

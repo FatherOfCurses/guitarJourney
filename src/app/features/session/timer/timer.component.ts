@@ -8,28 +8,31 @@ import { Component, Input } from '@angular/core';
 export class TimerComponent {
 
   @Input() goalTime: Date;
-  startTime: Date;
-  stopTime: Date;
-  active = false;
-  get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 };
+  startTime: number;
+  endTime = 600;
 
-  timer() {
-    if (this.active) {
-      this.stopTime = new Date()
-      setTimeout(()=>{
-        this.timer();
-      }, 1000)
-    }
-  }
-
-  start() {
-    this.active = true;
-    this.timer();
-  }
-
-  stop() {
-    this.stopTime = new Date();
-    this.active = false;
-  }
+  // startTime: Date;
+  // stopTime: Date;
+  // active = false;
+  // get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 };
+  //
+  // timer() {
+  //   if (this.active) {
+  //     this.stopTime = new Date()
+  //     setTimeout(()=>{
+  //       this.timer();
+  //     }, 1000)
+  //   }
+  // }
+  //
+  // start() {
+  //   this.active = true;
+  //   this.timer();
+  // }
+  //
+  // stop() {
+  //   this.stopTime = new Date();
+  //   this.active = false;
+  // }
 
 }
