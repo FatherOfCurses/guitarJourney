@@ -1,5 +1,8 @@
 <nb-card>
-  <nb-layout-header><h2>You did it</h2></nb-layout-header>
+  <div style='align-items: center'>
+    <nb-layout-header><h2>You did it!</h2></nb-layout-header>
+    <img [width]="400" [height]="400" src='assets/cherry-592.png' alt='Man playing guitar'>
+  </div>
   <form [formGroup]="afterSessionForm" (ngSubmit)="onSubmit()">
     <div>
       <label>

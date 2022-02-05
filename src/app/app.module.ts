@@ -7,8 +7,8 @@ import {
   NbLayoutModule,
   NbListModule,
   NbMenuModule,
-  NbSidebarModule,
-  NbThemeModule,
+  NbSidebarModule, NbTableModule,
+  NbThemeModule
 } from '@nebular/theme';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,8 +43,8 @@ import { Convertors } from './utilities/Convertors';
     SessionModule,
     ReactiveFormsModule,
     FormsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
-    RouterModule.forRoot(routes, {useHash: true}),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    RouterModule.forRoot(routes, { useHash: true }),
     NbThemeModule.forRoot(),
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
@@ -53,6 +53,7 @@ import { Convertors } from './utilities/Convertors';
     NbLayoutModule,
     NbCardModule,
     NbListModule,
+    NbTableModule
   ],
   providers: [Convertors],
   bootstrap: [AppComponent]
