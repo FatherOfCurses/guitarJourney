@@ -1,6 +1,8 @@
 export class Session {
-  date: string;
+  date: number;
   practiceTime: number;
   whatToPractice: string;
   sessionIntent: string;
+  postPracticeReflection: string;
+  goalForNextTime: string;
 }

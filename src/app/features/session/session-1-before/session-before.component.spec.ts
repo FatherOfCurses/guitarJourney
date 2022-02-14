@@ -35,7 +35,7 @@ describe('SessionBeforeComponent', () => {
 
   it('should navigate to session record on submit', async () => {
     const validSessionRecord = {
-      practiceTime: 60,
+      practiceTimeControl: 60,
       whatToPractice: 'Stairway to Heaven',
       sessionIntent: 'get better'
     };
@@ -50,7 +50,7 @@ describe('SessionBeforeComponent', () => {
 
     it('should not enable Start button when practice time blank', async () => {
       const missingPracticeTime = {
-        practiceTime: 0,
+        practiceTimeControl: 0,
         whatToPractice: 'Stairway to Heaven',
         sessionIntent: 'get better'
       };
@@ -62,7 +62,7 @@ describe('SessionBeforeComponent', () => {
 
     it('should not enable Start button when what to practice blank', async () => {
       const missingWhatToPractice = {
-        practiceTime: 60,
+        practiceTimeControl: 60,
         whatToPractice: '',
         sessionIntent: 'get better'
       };
@@ -74,9 +74,9 @@ describe('SessionBeforeComponent', () => {
 
     it('should not enable Start button when session intent blank', async () => {
       const missingSessionIntent = {
-        practiceTime: 60,
-        whatToPractice: '',
-        sessionIntent: 'get better'
+        practiceTimeControl: 60,
+        whatToPractice: 'some stuff',
+        sessionIntent: ''
       };
       component.sessionForm.setValue(missingSessionIntent);
       fixture.detectChanges();

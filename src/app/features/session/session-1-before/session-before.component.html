@@ -7,24 +7,24 @@
     <nb-card-body>
       <div>
         <label for='practiceTime'>
-          Enter the time (in minutes) that you want to practice:
-          <input nbInput fullWidth type="text" id="practiceTime" formControlName='practiceTime' [formControl]='formSessionRecord.practiceTime'>
+          Practice Time Amount
+          <input nbInput fullWidth type="text" id="practiceTime" formControlName="practiceTime" placeholder='Enter the time (in minutes) that you want to practice'>
+        </label>
+      </div>
+      <div>
+        <label for='whatToPractice'>
+          What to Practice
+          <textarea nbInput fullWidth id="whatToPractice" formControlName="whatToPractice" placeholder='What are you planning on practicing today?'></textarea>
         </label>
       </div>
       <div>
         <label>
-          What are you planning on practicing today?
-          <textarea nbInput fullWidth formControlName="whatToPractice"></textarea>
+          Session Intent
+          <input nbInput fullWidth type="text" id="sessionIntent" formControlName="sessionIntent" placeholder='Practice requires intent. Take a moment, think of your intention for this session, and write it here:'>
         </label>
       </div>
       <div>
-        <label>
-          Practice requires intent. Take a moment, think of your intention for this session, and write it here:
-          <input nbInput fullWidth type="text" formControlName="sessionIntent">
-        </label>
-      </div>
-      <div>
-        <button nbButton data-start-button (click)='onSubmit()'>Start!</button>
+        <button nbButton data-start-button>Start!</button>
       </div>
     </nb-card-body>
   </form>

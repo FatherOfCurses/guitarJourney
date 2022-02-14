@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import { SessionComponent} from '../session.component';
 
 @Component({
   selector: 'app-session-during',
@@ -7,7 +8,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./session-during.component.scss']
 })
 export class SessionDuringComponent implements OnInit {
-
+  targetPracticeTime: Date;
 
   constructor(private router: Router) { }
 
