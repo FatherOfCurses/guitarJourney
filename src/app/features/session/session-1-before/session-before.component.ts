@@ -11,27 +11,20 @@ import dayjs from 'dayjs';
 })
 
 export class SessionBeforeComponent implements OnInit {
-  sessionForm: FormGroup;
   today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
+  @Input() sessionForm: FormGroup
   @Output() desiredPracticeTime = new EventEmitter<number>();
 
   constructor( private fb: FormBuilder, private router: Router) {
   }
 
   ngOnInit() {
-    this.initializeForm();
-  }
-
-  initializeForm(): void {
-    this.sessionForm = this.fb.group({
-      practiceTime: '',
-      whatToPractice: '',
-      sessionIntent: ''
-    })
   }
 
   onSubmit(): void {
-    console.log(this.sessionForm)
+    console.log(this.sessionForm);
+    this.desiredPracticeTime.emit(this.sessionForm.get('practiceTime').value);
+    // this.router.navigate(['sessionDuring']).then();
   }
 
 }

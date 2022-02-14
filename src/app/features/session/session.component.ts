@@ -4,6 +4,8 @@ import { SessionBeforeComponent } from './session-1-before/session-before.compon
 
 import { Convertors } from '../../utilities/Convertors';
 import dayjs from 'dayjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-session',
@@ -11,14 +13,31 @@ import dayjs from 'dayjs';
   styleUrls: ['./session.component.scss']
 })
 export class SessionComponent implements OnInit {
-  practiceTime: number;
+  targetPracticeTime = 0;
+  sessionForm: FormGroup;
   session: Session;
+  sessionStarted = false;
+  sessionFinished = false;
   // TODO: Save this for view when need to display a date in text format
   // today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
 
-  constructor(private convertor: Convertors) { }
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm(): void {
+    this.sessionForm = this.fb.group({
+      practiceTime: '',
+      whatToPractice: '',
+      sessionIntent: ''
+    });
+    }
+
+    populateTimer(targetTime: number): void {
+    this.targetPracticeTime = targetTime;
   }
 
 }

@@ -39,6 +39,6 @@ import { TimerComponent } from './timer/timer.component';
     CdTimerModule
   ],
   providers: [],
-  exports: [TimerComponent, SessionBeforeComponent]
+  exports: [TimerComponent, SessionBeforeComponent, SessionDuringComponent, SessionAfterComponent]
 })
 export class SessionModule { }

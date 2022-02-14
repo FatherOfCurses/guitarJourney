@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {Router} from '@angular/router';
 import { SessionComponent} from '../session.component';
 
@@ -8,7 +8,8 @@ import { SessionComponent} from '../session.component';
   styleUrls: ['./session-during.component.scss']
 })
 export class SessionDuringComponent implements OnInit {
-  targetPracticeTime: Date;
+  @Input() targetPracticeTime: number;
+  @Output() totalPracticeTime: EventEmitter<number>;
 
   constructor(private router: Router) { }
 
@@ -16,7 +17,8 @@ export class SessionDuringComponent implements OnInit {
   }
 
   finishSession(): void {
-    this.router.navigate(['/sessionAfter']).then();
+    this.totalPracticeTime.emit()
+    // this.router.navigate(['/sessionAfter']).then();
   }
 
 }

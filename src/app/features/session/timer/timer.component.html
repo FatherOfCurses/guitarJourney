@@ -7,7 +7,8 @@
 <!--<button (click)="stop()" *ngIf="active">Stop</button>-->
 
 <cd-timer
-  [startTime]='startTime'
+  [startTime]='goalTime'
   [endTime]='endTime'
   [autoStart]='true'
+  (onComplete)='this.markFinished()'
 ></cd-timer>

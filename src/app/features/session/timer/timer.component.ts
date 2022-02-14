@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-timer',
@@ -7,32 +7,14 @@ import { Component, Input } from '@angular/core';
 })
 export class TimerComponent {
 
-  @Input() goalTime: Date;
-  startTime: number;
+  @Input() goalTime: number;
+  @Output() finishTime: EventEmitter<number>;
+  @Output() sessionFinished: EventEmitter<boolean>;
   endTime = 600;
 
-  // startTime: Date;
-  // stopTime: Date;
-  // active = false;
-  // get display() { return (this.startTime && this.stopTime) ? +this.stopTime - +this.startTime : 0 };
-  //
-  // timer() {
-  //   if (this.active) {
-  //     this.stopTime = new Date()
-  //     setTimeout(()=>{
-  //       this.timer();
-  //     }, 1000)
-  //   }
-  // }
-  //
-  // start() {
-  //   this.active = true;
-  //   this.timer();
-  // }
-  //
-  // stop() {
-  //   this.stopTime = new Date();
-  //   this.active = false;
-  // }
+  markFinished(): void {
+    this.finishTime.emit(900);
+    this.sessionFinished.emit(true);
+  }
 
 }
