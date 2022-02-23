@@ -10,13 +10,9 @@ import { NbStepChangeEvent } from '@nebular/theme';
 })
 export class SessionComponent implements OnInit {
   changeEvent: NbStepChangeEvent;
-
-
   targetPracticeTime = 0;
   sessionForm: FormGroup;
   session: Session;
-  sessionStarted = false;
-  sessionFinished = false;
   // TODO: Save this for view when need to display a date in text format
   // today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
 
@@ -33,14 +29,9 @@ export class SessionComponent implements OnInit {
       whatToPractice: ['', Validators.required],
       sessionIntent: ['', Validators.required]
     });
-    }
-
-    populateTimer(targetTime: number): void {
-    this.targetPracticeTime = targetTime;
   }
 
-  handleStepChange(event: NbStepChangeEvent): void {
-    this.changeEvent = event;
+  populateTimer(event: NbStepChangeEvent): void {
+    this.targetPracticeTime = this.sessionForm.get('practiceTime').value;
   }
-
 }

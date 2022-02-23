@@ -1,11 +1,9 @@
-<nb-card size='medium'>
+<nb-card size='large'>
   <nb-card-body>
-    <nb-stepper orientation='vertical' [linear]='true'>
+    <nb-stepper orientation='vertical' [linear]='true' (stepChange)='populateTimer($event)'>
       <nb-step label='Start a session' [stepControl]='sessionForm'>
         <app-session-before
-          *ngIf='!sessionStarted'
           [sessionForm]="this.sessionForm"
-          (desiredPracticeTime)="populateTimer($event)"
         ></app-session-before>
         <button nbButton nbStepperNext>Start</button>
       </nb-step>
@@ -21,14 +19,6 @@
     </nb-stepper>
   </nb-card-body>
 </nb-card>
-
-
-
-
-
-
-
-<app-session-after *ngIf='sessionFinished'></app-session-after>
 
 <nb-card>
   <nb-layout-header>
