@@ -1,11 +1,32 @@
+<nb-card size='medium'>
+  <nb-card-body>
+    <nb-stepper orientation='vertical'>
+      <nb-step label='Start a session'>
+        <app-session-before
+          *ngIf='!sessionStarted'
+          [sessionForm]="this.sessionForm"
+          (desiredPracticeTime)="populateTimer($event)"
+        ></app-session-before>
+        <button nbButton nbStepperNext>Start</button>
+      </nb-step>
+      <nb-step label='Session underway'>
+        <app-session-during [targetPracticeTime]='targetPracticeTime'></app-session-during>
+        <button nbButton nbStepperPrevious>Go Back</button>
+        <button nbButton nbStepperNext>Finish</button>
+      </nb-step>
+      <nb-step label='Done'>
+        <app-session-after></app-session-after>
+        <button nbButton nbStepperNext>Exit</button>
+      </nb-step>
+    </nb-stepper>
+  </nb-card-body>
+</nb-card>
 
-<app-session-before
-  *ngIf='!sessionStarted'
-  [sessionForm]="this.sessionForm"
-  (desiredPracticeTime)="populateTimer($event)"
-></app-session-before>
 
-<app-session-during *ngIf="sessionStarted || !sessionFinished" [targetPracticeTime]='targetPracticeTime'></app-session-during>
+
+
+
+
 
 <app-session-after *ngIf='sessionFinished'></app-session-after>
 

@@ -7,7 +7,7 @@ import {
   NbLayoutModule,
   NbListModule,
   NbMenuModule,
-  NbSidebarModule, NbTableModule,
+  NbSidebarModule, NbStepperModule, NbTableModule,
   NbThemeModule
 } from '@nebular/theme';
 import { AppRoutingModule } from './app-routing.module';
@@ -53,7 +53,8 @@ import { Convertors } from './utilities/Convertors';
     NbLayoutModule,
     NbCardModule,
     NbListModule,
-    NbTableModule
+    NbTableModule,
+    NbStepperModule
   ],
   providers: [Convertors],
   bootstrap: [AppComponent]

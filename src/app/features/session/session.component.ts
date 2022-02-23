@@ -6,6 +6,7 @@ import { Convertors } from '../../utilities/Convertors';
 import dayjs from 'dayjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { NbStepChangeEvent } from '@nebular/theme';
 
 @Component({
   selector: 'app-session',
@@ -13,6 +14,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./session.component.scss']
 })
 export class SessionComponent implements OnInit {
+  changeEvent: NbStepChangeEvent;
+
+
   targetPracticeTime = 0;
   sessionForm: FormGroup;
   session: Session;
@@ -38,6 +42,10 @@ export class SessionComponent implements OnInit {
 
     populateTimer(targetTime: number): void {
     this.targetPracticeTime = targetTime;
+  }
+
+  handleStepChange(event: NbStepChangeEvent): void {
+    this.changeEvent = event;
   }
 
 }

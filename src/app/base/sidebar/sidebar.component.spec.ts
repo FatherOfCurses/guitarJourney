@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed} from '@angular/core/testing';
 import { SidebarComponent } from './sidebar.component';
-import {NbLayoutModule, NbCardModule, NbMenuModule} from '@nebular/theme';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('SidebarComponent', () => {
