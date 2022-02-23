@@ -1,7 +1,7 @@
 <nb-card size='medium'>
   <nb-card-body>
-    <nb-stepper orientation='vertical'>
-      <nb-step label='Start a session'>
+    <nb-stepper orientation='vertical' [linear]='true'>
+      <nb-step label='Start a session' [stepControl]='sessionForm'>
         <app-session-before
           *ngIf='!sessionStarted'
           [sessionForm]="this.sessionForm"

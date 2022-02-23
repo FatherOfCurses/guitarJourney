@@ -24,7 +24,6 @@ export class SessionBeforeComponent implements OnInit {
   onSubmit(): void {
     console.log(this.sessionForm);
     this.desiredPracticeTime.emit(this.sessionForm.get('practiceTime').value);
-    // this.router.navigate(['sessionDuring']).then();
   }
 
 }

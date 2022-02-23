@@ -1,11 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Session } from '../../models/session';
-import { SessionBeforeComponent } from './session-1-before/session-before.component';
-
-import { Convertors } from '../../utilities/Convertors';
-import dayjs from 'dayjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbStepChangeEvent } from '@nebular/theme';
 
 @Component({
@@ -34,9 +29,9 @@ export class SessionComponent implements OnInit {
 
   initializeForm(): void {
     this.sessionForm = this.fb.group({
-      practiceTime: '',
-      whatToPractice: '',
-      sessionIntent: ''
+      practiceTime: ['', Validators.required],
+      whatToPractice: ['', Validators.required],
+      sessionIntent: ['', Validators.required]
     });
     }
 
