@@ -1,10 +1,33 @@
 <nb-card size='large'>
   <nb-card-body>
-    <nb-stepper orientation='vertical' [linear]='true' (stepChange)='populateTimer($event)'>
-      <nb-step label='Start a session' [stepControl]='sessionForm'>
-        <app-session-before
-          [sessionForm]="this.sessionForm"
-        ></app-session-before>
+    <nb-stepper orientation='vertical' [linear]="true">"
+      <nb-step label='Start a session' [stepControl]='sessionForm' [status]="sessionForm.get('practiceTime')k.invalid ? 'danger' : 'basic'" >
+<!--        <app-session-before-->
+<!--          [sessionForm]="this.sessionForm"-->
+<!--          class='step-container'-->
+<!--        ></app-session-before>-->
+        <form [formGroup]="sessionForm">
+          <nb-card-body>
+            <div>
+              <label for='practiceTime'>
+                Practice Time Amount
+                <input nbInput fullWidth type="text" id="practiceTime" formControlName="practiceTime" placeholder='Enter the time (in minutes) that you want to practice'>
+              </label>
+            </div>
+            <div>
+              <label for='whatToPractice'>
+                What to Practice
+                <textarea nbInput fullWidth id="whatToPractice" formControlName="whatToPractice" placeholder='What are you planning on practicing today?'></textarea>
+              </label>
+            </div>
+            <div>
+              <label>
+                Session Intent
+                <input nbInput fullWidth type="text" id="sessionIntent" formControlName="sessionIntent" placeholder='Practice requires intent. Take a moment, think of your intention for this session, and write it here:'>
+              </label>
+            </div>
+          </nb-card-body>
+        </form>
         <button nbButton nbStepperNext>Start</button>
       </nb-step>
       <nb-step label='Session underway'>
@@ -13,7 +36,7 @@
         <button nbButton nbStepperNext>Finish</button>
       </nb-step>
       <nb-step label='Done'>
-        <app-session-after></app-session-after>
+        <app-session-after [sessionForm]='sessionForm'></app-session-after>
         <button nbButton nbStepperNext>Exit</button>
       </nb-step>
     </nb-stepper>

@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import {Router} from '@angular/router';
-import {Session} from '../../../models/session';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import dayjs from 'dayjs';
 
 @Component({
@@ -19,11 +18,6 @@ export class SessionBeforeComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  onSubmit(): void {
-    console.log(this.sessionForm);
-    this.desiredPracticeTime.emit(this.sessionForm.get('practiceTime').value);
   }
 
 }

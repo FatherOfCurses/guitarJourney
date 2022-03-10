@@ -10,8 +10,7 @@ import { SessionComponent } from './features/session/session.component';
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'session', component: SessionComponent},
-  {path: 'sessionDuring', component: SessionDuringComponent},
-  {path: 'sessionAfter', component: SessionAfterComponent}
+  {path: 'landing', component: LandingPageComponent},
 ];
 
 @NgModule({

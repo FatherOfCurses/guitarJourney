@@ -1,34 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Observable, Subscription} from 'rxjs';
-import {Session} from '../../../models/session';
-import { FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-session-after',
   templateUrl: './session-after.component.html',
   styleUrls: ['./session-after.component.scss']
 })
-export class SessionAfterComponent implements OnInit, OnDestroy {
-  sessionSubscription: Subscription;
-  timerBar: Observable<number>;
-  afterSessionForm = this.fb.group({
-    sessionReflection:['', [Validators.required]],
-    goalForNextTime: ['',[Validators.required]]
-  });
+export class SessionAfterComponent implements OnInit {
+  @Input() sessionForm: FormGroup
 
-  constructor(
-    private fb: FormBuilder, private router: Router) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  ngOnDestroy() {
-    this.sessionSubscription.unsubscribe();
-  }
-
-  onSubmit() {
-    this.router.navigate(['']).then();
-  }
 }
