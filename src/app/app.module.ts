@@ -26,6 +26,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SessionComponent} from './features/session/session.component';
 import { Convert } from '@angular-builders/jest/dist/schema';
 import { Convertors } from './utilities/Convertors';
+import { ChordComponent } from './features/notation/chord/chord.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { Convertors } from './utilities/Convertors';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    SessionComponent
+    SessionComponent,
+    ChordComponent
   ],
   imports: [
     BrowserModule,
