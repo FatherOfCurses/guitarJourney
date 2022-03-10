@@ -20,5 +20,9 @@ export class SidebarComponent {
     {
       title: 'Practice Diary'
     },
+    {
+      title: 'Testing ground',
+      link: '/test'
+    }
   ];
 }
