@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import {
   NbA11yModule,
   NbButtonModule,
-  NbCardModule,
+  NbCardModule, NbInputModule,
   NbLayoutModule,
   NbListModule,
   NbMenuModule,
@@ -56,9 +56,10 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     NbCardModule,
     NbListModule,
     NbTableModule,
-    NbStepperModule
+    NbStepperModule,
     NbTableModule,
-    HttpClientModule
+    HttpClientModule,
+    NbInputModule
   ],
   providers: [Convertors, HttpClient],
   bootstrap: [AppComponent]

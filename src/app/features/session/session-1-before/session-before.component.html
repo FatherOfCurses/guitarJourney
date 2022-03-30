@@ -4,19 +4,36 @@
       <div>
         <label for='practiceTime'>
           Practice Time Amount
-          <input nbInput fullWidth type="text" id="practiceTime" formControlName="practiceTime" placeholder='Enter the time (in minutes) that you want to practice'>
+          <input nbInput
+                 [status]="sessionForm.get('practiceTime').invalid ? 'danger' : 'basic'"
+                 fullWidth
+                 type="text"
+                 id="practiceTime"
+                 formControlName="practiceTime"
+                 placeholder='Enter the time (in minutes) that you want to practice'>
         </label>
       </div>
       <div>
         <label for='whatToPractice'>
           What to Practice
-          <textarea nbInput fullWidth id="whatToPractice" formControlName="whatToPractice" placeholder='What are you planning on practicing today?'></textarea>
+          <textarea nbInput
+                    [status]="sessionForm.get('whatToPractice').invalid ? 'danger' : 'basic'"
+                    fullWidth id="whatToPractice"
+                    formControlName="whatToPractice"
+                    placeholder='What are you planning on practicing today?'>
+                </textarea>
         </label>
       </div>
       <div>
         <label>
           Session Intent
-          <input nbInput fullWidth type="text" id="sessionIntent" formControlName="sessionIntent" placeholder='Practice requires intent. Take a moment, think of your intention for this session, and write it here:'>
+          <input nbInput
+                 [status]="sessionForm.get('sessionIntent').invalid ? 'danger' : 'basic'"
+                 fullWidth
+                 type="text"
+                 id="sessionIntent"
+                 formControlName="sessionIntent"
+                 placeholder='Practice requires intent. Take a moment, think of your intention for this session, and write it here:'>
         </label>
       </div>
     </nb-card-body>

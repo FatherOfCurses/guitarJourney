@@ -15,6 +15,7 @@
       worked? What didn't work? What surprised you?
       <textarea
         nbInput
+        [status]="sessionForm.get('sessionReflection').invalid ? 'danger' : 'basic'"
         fullWidth
         type="text"
         formControlName="sessionReflection"
@@ -24,7 +25,11 @@
   <div>
     <label>
       What do you want to remember the next time you do a similar practice?
-      <textarea nbInput fullWidth formControlName="goalForNextTime"></textarea>
+      <textarea
+        nbInput
+        [status]="sessionForm.get('goalForNextTime').invalid ? 'danger' : 'basic'"
+        fullWidth
+        formControlName="goalForNextTime"></textarea>
     </label>
   </div>
 </form>
