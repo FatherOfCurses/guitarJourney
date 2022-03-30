@@ -19,6 +19,9 @@ export class SidebarComponent {
       link: '/songs'
     },
     {
+      title: 'Exercises'
+    },
+    {
       title: 'Practice Diary'
     },
     {

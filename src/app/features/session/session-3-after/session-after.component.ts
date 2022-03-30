@@ -13,10 +13,6 @@ import { Validators } from '@angular/forms';
 export class SessionAfterComponent implements OnInit, OnDestroy {
   sessionSubscription: Subscription;
   timerBar: Observable<number>;
-  afterSessionForm = this.fb.group({
-    sessionReflection:['', [Validators.required]],
-    goalForNextTime: ['',[Validators.required]]
-  });
 
   constructor(
     private fb: FormBuilder, private router: Router) { }
@@ -29,6 +25,6 @@ export class SessionAfterComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.router.navigate(['']).then();
+    this.router.navigate(['dashboard']).then();
   }
 }

@@ -11,6 +11,7 @@ import { SongComponent } from './features/song/song.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
+  {path: 'dashboard', component: LandingPageComponent},
   {path: 'session', component: SessionComponent},
   {path: 'sessionDuring', component: SessionDuringComponent},
   {path: 'sessionAfter', component: SessionAfterComponent},

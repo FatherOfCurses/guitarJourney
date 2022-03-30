@@ -4,7 +4,7 @@ import { SessionBeforeComponent } from './session-1-before/session-before.compon
 
 import { Convertors } from '../../utilities/Convertors';
 import dayjs from 'dayjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -30,9 +30,11 @@ export class SessionComponent implements OnInit {
 
   initializeForm(): void {
     this.sessionForm = this.fb.group({
-      practiceTime: '',
-      whatToPractice: '',
-      sessionIntent: ''
+      practiceTime: ['', [Validators.required]],
+      whatToPractice: ['', [Validators.required]],
+      sessionIntent: ['', [Validators.required]],
+      sessionReflection:['', [Validators.required]],
+      goalForNextTime: ['',[Validators.required]]
     });
     }
 

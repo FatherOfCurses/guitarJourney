@@ -1,4 +1,18 @@
-<p>song works!</p>
+<p>Basic song format</p>
+<ul>
+  <li>Title</li>
+  <li>Artist</li>
+  <li>Link to Recording</li>
+  <li>YouTube embed</li>
+  <li>songsterr link</li>
+  <li>Practice sessions?</li>
+  <li>notes</li>
+</ul>
 <p>
-  <p>{{this.searchResult}}</p>
+song list
+  <ul>
+  <li *ngFor="let result of (searchResult$ | async)">
+    Song Title:{{result.title}}
+  </li>
+</ul>
 
