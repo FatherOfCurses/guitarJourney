@@ -10,18 +10,12 @@ import {
 } from '@nebular/theme';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CdTimerModule } from 'angular-cd-timer';
-import {SessionBeforeComponent} from './session-1-before/session-before.component';
-import {SessionDuringComponent} from './session-2-during/session-during.component';
 import {CommonModule} from '@angular/common';
-import { SessionAfterComponent } from './session-3-after/session-after.component';
 import { CountdownModule} from 'ngx-countdown';
 import { TimerComponent } from './timer/timer.component';
 
 @NgModule({
   declarations: [
-    SessionBeforeComponent,
-    SessionDuringComponent,
-    SessionAfterComponent,
     TimerComponent
   ],
   imports: [
@@ -39,6 +33,6 @@ import { TimerComponent } from './timer/timer.component';
     CdTimerModule
   ],
   providers: [],
-  exports: [TimerComponent, SessionBeforeComponent, SessionDuringComponent, SessionAfterComponent]
+  exports: [TimerComponent]
 })
 export class SessionModule { }

@@ -13,6 +13,8 @@ export class SessionComponent implements OnInit {
   changeEvent: NbStepChangeEvent;
   targetPracticeTime = 0;
   sessionForm: FormGroup;
+  timerForm: FormGroup;
+  afterForm: FormGroup;
   session: Session;
   // TODO: Save this for view when need to display a date in text format
   // today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
@@ -29,6 +31,11 @@ export class SessionComponent implements OnInit {
       practiceTime: ['', [Validators.required]],
       whatToPractice: ['', [Validators.required]],
       sessionIntent: ['', [Validators.required]],
+    });
+    this.timerForm = this.fb.group({
+      time: [''],
+    });
+    this.afterForm = this.fb.group({
       sessionReflection:['', [Validators.required]],
       goalForNextTime: ['',[Validators.required]]
     });
@@ -40,7 +47,7 @@ export class SessionComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.sessionForm.get('sessionReflection'));
-    this.router.navigate(['landing']).then();
+    console.log(this.afterForm.get('sessionReflection'));
+    this.router.navigate(['dashboard']).then();
   }
 }
