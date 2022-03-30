@@ -1,13 +1,6 @@
-<!--Target time: {{this.goalTime | date :"HH:mm:ss":'UTC'}}-->
-<!--&lt;!&ndash;<button nbButton (click)="onClick()">Start!</button>&ndash;&gt;-->
-<!--&lt;!&ndash;Progress:&ndash;&gt;-->
-<!--&lt;!&ndash;<nb-progress-bar [value]=this.displayTime></nb-progress-bar>&ndash;&gt;-->
-<!--<div>{{display | date:'mediumTime'}}</div>-->
-<!--<button (click)="start()" *ngIf="!active">Start</button>-->
-<!--<button (click)="stop()" *ngIf="active">Stop</button>-->
 
+<h4>Target Practice Time: {{this.goalTime}} minutes</h4>
 <cd-timer
-  [startTime]='goalTime'
   [endTime]='endTime'
   [autoStart]='true'
   (onComplete)='this.markFinished()'

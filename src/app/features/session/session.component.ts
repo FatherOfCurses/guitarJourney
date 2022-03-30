@@ -41,9 +41,8 @@ export class SessionComponent implements OnInit {
     });
   }
 
-  stepChange(stepNumber: number): void {
-    console.log('Step changed to ', stepNumber);
-    // this.targetPracticeTime = this.sessionForm.get('practiceTime').value;
+  setTimer(): void {
+    this.timerForm.get('time').setValue(this.sessionForm.get('practiceTime').value);
   }
 
   onSubmit(): void {
