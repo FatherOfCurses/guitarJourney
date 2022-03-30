@@ -26,11 +26,11 @@ export class SessionComponent implements OnInit {
 
   initializeForm(): void {
     this.sessionForm = this.fb.group({
-      practiceTime: ['', Validators.required],
-      whatToPractice: ['', Validators.required],
-      sessionIntent: ['', Validators.required],
-      sessionReflection:['', Validators.required],
-      goalForNextTime: ['', Validators.required]
+      practiceTime: ['', [Validators.required]],
+      whatToPractice: ['', [Validators.required]],
+      sessionIntent: ['', [Validators.required]],
+      sessionReflection:['', [Validators.required]],
+      goalForNextTime: ['',[Validators.required]]
     });
   }
 

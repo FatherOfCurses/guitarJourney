@@ -24,8 +24,9 @@ import {SidebarModule} from './base/sidebar/sidebar.module';
 import {SessionModule} from './features/session/session.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SessionComponent} from './features/session/session.component';
-import { Convert } from '@angular-builders/jest/dist/schema';
 import { Convertors } from './utilities/Convertors';
+import { ChordComponent } from './features/notation/chord/chord.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { Convertors } from './utilities/Convertors';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    SessionComponent
+    SessionComponent,
+    ChordComponent
   ],
   imports: [
     BrowserModule,
@@ -55,8 +57,10 @@ import { Convertors } from './utilities/Convertors';
     NbListModule,
     NbTableModule,
     NbStepperModule
+    NbTableModule,
+    HttpClientModule
   ],
-  providers: [Convertors],
+  providers: [Convertors, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

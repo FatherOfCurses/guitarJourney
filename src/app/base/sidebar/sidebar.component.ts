@@ -16,9 +16,17 @@ export class SidebarComponent {
     },
     {
       title: 'Songs',
+      link: '/songs'
+    },
+    {
+      title: 'Exercises'
     },
     {
       title: 'Practice Diary'
     },
+    {
+      title: 'Testing ground',
+      link: '/test'
+    }
   ];
 }

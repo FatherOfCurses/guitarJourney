@@ -6,12 +6,21 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './session-after.component.html',
   styleUrls: ['./session-after.component.scss']
 })
-export class SessionAfterComponent implements OnInit {
-  @Input() sessionForm: FormGroup
+export class SessionAfterComponent implements OnInit, OnDestroy {
+  sessionSubscription: Subscription;
+  timerBar: Observable<number>;
 
-  constructor() { }
+  constructor(
+    private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
   }
 
+  ngOnDestroy() {
+    this.sessionSubscription.unsubscribe();
+  }
+
+  onSubmit() {
+    this.router.navigate(['dashboard']).then();
+  }
 }
