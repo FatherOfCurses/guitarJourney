@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChordComponent } from './chord.component';
+import { ChordObject } from '../../../models/chord';
 
 describe('ChordComponent', () => {
   let component: ChordComponent;
@@ -8,7 +8,8 @@ describe('ChordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChordComponent ]
+      declarations: [ ChordComponent ],
+      providers: [ChordObject]
     })
     .compileComponents();
   });
