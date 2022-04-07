@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SongsterrService } from '../../services/songsterr.service';
 import { SongsterrResponse } from '../../models/songsterrResponse';
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Component({
