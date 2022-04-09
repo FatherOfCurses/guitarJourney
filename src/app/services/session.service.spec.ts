@@ -7,7 +7,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 describe('SessionService', () => {
   let service: SessionService;
   let httpTestingController: HttpTestingController;
-
+  const baseUrl = 'https://dx471dpyrj.execute-api.us-west-2.amazonaws.com/sessions';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -32,7 +32,6 @@ describe('SessionService', () => {
       whatToPractice: 'Dark Side of the Moon',
       id: 'ID3928hheds872'
     }
-    const baseUrl = '/api/session/';
     const session$ = service.postSession$(mockSessionSinglePayload);
     session$.subscribe(() => {}, () => {fail();});
     const req = httpTestingController.expectOne(baseUrl, JSON.stringify(mockSessionSinglePayload));
