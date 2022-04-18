@@ -2,11 +2,13 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
+    "module": "CommonJs",
     "types": [
       "jest",
       "node"
     ],
     "esModuleInterop": true, // 2
+    "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true // 3
   },
   "files": [

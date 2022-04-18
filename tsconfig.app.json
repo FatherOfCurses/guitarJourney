@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
+    "allowSyntheticDefaultImports": true,
     "types": []
   },
   "files": [
@@ -12,7 +13,6 @@
     "src/**/*.d.ts"
   ],
   "exclude": [
-    "setup-jest.ts",
     "**/*.spec.ts",
     "**/testHelpers.ts",
     "**/environment.*.ts"

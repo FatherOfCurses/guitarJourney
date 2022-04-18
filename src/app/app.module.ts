@@ -1,45 +1,67 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatCardModule } from '@angular/material/card';
-import {NbCardModule, NbLayoutModule, NbListModule, NbMenuModule, NbSidebarModule, NbThemeModule} from '@nebular/theme';
-
+import {
+  NbA11yModule,
+  NbButtonModule,
+  NbCardModule, NbInputModule,
+  NbLayoutModule,
+  NbListModule,
+  NbMenuModule,
+  NbSidebarModule, NbStepperModule, NbTableModule,
+  NbThemeModule
+} from '@nebular/theme';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { LandingPageComponent } from './features/landing-page/landing-page.component';
-import { SessionLogComponent } from './features/session-log/session-log.component';
-
-import { HeaderComponent } from './base/header/header.component';
-import { FooterComponent } from './base/footer/footer.component';
-import { SidebarComponent } from './base/sidebar/sidebar.component';
+import {HeaderComponent} from './base/header/header.component';
+import {FooterComponent} from './base/footer/footer.component';
+import {SidebarComponent} from './base/sidebar/sidebar.component';
+import {RouterModule} from '@angular/router';
+import {routes} from '@nebular/auth';
+import {SidebarModule} from './base/sidebar/sidebar.module';
+import {SessionModule} from './features/session/session.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SessionComponent} from './features/session/session.component';
+import { Convertors } from './utilities/Convertors';
+import { ChordComponent } from './features/notation/chord/chord.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
-    SessionLogComponent,
     HeaderComponent,
     FooterComponent,
-    SidebarComponent
+    SidebarComponent,
+    SessionComponent,
+    ChordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
-    MatExpansionModule,
-    MatCardModule,
+    SidebarModule,
+    SessionModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    RouterModule.forRoot(routes, { useHash: true }),
     NbThemeModule.forRoot(),
+    NbSidebarModule.forRoot(),
+    NbMenuModule.forRoot(),
+    NbA11yModule.forRoot(),
+    NbButtonModule,
     NbLayoutModule,
     NbCardModule,
     NbListModule,
-    NbSidebarModule.forRoot(),
-    NbMenuModule.forRoot(),
+    NbTableModule,
+    NbStepperModule,
+    NbTableModule,
+    HttpClientModule,
+    NbInputModule
   ],
-  providers: [],
+  providers: [Convertors, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
