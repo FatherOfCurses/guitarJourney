@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { SessionService } from './session.service';
-import { HttpClient, HttpHandler, HttpRequest } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Session } from '../models/session';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 

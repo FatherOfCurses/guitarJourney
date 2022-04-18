@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CdTimerModule} from 'angular-cd-timer';
 
 @Component({
   selector: 'app-timer',

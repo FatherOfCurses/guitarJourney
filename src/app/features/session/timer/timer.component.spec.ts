@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimerComponent } from './timer.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('TimerComponent', () => {
   let component: TimerComponent;
@@ -7,7 +8,8 @@ describe('TimerComponent', () => {
 
   beforeEach( () => {
     TestBed.configureTestingModule({
-      declarations: [ TimerComponent ]
+      declarations: [ TimerComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
     fixture = TestBed.createComponent(TimerComponent);
@@ -15,7 +17,7 @@ describe('TimerComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
