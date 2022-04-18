@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Session } from '../../models/session';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NbStepChangeEvent } from '@nebular/theme';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,7 +9,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./session.component.scss']
 })
 export class SessionComponent implements OnInit {
-  changeEvent: NbStepChangeEvent;
   targetPracticeTime = 0;
   sessionForm: FormGroup;
   timerForm: FormGroup;

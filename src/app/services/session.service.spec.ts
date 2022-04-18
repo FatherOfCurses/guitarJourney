@@ -30,7 +30,7 @@ describe('SessionService', () => {
       goalForNextTime: 'Money timing at 80bpm',
       postPracticeReflection: 'Had a lot of fun on Great Gig in the Sky, timing was a little off on Money',
       whatToPractice: 'Dark Side of the Moon',
-      id: 'ID3928hheds872'
+      sessionId: 'ID3928hheds872'
     }
     const session$ = service.postSession$(mockSessionSinglePayload);
     session$.subscribe(() => {}, () => {fail();});
