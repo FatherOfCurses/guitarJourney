@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "ng test --coverage",
     "e2e": "ng e2e",
     "deploy": "cd dist && zip -r -X guitar-practice.zip ./*",
     "lint": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix"
@@ -29,6 +29,7 @@
     "@nebular/eva-icons": "^7.0.5",
     "@nebular/security": "^7.0.5",
     "@nebular/theme": "^7.0.5",
+    "angular-cd-timer": "1.0.0",
     "codelyzer": "^6.0.2",
     "dayjs": "^1.10.4",
     "eev": "^0.1.5",
