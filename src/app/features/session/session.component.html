@@ -8,20 +8,22 @@
               <label for='practiceTime'>
                 Practice Time Amount
                 <input nbInput
-                       status="sessionForm.get('practiceTime').untouched ? 'basic' : sessionForm.get('practiceTime').invalid ? 'danger' : 'basic'"
+                       [status]="practiceTimeValid"
                        fullWidth
                        type="text"
                        id="practiceTime"
                        formControlName="practiceTime"
                        placeholder='Enter the time (in minutes) that you want to practice'>
+                <!-- <div *ngIf="practiceTime.invalid">Please enter a practice time value</div> -->
               </label>
             </div>
             <div>
               <label for='whatToPractice'>
                 What to Practice
                 <textarea nbInput
-                          status="sessionForm.get('whatToPractice').untouched ? 'basic' : sessionForm.get('whatToPractice').invalid ? 'danger' : 'basic'"
-                          fullWidth id="whatToPractice"
+                          [status]="whatToPracticeValid"
+                          fullWidth
+                          id="whatToPractice"
                           formControlName="whatToPractice"
                           placeholder='What are you planning on practicing today?'>
 
@@ -32,7 +34,7 @@
               <label>
                 Session Intent
                 <input nbInput
-                       status="sessionForm.get('sessionIntent').untouched ? 'basic' : sessionForm.get('sessionIntent').invalid ? 'danger' : 'basic'"
+                       [status]="sessionIntentValid"
                        fullWidth
                        type="text"
                        id="sessionIntent"
@@ -69,7 +71,7 @@
               worked? What didn't work? What surprised you?
               <textarea
                 nbInput
-                status="afterForm.get('sessionReflection').untouched ? 'basic' : afterForm.get('sessionReflection').invalid ? 'danger' : 'basic'"
+                [status]="sessionReflectionValid"
                 fullWidth
                 type="text"
                 formControlName="sessionReflection"
@@ -81,7 +83,7 @@
               What do you want to remember the next time you do a similar practice?
               <textarea
                 nbInput
-                status="afterForm.get('goalForNextTime').untouched ? 'basic' : afterForm.get('goalForNextTime').invalid ? 'danger' : 'basic'"
+                [status]="goalForNextTimeValid"
                 fullWidth
                 formControlName="goalForNextTime"></textarea>
             </label>
