@@ -53,7 +53,7 @@
           [goalTime]="practiceTime.value"
         ></app-timer>
         <button nbButton nbStepperPrevious>Go Back</button>
-        <button nbButton nbStepperNext>Finish</button>
+        <button nbButton nbStepperNext (click)='timerFormControl.markFinished()'>Finish</button>
       </nb-step>
       <nb-step label='Done' [stepControl]='afterForm'>>
         <div style="align-items: center">

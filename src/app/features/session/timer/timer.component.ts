@@ -1,7 +1,4 @@
 import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewChecked,
   Component,
   EventEmitter,
   Input,
@@ -9,7 +6,6 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { CdTimerComponent} from 'angular-cd-timer';
 
 @Component({
   selector: 'app-timer',
@@ -23,7 +19,6 @@ export class TimerComponent implements OnInit {
   @Output() sessionFinished: EventEmitter<boolean>;
 
   ngOnInit() {
-    this.timer.reset();
   }
 
   start(): void {
@@ -31,7 +26,9 @@ export class TimerComponent implements OnInit {
     }
 
   markFinished(): void {
-    this.finishTime.emit(900);
+    this.timer.stop();
+    const timeValue = this.timer.seconds;
+    console.log(`time: ${timeValue}`)
     this.sessionFinished.emit(true);
   }
 }
