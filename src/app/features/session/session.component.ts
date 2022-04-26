@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Session } from '../../models/session';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,6 +27,7 @@ export class SessionComponent implements OnInit {
   sessionIntentValid = 'default';
   sessionReflectionValid = 'default';
   goalForNextTimeValid = 'default';
+  startTimer = false;
   // TODO: Save this for view when need to display a date in text format
   // today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
 
@@ -64,9 +65,7 @@ export class SessionComponent implements OnInit {
   }
 
   setTimer(): void {
-    const sessionTime = this.practiceTime.value;
-    console.log(`Session time ${sessionTime}, fields valid - practiceTime: ${this.practiceTimeValid} whattopractice: ${this.whatToPracticeValid} sessionIntent: ${this.sessionIntentValid}`)
-    this.timerForm.get('time').setValue(sessionTime);
+    this.startTimer = true;
   }
 
   onSubmit(): void {
