@@ -63,10 +63,6 @@ export class SessionComponent implements OnInit {
     this.onFormChanges();
   }
 
-  startSession(): void {
-
-  }
-
   setTimer(): void {
     const sessionTime = this.practiceTime.value;
     console.log(`Session time ${sessionTime}, fields valid - practiceTime: ${this.practiceTimeValid} whattopractice: ${this.whatToPracticeValid} sessionIntent: ${this.sessionIntentValid}`)

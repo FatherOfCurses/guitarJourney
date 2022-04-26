@@ -11,7 +11,6 @@ export class TimerComponent {
   @Input() goalTime: number;
   @Output() finishTime: EventEmitter<number>;
   @Output() sessionFinished: EventEmitter<boolean>;
-  endTime = 600;
 
   markFinished(): void {
     this.finishTime.emit(900);
