@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Session } from '../../models/session';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FieldValidationStatus, Option } from '../../models/formHelpers';
+import { TimerComponent } from './timer/timer.component';
+import { valueReferenceToExpression } from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
 
 @Component({
   selector: 'app-session',
@@ -10,6 +12,15 @@ import { FieldValidationStatus, Option } from '../../models/formHelpers';
   styleUrls: ['./session.component.scss']
 })
 export class SessionComponent implements OnInit {
+  session: Session = {
+    practiceTime: 0,
+    whatToPractice: '',
+    sessionIntent: '',
+    postPracticeReflection: '',
+    goalForNextTime: '',
+    sessionId: '',
+    date: Date.now()
+  }
   validationStatus: Option[];
   fieldValidationStatus = FieldValidationStatus;
   targetPracticeTime = 0;
@@ -21,15 +32,13 @@ export class SessionComponent implements OnInit {
   sessionIntent: AbstractControl;
   sessionReflection: AbstractControl;
   goalForNextTime: AbstractControl;
-  session: Session;
   practiceTimeValid = 'default';
   whatToPracticeValid = 'default';
   sessionIntentValid = 'default';
   sessionReflectionValid = 'default';
   goalForNextTimeValid = 'default';
   startTimer = false;
-  // TODO: Save this for view when need to display a date in text format
-  // today = dayjs(Date.now()).format('YYYY-MM-DD h:m a');
+  @ViewChild(TimerComponent) timerComponent: TimerComponent;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.validationStatus = [
@@ -49,9 +58,6 @@ export class SessionComponent implements OnInit {
       whatToPractice: ['', [Validators.required]],
       sessionIntent: ['', [Validators.required]],
     });
-    this.timerForm = this.fb.group({
-      time: [''],
-    });
     this.afterForm = this.fb.group({
       sessionReflection:['', [Validators.required]],
       goalForNextTime: ['',[Validators.required]]
@@ -60,25 +66,26 @@ export class SessionComponent implements OnInit {
     this.whatToPractice = this.sessionForm.get('whatToPractice');
     this.sessionIntent = this.sessionForm.get('sessionIntent');
     this.sessionReflection = this.afterForm.get('sessionReflection');
-    this.goalForNextTime =this.afterForm.get('goalForNextTime');
-    this.onFormChanges();
+    this.goalForNextTime = this.afterForm.get('goalForNextTime');
+    this.subscribeToFormChanges();
   }
 
   setTimer(): void {
     this.startTimer = true;
   }
 
-  onSubmit(): void {
-    this.router.navigate(['dashboard']).then();
-  }
-
-  onFormChanges(): void {
+  subscribeToFormChanges(): void {
     this.sessionForm.valueChanges.subscribe(value => {
-        this.practiceTimeValid = this.checkFieldValidation(this.practiceTime);
-        this.whatToPracticeValid = this.checkFieldValidation(this.whatToPractice);
-        this.sessionIntentValid = this.checkFieldValidation(this.sessionIntent);
-        this.sessionReflectionValid = this.checkFieldValidation(this.sessionReflection);
-        this.goalForNextTimeValid = this.checkFieldValidation(this.goalForNextTime);
+      this.practiceTimeValid = this.checkFieldValidation(this.practiceTime);
+      this.whatToPracticeValid = this.checkFieldValidation(this.whatToPractice);
+      this.sessionIntentValid = this.checkFieldValidation(this.sessionIntent);
+    });
+    this.afterForm.valueChanges.subscribe(value => {
+      this.sessionReflectionValid = this.checkFieldValidation(this.sessionReflection);
+      this.goalForNextTimeValid = this.checkFieldValidation(this.goalForNextTime);
+    });
+    this.timerComponent.finishTime.subscribe(value => {
+      this.session.practiceTime = value;
     });
   }
 
@@ -90,5 +97,14 @@ export class SessionComponent implements OnInit {
       return this.fieldValidationStatus.INVALID;
     }
     return this.fieldValidationStatus.EMPTY;
+  }
+
+  onSubmit(): void {
+    this.session.whatToPractice = this.sessionForm.get('whatToPractice').value;
+    this.session.sessionIntent = this.sessionIntent.value;
+    this.session.postPracticeReflection = this.sessionReflection.value;
+    this.session.goalForNextTime = this.goalForNextTime.value;
+    console.log(`Session ${JSON.stringify(this.session)}`);
+    this.router.navigate(['dashboard']).then();
   }
 }

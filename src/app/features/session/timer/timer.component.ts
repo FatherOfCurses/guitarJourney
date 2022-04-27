@@ -15,8 +15,7 @@ import {
 export class TimerComponent implements OnInit {
   @ViewChild('sessionTimer') timer;
   @Input() goalTime: number;
-  @Output() finishTime: EventEmitter<number>;
-  @Output() sessionFinished: EventEmitter<boolean>;
+  @Output() finishTime = new EventEmitter<number>();
 
   ngOnInit() {
   }
@@ -27,8 +26,8 @@ export class TimerComponent implements OnInit {
 
   markFinished(): void {
     this.timer.stop();
-    const timeValue = this.timer.seconds;
-    console.log(`time: ${timeValue}`)
-    this.sessionFinished.emit(true);
+    const endTimeValue = (this.timer.minutes + (this.timer.seconds / 60));
+    console.log(`time: ${endTimeValue}`);
+    this.finishTime.emit(endTimeValue);
   }
 }

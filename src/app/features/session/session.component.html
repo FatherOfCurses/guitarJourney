@@ -44,16 +44,14 @@
             </div>
           </nb-card-body>
         </form>
-        <button nbButton nbStepperNext (click)='timerFormControl.start()'>Start</button>
+        <button nbButton nbStepperNext (click)='timerComponent.start()'>Start</button>
       </nb-step>
       <nb-step label='Session underway' [stepControl]='timerForm'>
         <nb-layout-header><h2>Keep going! Make it a good session!</h2></nb-layout-header>
-        <app-timer
-          #timerFormControl
-          [goalTime]="practiceTime.value"
+        <app-timer [goalTime]="practiceTime.value"
         ></app-timer>
         <button nbButton nbStepperPrevious>Go Back</button>
-        <button nbButton nbStepperNext (click)='timerFormControl.markFinished()'>Finish</button>
+        <button nbButton nbStepperNext (click)='timerComponent.markFinished()'>Finish</button>
       </nb-step>
       <nb-step label='Done' [stepControl]='afterForm'>>
         <div style="align-items: center">

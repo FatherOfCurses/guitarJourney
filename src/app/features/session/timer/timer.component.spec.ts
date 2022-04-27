@@ -21,6 +21,8 @@ describe('TimerComponent', () => {
     expect(component).toBeTruthy();
   });
 
+
+
   // display a timer
   // display correct time on timer
   // allow pause and restart

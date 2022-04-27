@@ -3,16 +3,32 @@ import { SessionService } from './session.service';
 import { HttpClient } from '@angular/common/http';
 import { Session } from '../models/session';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
 describe('SessionService', () => {
   let service: SessionService;
   let httpTestingController: HttpTestingController;
-  const baseUrl = 'https://dx471dpyrj.execute-api.us-west-2.amazonaws.com/sessions';
+  const baseUrl = 'someURL/sessions';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
-      providers: [HttpClient, SessionService]
+      providers: [
+        {
+        provide: SessionService,
+        useValue: {
+          postSession$: jest.fn(() => of({
+            sessionIntent: 'Nail solo on Time',
+            date: 99,
+            practiceTime: 30,
+            goalForNextTime: 'Money timing at 80bpm',
+            postPracticeReflection: 'Had a lot of fun on Great Gig in the Sky, timing was a little off on Money',
+            whatToPractice: 'Dark Side of the Moon',
+            sessionId: 'ID3928hheds872'
+            }
+          ))
+        }
+      }]
     });
     httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(SessionService);
