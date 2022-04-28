@@ -48,7 +48,7 @@
       </nb-step>
       <nb-step label='Session underway' [stepControl]='timerForm'>
         <nb-layout-header><h2>Keep going! Make it a good session!</h2></nb-layout-header>
-        <app-timer [goalTime]="practiceTime.value"
+        <app-timer [goalTime]="practiceTime.value" (finishTime)='recordSessionActualTime($event)'
         ></app-timer>
         <button nbButton nbStepperPrevious>Go Back</button>
         <button nbButton nbStepperNext (click)='timerComponent.markFinished()'>Finish</button>

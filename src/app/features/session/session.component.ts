@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Session } from '../../models/session';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FieldValidationStatus, Option } from '../../models/formHelpers';
 import { TimerComponent } from './timer/timer.component';
-import { valueReferenceToExpression } from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
+import { v4 as uuidv4 } from 'uuid';
+import * as events from 'events';
 
 @Component({
   selector: 'app-session',
@@ -18,7 +19,7 @@ export class SessionComponent implements OnInit {
     sessionIntent: '',
     postPracticeReflection: '',
     goalForNextTime: '',
-    sessionId: '',
+    sessionId: uuidv4(),
     date: Date.now()
   }
   validationStatus: Option[];
@@ -106,5 +107,9 @@ export class SessionComponent implements OnInit {
     this.session.goalForNextTime = this.goalForNextTime.value;
     console.log(`Session ${JSON.stringify(this.session)}`);
     this.router.navigate(['dashboard']).then();
+  }
+
+  recordSessionActualTime(actualTime: number): void {
+    this.session.practiceTime = actualTime;
   }
 }
