@@ -6,6 +6,7 @@ import { FieldValidationStatus, Option } from '../../models/formHelpers';
 import { TimerComponent } from './timer/timer.component';
 import { v4 as uuidv4 } from 'uuid';
 import * as events from 'events';
+import { SessionService } from '../../services/session.service';
 
 @Component({
   selector: 'app-session',
@@ -19,7 +20,7 @@ export class SessionComponent implements OnInit {
     sessionIntent: '',
     postPracticeReflection: '',
     goalForNextTime: '',
-    sessionId: uuidv4(),
+    id: uuidv4(),
     date: Date.now()
   }
   validationStatus: Option[];
@@ -41,7 +42,7 @@ export class SessionComponent implements OnInit {
   startTimer = false;
   @ViewChild(TimerComponent) timerComponent: TimerComponent;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private sessionService: SessionService) {
     this.validationStatus = [
       { label: 'invalid', value: FieldValidationStatus.INVALID },
       { label: 'warning', value: FieldValidationStatus.EMPTY },
@@ -105,7 +106,7 @@ export class SessionComponent implements OnInit {
     this.session.sessionIntent = this.sessionIntent.value;
     this.session.postPracticeReflection = this.sessionReflection.value;
     this.session.goalForNextTime = this.goalForNextTime.value;
-    console.log(`Session ${JSON.stringify(this.session)}`);
+    this.sessionService.putSession$(this.session);
     this.router.navigate(['dashboard']).then();
   }
 

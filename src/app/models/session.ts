@@ -1,5 +1,5 @@
 export class Session {
-  sessionId: string;
+  id: string;
   date: number;
   practiceTime: number;
   whatToPractice: string;
