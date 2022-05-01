@@ -21,7 +21,7 @@ export class SessionComponent implements OnInit {
     postPracticeReflection: '',
     goalForNextTime: '',
     id: uuidv4(),
-    date: Date.now()
+    date: new Date().toISOString()
   }
   validationStatus: Option[];
   fieldValidationStatus = FieldValidationStatus;

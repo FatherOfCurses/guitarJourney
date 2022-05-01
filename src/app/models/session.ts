@@ -1,6 +1,6 @@
 export class Session {
   id: string;
-  date: number;
+  date: string;
   practiceTime: number;
   whatToPractice: string;
   sessionIntent: string;
