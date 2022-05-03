@@ -8,7 +8,7 @@ import {
   NbListModule,
   NbMenuModule,
   NbSidebarModule, NbStepperModule, NbTableModule,
-  NbThemeModule
+  NbThemeModule, NbTreeGridModule
 } from '@nebular/theme';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +27,8 @@ import {SessionComponent} from './features/session/session.component';
 import { Convertors } from './utilities/Convertors';
 import { ChordComponent } from './features/notation/chord/chord.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { PreviousSessionsComponent } from './features/session/previous-sessions/previous-sessions.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     FooterComponent,
     SidebarComponent,
     SessionComponent,
-    ChordComponent
+    ChordComponent,
+    PreviousSessionsComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     NbStepperModule,
     NbTableModule,
     HttpClientModule,
-    NbInputModule
+    NbInputModule,
+    NbTreeGridModule,
+    MatTableModule
   ],
   providers: [Convertors, HttpClient],
   bootstrap: [AppComponent]

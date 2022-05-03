@@ -1,104 +1,124 @@
-<nb-card size='large'>
-  <nb-card-body>
-    <nb-stepper orientation='vertical' [linear]="true">"
-      <nb-step label='Start a session' [stepControl]='sessionForm'>
-        <form [formGroup]="sessionForm">
-          <nb-card-body>
+  <nb-card size="large">
+    <nb-card-body>
+      <nb-stepper orientation="vertical" [linear]="true"
+        >"
+        <nb-step label="Start a session" [stepControl]="sessionForm">
+          <form [formGroup]="sessionForm">
+            <nb-card-body>
+              <div>
+                <label for="practiceTime">
+                  <!-- TODO: fix formatting of text fields to be regular text not bold -->
+                  Practice Time Amount
+                  <input
+                    nbInput
+                    [status]="practiceTimeValid"
+                    fullWidth
+                    type="text"
+                    id="practiceTime"
+                    formControlName="practiceTime"
+                    placeholder="Enter the time (in minutes) that you want to practice"
+                  />
+                  <!-- <div *ngIf="practiceTime.invalid">Please enter a practice time value</div> -->
+                </label>
+              </div>
+              <div>
+                <label for="whatToPractice">
+                  What to Practice
+                  <textarea
+                    nbInput
+                    [status]="whatToPracticeValid"
+                    fullWidth
+                    id="whatToPractice"
+                    formControlName="whatToPractice"
+                    placeholder="What are you planning on practicing today?"
+                  >
+                  </textarea>
+                </label>
+              </div>
+              <div>
+                <label>
+                  Session Intent
+                  <input
+                    nbInput
+                    [status]="sessionIntentValid"
+                    fullWidth
+                    type="text"
+                    id="sessionIntent"
+                    formControlName="sessionIntent"
+                    placeholder="Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:"
+                  />
+                </label>
+              </div>
+            </nb-card-body>
+          </form>
+          <button nbButton nbStepperNext (click)="timerComponent.start()">
+            Start
+          </button>
+        </nb-step>
+        <nb-step label="Session underway" [stepControl]="timerForm">
+          <nb-layout-header
+            ><h2>Keep going! Make it a good session!</h2></nb-layout-header
+          >
+          <app-timer
+            [goalTime]="practiceTime.value"
+            (finishTime)="recordSessionActualTime($event)"
+          ></app-timer>
+          <button nbButton nbStepperPrevious>Go Back</button>
+          <button
+            nbButton
+            nbStepperNext
+            (click)="timerComponent.markFinished()"
+          >
+            Finish
+          </button>
+        </nb-step>
+        <nb-step label="Done" [stepControl]="afterForm"
+          >>
+          <div style="align-items: center">
+            <nb-layout-header><h2>You did it!</h2></nb-layout-header>
+            <img
+              [width]="400"
+              [height]="400"
+              src="assets/cherry-592.png"
+              alt="Man playing guitar"
+            />
+          </div>
+          <form [formGroup]="afterForm">
             <div>
-              <label for='practiceTime'>
-                Practice Time Amount
-                <input nbInput
-                       [status]="practiceTimeValid"
-                       fullWidth
-                       type="text"
-                       id="practiceTime"
-                       formControlName="practiceTime"
-                       placeholder='Enter the time (in minutes) that you want to practice'>
-                <!-- <div *ngIf="practiceTime.invalid">Please enter a practice time value</div> -->
-              </label>
-            </div>
-            <div>
-              <label for='whatToPractice'>
-                What to Practice
-                <textarea nbInput
-                          [status]="whatToPracticeValid"
-                          fullWidth
-                          id="whatToPractice"
-                          formControlName="whatToPractice"
-                          placeholder='What are you planning on practicing today?'>
-
-                </textarea>
+              <label>
+                Congratulations on taking some time for yourself to improve your
+                skills! Now take a few minutes to reflect on the session. How
+                did it go? What worked? What didn't work? What surprised you?
+                <textarea
+                  nbInput
+                  [status]="sessionReflectionValid"
+                  fullWidth
+                  type="text"
+                  formControlName="sessionReflection"
+                ></textarea>
               </label>
             </div>
             <div>
               <label>
-                Session Intent
-                <input nbInput
-                       [status]="sessionIntentValid"
-                       fullWidth
-                       type="text"
-                       id="sessionIntent"
-                       formControlName="sessionIntent"
-                       placeholder='Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:'>
+                What do you want to remember the next time you do a similar
+                practice?
+                <textarea
+                  nbInput
+                  [status]="goalForNextTimeValid"
+                  fullWidth
+                  formControlName="goalForNextTime"
+                ></textarea>
               </label>
             </div>
-          </nb-card-body>
-        </form>
-        <button nbButton nbStepperNext (click)='timerComponent.start()'>Start</button>
-      </nb-step>
-      <nb-step label='Session underway' [stepControl]='timerForm'>
-        <nb-layout-header><h2>Keep going! Make it a good session!</h2></nb-layout-header>
-        <app-timer [goalTime]="practiceTime.value" (finishTime)='recordSessionActualTime($event)'
-        ></app-timer>
-        <button nbButton nbStepperPrevious>Go Back</button>
-        <button nbButton nbStepperNext (click)='timerComponent.markFinished()'>Finish</button>
-      </nb-step>
-      <nb-step label='Done' [stepControl]='afterForm'>>
-        <div style="align-items: center">
-          <nb-layout-header><h2>You did it!</h2></nb-layout-header>
-          <img
-            [width]="400"
-            [height]="400"
-            src="assets/cherry-592.png"
-            alt="Man playing guitar"
-          />
-        </div>
-        <form [formGroup]="afterForm">
-          <div>
-            <label>
-              Congratulations on taking some time for yourself to improve your skills!
-              Now take a few minutes to reflect on the session. How did it go? What
-              worked? What didn't work? What surprised you?
-              <textarea
-                nbInput
-                [status]="sessionReflectionValid"
-                fullWidth
-                type="text"
-                formControlName="sessionReflection"
-              ></textarea>
-            </label>
-          </div>
-          <div>
-            <label>
-              What do you want to remember the next time you do a similar practice?
-              <textarea
-                nbInput
-                [status]="goalForNextTimeValid"
-                fullWidth
-                formControlName="goalForNextTime"></textarea>
-            </label>
-          </div>
-        </form>
+          </form>
 
-        <button nbButton (click)='onSubmit()'>Exit</button>
-      </nb-step>
-    </nb-stepper>
-  </nb-card-body>
-</nb-card>
-
-<nb-card>
-  <nb-layout-header>
-    <h6 style="text-align: center">Previous Sessions</h6>
-  </nb-layout-header>
-</nb-card>
-
+          <button nbButton (click)="onSubmit()">Exit</button>
+        </nb-step>
+      </nb-stepper>
+    </nb-card-body>
+  </nb-card>
+  <nb-card size='large'>
+    <nb-card-body>
+      <app-previous-sessions></app-previous-sessions>
+    </nb-card-body>
+  </nb-card>

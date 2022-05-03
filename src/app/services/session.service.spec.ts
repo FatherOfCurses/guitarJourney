@@ -24,7 +24,7 @@ describe('SessionService', () => {
             goalForNextTime: 'Money timing at 80bpm',
             postPracticeReflection: 'Had a lot of fun on Great Gig in the Sky, timing was a little off on Money',
             whatToPractice: 'Dark Side of the Moon',
-            sessionId: 'ID3928hheds872'
+            id: 'ID3928hheds872'
             }
           ))
         }
@@ -41,18 +41,17 @@ describe('SessionService', () => {
   it('should make a request to POST session to endpoint', () => {
     const mockSessionSinglePayload: Session = {
       sessionIntent: 'Nail solo on Time',
-      date: 99,
+      date: '2012-02-12',
       practiceTime: 30,
       goalForNextTime: 'Money timing at 80bpm',
       postPracticeReflection: 'Had a lot of fun on Great Gig in the Sky, timing was a little off on Money',
       whatToPractice: 'Dark Side of the Moon',
-      sessionId: 'ID3928hheds872'
+      id: 'ID3928hheds872'
     }
-    const session$ = service.postSession$(mockSessionSinglePayload);
-    session$.subscribe(() => {}, () => {fail();});
+    const session$ = service.putSession$(mockSessionSinglePayload);
     const req = httpTestingController.expectOne(baseUrl, JSON.stringify(mockSessionSinglePayload));
     expect(req.request.body).toEqual(mockSessionSinglePayload);
-    expect(req.request.method).toEqual('POST');
+    expect(req.request.method).toEqual('PUT');
     req.flush('');
     httpTestingController.verify();
   });

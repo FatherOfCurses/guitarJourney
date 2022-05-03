@@ -6,17 +6,20 @@ import {
   NbLayoutModule,
   NbProgressBarModule,
   NbStepperModule,
-  NbTableModule
+  NbTableModule,
+  NbTreeGridModule
 } from '@nebular/theme';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CdTimerModule } from 'angular-cd-timer';
 import {CommonModule} from '@angular/common';
 import { CountdownModule} from 'ngx-countdown';
 import { TimerComponent } from './timer/timer.component';
+import { DisplaySessionComponent } from './display-single-session/display-session.component';
 
 @NgModule({
   declarations: [
-    TimerComponent
+    TimerComponent,
+    DisplaySessionComponent
   ],
   imports: [
     NbStepperModule,
@@ -30,7 +33,8 @@ import { TimerComponent } from './timer/timer.component';
     NbTableModule,
     NbProgressBarModule,
     CountdownModule,
-    CdTimerModule
+    CdTimerModule,
+    NbTreeGridModule
   ],
   providers: [],
   exports: [TimerComponent]
