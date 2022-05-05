@@ -1,9 +1,18 @@
-
-
 input {
-  margin: 20px 0px 20px 0px;
+  margin: 12px 0px 20px 0px;
+  font-weight: lighter;
 }
 
 textarea {
+  margin: 20px 0px 20px 0px;
+  font-weight: lighter;
+}
+
+label {
+  font-size: larger;
+  font-weight: bolder;
+}
+
+app-timer {
   margin: 20px 0px 20px 0px;
 }

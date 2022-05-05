@@ -1,6 +1,6 @@
 export class Session {
-  sessionId: string;
-  date: number;
+  id: string;
+  date: string;
   practiceTime: number;
   whatToPractice: string;
   sessionIntent: string;
