@@ -15,6 +15,10 @@ import {CommonModule} from '@angular/common';
 import { CountdownModule} from 'ngx-countdown';
 import { TimerComponent } from './timer/timer.component';
 import { DisplaySessionComponent } from './display-single-session/display-session.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +38,10 @@ import { DisplaySessionComponent } from './display-single-session/display-sessio
     NbProgressBarModule,
     CountdownModule,
     CdTimerModule,
-    NbTreeGridModule
+    NbTreeGridModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [],
   exports: [TimerComponent]
