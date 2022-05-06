@@ -4,12 +4,14 @@ import { LandingPageComponent } from './features/landing-page/landing-page.compo
 import { SessionComponent } from './features/session/session.component';
 import { ChordComponent } from './features/notation/chord/chord.component';
 import { SongComponent } from './features/song/song.component';
+import { DisplaySessionComponent } from './features/session/display-single-session/display-session.component';
 
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'dashboard', component: LandingPageComponent},
   {path: 'session', component: SessionComponent},
+  {path: 'sessionDetail', component: DisplaySessionComponent},
   {path: 'landing', component: LandingPageComponent},
   {path: 'test', component: ChordComponent},
   {path: 'songs', component: SongComponent}

@@ -1,0 +1,42 @@
+
+th.mat-header-cell, td.mat-cell {
+  padding: 8px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  display: inline-flex;
+  text-wrap: normal;
+}
+
+tr.mat-row, tr.mat-footer-row {
+  height: auto;
+}
+
+tr {
+  display: inline-flex;
+  vertical-align: center;
+  border-color: inherit;
+  border-spacing: 16px;
+}
+
+mat-row, mat-header-row, mat-footer-row, th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+  display: inline-flex;
+  border-bottom-color: #0000001f;
+  text-wrap: normal;
+}
+td {
+  vertical-align: inherit;
+  text-wrap: normal;
+}
+table {
+  width: 100%;
+  display: table;
+  border-collapse: separate;
+  box-sizing: content-box;
+  text-indent: 16px;
+  border-spacing: 16px;
+  border-color: gray;
+}
+th.mat-header-cell {
+  padding-left: 16px;
+}
+
