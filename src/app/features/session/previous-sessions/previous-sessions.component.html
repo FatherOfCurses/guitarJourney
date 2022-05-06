@@ -1,38 +1,37 @@
 <h4>Previous Practice Sessions</h4>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <!-- Date column -->
   <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef>Date</th>
-    <td mat-cell *matCellDef="let element">{{ element.date }}</td>
+    <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element.date }}</mat-cell>
   </ng-container>
   <!-- Practice Time column -->
   <ng-container matColumnDef="practiceTime">
-    <th mat-header-cell *matHeaderCellDef>Time</th>
-    <td mat-cell *matCellDef="let element">{{ element['practiceTime'] }}</td>
+    <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element['practiceTime'] }}</mat-cell>
   </ng-container>
   <!-- What to practice column -->
   <ng-container matColumnDef="whatToPractice">
-    <th mat-header-cell *matHeaderCellDef>What Practiced</th>
-    <td mat-cell *matCellDef="let element">{{ element['whatToPractice'] }}</td>
+    <mat-header-cell *matHeaderCellDef>What Practiced</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{ element['whatToPractice'] }}</mat-cell>
   </ng-container>
    <!-- Session intent column -->
   <ng-container matColumnDef="sessionIntent">
-    <th mat-header-cell *matHeaderCellDef>Practice Intent</th>
-    <td mat-cell *matCellDef="let session">{{ session['sessionIntent'] }}</td>
+    <mat-header-cell *matHeaderCellDef>Practice Intent</mat-header-cell>
+    <mat-cell *matCellDef="let session">{{ session['sessionIntent'] }}</mat-cell>
   </ng-container>
   <!-- Reflection Column -->
   <ng-container matColumnDef="postPracticeReflection">
-    <th mat-header-cell *matHeaderCellDef>Reflection</th>
-    <td mat-cell *matCellDef="let session">
+    <mat-header-cell *matHeaderCellDef>Reflection</mat-header-cell>
+    <mat-cell *matCellDef="let session">
       {{ session['postPracticeReflection'] }}
-    </td>
+    </mat-cell>
   </ng-container>
   <!-- Goal for next time column -->
   <ng-container matColumnDef="goalForNextTime">
-    <th mat-header-cell *matHeaderCellDef>Goal for next time</th>
-    <td mat-cell *matCellDef="let session">{{ session['goalForNextTime'] }}</td>
+    <mat-header-cell *matHeaderCellDef>Goal for next time</mat-header-cell>
+    <mat-cell *matCellDef="let session">{{ session['goalForNextTime'] }}</mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</table>
+</mat-table>
