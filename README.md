@@ -8,10 +8,13 @@ Track progress on specific songs, provide resources for practice.
 - Angular 13
 - AWS S3
 
+[Compodoc Product Documentation](/documentation/index.html)
+
 ### Packages used
 - Nebular - https://akveo.github.io/nebular/
 - Note Parser - https://github.com/danigb/note-parser
 - Jest Schematic - https://github.com/briebug/jest-schematic
 - Angular CD Timer - https://github.com/clemdesign/angular-cd-timer
+- Compodoc - https://compodoc.app/
 
 
