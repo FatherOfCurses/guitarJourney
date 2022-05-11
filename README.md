@@ -8,7 +8,7 @@ Track progress on specific songs, provide resources for practice.
 - Angular 13
 - AWS S3
 
-[Compodoc Product Documentation](/docs/index.html)
+[Compodoc Product Documentation](https://fatherofcurses.github.io/guitarJourney/index.html)
 
 ### Packages used
 - Nebular - https://akveo.github.io/nebular/
