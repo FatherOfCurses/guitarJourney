@@ -8,7 +8,7 @@ Track progress on specific songs, provide resources for practice.
 - Angular 13
 - AWS S3
 
-[Compodoc Product Documentation](/documentation/index.html)
+[Compodoc Product Documentation](/docs/index.html)
 
 ### Packages used
 - Nebular - https://akveo.github.io/nebular/
