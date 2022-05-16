@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { from, Observable, Subscription } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { Session } from '../models/session';
-import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'

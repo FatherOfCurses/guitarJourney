@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { FieldValidationStatus, Option } from '../../models/formHelpers';
 import { TimerComponent } from './timer/timer.component';
 import { v4 as uuidv4 } from 'uuid';
-import * as events from 'events';
 import { SessionService } from '../../services/session.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-session',
@@ -21,7 +21,7 @@ export class SessionComponent implements OnInit {
     postPracticeReflection: '',
     goalForNextTime: '',
     id: uuidv4(),
-    date: new Date().toISOString()
+    date: Date()
   }
   validationStatus: Option[];
   fieldValidationStatus = FieldValidationStatus;
@@ -42,7 +42,7 @@ export class SessionComponent implements OnInit {
   startTimer = false;
   @ViewChild(TimerComponent) timerComponent: TimerComponent;
 
-  constructor(private fb: FormBuilder, private router: Router, private sessionService: SessionService) {
+  constructor(private fb: FormBuilder, private router: Router, private sessionService: SessionService, public datePipe: DatePipe) {
     this.validationStatus = [
       { label: 'invalid', value: FieldValidationStatus.INVALID },
       { label: 'warning', value: FieldValidationStatus.EMPTY },
@@ -69,6 +69,7 @@ export class SessionComponent implements OnInit {
     this.sessionIntent = this.sessionForm.get('sessionIntent');
     this.sessionReflection = this.afterForm.get('sessionReflection');
     this.goalForNextTime = this.afterForm.get('goalForNextTime');
+    this.session.date = this.datePipe.transform(new Date(), 'MM/dd/YYYY' );
     this.subscribeToFormChanges();
   }
 
@@ -110,6 +111,7 @@ export class SessionComponent implements OnInit {
     this.router.navigate(['dashboard']).then();
   }
 
+  // function to take the value from the timer and record it as the practice time in the session object
   recordSessionActualTime(actualTime: number): void {
     this.session.practiceTime = actualTime;
   }

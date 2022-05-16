@@ -11,7 +11,7 @@ import {
 } from '@nebular/theme';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CdTimerModule } from 'angular-cd-timer';
-import {CommonModule} from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CountdownModule} from 'ngx-countdown';
 import { TimerComponent } from './timer/timer.component';
 import { DisplaySessionComponent } from './display-single-session/display-session.component';
@@ -43,7 +43,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatPaginatorModule,
     MatSortModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   exports: [TimerComponent]
 })
 export class SessionModule { }
