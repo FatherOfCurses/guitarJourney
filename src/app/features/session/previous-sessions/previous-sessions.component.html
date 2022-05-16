@@ -23,9 +23,7 @@
   <!-- Reflection Column -->
   <ng-container matColumnDef="postPracticeReflection">
     <mat-header-cell *matHeaderCellDef>Reflection</mat-header-cell>
-    <mat-cell *matCellDef="let session">
-      {{ session['postPracticeReflection'] }}
-    </mat-cell>
+    <mat-cell *matCellDef="let session">{{ session['postPracticeReflection'] }}</mat-cell>
   </ng-container>
   <!-- Goal for next time column -->
   <ng-container matColumnDef="goalForNextTime">
