@@ -113,6 +113,6 @@ export class SessionComponent implements OnInit {
 
   // function to take the value from the timer and record it as the practice time in the session object
   recordSessionActualTime(actualTime: number): void {
-    this.session.practiceTime = actualTime;
+    this.session.practiceTime = Math.trunc(actualTime);
   }
 }
