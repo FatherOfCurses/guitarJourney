@@ -4,8 +4,8 @@ A tool to help guide the guitar student's learning journey through the use of in
 
 Future plans are for the user to have a resource library where they can gather practice materials, and methods for a student to communicate with a guitar teacher.
 
-### Current tech stack (01/28/2022)
-- Angular 13
+### Current tech stack (05/20/2022)
+- Angular 11
 - AWS S3
 
 [Compodoc Product Documentation](https://fatherofcurses.github.io/guitarJourney/index.html)
