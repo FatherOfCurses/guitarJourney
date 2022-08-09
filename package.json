@@ -1,6 +1,6 @@
 {
   "name": "guitar-journey",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -34,7 +34,6 @@
     "dayjs": "^1.10.4",
     "eev": "^0.1.5",
     "express": "^4.17.1",
-    "ngx-countdown": "^11.0.3",
     "note-parser": "^2.0.1",
     "path": "^0.12.7",
     "rxjs": "~6.5.1",

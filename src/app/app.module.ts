@@ -15,20 +15,17 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { LandingPageComponent } from './features/landing-page/landing-page.component';
-import {HeaderComponent} from './base/header/header.component';
-import {FooterComponent} from './base/footer/footer.component';
-import {SidebarComponent} from './base/sidebar/sidebar.component';
+import {HeaderComponent} from './core/header/header.component';
+import {FooterComponent} from './core/footer/footer.component';
+import {SidebarComponent} from './core/sidebar/sidebar.component';
 import {RouterModule} from '@angular/router';
 import {routes} from '@nebular/auth';
-import {SidebarModule} from './base/sidebar/sidebar.module';
 import {SessionModule} from './features/session/session.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {SessionComponent} from './features/session/session.component';
 import { Convertors } from './utilities/Convertors';
 import { ChordComponent } from './features/notation/chord/chord.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { PreviousSessionsComponent } from './features/session/previous-sessions/previous-sessions.component';
-import { MatTableModule } from '@angular/material/table';
+import { SessionComponent } from './features/session/session.component';
 
 @NgModule({
   declarations: [
@@ -37,14 +34,11 @@ import { MatTableModule } from '@angular/material/table';
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-    SessionComponent,
     ChordComponent,
-    PreviousSessionsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    SidebarModule,
     SessionModule,
     ReactiveFormsModule,
     FormsModule,
@@ -62,9 +56,7 @@ import { MatTableModule } from '@angular/material/table';
     NbStepperModule,
     NbTableModule,
     HttpClientModule,
-    NbInputModule,
-    NbTreeGridModule,
-    MatTableModule
+    NbTreeGridModule
   ],
   providers: [Convertors, HttpClient],
   bootstrap: [AppComponent]
