@@ -3,7 +3,7 @@ import { Session } from '../../models/session';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FieldValidationStatus, Option } from '../../models/formHelpers';
-import { TimerComponent } from './timer/timer.component';
+import { SessionTimerComponent } from './session-timer/session-timer.component';
 import { v4 as uuidv4 } from 'uuid';
 import { SessionService } from '../../services/session.service';
 import { DatePipe } from '@angular/common';
@@ -40,7 +40,7 @@ export class SessionComponent implements OnInit {
   sessionReflectionValid = 'default';
   goalForNextTimeValid = 'default';
   startTimer = false;
-  @ViewChild(TimerComponent) timerComponent: TimerComponent;
+  @ViewChild(SessionTimerComponent) timerComponent: SessionTimerComponent;
 
   constructor(private fb: FormBuilder, private router: Router, private sessionService: SessionService, public datePipe: DatePipe) {
     this.validationStatus = [
@@ -111,7 +111,7 @@ export class SessionComponent implements OnInit {
     this.router.navigate(['dashboard']).then();
   }
 
-  // function to take the value from the timer and record it as the practice time in the session object
+  // function to take the value from the session-timer and record it as the practice time in the session object
   recordSessionActualTime(actualTime: number): void {
     this.session.practiceTime = Math.trunc(actualTime);
   }

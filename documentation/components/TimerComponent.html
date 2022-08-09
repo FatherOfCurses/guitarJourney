@@ -38,7 +38,7 @@
   <li>Components</li>
   <li
   >
-  TimerComponent</li>
+  SessionTimerComponent</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -64,7 +64,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/features/session/timer/timer.component.ts</code>
+    <code>src/app/features/session/timer/session-timer.component.ts</code>
 </p>
 
 
@@ -216,7 +216,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/features/session/timer/timer.component.ts:17</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/features/session/timer/session-timer.component.ts:17</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -240,7 +240,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/features/session/timer/timer.component.ts:18</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/features/session/timer/session-timer.component.ts:18</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -249,7 +249,7 @@
 
 
     <section>
-    
+
     <h3 id="methods">
         Methods
     </h3>
@@ -274,7 +274,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="27"
-                            class="link-to-prism">src/app/features/session/timer/timer.component.ts:27</a></div>
+                            class="link-to-prism">src/app/features/session/timer/session-timer.component.ts:27</a></div>
                 </td>
             </tr>
 
@@ -311,7 +311,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="20"
-                            class="link-to-prism">src/app/features/session/timer/timer.component.ts:20</a></div>
+                            class="link-to-prism">src/app/features/session/timer/session-timer.component.ts:20</a></div>
                 </td>
             </tr>
 
@@ -348,7 +348,7 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="23"
-                            class="link-to-prism">src/app/features/session/timer/timer.component.ts:23</a></div>
+                            class="link-to-prism">src/app/features/session/timer/session-timer.component.ts:23</a></div>
                 </td>
             </tr>
 
@@ -366,7 +366,7 @@
     </table>
 </section>
     <section>
-    
+
     <h3 id="inputs">
         Properties
     </h3>
@@ -392,7 +392,7 @@
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/features/session/timer/timer.component.ts:16</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/features/session/timer/session-timer.component.ts:16</a></div>
                         </td>
                     </tr>
 
@@ -419,7 +419,7 @@
   templateUrl: &#x27;./timer.component.html&#x27;,
   styleUrls: [&#x27;./timer.component.scss&#x27;]
 })
-export class TimerComponent implements OnInit {
+export class SessionTimerComponent implements OnInit {
   @ViewChild(&#x27;sessionTimer&#x27;) timer;
   @Input() goalTime: number;
   @Output() finishTime &#x3D; new EventEmitter&lt;number&gt;();
@@ -472,15 +472,15 @@ export class TimerComponent implements OnInit {
         </div>
     </div>
 
-    
+
 </div>
 
 <script src="../js/libs/vis.min.js"></script>
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div>Elapsed session time: <cd-timer #sessionTimer [autoStart]=\'false\'></cd-timer><p>Target Practice Time: {{this.goalTime}} minutes</p></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChordComponent', 'selector': 'app-chord.ts'},{'name': 'DisplaySessionComponent', 'selector': 'app-display-single-session'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'LandingPageComponent', 'selector': 'app-landing-page'},{'name': 'PreviousSessionsComponent', 'selector': 'app-previous-sessions'},{'name': 'SessionComponent', 'selector': 'app-session'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SongComponent', 'selector': 'app-song'},{'name': 'TimerComponent', 'selector': 'app-timer'}];
+        var COMPONENT_TEMPLATE = '<div>Elapsed session time: <cd-session-timer #sessionTimer [autoStart]=\'false\'></cd-session-timer><p>Target Practice Time: {{this.goalTime}} minutes</p></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ChordComponent', 'selector': 'app-chord.ts'},{'name': 'DisplaySessionComponent', 'selector': 'app-display-single-session'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HeaderComponent', 'selector': 'app-header'},{'name': 'LandingPageComponent', 'selector': 'app-landing-page'},{'name': 'PreviousSessionsComponent', 'selector': 'app-previous-sessions'},{'name': 'SessionComponent', 'selector': 'app-session'},{'name': 'SidebarComponent', 'selector': 'app-sidebar'},{'name': 'SongComponent', 'selector': 'app-song'},{'name': 'TimerComponent', 'selector': 'app-session-timer'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'TimerComponent'};
 </script>
@@ -528,7 +528,7 @@ export class TimerComponent implements OnInit {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
-            var COMPODOC_CURRENT_PAGE_URL = 'TimerComponent.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SessionTimerComponent.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

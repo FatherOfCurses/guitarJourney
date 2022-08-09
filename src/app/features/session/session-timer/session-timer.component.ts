@@ -8,11 +8,11 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-timer',
-  templateUrl: './timer.component.html',
-  styleUrls: ['./timer.component.scss']
+  selector: 'app-session-timer',
+  templateUrl: './session-timer.component.html',
+  styleUrls: ['./session-timer.component.scss']
 })
-export class TimerComponent implements OnInit {
+export class SessionTimerComponent implements OnInit {
   @ViewChild('sessionTimer') timer;
   @Input() goalTime: number;
   @Output() finishTime = new EventEmitter<number>();

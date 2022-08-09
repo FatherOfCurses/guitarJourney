@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PreviousSessionsComponent } from './previous-sessions.component';
 
 describe('PreviousSessionsComponent', () => {
@@ -9,6 +8,7 @@ describe('PreviousSessionsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ PreviousSessionsComponent ]
+
     })
     .compileComponents();
   });

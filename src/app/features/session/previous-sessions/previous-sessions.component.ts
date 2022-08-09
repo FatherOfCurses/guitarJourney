@@ -10,7 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class PreviousSessionsComponent implements OnInit {
   sessionData: Session[];
-  dataSource: MatTableDataSource<Session> = new MatTableDataSource();
+  dataSource: MatTableDataSource<Session>;
   displayedColumns = ['date','practiceTime','whatToPractice', 'sessionIntent','postPracticeReflection','goalForNextTime'];
   constructor(private sessionService: SessionService) { }
 
