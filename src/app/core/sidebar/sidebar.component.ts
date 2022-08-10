@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NbMenuItem } from '@nebular/theme';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,7 +8,7 @@ import { NbMenuItem } from '@nebular/theme';
 })
 export class SidebarComponent {
 
-  items: NbMenuItem[] = [
+  items: any[] = [
     {
       title: 'Practice',
       link: '/session'

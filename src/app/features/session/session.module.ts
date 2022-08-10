@@ -1,14 +1,4 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import {
-  NbButtonModule,
-  NbCardModule, NbIconModule,
-  NbInputModule,
-  NbLayoutModule,
-  NbProgressBarModule,
-  NbStepperModule,
-  NbTableModule,
-  NbTreeGridModule
-} from '@nebular/theme';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SessionTimerComponent } from './session-timer/session-timer.component';
@@ -19,6 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PreviousSessionsComponent } from './previous-sessions/previous-sessions.component';
 import { MatInputModule } from '@angular/material/input';
 import { SessionComponent } from './session.component';
+import { CdTimerModule } from 'angular-cd-timer';
 
 @NgModule({
   declarations: [
@@ -28,22 +19,14 @@ import { SessionComponent } from './session.component';
     SessionComponent
   ],
   imports: [
-    NbStepperModule,
-    NbInputModule,
-    NbLayoutModule,
-    NbIconModule,
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
-    NbCardModule,
     CommonModule,
-    NbButtonModule,
-    NbTableModule,
-    NbProgressBarModule,
-    NbTreeGridModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    CdTimerModule
   ],
   providers: [DatePipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
