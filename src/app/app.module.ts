@@ -44,7 +44,7 @@ import { SessionComponent } from './features/session/session.component';
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     RouterModule.forRoot(routes, { useHash: true }),
-    NbThemeModule.forRoot(),
+    NbThemeModule.forRoot({name: 'default'}),
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
     NbA11yModule.forRoot(),

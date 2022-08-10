@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {
   NbButtonModule,
-  NbCardModule,
+  NbCardModule, NbIconModule,
   NbInputModule,
   NbLayoutModule,
   NbProgressBarModule,
@@ -31,6 +31,7 @@ import { SessionComponent } from './session.component';
     NbStepperModule,
     NbInputModule,
     NbLayoutModule,
+    NbIconModule,
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
