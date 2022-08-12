@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SongComponent } from './song.component';
-import { NbLayoutModule } from '@nebular/theme';
 import { SongsterrService } from '../../services/songsterr.service';
 
 @NgModule({
@@ -9,8 +8,7 @@ import { SongsterrService } from '../../services/songsterr.service';
     SongComponent
   ],
   imports: [
-    CommonModule,
-    NbLayoutModule
+    CommonModule
   ],
 })
 export class SongModule { }

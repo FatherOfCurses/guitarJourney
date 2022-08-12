@@ -4,7 +4,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {SessionComponent} from './session.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SessionModule } from './session.module';
-import { NbFocusMonitor, NbInputModule, NbLayoutComponent, NbLayoutModule, NbStatusService, NbThemeService } from '@nebular/theme';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('SessionComponent', () => {
@@ -13,8 +12,8 @@ describe('SessionComponent', () => {
 
   beforeEach( () => {
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, RouterTestingModule, SessionModule, NbInputModule, NbLayoutModule],
-      providers: [ FormBuilder, HttpClient, HttpHandler, NbFocusMonitor, NbStatusService, NbLayoutComponent, NbThemeService ],
+      imports: [ReactiveFormsModule, RouterTestingModule, SessionModule],
+      providers: [ FormBuilder, HttpClient, HttpHandler ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();

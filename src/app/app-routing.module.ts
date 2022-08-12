@@ -14,7 +14,8 @@ const routes: Routes = [
   {path: 'sessionDetail', component: DisplaySessionComponent},
   {path: 'landing', component: LandingPageComponent},
   {path: 'test', component: ChordComponent},
-  {path: 'songs', component: SongComponent}
+  {path: 'songs', component: SongComponent},
+  {path: 'notation', component: ChordComponent}
 ];
 
 @NgModule({
