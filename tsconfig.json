@@ -9,10 +9,13 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "module": "esnext",
+    "module": "es2020",
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
+    "paths": {
+      "@shared/*": ["src/app/shared/*"]
+    },
     "lib": [
       "es2018",
       "dom"

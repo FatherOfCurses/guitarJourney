@@ -85,25 +85,27 @@
             "browserTarget": "guitar-practice-journal:build"
           }
         },
-        "test" : {
+        "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
-            "polyfills": ["/src/polyfills.ts"],
-            "tsconfig": ["tsconfig.spec.json"],
-            "styles": ["src/styles.scss"],
+            "polyfills": [
+              "/src/polyfills.ts"
+            ],
+            "tsconfig": [
+              "tsconfig.spec.json"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": []
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         },
@@ -122,5 +124,11 @@
       }
     }
   },
-  "defaultProject": "guitar-practice-journal"
+  "defaultProject": "guitar-practice-journal",
+  "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics",
+      "@angular-eslint/schematics"
+    ]
+  }
 }

@@ -2,20 +2,16 @@
 const { pathsToModuleNameMapper } = require('ts-jest');
 const { paths } = require('./tsconfig.json').compilerOptions;
 
+globalThis.ngJest = {
+  skipNgcc: true,
+}
+
 module.exports = {
-  preset: 'jest-preset-angular/presets/defaults-esm',
-  globals: {
-    'ts-jest': {
-      useESM: true,
-      stringifyContentPathRegex: '\\.(html|svg)$',
-      tsconfig: '<rootDir>/tsconfig-esm.spec.json',
-    },
-  },
-  moduleNameMapper: {
-    ...pathsToModuleNameMapper(paths, { prefix: '<rootDir>' }),
-    tslib: 'tslib/tslib.es6.js',
-  },
+  preset: 'jest-preset-angular',
+  globalSetup: 'jest-preset-angular/global-setup',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
+  moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: '<rootDir>' }),
   testPathIgnorePatterns: ['/node_modules'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
   verbose: true,
 };
