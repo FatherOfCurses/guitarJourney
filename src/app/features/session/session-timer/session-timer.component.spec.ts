@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SessionTimerComponent } from './session-timer.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import 'angular-cd-timer';
 
 describe('TimerComponent', () => {
   let component: SessionTimerComponent;

@@ -9,7 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PreviousSessionsComponent } from './previous-sessions/previous-sessions.component';
 import { MatInputModule } from '@angular/material/input';
 import { SessionComponent } from './session.component';
-import { CdTimerModule } from 'angular-cd-timer';
+import { CdTimerModule } from "angular-cd-timer";
 
 @NgModule({
   declarations: [

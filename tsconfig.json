@@ -19,10 +19,12 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "types": ["jest"]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
+    "strictInjectionParameters": true,
+    "enableIvy": true
   }
 }

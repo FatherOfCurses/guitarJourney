@@ -17,6 +17,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "angular-cd-timer"
+            ],
             "outputPath": "dist/guitar-practice-journal",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -88,6 +91,9 @@
         "test": {
           "builder": "@angular-builders/jest:run",
           "options": {
+            "allowedCommonJsDependencies": [
+              "angular-cd-timer"
+            ],
             "polyfills": [
               "/src/polyfills.ts"
             ],

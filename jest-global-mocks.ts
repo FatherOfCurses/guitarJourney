@@ -26,3 +26,18 @@ Object.defineProperty(document.body.style, 'transform', {
   },
 });
 
+const createSessionServiceMock = () => {
+  let session = {};
+  return {
+    getSession: (key) => {
+      return session[key] ? session[key] : null;
+    },
+    putSession: (key, value) => {
+      session[key] = value;
+    }
+  };
+};
+
+Object.defineProperty(window, 'sessionService', {
+  value: createSessionServiceMock(),
+});

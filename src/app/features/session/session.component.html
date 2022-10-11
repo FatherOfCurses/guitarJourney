@@ -1,83 +1,76 @@
 <!-- TODO: Major refactor of session html needed -->
 
 <div>
-  <form [formGroup]='sessionForm'>
+  <form [formGroup]="sessionForm">
     <div>
-      <label for='practiceTime'>
+      <label for="practiceTime">
         Practice Time Amount
         <input
-          type='text'
-          id='practiceTime'
-          formControlName='practiceTime'
-          placeholder='Enter the time (in minutes) that you want to practice'
+          type="text"
+          id="practiceTime"
+          formControlName="practiceTime"
+          placeholder="Enter the time (in minutes) that you want to practice"
         />
-        <div *ngIf='practiceTime.invalid'>Please enter a practice time value</div>
+        <div *ngIf="practiceTime.invalid">
+          Please enter a practice time value
+        </div>
       </label>
     </div>
     <div>
-      <label for='whatToPractice'>
+      <label for="whatToPractice">
         What to Practice
         <textarea
-          id='whatToPractice'
-          formControlName='whatToPractice'
-          placeholder='What are you planning on practicing today?'
+          id="whatToPractice"
+          formControlName="whatToPractice"
+          placeholder="What are you planning on practicing today?"
         >
-                  </textarea>
+        </textarea>
       </label>
     </div>
     <div>
       <label>
         Session Intent
         <input
-          type='text'
-          id='sessionIntent'
-          formControlName='sessionIntent'
-          placeholder='Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:'
+          type="text"
+          id="sessionIntent"
+          formControlName="sessionIntent"
+          placeholder="Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:"
         />
       </label>
     </div>
   </form>
-  <button (click)='timerComponent.start()'>
-    Start
-  </button>
-  ><h2>Keep going! Make it a good session!</h2>
-  <app-session-timer
-    [goalTime]='practiceTime.value'
-    (finishTime)='recordSessionActualTime($event)'
-  ></app-session-timer>
-  <button
-    (click)='timerComponent.markFinished()'
+  <button (click)="timerComponent.start()">Start</button>
   >
-    Finish
-  </button>
-  <div style='align-items: center'>
+  <h2>Keep going! Make it a good session!</h2>
+<!--  <app-session-timer-->
+<!--    [goalTime]="practiceTime.value"-->
+<!--    (finishTime)="recordSessionActualTime($event)"-->
+<!--  ></app-session-timer>-->
+  Elapsed session time: <cd-timer #sessionTimer [autoStart]='false'></cd-timer>
+  <p>Target Practice Time: {{this.goalTime}} minutes</p>
+  <button (click)="timerComponent.markFinished()">Finish</button>
+  <div style="align-items: center">
     <h2>You did it!</h2>
     <img
-      [width]='400'
-      [height]='400'
-      src='assets/cherry-592.png'
-      alt='Man playing guitar'
+      [width]="400"
+      [height]="400"
+      src="assets/cherry-592.png"
+      alt="Man playing guitar"
     />
   </div>
-  <form [formGroup]='afterForm'>
+  <form [formGroup]="afterForm">
     <div>
       <label>
-        Congratulations on taking some time for yourself to improve your
-        skills! Now take a few minutes to reflect on the session. How
-        did it go? What worked? What didn't work? What surprised you?
-        <textarea
-          type='text'
-          formControlName='sessionReflection'
-        ></textarea>
+        Congratulations on taking some time for yourself to improve your skills!
+        Now take a few minutes to reflect on the session. How did it go? What
+        worked? What didn't work? What surprised you?
+        <textarea type="text" formControlName="sessionReflection"></textarea>
       </label>
     </div>
     <div>
       <label>
-        What do you want to remember the next time you do a similar
-        practice?
-        <textarea
-          formControlName='goalForNextTime'
-        ></textarea>
+        What do you want to remember the next time you do a similar practice?
+        <textarea formControlName="goalForNextTime"></textarea>
       </label>
     </div>
   </form>

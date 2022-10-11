@@ -6,7 +6,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import 'angular-cd-timer';
+import { CdTimerModule } from "angular-cd-timer";
 
 @Component({
   selector: 'app-session-timer',
@@ -19,6 +19,7 @@ export class SessionTimerComponent implements OnInit {
   @Output() finishTime = new EventEmitter<number>();
 
   ngOnInit() {
+    this.finishTime.emit(0);
   }
 
   start(): void {

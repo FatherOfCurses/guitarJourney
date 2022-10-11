@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StyleClassModule } from 'primeng/styleclass';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
+import { CdTimerModule } from "angular-cd-timer";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MenubarModule } from 'primeng/menubar';
     InputTextModule,
     StyleClassModule,
     MenuModule,
-    MenubarModule
+    MenubarModule,
+    CdTimerModule
   ],
   providers: [Convertors, HttpClient],
   bootstrap: [AppComponent]

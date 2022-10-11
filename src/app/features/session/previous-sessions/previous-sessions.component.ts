@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Session } from '../../../models/session';
 import { SessionService } from '../../../services/session.service';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable, MatHeaderRow, MatRow } from '@angular/material/table';
 
 @Component({
   selector: 'app-previous-sessions',

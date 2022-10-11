@@ -8,10 +8,17 @@ globalThis.ngJest = {
 
 module.exports = {
   preset: 'jest-preset-angular',
+  roots: ['<rootDir>/src/'],
+  testMatch: ['**/+(*.)+(spec).+(ts)'],
   globalSetup: 'jest-preset-angular/global-setup',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: '<rootDir>' }),
   testPathIgnorePatterns: ['/node_modules'],
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
   verbose: true,
+  globals: {
+    ngJest: {
+      processWithEsbuild: ['**/node_modules/lodash-es/*.js'],
+    }
+  }
 };

@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LandingPageComponent } from './landing-page.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('LandingPageComponent', () => {
   let fixture: ComponentFixture<LandingPageComponent>;
@@ -9,6 +10,7 @@ describe('LandingPageComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ LandingPageComponent ],
+      providers: [ HttpClient, HttpHandler],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();

@@ -3,10 +3,9 @@ import { Session } from '../../models/session';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FieldValidationStatus, Option } from '../../models/formHelpers';
-import { SessionTimerComponent } from './session-timer/session-timer.component';
-import { v4 as uuidv4 } from 'uuid';
 import { SessionService } from '../../services/session.service';
 import { DatePipe } from '@angular/common';
+import { CdTimerComponent, CdTimerModule } from "angular-cd-timer";
 
 @Component({
   selector: 'app-session',
@@ -14,13 +13,14 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./session.component.scss']
 })
 export class SessionComponent implements OnInit {
+
   session: Session = {
     practiceTime: 0,
     whatToPractice: '',
     sessionIntent: '',
     postPracticeReflection: '',
     goalForNextTime: '',
-    id: uuidv4(),
+    id: '',
     date: Date()
   }
   validationStatus: Option[];
@@ -40,18 +40,21 @@ export class SessionComponent implements OnInit {
   sessionReflectionValid = 'default';
   goalForNextTimeValid = 'default';
   startTimer = false;
-  @ViewChild(SessionTimerComponent) timerComponent: SessionTimerComponent;
+  // @ViewChild('basicTimer') timer: CdTimerComponent;
 
-  constructor(private fb: FormBuilder, private router: Router, private sessionService: SessionService, public datePipe: DatePipe) {
+  constructor(private fb: FormBuilder, private router: Router, private sessionService: SessionService, public datePipe: DatePipe, public timer: CdTimerComponent) {
     this.validationStatus = [
       { label: 'invalid', value: FieldValidationStatus.INVALID },
       { label: 'warning', value: FieldValidationStatus.EMPTY },
       { label: 'valid', value: FieldValidationStatus.VALID},
-    ]
+    ];
   }
 
   ngOnInit(): void {
+    this.recordSessionActualTime(0);
     this.initializeForm();
+    this.subscribeToFormChanges();
+    this.timer.reset();
   }
 
   initializeForm(): void {
@@ -70,7 +73,6 @@ export class SessionComponent implements OnInit {
     this.sessionReflection = this.afterForm.get('sessionReflection');
     this.goalForNextTime = this.afterForm.get('goalForNextTime');
     this.session.date = this.datePipe.transform(new Date(), 'MM/dd/YYYY' );
-    this.subscribeToFormChanges();
   }
 
   setTimer(): void {
@@ -87,9 +89,9 @@ export class SessionComponent implements OnInit {
       this.sessionReflectionValid = this.checkFieldValidation(this.sessionReflection);
       this.goalForNextTimeValid = this.checkFieldValidation(this.goalForNextTime);
     });
-    this.timerComponent.finishTime.subscribe(value => {
-      this.session.practiceTime = value;
-    });
+    // this.timer.onComplete.subscribe(value => {
+    //   this.session.practiceTime = (value.startTime - value.endTime);
+    // });
   }
 
   checkFieldValidation(control: AbstractControl): string {
