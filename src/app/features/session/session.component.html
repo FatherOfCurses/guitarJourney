@@ -39,7 +39,7 @@
       </label>
     </div>
   </form>
-  <button (click)="timerComponent.start()">Start</button>
+  <button (click)="timer.start()">Start</button>
   >
   <h2>Keep going! Make it a good session!</h2>
 <!--  <app-session-timer-->
@@ -48,7 +48,7 @@
 <!--  ></app-session-timer>-->
   Elapsed session time: <cd-timer #sessionTimer [autoStart]='false'></cd-timer>
   <p>Target Practice Time: {{this.goalTime}} minutes</p>
-  <button (click)="timerComponent.markFinished()">Finish</button>
+  <button (click)="timer.stop()">Finish</button>
   <div style="align-items: center">
     <h2>You did it!</h2>
     <img

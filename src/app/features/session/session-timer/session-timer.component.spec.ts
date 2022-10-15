@@ -23,8 +23,5 @@ describe('TimerComponent', () => {
 
 
 
-  // display a session-timer
-  // display correct time on session-timer
-  // allow pause and restart
-  // record total time on finish
+
 });

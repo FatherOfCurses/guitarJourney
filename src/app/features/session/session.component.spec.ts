@@ -5,7 +5,6 @@ import { SessionComponent } from './session.component'
 import { RouterTestingModule } from '@angular/router/testing'
 import { SessionModule } from './session.module'
 import { HttpClient, HttpHandler } from '@angular/common/http'
-import { SessionTimerComponent } from './session-timer/session-timer.component'
 import { SessionService } from '../../services/session.service'
 import SessionServiceMock from '../../../__mocks__/services/session.service.mock'
 import { CdTimerComponent, CdTimerModule } from "angular-cd-timer";
@@ -42,5 +41,10 @@ describe('SessionComponent', () => {
 
   it('should create', async () => {
     expect(component).toBeTruthy()
-  })
+  });
+
+  // display a session-timer
+  // display correct time on session-timer
+  // allow pause and restart
+  // record total time on finish
 })
