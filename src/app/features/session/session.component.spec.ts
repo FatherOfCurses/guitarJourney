@@ -47,4 +47,5 @@ describe('SessionComponent', () => {
   // display correct time on session-timer
   // allow pause and restart
   // record total time on finish
-})
+
+});
