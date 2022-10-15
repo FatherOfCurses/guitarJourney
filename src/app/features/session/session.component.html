@@ -1,5 +1,5 @@
 <!-- TODO: Major refactor of session html needed -->
-
+<h1>Session</h1>
 <div>
   <form [formGroup]="sessionForm">
     <div>
@@ -39,16 +39,12 @@
       </label>
     </div>
   </form>
-  <button (click)="timer.start()">Start</button>
+  <button >Start</button>
   >
   <h2>Keep going! Make it a good session!</h2>
-<!--  <app-session-timer-->
-<!--    [goalTime]="practiceTime.value"-->
-<!--    (finishTime)="recordSessionActualTime($event)"-->
-<!--  ></app-session-timer>-->
-  Elapsed session time: <cd-timer #sessionTimer [autoStart]='false'></cd-timer>
-  <p>Target Practice Time: {{this.goalTime}} minutes</p>
-  <button (click)="timer.stop()">Finish</button>
+<!--  Elapsed session time: <cd-timer #sessionTimer [autoStart]='false'></cd-timer>-->
+  <p>Target Practice Time: {{this.practiceTime}} minutes</p>
+  <button >Finish</button>
   <div style="align-items: center">
     <h2>You did it!</h2>
     <img

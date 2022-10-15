@@ -12,7 +12,7 @@ import { CdTimerComponent, CdTimerModule } from "angular-cd-timer";
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.scss']
 })
-export class SessionComponent implements OnInit {
+export class SessionComponent implements OnInit{
 
   session: Session = {
     practiceTime: 0,
@@ -40,9 +40,10 @@ export class SessionComponent implements OnInit {
   sessionReflectionValid = 'default';
   goalForNextTimeValid = 'default';
   startTimer = false;
-  // @ViewChild('basicTimer') timer: CdTimerComponent;
 
-  constructor(private fb: FormBuilder, private router: Router, private sessionService: SessionService, public datePipe: DatePipe, public timer: CdTimerComponent) {
+  constructor(
+    private fb: FormBuilder, private router: Router, private sessionService: SessionService,
+  ) {
     this.validationStatus = [
       { label: 'invalid', value: FieldValidationStatus.INVALID },
       { label: 'warning', value: FieldValidationStatus.EMPTY },
@@ -54,7 +55,7 @@ export class SessionComponent implements OnInit {
     this.recordSessionActualTime(0);
     this.initializeForm();
     this.subscribeToFormChanges();
-    this.timer.reset();
+    // this.timer.reset();
   }
 
   initializeForm(): void {
@@ -72,7 +73,7 @@ export class SessionComponent implements OnInit {
     this.sessionIntent = this.sessionForm.get('sessionIntent');
     this.sessionReflection = this.afterForm.get('sessionReflection');
     this.goalForNextTime = this.afterForm.get('goalForNextTime');
-    this.session.date = this.datePipe.transform(new Date(), 'MM/dd/YYYY' );
+    // this.session.date = this.datePipe.transform(new Date(), 'MM/dd/YYYY' );
   }
 
   setTimer(): void {
@@ -89,9 +90,6 @@ export class SessionComponent implements OnInit {
       this.sessionReflectionValid = this.checkFieldValidation(this.sessionReflection);
       this.goalForNextTimeValid = this.checkFieldValidation(this.goalForNextTime);
     });
-    // this.timer.onComplete.subscribe(value => {
-    //   this.session.practiceTime = (value.startTime - value.endTime);
-    // });
   }
 
   checkFieldValidation(control: AbstractControl): string {

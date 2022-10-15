@@ -1,7 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { SessionTimerComponent } from './session-timer/session-timer.component';
 import { DisplaySessionComponent } from './display-single-session/display-session.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
@@ -10,10 +9,10 @@ import { PreviousSessionsComponent } from './previous-sessions/previous-sessions
 import { MatInputModule } from '@angular/material/input';
 import { SessionComponent } from './session.component';
 import { CdTimerModule } from "angular-cd-timer";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
-    SessionTimerComponent,
     DisplaySessionComponent,
     PreviousSessionsComponent,
     SessionComponent
@@ -23,12 +22,17 @@ import { CdTimerModule } from "angular-cd-timer";
     FormsModule,
     MatInputModule,
     CommonModule,
+    HttpClientModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     CdTimerModule
   ],
-  providers: [DatePipe],
+  exports: [
+    DisplaySessionComponent,
+    PreviousSessionsComponent,
+    SessionComponent
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SessionModule { }
