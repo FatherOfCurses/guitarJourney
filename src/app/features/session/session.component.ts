@@ -1,11 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Session } from '../../models/session';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FieldValidationStatus, Option } from '../../models/formHelpers';
 import { SessionService } from '../../services/session.service';
-import { DatePipe } from '@angular/common';
-import { CdTimerComponent, CdTimerModule } from "angular-cd-timer";
 
 @Component({
   selector: 'app-session',

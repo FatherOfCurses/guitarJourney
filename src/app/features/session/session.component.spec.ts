@@ -11,8 +11,9 @@ import { CdTimerComponent, CdTimerModule } from "angular-cd-timer";
 import { NO_ERRORS_SCHEMA } from "@angular/compiler";
 
 describe('SessionComponent', () => {
-  let component: SessionComponent
-  let fixture: ComponentFixture<SessionComponent>
+  let component: SessionComponent;
+  let fixture: ComponentFixture<SessionComponent>;
+
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -33,14 +34,42 @@ describe('SessionComponent', () => {
         },
       ],
       schemas: [NO_ERRORS_SCHEMA],
-    }).compileComponents()
-    fixture = TestBed.createComponent(SessionComponent)
-    component = fixture.componentInstance
-    fixture.detectChanges()
+    }).compileComponents();
+    fixture = TestBed.createComponent(SessionComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+
   })
 
   it('should create', async () => {
     expect(component).toBeTruthy()
+  });
+
+  it('should render all input fields',  () => {
+    const sessionFormElement = fixture.debugElement.nativeElement.querySelector('#sessionForm');
+    const afterFormElement = fixture.debugElement.nativeElement.querySelector('#afterForm');
+    const sessionInputElements = sessionFormElement.querySelectorAll('input');
+    const sessionTextElements = sessionFormElement.querySelectorAll('textarea')
+    const afterTextElements = afterFormElement.querySelectorAll('textarea');
+    expect(sessionInputElements.length).toEqual(2);
+    expect(sessionTextElements.length).toEqual(1);
+    expect(afterTextElements.length).toEqual(2);
+  });
+
+  it('should subscribe to form changes',  () => {
+    const sessionFormElement = fixture.debugElement.nativeElement.querySelector('#sessionForm');
+    const afterFormElement = fixture.debugElement.nativeElement.querySelector('#afterForm');
+    const sessionInputElements = sessionFormElement.querySelectorAll('input');
+    const sessionTextElements = sessionFormElement.querySelectorAll('textarea');
+    const afterTextElements = afterFormElement.querySelectorAll('textarea');
+    const practiceTimeInputField: HTMLInputElement = sessionFormElement.querySelectorAll('input')[0];
+    practiceTimeInputField.value = '10';
+    practiceTimeInputField.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const practiceTimeValueFromGroup = component.sessionForm.get('practiceTime');
+      expect(practiceTimeInputField.value).toEqual(practiceTimeValueFromGroup.value);
+    });
   });
 
   // display a session-timer
