@@ -39,12 +39,11 @@
       </label>
     </div>
   </form>
-  <button >Start</button>
-  >
+  <button id="startButton" (click)="toggleTimer()">Start</button>
   <h2>Keep going! Make it a good session!</h2>
 <!--  Elapsed session time: <cd-timer #sessionTimer [autoStart]='false'></cd-timer>-->
   <p>Target Practice Time: {{this.practiceTime}} minutes</p>
-  <button >Finish</button>
+  <button id="endButton" (click)="toggleTimer()">End</button>
   <div style="align-items: center">
     <h2>You did it!</h2>
     <img
@@ -69,6 +68,7 @@
         <textarea formControlName="goalForNextTime"></textarea>
       </label>
     </div>
+    <button type="button" (click)="onSubmit()" id="finishButton">Finish</button>
   </form>
 </div>
 <div>

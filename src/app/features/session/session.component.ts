@@ -37,7 +37,7 @@ export class SessionComponent implements OnInit{
   sessionIntentValid = 'default';
   sessionReflectionValid = 'default';
   goalForNextTimeValid = 'default';
-  startTimer = false;
+  timerActive = false;
 
   constructor(
     private fb: FormBuilder, private router: Router, private sessionService: SessionService,
@@ -74,8 +74,8 @@ export class SessionComponent implements OnInit{
     // this.session.date = this.datePipe.transform(new Date(), 'MM/dd/YYYY' );
   }
 
-  setTimer(): void {
-    this.startTimer = true;
+  toggleTimer(): void {
+    this.timerActive = !this.timerActive;
   }
 
   subscribeToFormChanges(): void {
