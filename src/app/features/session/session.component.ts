@@ -74,8 +74,12 @@ export class SessionComponent implements OnInit{
     // this.session.date = this.datePipe.transform(new Date(), 'MM/dd/YYYY' );
   }
 
-  toggleTimer(): void {
-    this.timerActive = !this.timerActive;
+  startTimer(): void {
+    this.timerActive = true;
+  }
+
+  stopTimer(): void {
+    this.timerActive = false;
   }
 
   subscribeToFormChanges(): void {

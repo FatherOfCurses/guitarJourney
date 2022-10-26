@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms'
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { SessionComponent } from './session.component'
 import { RouterTestingModule } from '@angular/router/testing'
 import { SessionModule } from './session.module'
@@ -27,6 +26,7 @@ describe('SessionComponent', () => {
   let startButton: HTMLButtonElement;
   let endButton: HTMLButtonElement;
   let finishButton: HTMLButtonElement;
+  let timer: boolean;
   // TODO: mock session service so submit button doesn't cause freakout
 
   beforeEach(async () => {
@@ -65,6 +65,7 @@ describe('SessionComponent', () => {
     sessionIntentInputField = sessionFormElement.querySelectorAll('input')[1];
     sessionReflectionInputField = afterFormElement.querySelectorAll('textarea')[0];
     goalForNextTimeInputField = afterFormElement.querySelectorAll('textarea')[1];
+    timer = component.timerActive;
     fixture.detectChanges();
   })
 
@@ -162,16 +163,22 @@ describe('SessionComponent', () => {
   });
 
   it('should start timer on Start click', () => {
-    // arrange
-    let timer = component.timerActive;
-    timer = false;
     startButton = componentElement.querySelector('#startButton');
-
-    // act
     startButton.click();
     fixture.detectChanges();
-    // assert
-    expect(timer).toBe(true)
+    fixture.whenStable().then(() => (
+      expect(timer).toBe(true)
+    ));
+  });
+
+  it('should stop timer on Stop click', () => {
+    timer = true;
+    endButton = componentElement.querySelector('#endButton');
+    endButton.click();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => (
+      expect(timer).toBe(false)
+    ));
   });
 
   // display a session-timer

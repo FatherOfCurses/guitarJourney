@@ -39,11 +39,11 @@
       </label>
     </div>
   </form>
-  <button id="startButton" (click)="toggleTimer()">Start</button>
+  <button id="startButton" (click)="startTimer()">Start</button>
   <h2>Keep going! Make it a good session!</h2>
 <!--  Elapsed session time: <cd-timer #sessionTimer [autoStart]='false'></cd-timer>-->
   <p>Target Practice Time: {{this.practiceTime}} minutes</p>
-  <button id="endButton" (click)="toggleTimer()">End</button>
+  <button id="endButton" (click)="stopTimer()">End</button>
   <div style="align-items: center">
     <h2>You did it!</h2>
     <img
