@@ -12,7 +12,7 @@ import {RouterModule} from '@angular/router';
 import {SessionModule} from './features/session/session.module';
 import { Convertors } from './utilities/Convertors';
 import { ChordComponent } from './features/notation/chord/chord.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

@@ -10,7 +10,6 @@ module.exports = {
   preset: 'jest-preset-angular',
   roots: ['<rootDir>/src/'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
-  // globalSetup: 'jest-preset-angular/global-setup',
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: '<rootDir>' }),
   testPathIgnorePatterns: ['/node_modules'],

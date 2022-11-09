@@ -9,7 +9,7 @@ export interface SongsterrArtist {
 export class SongsterrResponse {
   artist: SongsterrArtist;
   chordsPresent: boolean;
-  id: number;
+  id: string;
   tabTypes: string[];
   title: string;
   type: string;

@@ -15,10 +15,10 @@ export class SongComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.searchResult$ = this.songService.getSearchResults('Marley');
+    this.searchResult$ = this.songService.getSearchResults$('Marley');
   }
 
   getSongs(callback): void {
-    this.songService.getSearchResults('Marley').pipe().subscribe(callback);
+    this.songService.getSearchResults$('Marley').pipe().subscribe(callback);
   }
 }
