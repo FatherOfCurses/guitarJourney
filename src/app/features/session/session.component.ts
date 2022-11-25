@@ -4,6 +4,8 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { FieldValidationStatus, Option } from '../../models/formHelpers';
 import { SessionService } from '../../services/session.service';
+import { fromEvent, interval } from "rxjs";
+import { map, takeUntil } from "rxjs/operators";
 
 @Component({
   selector: 'app-session',
@@ -24,6 +26,7 @@ export class SessionComponent implements OnInit{
   validationStatus: Option[];
   fieldValidationStatus = FieldValidationStatus;
   targetPracticeTime = 0;
+  timeElapsed = 0;
   sessionForm: FormGroup;
   timerForm: FormGroup;
   afterForm: FormGroup;
@@ -38,6 +41,7 @@ export class SessionComponent implements OnInit{
   sessionReflectionValid = 'default';
   goalForNextTimeValid = 'default';
   timerActive = false;
+  timerOutput = "";
 
   constructor(
     private fb: FormBuilder, private router: Router, private sessionService: SessionService,
@@ -53,7 +57,6 @@ export class SessionComponent implements OnInit{
     this.recordSessionActualTime(0);
     this.initializeForm();
     this.subscribeToFormChanges();
-    // this.timer.reset();
   }
 
   initializeForm(): void {
@@ -75,12 +78,27 @@ export class SessionComponent implements OnInit{
   }
 
   startTimer(): void {
-    this.timerActive = true;
+    const startButton = document.querySelector('#startButton');
+    const stopButton = document.querySelector('#endButton');
+
+    let seconds$ = interval(1000);
+    const startClick$ = fromEvent(startButton, 'click');
+    const stopClick$ = fromEvent(stopButton, 'click');
+    startClick$.subscribe(() => {
+      seconds$.pipe(
+        map(item => (item/10)),
+        takeUntil(stopClick$)
+      )
+        .subscribe(num => this.timerOutput = num + 's');
+    });
   }
 
-  stopTimer(): void {
-    this.timerActive = false;
-  }
+  // stopTimer(): void {
+  //   this.timerActive = false;
+  //   console.log("click");
+  //   clearInterval();
+  //   this.session.practiceTime = this.timeElapsed;
+  // }
 
   subscribeToFormChanges(): void {
     this.sessionForm.valueChanges.subscribe(value => {
