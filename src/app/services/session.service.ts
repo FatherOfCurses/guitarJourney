@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { Session } from '../models/session';
 import { map } from "rxjs/operators";
-import { response } from "express";
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +18,7 @@ export class SessionService {
   }
 
   getAllSessions$(): Observable<Session[]> {
-    return this.httpClient.get<{sessions: Session[]}>(`${this.BASE_URL}/sessions`)
-      .pipe(map((response) => response.sessions));
+    return this.httpClient.get<Session[]>(`${this.BASE_URL}/sessions`);
   }
 
   putSession$(session: Session): Subscription {

@@ -28,10 +28,9 @@ export class PreviousSessionsComponent implements OnInit {
       goalForNextTime: 'do better1'
     },
   ];
-  displayedColumns = ['date','practiceTime','whatToPractice', 'sessionIntent','postPracticeReflection','goalForNextTime'];
   constructor(private sessionService: SessionService) { }
 
   ngOnInit(): void {
-    // this.sessionService.getAllSessions$().subscribe(session => {this.sessionData = session} )
+    this.sessionService.getAllSessions$().subscribe(session => this.sessionData = session);
   }
 }
