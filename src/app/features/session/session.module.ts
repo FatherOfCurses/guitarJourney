@@ -10,6 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { SessionComponent } from './session.component';
 import { CdTimerModule } from "angular-cd-timer";
 import { HttpClientModule } from "@angular/common/http";
+import { ChipsModule } from "primeng/chips";
+import { InputTextareaModule } from "primeng/inputtextarea";
+import { TableModule } from "primeng/table";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { HttpClientModule } from "@angular/common/http";
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    CdTimerModule
+    CdTimerModule,
+    ChipsModule,
+    InputTextareaModule,
+    TableModule
   ],
   exports: [
     DisplaySessionComponent,

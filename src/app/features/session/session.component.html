@@ -1,76 +1,87 @@
 <!-- TODO: Major refactor of session html needed -->
 <h1>Session</h1>
-<div>
-  <form [formGroup]="sessionForm" id="sessionForm">
-    <div>
-      <label for="practiceTime">
-        Practice Time Amount
+<div id="formBucket">
+  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus==='begin'">
+    <form [formGroup]="sessionForm" id="sessionForm" class="grid formgrid p-fluid">
+      <div class="field mb-4 col-12">
+        <label for="practiceTime" class="font-medium text-900">
+          Practice Time Amount
+        </label>
         <input
           type="text"
           id="practiceTime"
           formControlName="practiceTime"
           placeholder="Enter the time (in minutes) that you want to practice"
+          pInputText
         />
-        <div *ngIf="practiceTime.invalid">
-          Please enter a practice time value
-        </div>
-      </label>
-    </div>
-    <div>
-      <label for="whatToPractice">
-        What to Practice
+        <div *ngIf="practiceTime.invalid"></div>
+      </div>
+      <div class="field mb-4 col-12">
+        <label for="whatToPractice" class="font-medium text-900">
+          What to Practice
+        </label>
         <textarea
           id="whatToPractice"
           formControlName="whatToPractice"
           placeholder="What are you planning on practicing today?"
-        >
-        </textarea>
-      </label>
-    </div>
-    <div>
-      <label>
-        Session Intent
+          pInputTextarea
+        ></textarea>
+      </div>
+      <div class="field mb-4 col-12">
+        <label for="sessionIntent" class="font-medium text-900">
+          Session Intent
+        </label>
         <input
           type="text"
           id="sessionIntent"
           formControlName="sessionIntent"
           placeholder="Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:"
+          pInputText
         />
-      </label>
-    </div>
-  </form>
-  <button id="startButton">Start</button>
-  <div class="timerOutput">{{timerOutput}}</div>
-  <h2>Keep going! Make it a good session!</h2>
-  <p>Target Practice Time: {{this.practiceTime}} minutes</p>
-  <button id="endButton">End</button>
-  <div style="align-items: center">
-    <h2>You did it!</h2>
-    <img
-      [width]="400"
-      [height]="400"
-      src="assets/cherry-592.png"
-      alt="Man playing guitar"
-    />
+      </div>
+      <button id="startButton">Start</button>
+    </form>
   </div>
-  <form [formGroup]="afterForm" id="afterForm">
+
+  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus==='active'">
+    <p>{{timerOutput}}</p>
+    <h2>Keep going! Make it a good session!</h2>
+    <p>Target Practice Time: {{this.practiceTime}} minutes</p>
+    <button id="endButton">End</button>
+  </div>
+
+  <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card"
+       *ngIf="sessionStatus==='finished'">
     <div>
-      <label>
-        Congratulations on taking some time for yourself to improve your skills!
-        Now take a few minutes to reflect on the session. How did it go? What
-        worked? What didn't work? What surprised you?
-        <textarea type="text" formControlName="sessionReflection"></textarea>
-      </label>
+      <h2>You did it!</h2>
+      <img
+        [width]="400"
+        [height]="400"
+        src="assets/cherry-592.png"
+        alt="Man playing guitar"
+      />
     </div>
-    <div>
-      <label>
-        What do you want to remember the next time you do a similar practice?
-        <textarea formControlName="goalForNextTime"></textarea>
-      </label>
-    </div>
-    <button type="button" (click)="onSubmit()" id="finishButton">Finish</button>
-  </form>
+    <form [formGroup]="afterForm" id="afterForm">
+      <div class="field mb-4 col-12">
+        <label for="sessionReflection" class="font-medium text-900">
+          Congratulations on taking some time for yourself to improve your skills!
+          Now take a few minutes to reflect on the session. How did it go? What
+          worked? What didn't work? What surprised you?
+        </label>
+        <textarea type="text" formControlName="sessionReflection" id="sessionReflection" pInputTextarea></textarea>
+      </div>
+      <div class="field mb-4 col-12">
+        <label for="sessionReflection" class="font-medium text-900">
+          What do you want to remember the next time you do a similar practice?
+        </label>
+        <textarea formControlName="goalForNextTime" id="goalForNextTime" pInputTextarea></textarea>
+      </div>
+      <button type="button" (click)="onSubmit()" id="finishButton">Finish</button>
+    </form>
+  </div>
+
 </div>
-<div>
-  <app-previous-sessions></app-previous-sessions>
-</div>
+
+  <div>
+    <app-previous-sessions></app-previous-sessions>
+  </div>
