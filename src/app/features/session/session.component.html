@@ -1,7 +1,7 @@
 <!-- TODO: Major refactor of session html needed -->
 <h1>Session</h1>
 <div id="formBucket">
-  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus==='begin'">
+  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" >
     <form [formGroup]="sessionForm" id="sessionForm" class="grid formgrid p-fluid">
       <div class="field mb-4 col-12">
         <label for="practiceTime" class="font-medium text-900">
@@ -43,15 +43,14 @@
     </form>
   </div>
 
-  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus==='active'">
+  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card">
     <p>{{timerOutput}}</p>
     <h2>Keep going! Make it a good session!</h2>
     <p>Target Practice Time: {{this.practiceTime}} minutes</p>
     <button id="endButton">End</button>
   </div>
 
-  <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card"
-       *ngIf="sessionStatus==='finished'">
+  <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card">
     <div>
       <h2>You did it!</h2>
       <img
@@ -61,20 +60,30 @@
         alt="Man playing guitar"
       />
     </div>
-    <form [formGroup]="afterForm" id="afterForm">
+    <form [formGroup]="afterForm" id="afterForm" class="grid formgrid p-fluid">
       <div class="field mb-4 col-12">
         <label for="sessionReflection" class="font-medium text-900">
           Congratulations on taking some time for yourself to improve your skills!
           Now take a few minutes to reflect on the session. How did it go? What
           worked? What didn't work? What surprised you?
         </label>
-        <textarea type="text" formControlName="sessionReflection" id="sessionReflection" pInputTextarea></textarea>
+        <textarea
+          type="text"
+          id="sessionReflection"
+          formControlName="sessionReflection"
+          placeholder="Enter your reflection here"
+          pInputTextarea></textarea>
       </div>
       <div class="field mb-4 col-12">
         <label for="sessionReflection" class="font-medium text-900">
           What do you want to remember the next time you do a similar practice?
         </label>
-        <textarea formControlName="goalForNextTime" id="goalForNextTime" pInputTextarea></textarea>
+        <textarea
+          type="text"
+          id="goalForNextTime"
+          formControlName="goalForNextTime"
+          placeholder="What do you want to work on next time?"
+          pInputTextarea></textarea>
       </div>
       <button type="button" (click)="onSubmit()" id="finishButton">Finish</button>
     </form>

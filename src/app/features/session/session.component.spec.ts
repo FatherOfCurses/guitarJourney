@@ -65,7 +65,6 @@ describe('SessionComponent', () => {
     sessionIntentInputField = sessionFormElement.querySelectorAll('input')[1];
     sessionReflectionInputField = afterFormElement.querySelectorAll('textarea')[0];
     goalForNextTimeInputField = afterFormElement.querySelectorAll('textarea')[1];
-    timer = component.timerActive;
     fixture.detectChanges();
   })
 
@@ -167,7 +166,7 @@ describe('SessionComponent', () => {
     startButton.click();
     fixture.detectChanges();
     fixture.whenStable().then(() => (
-      expect(timer).toBe(true)
+      expect(component.sessionStatus).toBe("begin")
     ));
   });
 
@@ -177,7 +176,7 @@ describe('SessionComponent', () => {
     endButton.click();
     fixture.detectChanges();
     fixture.whenStable().then(() => (
-      expect(timer).toBe(false)
+      expect(component.sessionStatus).toBe("finished")
     ));
   });
 
