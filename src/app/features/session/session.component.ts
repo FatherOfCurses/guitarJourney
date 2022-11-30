@@ -13,7 +13,6 @@ import { map, takeUntil } from "rxjs/operators";
   styleUrls: ["./session.component.scss"]
 })
 export class SessionComponent implements OnInit {
-
   session: Session = {
     practiceTime: 0,
     whatToPractice: "",
@@ -24,6 +23,7 @@ export class SessionComponent implements OnInit {
     date: Date()
   };
   validationStatus: Option[];
+  sessionStatus: String;
   fieldValidationStatus = FieldValidationStatus;
   targetPracticeTime = 0;
   timeElapsed = 0;
@@ -40,8 +40,11 @@ export class SessionComponent implements OnInit {
   sessionIntentValid = "default";
   sessionReflectionValid = "default";
   goalForNextTimeValid = "default";
-  sessionStatus: String;
   timerOutput = "";
+  startButton = document.querySelector("#startButton");
+  stopButton = document.querySelector("#endButton");
+  startClick$ = fromEvent(this.startButton, "click");
+  stopClick$ = fromEvent(this.stopButton, "click");
 
   constructor(
     private fb: FormBuilder, private router: Router, private sessionService: SessionService
@@ -57,7 +60,8 @@ export class SessionComponent implements OnInit {
     this.recordSessionActualTime(0);
     this.initializeForm();
     this.subscribeToFormChanges();
-    this.sessionStatus = "begin";
+    this.sessionStatus = 'before';
+
   }
 
   initializeForm(): void {
@@ -79,27 +83,22 @@ export class SessionComponent implements OnInit {
   }
 
   startTimer(): void {
-    const startButton = document.querySelector("#startButton");
-    const stopButton = document.querySelector("#endButton");
-
     let seconds$ = interval(1000);
-    const startClick$ = fromEvent(startButton, "click");
-    const stopClick$ = fromEvent(stopButton, "click");
-    startClick$.subscribe(() => {
+    this.startClick$.subscribe(() => {
       seconds$.pipe(
         map(item => (item / 10)),
-        takeUntil(stopClick$)
+        takeUntil(this.stopClick$)
       )
         .subscribe(num => this.timerOutput = num + "s");
     });
+    this.sessionStatus = 'during';
   }
 
-  // stopTimer(): void {
-  //   this.timerActive = false;
-  //   console.log("click");
-  //   clearInterval();
-  //   this.session.practiceTime = this.timeElapsed;
-  // }
+  stopTimer(): void {
+    clearInterval();
+    this.session.practiceTime = this.timeElapsed;
+    this.sessionStatus = 'after';
+  }
 
   subscribeToFormChanges(): void {
     this.sessionForm.valueChanges.subscribe(value => {

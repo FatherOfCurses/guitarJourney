@@ -27,6 +27,7 @@ describe('SessionComponent', () => {
   let endButton: HTMLButtonElement;
   let finishButton: HTMLButtonElement;
   let timer: boolean;
+  let sessionStatus: String;
   // TODO: mock session service so submit button doesn't cause freakout
 
   beforeEach(async () => {
@@ -52,33 +53,33 @@ describe('SessionComponent', () => {
     fixture = TestBed.createComponent(SessionComponent);
     component = fixture.componentInstance;
     componentElement = fixture.debugElement.nativeElement;
-    sessionFormElement = componentElement.querySelector('#sessionForm');
-    afterFormElement = componentElement.querySelector('#afterForm');
     startButton = componentElement.querySelector('#startButton');
     endButton = componentElement.querySelector('#endButton');
     finishButton = componentElement.querySelector('#finishButton');
-    sessionInputElements = sessionFormElement.querySelectorAll('input');
-    sessionTextElements = sessionFormElement.querySelectorAll('textarea')
-    afterTextElements = afterFormElement.querySelectorAll('textarea');
-    practiceTimeInputField = sessionFormElement.querySelectorAll('input')[0];
-    whatToPracticeTextareaField = sessionFormElement.querySelectorAll('textarea')[0];
-    sessionIntentInputField = sessionFormElement.querySelectorAll('input')[1];
-    sessionReflectionInputField = afterFormElement.querySelectorAll('textarea')[0];
-    goalForNextTimeInputField = afterFormElement.querySelectorAll('textarea')[1];
+    sessionStatus = component.sessionStatus;
     fixture.detectChanges();
-  })
+  });
 
   it('should create', async () => {
     expect(component).toBeTruthy()
   });
 
-  it('should render all input fields', () => {
-    expect(sessionInputElements.length).toEqual(2);
-    expect(sessionTextElements.length).toEqual(1);
-    expect(afterTextElements.length).toEqual(2);
-  });
+  describe('Pre-session form', () => {
+    beforeEach(async () => {
+      sessionFormElement = componentElement.querySelector('#sessionForm');
+      sessionInputElements = sessionFormElement.querySelectorAll('input');
+      sessionTextElements = sessionFormElement.querySelectorAll('textarea')
+      practiceTimeInputField = sessionFormElement.querySelectorAll('input')[0];
+      whatToPracticeTextareaField = sessionFormElement.querySelectorAll('textarea')[0];
+      sessionIntentInputField = sessionFormElement.querySelectorAll('input')[1];
+      sessionStatus = 'begin'
+    });
 
-  describe('ensuring all form inputs are registered', () => {
+    it('should render all pre-session input fields', () => {
+      sessionStatus = 'before';
+      expect(sessionInputElements.length).toEqual(2);
+      expect(sessionTextElements.length).toEqual(1);
+    });
 
     it('should capture input for practice time', () => {
       practiceTimeInputField.value = '10';
@@ -112,6 +113,20 @@ describe('SessionComponent', () => {
         expect(sessionIntentValueFromGroup.errors).toBeNull();
       });
     });
+  });
+
+  describe('Post-session form', () => {
+    beforeEach(async () => {
+      afterFormElement = componentElement.querySelector('#afterForm');
+      afterTextElements = afterFormElement.querySelectorAll('textarea');
+      sessionReflectionInputField = afterFormElement.querySelectorAll('textarea')[0];
+      goalForNextTimeInputField = afterFormElement.querySelectorAll('textarea')[1];
+      sessionStatus = ''
+    });
+
+    it('should render all post-session input fields', () => {
+      expect(afterTextElements.length).toEqual(2);
+    });
 
     it('should capture input for session reflection', () => {
       sessionReflectionInputField.value = 'Landjaeger porchetta picanha beef ribs tail alcatra. Jerky t-bone chuck drumstick, beef ribs short loin kielbasa short ribs ham hock meatloaf cupim pancetta. Porchetta alcatra pastrami pancetta drumstick pork beef buffalo landjaeger meatloaf cupim tri-tip ribeye prosciutto salami. Venison rump chislic turkey flank shank. Buffalo pork loin shoulder pig biltong, strip steak salami swine t-bone meatloaf beef ribs. Frankfurter sirloin chuck chislic venison. Hamburger corned beef venison spare ribs, andouille chislic drumstick pancetta.';
@@ -134,8 +149,6 @@ describe('SessionComponent', () => {
         expect(goalForNextTimeValueFromGroup.errors).toBeNull();
       });
     });
-
-    // negative test cases?
   });
 
   it('stores form values in the session object on submit', () => {
@@ -161,24 +174,28 @@ describe('SessionComponent', () => {
     });
   });
 
-  it('should start timer on Start click', () => {
-    startButton = componentElement.querySelector('#startButton');
-    startButton.click();
-    fixture.detectChanges();
-    fixture.whenStable().then(() => (
-      expect(component.sessionStatus).toBe("begin")
-    ));
+  describe('Timer functionality', () => {
+    it('should start timer on Start click', () => {
+      startButton = componentElement.querySelector('#startButton');
+      startButton.click();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => (
+        expect(component.sessionStatus).toBe("begin")
+      ));
+    });
+
+    it('should stop timer on Stop click', () => {
+      timer = true;
+      endButton = componentElement.querySelector('#endButton');
+      endButton.click();
+      fixture.detectChanges();
+      fixture.whenStable().then(() => (
+        expect(component.sessionStatus).toBe("finished")
+      ));
+    });
   });
 
-  it('should stop timer on Stop click', () => {
-    timer = true;
-    endButton = componentElement.querySelector('#endButton');
-    endButton.click();
-    fixture.detectChanges();
-    fixture.whenStable().then(() => (
-      expect(component.sessionStatus).toBe("finished")
-    ));
-  });
+
 
   // display a session-timer
   // display correct time on session-timer

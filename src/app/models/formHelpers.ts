@@ -8,3 +8,4 @@ export declare class Option {
   label: string;
   value: string;
 }
+

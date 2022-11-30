@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subscription } from 'rxjs';
 import { Session } from '../models/session';
-import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'

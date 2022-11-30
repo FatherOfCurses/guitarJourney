@@ -1,8 +1,10 @@
-<!-- TODO: Major refactor of session html needed -->
 <h1>Session</h1>
 <div id="formBucket">
-  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" >
-    <form [formGroup]="sessionForm" id="sessionForm" class="grid formgrid p-fluid">
+  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'begin'" >
+    <form [formGroup]="sessionForm"
+          id="sessionForm"
+          class="grid formgrid p-fluid"
+          >
       <div class="field mb-4 col-12">
         <label for="practiceTime" class="font-medium text-900">
           Practice Time Amount
@@ -43,14 +45,14 @@
     </form>
   </div>
 
-  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card">
+  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'during'">
     <p>{{timerOutput}}</p>
     <h2>Keep going! Make it a good session!</h2>
     <p>Target Practice Time: {{this.practiceTime}} minutes</p>
     <button id="endButton">End</button>
   </div>
 
-  <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card">
+  <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'after'">
     <div>
       <h2>You did it!</h2>
       <img
