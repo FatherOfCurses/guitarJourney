@@ -57,10 +57,10 @@ export class SessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.sessionStatus = 'before';
     this.recordSessionActualTime(0);
     this.initializeForm();
     this.subscribeToFormChanges();
-    this.sessionStatus = 'before';
 
   }
 

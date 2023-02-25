@@ -30,6 +30,7 @@
     "express": "^4.18.1",
     "jasmine-auto-spies": "^6.9.9",
     "note-parser": "^2.0.1",
+    "npm": "^8.19.3",
     "path": "^0.12.7",
     "primeflex": "^3.2.1",
     "primeicons": "^5.0.0",

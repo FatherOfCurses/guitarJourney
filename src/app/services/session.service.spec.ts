@@ -86,7 +86,6 @@ describe('SessionService', () => {
 
     const putRecord = service.putSession$(expectedData);
     done();
-    console.log(putRecord);
     expect(putRecord).toBeTruthy();
 
     const testRequest = httpTestingController.expectOne('https://dx471dpyrj.execute-api.us-west-2.amazonaws.com/sessions');
