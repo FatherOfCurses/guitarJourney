@@ -14,6 +14,7 @@ import { ChipsModule } from "primeng/chips";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { TableModule } from "primeng/table";
 import { ButtonModule } from "primeng/button";
+import { AppModule } from "../../app.module";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ButtonModule } from "primeng/button";
     ChipsModule,
     InputTextareaModule,
     TableModule,
-    ButtonModule
+    ButtonModule,
+    AppModule
   ],
   exports: [
     DisplaySessionComponent,
