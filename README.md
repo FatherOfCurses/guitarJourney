@@ -15,7 +15,6 @@ Future plans are for the user to have a resource library where they can gather p
 - PrimeNG - https://www.primefaces.org/primeng/
 - Note Parser - https://github.com/danigb/note-parser
 - Jest Schematic - https://github.com/briebug/jest-schematic
-- Angular CD Timer - https://github.com/clemdesign/angular-cd-timer
 - Compodoc - https://compodoc.app/
 
 

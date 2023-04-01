@@ -8,7 +8,8 @@
     "test": "npx jest --coverage",
     "e2e": "ng e2e",
     "deploy": "cd dist && zip -r -X guitar-practice.zip ./*",
-    "lint": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix"
+    "lint": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix",
+    "compodoc": "npx compodoc -p tsconfig.doc.json -d docs"
   },
   "private": true,
   "dependencies": {
