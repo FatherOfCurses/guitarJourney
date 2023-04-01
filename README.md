@@ -4,7 +4,7 @@ A tool to help guide the guitar student's learning journey through the use of in
 
 Future plans are for the user to have a resource library where they can gather practice materials, and methods for a student to communicate with a guitar teacher.
 
-### Current tech stack (10/14/2022)
+### Current tech stack (2023-04-01)
 - Angular 14
 - Jest 28
 - AWS S3
@@ -16,5 +16,6 @@ Future plans are for the user to have a resource library where they can gather p
 - Note Parser - https://github.com/danigb/note-parser
 - Jest Schematic - https://github.com/briebug/jest-schematic
 - Compodoc - https://compodoc.app/
+- Metronome - https://github.com/scottwhudson/metronome
 
 

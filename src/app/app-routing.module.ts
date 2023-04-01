@@ -5,6 +5,7 @@ import { SessionComponent } from './features/session/session.component';
 import { ChordComponent } from './features/notation/chord/chord.component';
 import { SongComponent } from './features/song/song.component';
 import { DisplaySessionComponent } from './features/session/display-single-session/display-session.component';
+import { ExercisesComponent } from "./features/exercises/exercises.component";
 
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   {path: 'landing', component: LandingPageComponent},
   {path: 'test', component: ChordComponent},
   {path: 'songs', component: SongComponent},
-  {path: 'notation', component: ChordComponent}
+  {path: 'notation', component: ChordComponent},
+  {path: 'exercises', component: ExercisesComponent}
 ];
 
 @NgModule({

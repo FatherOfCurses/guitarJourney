@@ -21,4 +21,8 @@ export class SongComponent implements OnInit {
   getSongs(callback): void {
     this.songService.getSearchResults$('Marley').pipe().subscribe(callback);
   }
+
+  openUploadModal() {
+    //open upload modal component
+  }
 }

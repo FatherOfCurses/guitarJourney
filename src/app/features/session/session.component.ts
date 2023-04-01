@@ -53,7 +53,7 @@ export class SessionComponent implements OnInit {
   timerSubscription: Subscription;
   startTime: number;
   elapsedTime: number = 0;
-  running: boolean = false;
+  resourcesAdded: boolean;
 
   constructor(
     private fb: FormBuilder, private router: Router, private sessionService: SessionService
@@ -151,4 +151,8 @@ export class SessionComponent implements OnInit {
     return number.toString().padStart(2, '0');
   }
 
+  addResourcesToSession() {
+    this.resourcesAdded = true;
+    //openModal resourcePicker
+  }
 }

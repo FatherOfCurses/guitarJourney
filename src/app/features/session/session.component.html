@@ -44,15 +44,25 @@
         />
       </div>
       <!-- TODO: New form entry for practice session style - focus vs all resources etc-->
+      <div id="sessionModeChoice">
+        <p>Do you want to add practice resources?</p>
+        <p-button id="addResources" (click)="addResourcesToSession()">Yes</p-button>
+
+      </div>
       <p-button id="startButton" (click)="startTimer()">Start</p-button>
     </form>
   </div>
 
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'during'">
-    <p class="font-bold text-xl">{{time}}</p>
-    <h2>Keep going! Make it a good session!</h2>
-    <p>Target Practice Time: {{this.sessionForm.get("practiceTime")}}} minutes</p>
-    <p-button id="endButton" (click)="stopTimer()">End</p-button>
+    <div id="timerSection">
+      <p class="font-bold text-xl">{{time}}</p>
+      <h2>Keep going! Make it a good session!</h2>
+      <p>Target Practice Time: {{this.sessionForm.get("practiceTime")}} minutes</p>
+      <p-button id="endButton" (click)="stopTimer()">End</p-button>
+    </div>
+    <div id="resourcesSection" ngIf="resourcesAdded">
+      <app-session-resource-component></app-session-resource-component>
+    </div>
   </div>
 
   <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'after'">
