@@ -4,9 +4,14 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/fo
 import { Router } from "@angular/router";
 import { FieldValidationStatus, Option } from "../../models/formHelpers";
 import { SessionService } from "../../services/session.service";
-import { fromEvent, interval } from "rxjs";
+import { fromEvent, interval, Subscription } from "rxjs";
 import { map, takeUntil } from "rxjs/operators";
 
+enum SessionStatus {
+  Before = "before",
+  During = "during",
+  After = "after"
+}
 @Component({
   selector: "app-session",
   templateUrl: "./session.component.html",
@@ -23,7 +28,7 @@ export class SessionComponent implements OnInit {
     date: Date()
   };
   validationStatus: Option[];
-  sessionStatus: String;
+  sessionStatus: SessionStatus = SessionStatus.Before;
   fieldValidationStatus = FieldValidationStatus;
   targetPracticeTime = 0;
   timeElapsed = 0;
@@ -40,11 +45,15 @@ export class SessionComponent implements OnInit {
   sessionIntentValid = "default";
   sessionReflectionValid = "default";
   goalForNextTimeValid = "default";
-  timerOutput = "";
   startButton = document.querySelector("#startButton");
   stopButton = document.querySelector("#endButton");
   startClick$ = fromEvent(this.startButton, "click");
   stopClick$ = fromEvent(this.stopButton, "click");
+  time: string = '00:00:00';
+  timerSubscription: Subscription;
+  startTime: number;
+  elapsedTime: number = 0;
+  running: boolean = false;
 
   constructor(
     private fb: FormBuilder, private router: Router, private sessionService: SessionService
@@ -57,11 +66,9 @@ export class SessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sessionStatus = 'before';
     this.recordSessionActualTime(0);
     this.initializeForm();
     this.subscribeToFormChanges();
-
   }
 
   initializeForm(): void {
@@ -79,25 +86,6 @@ export class SessionComponent implements OnInit {
     this.sessionIntent = this.sessionForm.get("sessionIntent");
     this.sessionReflection = this.afterForm.get("sessionReflection");
     this.goalForNextTime = this.afterForm.get("goalForNextTime");
-    // this.session.date = this.datePipe.transform(new Date(), 'MM/dd/YYYY' );
-  }
-
-  startTimer(): void {
-    let seconds$ = interval(1000);
-    this.startClick$.subscribe(() => {
-      seconds$.pipe(
-        map(item => (item / 10)),
-        takeUntil(this.stopClick$)
-      )
-        .subscribe(num => this.timerOutput = num + "s");
-    });
-    this.sessionStatus = 'during';
-  }
-
-  stopTimer(): void {
-    clearInterval();
-    this.session.practiceTime = this.timeElapsed;
-    this.sessionStatus = 'after';
   }
 
   subscribeToFormChanges(): void {
@@ -135,4 +123,32 @@ export class SessionComponent implements OnInit {
   recordSessionActualTime(actualTime: number): void {
     this.session.practiceTime = Math.trunc(actualTime);
   }
+
+  //Timer functions
+
+  startTimer() {
+      this.startTime = Date.now() - this.elapsedTime;
+      this.timerSubscription = interval(1000).subscribe(() => {
+        this.elapsedTime = Date.now() - this.startTime;
+        this.time = this.formatTime(this.elapsedTime);
+      });
+      this.sessionStatus = SessionStatus.During;
+    }
+
+  stopTimer() {
+      this.timerSubscription.unsubscribe();
+      this.session.practiceTime = this.elapsedTime;
+      this.sessionStatus = SessionStatus.After;
+  }
+
+  formatTime(time: number): string {
+    const minutes = Math.floor(time / 60000);
+    const seconds = Math.floor((time % 60000) / 1000);
+    return `${this.padNumber(minutes)}:${this.padNumber(seconds)}`;
+  }
+
+  padNumber(number: number): string {
+    return number.toString().padStart(2, '0');
+  }
+
 }

@@ -1,5 +1,7 @@
 <h1>Session</h1>
 <div id="formBucket">
+  <!-- TODO: Get all these styling elements into css classes -->
+  <!-- TODO: Text in form fields is very faint-->
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'before'" >
     <form [formGroup]="sessionForm"
           id="sessionForm"
@@ -30,7 +32,7 @@
         ></textarea>
       </div>
       <div class="field mb-4 col-12">
-        <label for="sessionIntent" class="font-medium text-900">
+        <label for="sessionIntent" class="text-900">
           Session Intent
         </label>
         <input
@@ -41,15 +43,16 @@
           pInputText
         />
       </div>
-      <button id="startButton">Start</button>
+      <!-- TODO: New form entry for practice session style - focus vs all resources etc-->
+      <p-button id="startButton" (click)="startTimer()">Start</p-button>
     </form>
   </div>
 
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'during'">
-    <p>{{timerOutput}}</p>
+    <p class="font-bold text-xl">{{time}}</p>
     <h2>Keep going! Make it a good session!</h2>
-    <p>Target Practice Time: {{this.practiceTime}} minutes</p>
-    <button id="endButton">End</button>
+    <p>Target Practice Time: {{this.sessionForm.get("practiceTime")}}} minutes</p>
+    <p-button id="endButton" (click)="stopTimer()">End</p-button>
   </div>
 
   <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'after'">
@@ -87,7 +90,7 @@
           placeholder="What do you want to work on next time?"
           pInputTextarea></textarea>
       </div>
-      <button type="button" (click)="onSubmit()" id="finishButton">Finish</button>
+      <p-button type="button" (click)="onSubmit()" id="finishButton">Finish</p-button>
     </form>
   </div>
 

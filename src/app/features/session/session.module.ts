@@ -13,6 +13,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ChipsModule } from "primeng/chips";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { TableModule } from "primeng/table";
+import { ButtonModule } from "primeng/button";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { TableModule } from "primeng/table";
     CdTimerModule,
     ChipsModule,
     InputTextareaModule,
-    TableModule
+    TableModule,
+    ButtonModule
   ],
   exports: [
     DisplaySessionComponent,
