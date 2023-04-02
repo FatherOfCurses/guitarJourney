@@ -5,7 +5,6 @@ import { Router } from "@angular/router";
 import { FieldValidationStatus, Option } from "../../models/formHelpers";
 import { SessionService } from "../../services/session.service";
 import { fromEvent, interval, Subscription } from "rxjs";
-import { map, takeUntil } from "rxjs/operators";
 
 enum SessionStatus {
   Before = "before",

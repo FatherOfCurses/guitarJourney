@@ -124,7 +124,7 @@
                                     <a href="../components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
+                                    <a href="../components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -169,7 +169,7 @@
                                     <a href="../classes/Note.html" >Note</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../classes/Option.html"  class="active" >Option</a>
+                                    <a href="../classes/Option.html" >Option</a>
                                 </li>
                                 <li class="link">
                                     <a href="../classes/Session.html" >Session</a>
@@ -366,7 +366,7 @@
                                            <a href="../components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
+                                           <a href="../components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -411,7 +411,7 @@
                                            <a href="../classes/Note.html" >Note</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../classes/Option.html"  class="active" >Option</a>
+                                           <a href="../classes/Option.html" >Option</a>
                                        </li>
                                        <li class="link">
                                            <a href="../classes/Session.html" >Session</a>
@@ -498,90 +498,115 @@
                    
                    </nav>
                </div>
-               <div class="content class">
+               <div class="content component">
                    <div class="content-data">
 
 
-
-
-
-
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>Option</li>
+  <li>Components</li>
+  <li>SessionResourceComponent</li>
 </ol>
 
-<ul class="nav nav-tabs" role="tablist">
-    <li class="active">
-        <a href="#infos" id="infos-tab" role="tab" data-toggle="tab">Infos</a>
-    </li>
-    <li>
-        <a href="#source" role="tab" id="source-tab" data-toggle="tab">Source</a>
-    </li>
-</ul>
 
-<div class="tab-content">
-    <div class="tab-pane fade active in" id="infos">
-        <p class="comment">
-            <h3>File</h3>
-        </p>
-        <p class="comment">
-            <code>src/app/models/formHelpers.ts</code>
-        </p>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#infos" id="infos-tab" role="tab" data-toggle="tab">Infos</a>
+        </li>
+        <li>
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab">Source</a>
+        </li>
+    </ul>
 
-
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="infos"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/session/session-resource/session-resource.component.ts</code>
+</p>
 
 
 
-            <section>
-                <h3 id="inputs">Properties</h3>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> label</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>label:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> value</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>value:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </section>
-    </div>
-    <div class="tab-pane fade tab-source-code" id="source">
-        <pre><code class="hljs javascript">export enum FieldValidationStatus {
-  INVALID &#x3D; &#x27;danger&#x27;,
-  EMPTY &#x3D; &#x27;warning&#x27;,
-  VALID &#x3D; &#x27;basic&#x27;
-}
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
 
-export declare class Option {
-  label: string;
-  value: string;
-}
 
-</code></pre>
-    </div>
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-session-resource</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>session-resource.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>session-resource.component.html</code></td>
+            </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+    <section>
+        <h3 id="constructor">Constructor</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>constructor()</code>
+                        </td>
+                    </tr>
+    
+                </tbody>
+            </table>
+    </section>
+
+
 </div>
+        <div class="tab-pane fade tab-source-code" id="source">
+            <pre><code class="hljs javascript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+
+@Component({
+  selector: &#x27;app-session-resource&#x27;,
+  templateUrl: &#x27;./session-resource.component.html&#x27;,
+  styleUrls: [&#x27;./session-resource.component.scss&#x27;]
+})
+export class SessionResourceComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
+</code></pre>
+        </div>
+    </div>
+
+
+
+
+
 
 
 

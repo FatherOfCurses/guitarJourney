@@ -124,7 +124,7 @@
                                     <a href="../components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../components/SessionResourceComponentComponent.html" >SessionResourceComponentComponent</a>
+                                    <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -199,13 +199,13 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
-                                    <a href="../injectables/DocumentUploadService.html" >DocumentUploadService</a>
-                                </li>
-                                <li class="link">
                                     <a href="../injectables/SessionService.html" >SessionService</a>
                                 </li>
                                 <li class="link">
                                     <a href="../injectables/SongsterrService.html" >SongsterrService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/UploadService.html" >UploadService</a>
                                 </li>
                         </ul>
                     </li>
@@ -366,7 +366,7 @@
                                            <a href="../components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../components/SessionResourceComponentComponent.html" >SessionResourceComponentComponent</a>
+                                           <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -441,13 +441,13 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
-                                           <a href="../injectables/DocumentUploadService.html" >DocumentUploadService</a>
-                                       </li>
-                                       <li class="link">
                                            <a href="../injectables/SessionService.html" >SessionService</a>
                                        </li>
                                        <li class="link">
                                            <a href="../injectables/SongsterrService.html" >SongsterrService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/UploadService.html" >UploadService</a>
                                        </li>
                                </ul>
                            </li>
@@ -550,15 +550,13 @@
                                 <a href="../components/PreviousSessionsComponent.html">PreviousSessionsComponent</a>
                             </li>
                             <li class="list-group-item">
-                                <a href="../components/SessionComponent.html">SessionComponent</a>
+                                <a href="../components/SessionResourceComponent.html">SessionResourceComponent</a>
                             </li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h3>Imports<a href="https://angular.io/docs/ts/latest/api/core/index/NgModule-interface.html#!#imports-anchor" target="_blank"><span class="fa fa-info-circle"></a></h3>
-                    <ul class="list-group">
                             <li class="list-group-item">
-                                    <a href="../modules/AppModule.html" >AppModule</a>
+                                <a href="../components/SessionResourcePickerComponent.html">SessionResourcePickerComponent</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a href="../components/SessionComponent.html">SessionComponent</a>
                             </li>
                     </ul>
                 </div>
@@ -596,12 +594,15 @@ import { ChipsModule } from &quot;primeng/chips&quot;;
 import { InputTextareaModule } from &quot;primeng/inputtextarea&quot;;
 import { TableModule } from &quot;primeng/table&quot;;
 import { ButtonModule } from &quot;primeng/button&quot;;
-import { AppModule } from &quot;../../app.module&quot;;
+import { SessionResourceComponent } from &quot;./session-resource/session-resource.component&quot;;
+import { SessionResourcePickerComponent } from &quot;./session-resource-picker/session-resource-picker.component&quot;;
 
 @NgModule({
   declarations: [
     DisplaySessionComponent,
     PreviousSessionsComponent,
+    SessionResourceComponent,
+    SessionResourcePickerComponent,
     SessionComponent
   ],
   imports: [
@@ -617,8 +618,7 @@ import { AppModule } from &quot;../../app.module&quot;;
     ChipsModule,
     InputTextareaModule,
     TableModule,
-    ButtonModule,
-    AppModule
+    ButtonModule
   ],
   exports: [
     DisplaySessionComponent,

@@ -19,15 +19,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StyleClassModule } from 'primeng/styleclass';
 import { MenuModule } from 'primeng/menu';
 import { MenubarModule } from 'primeng/menubar';
-import { CdTimerModule } from "angular-cd-timer";
-import { SessionResourceComponentComponent } from './features/session-resource-component/session-resource-component.component';
 import { ExercisesComponent } from './features/exercises/exercises.component';
 import { AuthComponent } from './auth/auth.component';
-import { MetronomeComponent } from './features/metronome/metronome.component';
-import { SessionResourcePickerComponent } from './features/session-resource-picker/session-resource-picker.component';
-import { SongLibraryComponent } from './features/song-library/song-library.component';
+import { MetronomeComponent } from './utilities/metronome/metronome.component';
+import { SongLibraryComponent } from './features/song/song-library/song-library.component';
 import { UploadComponent } from './features/upload/upload.component';
 import { DialogModule } from "primeng/dialog";
+import { SongModule } from "./features/song/song.module";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -37,18 +36,18 @@ import { DialogModule } from "primeng/dialog";
     FooterComponent,
     NavigationComponent,
     ChordComponent,
-    SessionResourceComponentComponent,
     ExercisesComponent,
     AuthComponent,
     MetronomeComponent,
-    SessionResourcePickerComponent,
     SongLibraryComponent,
     UploadComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     SessionModule,
+    SongModule,
     ReactiveFormsModule,
     FormsModule,
     ServiceWorkerModule.register("ngsw-worker.js", { enabled: environment.production }),
@@ -60,14 +59,10 @@ import { DialogModule } from "primeng/dialog";
     StyleClassModule,
     MenuModule,
     MenubarModule,
-    CdTimerModule,
     DialogModule
   ],
   providers: [Convertors],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  exports: [
-    SessionResourceComponentComponent
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

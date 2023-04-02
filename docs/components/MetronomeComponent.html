@@ -124,7 +124,7 @@
                                     <a href="../components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../components/SessionResourceComponentComponent.html" >SessionResourceComponentComponent</a>
+                                    <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -199,13 +199,13 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
-                                    <a href="../injectables/DocumentUploadService.html" >DocumentUploadService</a>
-                                </li>
-                                <li class="link">
                                     <a href="../injectables/SessionService.html" >SessionService</a>
                                 </li>
                                 <li class="link">
                                     <a href="../injectables/SongsterrService.html" >SongsterrService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/UploadService.html" >UploadService</a>
                                 </li>
                         </ul>
                     </li>
@@ -366,7 +366,7 @@
                                            <a href="../components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../components/SessionResourceComponentComponent.html" >SessionResourceComponentComponent</a>
+                                           <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -441,13 +441,13 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
-                                           <a href="../injectables/DocumentUploadService.html" >DocumentUploadService</a>
-                                       </li>
-                                       <li class="link">
                                            <a href="../injectables/SessionService.html" >SessionService</a>
                                        </li>
                                        <li class="link">
                                            <a href="../injectables/SongsterrService.html" >SongsterrService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/UploadService.html" >UploadService</a>
                                        </li>
                                </ul>
                            </li>
@@ -522,7 +522,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/features/metronome/metronome.component.ts</code>
+    <code>src/app/utilities/metronome/metronome.component.ts</code>
 </p>
 
 
@@ -585,7 +585,6 @@
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
             <pre><code class="hljs javascript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
-import * as metronome from &#x27;../../../../node_modules/metronome/assets/js/metronome&#x27;
 
 @Component({
   selector: &#x27;app-metronome&#x27;,
@@ -597,7 +596,7 @@ export class MetronomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    metronome.play();
+
   }
 
 }

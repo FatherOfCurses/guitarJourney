@@ -30,7 +30,7 @@ export class NavigationComponent implements OnInit{
       {
         label: 'Exercises',
         icon: 'pi pi-fw pi-eye',
-        routerLink: ['/notation']
+        routerLink: ['/exercises']
       },
 
       {

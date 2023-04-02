@@ -1,14 +1,33 @@
-<p>Basic song format</p>
-<ul>
-  <li>Title</li>
-  <li>Artist</li>
-  <li>Link to Recording</li>
-  <li>YouTube embed</li>
-  <li>songsterr link</li>
-  <li>Practice sessions?</li>
-  <li>notes</li>
-  <li>Uploaded documents</li>
-</ul>
-<p-button id="uploadDoc" (click)="openUploadModal()">Upload document</p-button>
+<div id="songFormSection"><p>Basic song format</p>
+  <ul>
+    <li>Title</li>
+    <li>Artist</li>
+    <li>Link to Recording</li>
+    <li>YouTube embed</li>
+    <li>songsterr link</li>
+    <li>Practice sessions?</li>
+    <li>notes</li>
+    <li>Uploaded documents</li>
+  </ul>
+</div>
+<div id="uploadSection" class="card flex justify-content-center">
+  <p-button id="uploadItems" icon="pi pi-external-link" (click)="openUploadModal()" label="Upload items"></p-button>
+  <p-dialog header="Choose a file to upload" [(visible)]="uploadModalVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <p-fileUpload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="true" accept="image/*" maxFileSize="1000000">
+      <ng-template pTemplate="toolbar">
+        <div class="py-3">Upload 3 Files</div>
+      </ng-template>
+      <ng-template let-file pTemplate="file">
+        <div>Custom UI to display a file</div>
+      </ng-template>
+      <ng-template pTemplate="content" let-files>
+        <div>Additional content.</div>
+      </ng-template>
+    </p-fileUpload>
+  </p-dialog>
+</div>
+
+
+
 
 

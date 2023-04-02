@@ -124,7 +124,7 @@
                                     <a href="../components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../components/SessionResourceComponentComponent.html" >SessionResourceComponentComponent</a>
+                                    <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -199,13 +199,13 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
-                                    <a href="../injectables/DocumentUploadService.html" >DocumentUploadService</a>
-                                </li>
-                                <li class="link">
                                     <a href="../injectables/SessionService.html" >SessionService</a>
                                 </li>
                                 <li class="link">
                                     <a href="../injectables/SongsterrService.html" >SongsterrService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../injectables/UploadService.html" >UploadService</a>
                                 </li>
                         </ul>
                     </li>
@@ -366,7 +366,7 @@
                                            <a href="../components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../components/SessionResourceComponentComponent.html" >SessionResourceComponentComponent</a>
+                                           <a href="../components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="../components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -441,13 +441,13 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
-                                           <a href="../injectables/DocumentUploadService.html" >DocumentUploadService</a>
-                                       </li>
-                                       <li class="link">
                                            <a href="../injectables/SessionService.html" >SessionService</a>
                                        </li>
                                        <li class="link">
                                            <a href="../injectables/SongsterrService.html" >SongsterrService</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../injectables/UploadService.html" >UploadService</a>
                                        </li>
                                </ul>
                            </li>
@@ -562,9 +562,6 @@
                                 <a href="../components/ChordComponent.html">ChordComponent</a>
                             </li>
                             <li class="list-group-item">
-                                <a href="../components/SessionResourceComponentComponent.html">SessionResourceComponentComponent</a>
-                            </li>
-                            <li class="list-group-item">
                                 <a href="../components/ExercisesComponent.html">ExercisesComponent</a>
                             </li>
                             <li class="list-group-item">
@@ -572,9 +569,6 @@
                             </li>
                             <li class="list-group-item">
                                 <a href="../components/MetronomeComponent.html">MetronomeComponent</a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="../components/SessionResourcePickerComponent.html">SessionResourcePickerComponent</a>
                             </li>
                             <li class="list-group-item">
                                 <a href="../components/SongLibraryComponent.html">SongLibraryComponent</a>
@@ -593,13 +587,8 @@
                             <li class="list-group-item">
                                     <a href="../modules/SessionModule.html" >SessionModule</a>
                             </li>
-                    </ul>
-                </div>
-                <div class="col-sm-3">
-                    <h3>Exports<a href="https://angular.io/docs/ts/latest/api/core/index/NgModule-interface.html#!#exports-anchor" target="_blank"><span class="fa fa-info-circle"></a></h3>
-                    <ul class="list-group">
                             <li class="list-group-item">
-                                    <a href="../components/SessionResourceComponentComponent.html" >SessionResourceComponentComponent</a>
+                                    <a href="../modules/SongModule.html" >SongModule</a>
                             </li>
                     </ul>
                 </div>
@@ -636,15 +625,14 @@ import { FormsModule, ReactiveFormsModule } from &#x27;@angular/forms&#x27;;
 import { StyleClassModule } from &#x27;primeng/styleclass&#x27;;
 import { MenuModule } from &#x27;primeng/menu&#x27;;
 import { MenubarModule } from &#x27;primeng/menubar&#x27;;
-import { CdTimerModule } from &quot;angular-cd-timer&quot;;
-import { SessionResourceComponentComponent } from &#x27;./features/session-resource-component/session-resource-component.component&#x27;;
 import { ExercisesComponent } from &#x27;./features/exercises/exercises.component&#x27;;
 import { AuthComponent } from &#x27;./auth/auth.component&#x27;;
-import { MetronomeComponent } from &#x27;./features/metronome/metronome.component&#x27;;
-import { SessionResourcePickerComponent } from &#x27;./features/session-resource-picker/session-resource-picker.component&#x27;;
-import { SongLibraryComponent } from &#x27;./features/song-library/song-library.component&#x27;;
+import { MetronomeComponent } from &#x27;./utilities/metronome/metronome.component&#x27;;
+import { SongLibraryComponent } from &#x27;./features/song/song-library/song-library.component&#x27;;
 import { UploadComponent } from &#x27;./features/upload/upload.component&#x27;;
 import { DialogModule } from &quot;primeng/dialog&quot;;
+import { SongModule } from &quot;./features/song/song.module&quot;;
+import { BrowserAnimationsModule } from &quot;@angular/platform-browser/animations&quot;;
 
 @NgModule({
   declarations: [
@@ -654,18 +642,18 @@ import { DialogModule } from &quot;primeng/dialog&quot;;
     FooterComponent,
     NavigationComponent,
     ChordComponent,
-    SessionResourceComponentComponent,
     ExercisesComponent,
     AuthComponent,
     MetronomeComponent,
-    SessionResourcePickerComponent,
     SongLibraryComponent,
     UploadComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     SessionModule,
+    SongModule,
     ReactiveFormsModule,
     FormsModule,
     ServiceWorkerModule.register(&quot;ngsw-worker.js&quot;, { enabled: environment.production }),
@@ -677,14 +665,10 @@ import { DialogModule } from &quot;primeng/dialog&quot;;
     StyleClassModule,
     MenuModule,
     MenubarModule,
-    CdTimerModule,
     DialogModule
   ],
   providers: [Convertors],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  exports: [
-    SessionResourceComponentComponent
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

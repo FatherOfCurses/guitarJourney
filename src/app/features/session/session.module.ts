@@ -14,12 +14,15 @@ import { ChipsModule } from "primeng/chips";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { TableModule } from "primeng/table";
 import { ButtonModule } from "primeng/button";
-import { AppModule } from "../../app.module";
+import { SessionResourceComponent } from "./session-resource/session-resource.component";
+import { SessionResourcePickerComponent } from "./session-resource-picker/session-resource-picker.component";
 
 @NgModule({
   declarations: [
     DisplaySessionComponent,
     PreviousSessionsComponent,
+    SessionResourceComponent,
+    SessionResourcePickerComponent,
     SessionComponent
   ],
   imports: [
@@ -35,8 +38,7 @@ import { AppModule } from "../../app.module";
     ChipsModule,
     InputTextareaModule,
     TableModule,
-    ButtonModule,
-    AppModule
+    ButtonModule
   ],
   exports: [
     DisplaySessionComponent,
