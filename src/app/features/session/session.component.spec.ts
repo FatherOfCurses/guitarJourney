@@ -14,12 +14,8 @@ describe('SessionComponent', () => {
   let component: SessionComponent;
   let fixture: ComponentFixture<SessionComponent>;
   let sessionForm: FormGroup;
-  let timerForm: FormGroup;
   let afterForm: FormGroup;
-  let timer: boolean;
   let sessionStatus: String;
-  // TODO: mock session service so submit button doesn't cause freakout
-
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
