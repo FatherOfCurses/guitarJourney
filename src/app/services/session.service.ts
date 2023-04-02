@@ -30,10 +30,3 @@ export class SessionService {
       );
   }
 }
-
-// getPayments(claimId: string): Observable<PaymentResponse[]> {
-//   return this.http
-//     .get<{ payments: PaymentResponse[] }>(`${this.BASE_URL}/payments/${claimId}/`)
-//     .pipe(map((response) => response.payments));
-// }
-

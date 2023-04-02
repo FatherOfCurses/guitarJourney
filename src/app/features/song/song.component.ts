@@ -12,7 +12,7 @@ import { MessageService } from "primeng/api";
 })
 export class SongComponent implements OnInit {
   searchResult$: Observable<SongsterrResponse[]>;
-  uploadModalVisible: boolean;
+
 
   constructor(private songService: SongsterrService, private messageService: MessageService) {
   }
@@ -25,9 +25,7 @@ export class SongComponent implements OnInit {
     this.songService.getSearchResults$('Marley').pipe().subscribe(callback);
   }
 
-  openUploadModal() {
-    this.uploadModalVisible = true;
-  }
+
 
   onUpload(event) {
     this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
