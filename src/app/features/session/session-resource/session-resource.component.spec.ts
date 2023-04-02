@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SessionResourceComponentComponent } from './session-resource-component.component';
+import { SessionResourceComponent } from './session-resource.component';
 
 describe('SessionResourceComponentComponent', () => {
-  let component: SessionResourceComponentComponent;
-  let fixture: ComponentFixture<SessionResourceComponentComponent>;
+  let component: SessionResourceComponent;
+  let fixture: ComponentFixture<SessionResourceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SessionResourceComponentComponent ]
+      declarations: [ SessionResourceComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SessionResourceComponentComponent);
+    fixture = TestBed.createComponent(SessionResourceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

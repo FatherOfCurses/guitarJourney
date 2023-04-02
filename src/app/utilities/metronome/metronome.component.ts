@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import * as metronome from '../../../../node_modules/metronome/assets/js/metronome'
 
 @Component({
   selector: 'app-metronome',
@@ -11,7 +10,7 @@ export class MetronomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    metronome.play();
+
   }
 
 }
