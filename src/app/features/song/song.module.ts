@@ -4,7 +4,6 @@ import { SongComponent } from './song.component';
 import { ButtonModule } from "primeng/button";
 import { DialogModule } from "primeng/dialog";
 import { FileUploadModule } from "primeng/fileupload";
-import { AppModule } from "../../app.module";
 
 @NgModule({
   declarations: [
@@ -14,8 +13,7 @@ import { AppModule } from "../../app.module";
     CommonModule,
     ButtonModule,
     DialogModule,
-    FileUploadModule,
-    AppModule
+    FileUploadModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

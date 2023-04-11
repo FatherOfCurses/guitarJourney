@@ -75,7 +75,9 @@ describe('SessionComponent', () => {
       sessionStatus = 'after';
 
     })
-  })
+  });
+
+  // TODO: TEST COVERAGE ON LINES 92-94,97-118,129-154
 });
 
 

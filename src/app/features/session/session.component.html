@@ -57,7 +57,7 @@
     <div id="timerSection">
       <p class="font-bold text-xl">{{time}}</p>
       <h2>Keep going! Make it a good session!</h2>
-      <p>Target Practice Time: {{this.sessionForm.get("practiceTime")}} minutes</p>
+      <p>Target Practice Time: {{this.sessionForm.get("practiceTime").value}} minutes</p>
       <p-button id="endButton" (click)="stopTimer()">End</p-button>
     </div>
     <div id="resourcesSection" *ngIf="resourcesAdded">

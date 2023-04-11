@@ -63,3 +63,4 @@ describe('PreviousSessionsComponent_class', () => {
       expect(mockSessionService.putSession$).toHaveBeenCalledWith(mockSession);
     });
   });
+  ``

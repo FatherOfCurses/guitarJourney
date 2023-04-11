@@ -65,6 +65,8 @@ describe('SongComponent', () => {
       songComponent.onUpload(event);
       expect(messageServiceSpy).toHaveBeenCalled();
     });
-
   });
+
+  //TODO: Test coverage on lines 17-31
+
 });
