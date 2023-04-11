@@ -42,13 +42,16 @@
           placeholder="Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:"
           pInputText
         />
-      </div>
-      <!-- TODO: New form entry for practice session style - focus vs all resources etc-->
-      <div id="sessionModeChoice">
+        <div id="sessionModeChoice">
+          <!-- TODO: New form entry for practice session style - focus vs all resources etc-->
         <p>Do you want to add practice resources?</p>
+          <!-- TODO: Fix styling on this button -->
         <p-button id="addResources" (click)="addResourcesToSession()">Yes</p-button>
 
       </div>
+      </div>
+
+
       <p-button id="startButton" (click)="startTimer()">Start</p-button>
     </form>
   </div>

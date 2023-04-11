@@ -23,7 +23,7 @@ export class SessionComponent implements OnInit {
     sessionIntent: "",
     postPracticeReflection: "",
     goalForNextTime: "",
-    id: "",
+    id: "6badcbb7-afbf-4e28-8fdd-b6e068a493c1",
     date: Date()
   };
   validationStatus: Option[];
