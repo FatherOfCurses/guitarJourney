@@ -1,7 +1,7 @@
 export enum FieldValidationStatus {
-  INVALID = 'danger',
-  EMPTY = 'warning',
-  VALID = 'basic'
+  INVALID = 'invalid',
+  EMPTY = 'empty',
+  VALID = 'valid'
 }
 
 export declare class Option {

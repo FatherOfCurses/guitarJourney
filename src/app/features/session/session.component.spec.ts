@@ -5,14 +5,14 @@ import { RouterTestingModule } from '@angular/router/testing'
 import { SessionModule } from './session.module'
 import { HttpClient, HttpHandler } from '@angular/common/http'
 import { SessionService } from '../../services/session.service'
-import SessionServiceMock from '../../../__mocks__/services/session.service.mock'
-import { CdTimerComponent, CdTimerModule } from "angular-cd-timer";
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import SessionServiceMock from "../../../__mocks__/services/session.service.mock";
+import { Session } from "../../models/session";
 
 describe('SessionComponent', () => {
   let component: SessionComponent;
   let fixture: ComponentFixture<SessionComponent>;
-  let sessionForm: FormGroup;
+  let prePracticeForm: FormGroup;
   let afterForm: FormGroup;
   let sessionStatus: String;
 
@@ -27,12 +27,7 @@ describe('SessionComponent', () => {
         FormBuilder,
         HttpClient,
         HttpHandler,
-        CdTimerModule,
-        CdTimerComponent,
-        {
-          provide: SessionService,
-          use: SessionServiceMock,
-        },
+        { provide: SessionService, useValue: SessionServiceMock, }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -46,16 +41,55 @@ describe('SessionComponent', () => {
     expect(component).toBeTruthy()
   });
 
+  it("successfully captures form inputs", () => {
+    const mockSession: Session = {
+      id: '1234565',
+      practiceTime: 30,
+      date: '2023-04-19',
+      whatToPractice: 'Lots and lots of things',
+      sessionIntent: 'Be awesome',
+      postPracticeReflection: 'went well',
+      goalForNextTime: 'use a metronome'
+    }
+    component.initializeForm();
+    component.subscribeToFormChanges();
+    component.prePracticeForm.patchValue({ practiceTime: 30 });
+    component.prePracticeForm.patchValue({whatToPractice: 'Lots and lots of things'});
+    component.prePracticeForm.patchValue({sessionIntent: 'be awesome'});
+    component.afterForm.patchValue({sessionReflection: 'went well'});
+    component.afterForm.patchValue({goalForNextTime: 'have more fun'});
+    component.onSubmit();
+    expect(SessionServiceMock.putSession$).toHaveBeenCalled();
+  });
+
   describe('Pre-session form',  () => {
     beforeEach(async () => {
       sessionStatus = 'before';
-      sessionForm = component.sessionForm;
+      prePracticeForm = component.prePracticeForm;
       fixture.detectChanges();
     });
 
     it('should create', () => {
-      expect(sessionForm).toBeTruthy();
+      expect(prePracticeForm).toBeTruthy();
     });
+
+    it('should not allow invalid data in pre-practice form', () => {
+      prePracticeForm.patchValue({practiceTime: 'zzzzz'});
+      expect(component.practiceTimeValid).toEqual('invalid');
+      prePracticeForm.patchValue({whatToPractice: ''});
+      expect(component.whatToPracticeValid).toEqual('invalid');
+      prePracticeForm.patchValue({sessionIntent: ''});
+      expect(component.sessionIntentValid).toEqual("invalid");
+    });
+
+    it('should allow valid data in pre-practice form', () => {
+      prePracticeForm.patchValue({practiceTime: '30'});
+      expect(component.practiceTimeValid).toEqual("valid");
+      prePracticeForm.patchValue({whatToPractice: 'Lots and lots of things'});
+      expect(component.practiceTimeValid).toEqual("valid");
+      prePracticeForm.patchValue({sessionIntent: 'Be awesome'});
+      expect(component.practiceTimeValid).toEqual("valid");
+    })
   });
 
   describe('After form', () => {
@@ -68,17 +102,29 @@ describe('SessionComponent', () => {
     it('should create', () => {
       expect(afterForm).toBeTruthy();
     });
+
+    it('should not allow invalid data in after form', () => {
+      afterForm.patchValue({sessionReflection: ''});
+      expect(component.sessionReflectionValid).toEqual('invalid');
+      afterForm.patchValue({goalForNextTime: ''});
+      expect(component.goalForNextTimeValid).toEqual('invalid');
+    });
+
+    it('should allow valid data in after form', () => {
+      afterForm.patchValue({sessionReflection: 'I think it went pretty well'});
+      expect(component.sessionReflectionValid).toEqual('valid');
+      afterForm.patchValue({goalForNextTime: 'Dont forget to use a metronome'});
+      expect(component.goalForNextTimeValid).toEqual('valid');
+    })
   });
 
   describe('Form submission', () => {
     beforeEach(async () => {
       sessionStatus = 'after';
-
-    })
+    });
   });
 
-  // TODO: TEST COVERAGE ON LINES 92-94,97-118,129-154
-});
 
+});
 
 
