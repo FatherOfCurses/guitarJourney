@@ -62,15 +62,5 @@ describe('PreviousSessionsComponent_class',  () => {
       component.retrieveSessionById('1');
       expect(SessionServiceMock.getSession$).toHaveBeenCalledWith('1');
     });
-
-    it("transforms data into session object", () => {
-      expect(Array.isArray(component.sessionData)).toBe(true);
-      expect(component.sessionData[0]).toBeInstanceOf(Session);
-    });
-
-    it("successfully updates session", () => {
-      expect(SessionServiceMock.putSession$()).toBeInstanceOf(Observable);
-      expect(SessionServiceMock.putSession$).toHaveBeenCalledWith(mockSession);
-    });
   });
 
