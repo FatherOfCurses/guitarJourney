@@ -113,7 +113,7 @@ export class SessionComponent implements OnInit {
     this.session.postPracticeReflection = this.afterForm.get("sessionReflection").value;
     this.session.goalForNextTime = this.afterForm.get("goalForNextTime").value;
     this.sessionService.putSession$(this.session);
-    this.router.navigate(["dashboard"]).then();
+    this.router.navigate(['/']);
   }
 
   //Timer functions

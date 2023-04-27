@@ -8,6 +8,7 @@ import { SessionService } from '../../services/session.service'
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import SessionServiceMock from "../../../__mocks__/services/session.service.mock";
 import { Session } from "../../models/session";
+import { RouterModule } from "@angular/router";
 
 describe('SessionComponent', () => {
   let component: SessionComponent;
@@ -22,12 +23,14 @@ describe('SessionComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         SessionModule,
+        RouterModule
       ],
       providers: [
         FormBuilder,
         HttpClient,
         HttpHandler,
-        { provide: SessionService, useValue: SessionServiceMock, }
+        RouterModule,
+        { provide: SessionService, useValue: SessionServiceMock }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -117,14 +120,6 @@ describe('SessionComponent', () => {
       expect(component.goalForNextTimeValid).toEqual('valid');
     })
   });
-
-  describe('Form submission', () => {
-    beforeEach(async () => {
-      sessionStatus = 'after';
-    });
-  });
-
-
 });
 
 

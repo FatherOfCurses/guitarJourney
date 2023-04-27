@@ -7,7 +7,6 @@ import { SongComponent } from './features/song/song.component';
 import { DisplaySessionComponent } from './features/session/display-single-session/display-session.component';
 import { ExercisesComponent } from "./features/exercises/exercises.component";
 
-
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'dashboard', component: LandingPageComponent},
