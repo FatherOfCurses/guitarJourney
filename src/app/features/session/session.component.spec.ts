@@ -15,6 +15,7 @@ describe('SessionComponent', () => {
   let fixture: ComponentFixture<SessionComponent>;
   let prePracticeForm: FormGroup;
   let afterForm: FormGroup;
+
   let sessionStatus: String;
 
   beforeEach(async () => {
@@ -120,6 +121,33 @@ describe('SessionComponent', () => {
       expect(component.goalForNextTimeValid).toEqual('valid');
     })
   });
+
+  describe('Timer functionality', () => {
+
+    describe('SessionComponent_class', () => {
+      it("timer starts correctly and the session status is updated to During.", () => {
+        component.startTimer();
+        expect(component.timerSubscription).toBeDefined();
+        expect(component.sessionStatus).toBe('during');
+      });
+
+      it("timer stops correctly, the session practice time is updated, and the session status is updated to After.", () => {
+          component.startTimer();
+          setTimeout(() => {
+            component.stopTimer();
+            expect(component.timerSubscription.closed).toBe(true);
+            expect(component.session.practiceTime).toBeGreaterThan(0);
+            expect(component.sessionStatus).toBe('after');
+          }, 2000);
+      });
+
+      it("correctly formats a time in milliseconds to a string in the format mm:ss.", () => {
+        expect(component.formatTime(60000)).toBe("01:00");
+        expect(component.formatTime(120000)).toBe("02:00");
+        expect(component.formatTime(61000)).toBe("01:01");
+      });
+    });
+  })
 });
 
 
