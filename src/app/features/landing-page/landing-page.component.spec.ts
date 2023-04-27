@@ -28,5 +28,4 @@ describe('LandingPageComponent', () => {
     const greeting = compiled.querySelector('[data-greeting]');
     expect(greeting).toBeTruthy();
   });
-
 });

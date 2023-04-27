@@ -26,14 +26,7 @@ export class SessionService {
       .put(`${this.BASE_URL}/sessions`, JSON.stringify(session), {responseType: 'text', headers})
       .subscribe(
         res => console.log(`put result: success`),
-        err => console.log(`Error with put result: ${err.toString()}`)
+        err => console.log(`Error with put result: ${err.message}`)
       );
   }
 }
-
-// getPayments(claimId: string): Observable<PaymentResponse[]> {
-//   return this.http
-//     .get<{ payments: PaymentResponse[] }>(`${this.BASE_URL}/payments/${claimId}/`)
-//     .pipe(map((response) => response.payments));
-// }
-

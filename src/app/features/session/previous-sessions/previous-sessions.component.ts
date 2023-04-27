@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Session } from '../../../models/session';
 import { SessionService } from '../../../services/session.service';
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-previous-sessions',
@@ -8,29 +9,14 @@ import { SessionService } from '../../../services/session.service';
   styleUrls: ['./previous-sessions.component.scss']
 })
 export class PreviousSessionsComponent implements OnInit {
-  sessionData: Session[] = [
-    {
-      id:'Id',
-      date: '2022-10-22',
-      practiceTime: 20,
-      whatToPractice: 'stuff',
-      sessionIntent: 'morestuff',
-      postPracticeReflection: 'reflect',
-      goalForNextTime: 'do better'
-    },
-    {
-      id:'Id1',
-      date: '2022-10-23',
-      practiceTime: 21,
-      whatToPractice: 'stuff1',
-      sessionIntent: 'morestuff1',
-      postPracticeReflection: 'reflect1',
-      goalForNextTime: 'do better1'
-    },
-  ];
+  sessionData: Session[];
   constructor(private sessionService: SessionService) { }
 
   ngOnInit(): void {
     this.sessionService.getAllSessions$().subscribe(session => this.sessionData = session);
+  }
+
+  retrieveSessionById(id: string): Observable<Session> {
+    return this.sessionService.getSession$(id);
   }
 }

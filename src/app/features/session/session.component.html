@@ -3,7 +3,7 @@
   <!-- TODO: Get all these styling elements into css classes -->
   <!-- TODO: Text in form fields is very faint-->
   <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'before'" >
-    <form [formGroup]="sessionForm"
+    <form [formGroup]="prePracticeForm"
           id="sessionForm"
           class="grid formgrid p-fluid"
           >
@@ -12,13 +12,13 @@
           Practice Time Amount
         </label>
         <input
-          type="text"
+          type="number"
           id="practiceTime"
           formControlName="practiceTime"
           placeholder="Enter the time (in minutes) that you want to practice"
           pInputText
         />
-        <div *ngIf="practiceTime.invalid"></div>
+        <div *ngIf="practiceTime.invalid">Please enter the time in numbers.</div>
       </div>
       <div class="field mb-4 col-12">
         <label for="whatToPractice" class="font-medium text-900">
@@ -42,13 +42,16 @@
           placeholder="Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:"
           pInputText
         />
-      </div>
-      <!-- TODO: New form entry for practice session style - focus vs all resources etc-->
-      <div id="sessionModeChoice">
+        <div id="sessionModeChoice">
+          <!-- TODO: New form entry for practice session style - focus vs all resources etc-->
         <p>Do you want to add practice resources?</p>
+          <!-- TODO: Fix styling on this button -->
         <p-button id="addResources" (click)="addResourcesToSession()">Yes</p-button>
 
       </div>
+      </div>
+
+
       <p-button id="startButton" (click)="startTimer()">Start</p-button>
     </form>
   </div>
@@ -57,7 +60,7 @@
     <div id="timerSection">
       <p class="font-bold text-xl">{{time}}</p>
       <h2>Keep going! Make it a good session!</h2>
-      <p>Target Practice Time: {{this.sessionForm.get("practiceTime")}} minutes</p>
+      <p>Target Practice Time: {{this.prePracticeForm.get("practiceTime").value}} minutes</p>
       <p-button id="endButton" (click)="stopTimer()">End</p-button>
     </div>
     <div id="resourcesSection" *ngIf="resourcesAdded">

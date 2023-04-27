@@ -5,21 +5,17 @@ import { RouterTestingModule } from '@angular/router/testing'
 import { SessionModule } from './session.module'
 import { HttpClient, HttpHandler } from '@angular/common/http'
 import { SessionService } from '../../services/session.service'
-import SessionServiceMock from '../../../__mocks__/services/session.service.mock'
-import { CdTimerComponent, CdTimerModule } from "angular-cd-timer";
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-import sessionServiceMock from "../../../__mocks__/services/session.service.mock";
+import SessionServiceMock from "../../../__mocks__/services/session.service.mock";
+import { Session } from "../../models/session";
+import { RouterModule } from "@angular/router";
 
 describe('SessionComponent', () => {
   let component: SessionComponent;
   let fixture: ComponentFixture<SessionComponent>;
-  let sessionForm: FormGroup;
-  let timerForm: FormGroup;
+  let prePracticeForm: FormGroup;
   let afterForm: FormGroup;
-  let timer: boolean;
   let sessionStatus: String;
-  // TODO: mock session service so submit button doesn't cause freakout
-
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,17 +23,14 @@ describe('SessionComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         SessionModule,
+        RouterModule
       ],
       providers: [
         FormBuilder,
         HttpClient,
         HttpHandler,
-        CdTimerModule,
-        CdTimerComponent,
-        {
-          provide: SessionService,
-          use: SessionServiceMock,
-        },
+        RouterModule,
+        { provide: SessionService, useValue: SessionServiceMock }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
@@ -51,16 +44,55 @@ describe('SessionComponent', () => {
     expect(component).toBeTruthy()
   });
 
+  it("successfully captures form inputs", () => {
+    const mockSession: Session = {
+      id: '1234565',
+      practiceTime: 30,
+      date: '2023-04-19',
+      whatToPractice: 'Lots and lots of things',
+      sessionIntent: 'Be awesome',
+      postPracticeReflection: 'went well',
+      goalForNextTime: 'use a metronome'
+    }
+    component.initializeForm();
+    component.subscribeToFormChanges();
+    component.prePracticeForm.patchValue({ practiceTime: 30 });
+    component.prePracticeForm.patchValue({whatToPractice: 'Lots and lots of things'});
+    component.prePracticeForm.patchValue({sessionIntent: 'be awesome'});
+    component.afterForm.patchValue({sessionReflection: 'went well'});
+    component.afterForm.patchValue({goalForNextTime: 'have more fun'});
+    component.onSubmit();
+    expect(SessionServiceMock.putSession$).toHaveBeenCalled();
+  });
+
   describe('Pre-session form',  () => {
     beforeEach(async () => {
       sessionStatus = 'before';
-      sessionForm = component.sessionForm;
+      prePracticeForm = component.prePracticeForm;
       fixture.detectChanges();
     });
 
     it('should create', () => {
-      expect(sessionForm).toBeTruthy();
+      expect(prePracticeForm).toBeTruthy();
     });
+
+    it('should not allow invalid data in pre-practice form', () => {
+      prePracticeForm.patchValue({practiceTime: 'zzzzz'});
+      expect(component.practiceTimeValid).toEqual('invalid');
+      prePracticeForm.patchValue({whatToPractice: ''});
+      expect(component.whatToPracticeValid).toEqual('invalid');
+      prePracticeForm.patchValue({sessionIntent: ''});
+      expect(component.sessionIntentValid).toEqual("invalid");
+    });
+
+    it('should allow valid data in pre-practice form', () => {
+      prePracticeForm.patchValue({practiceTime: '30'});
+      expect(component.practiceTimeValid).toEqual("valid");
+      prePracticeForm.patchValue({whatToPractice: 'Lots and lots of things'});
+      expect(component.practiceTimeValid).toEqual("valid");
+      prePracticeForm.patchValue({sessionIntent: 'Be awesome'});
+      expect(component.practiceTimeValid).toEqual("valid");
+    })
   });
 
   describe('After form', () => {
@@ -73,120 +105,21 @@ describe('SessionComponent', () => {
     it('should create', () => {
       expect(afterForm).toBeTruthy();
     });
-  });
 
-  describe('Form submission', () => {
-    beforeEach(async () => {
-      sessionStatus = 'after';
+    it('should not allow invalid data in after form', () => {
+      afterForm.patchValue({sessionReflection: ''});
+      expect(component.sessionReflectionValid).toEqual('invalid');
+      afterForm.patchValue({goalForNextTime: ''});
+      expect(component.goalForNextTimeValid).toEqual('invalid');
+    });
 
+    it('should allow valid data in after form', () => {
+      afterForm.patchValue({sessionReflection: 'I think it went pretty well'});
+      expect(component.sessionReflectionValid).toEqual('valid');
+      afterForm.patchValue({goalForNextTime: 'Dont forget to use a metronome'});
+      expect(component.goalForNextTimeValid).toEqual('valid');
     })
-  })
-});
-
-
-
-
-  // display a session-timer
-  // display correct time on session-timer
-  // allow pause and restart
-  // record total time on finish
-
-/*
-      test("test_initializeForm", () => {
-    const sessionComponent = new SessionComponent(new FormBuilder(), null, null);
-    sessionComponent.initializeForm();
-    expect(sessionComponent.sessionForm.controls.practiceTime.value).toEqual("");
-    expect(sessionComponent.sessionForm.controls.whatToPractice.value).toEqual("");
-    expect(sessionComponent.sessionForm.controls.sessionIntent.value).toEqual("");
-    expect(sessionComponent.afterForm.controls.sessionReflection.value).toEqual("");
-    expect(sessionComponent.afterForm.controls.goalForNextTime.value).toEqual("");
   });
-
-
-// session.component.test.ts - Generated by CodiumAI
-
-/*
-Code Analysis:
-- The class is called SessionComponent and it is an Angular component that implements the OnInit interface.
-- The main functionality of the class is to manage a session object, which contains information about a practice session, and to provide a form for the user to input data about the session.
-- The class has several fields, including the session object, a list of validation options, and several form controls.
-- The class has several methods, including one to initialize the form, one to start a timer, one to stop a timer, and one to submit the form data to a server.
-- The initializeForm method creates a form group for the session data and sets up form controls for each field.
-- The startTimer method sets up an observable that emits a value every second and updates a timer display on the page.
-- The stopTimer method stops the timer and records the elapsed time in the session object.
-- The onSubmit method retrieves the form data and sends it to a server using an HTTP PUT request.
-- The subscribeToFormChanges method sets up observables to monitor changes to the form controls and update the validation status of each field.
-- Overall, the SessionComponent class provides a user interface for recording and tracking practice sessions, and it uses Angular forms and observables to manage the data and user interactions.
-*/
-
-/*
-Test Plan:
-- test_initializeForm: tests that the form controls are initialized correctly. Tags: [happy path]
-- test_startTimer: tests that the timer starts and updates the timerOutput every second. Tags: [happy path]
-- test_invalidFormSubmission: tests that submitting a form with invalid data displays appropriate validation errors. Tags: [edge case]
-- test_multipleTimerStarts: tests that starting the timer multiple times does not cause unexpected behavior. Tags: [edge case]
-- test_HTTPPUTRequestBehavior: tests the behavior of the HTTP PUT request to the server. Tags: [general behavior]
-- test_stopTimer: tests that the timer stops and records the elapsed time in the session object. Tags: [happy path]
-- test_subscribeToFormChanges: tests that the form controls update their validation status when their values change. Tags: [happy path]
-- test_checkFieldValidation: tests that the checkFieldValidation method returns the correct validation status for a given control. Tags: [happy path]
-- test_onSubmit: tests that submitting a valid form successfully updates the session object and navigates to the dashboard. Tags: [happy path]
-- test_sessionObjectInitialization: tests that the session object is initialized with default values when the component is created. Tags: [happy path]
-- test_observableBehavior: tests the behavior of the observables used to monitor form changes and timer events. Tags: [general behavior]
-
-
-
-
-describe('SessionComponent_class', () => {
-test("test_initializeForm", () => {
-const sessionComponent = new SessionComponent(new FormBuilder(), null, null);
-sessionComponent.initializeForm();
-expect(sessionComponent.sessionForm.controls.practiceTime.value).toEqual("");
-expect(sessionComponent.sessionForm.controls.whatToPractice.value).toEqual("");
-expect(sessionComponent.sessionForm.controls.sessionIntent.value).toEqual("");
-expect(sessionComponent.afterForm.controls.sessionReflection.value).toEqual("");
-expect(sessionComponent.afterForm.controls.goalForNextTime.value).toEqual("");
-});
-test("test_startTimer", () => {
-jest.useFakeTimers();
-const sessionComponent = new SessionComponent(new FormBuilder(), null, null);
-sessionComponent.startTimer();
-jest.advanceTimersByTime(5000);
-expect(sessionComponent.timerOutput).toEqual("0.5s");
-jest.useRealTimers();
-});
-test("test_invalidFormSubmission", () => {
-const sessionComponent = new SessionComponent(new FormBuilder(), null, null);
-sessionComponent.onSubmit();
-expect(sessionComponent.sessionForm.controls.practiceTime.valid).toBeFalsy();
-expect(sessionComponent.sessionForm.controls.whatToPractice.valid).toBeFalsy();
-expect(sessionComponent.sessionForm.controls.sessionIntent.valid).toBeFalsy();
-expect(sessionComponent.afterForm.controls.sessionReflection.valid).toBeFalsy();
-expect(sessionComponent.afterForm.controls.goalForNextTime.valid).toBeFalsy();
-});
-test("test_multipleTimerStarts", () => {
-jest.useFakeTimers();
-const sessionComponent = new SessionComponent(new FormBuilder(), null, null);
-sessionComponent.startTimer();
-jest.advanceTimersByTime(5000);
-sessionComponent.startTimer();
-jest.advanceTimersByTime(5000);
-expect(sessionComponent.timerOutput).toEqual("1s");
-jest.useRealTimers();
-});
-test("test_HTTPPUTRequestBehavior", () => {
-const mockHttpClient = { put: jest.fn() };
-const sessionComponent = new SessionComponent(new FormBuilder(), null, new SessionService(mockHttpClient));
-sessionComponent.onSubmit();
-expect(mockHttpClient.put).toHaveBeenCalled();
-});
-test("test_stopTimer", () => {
-jest.useFakeTimers();
-const sessionComponent = new SessionComponent(new FormBuilder(), null, null);
-sessionComponent.startTimer();
-jest.advanceTimersByTime(5000);
-sessionComponent.stopTimer();
-expect(sessionComponent.session.practiceTime).toEqual(5);
-jest.useRealTimers();
 });
 
-*/
+

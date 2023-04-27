@@ -12,9 +12,4 @@ export class ExercisesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // TODO: NOT DRY! Is repeated in song component
-  openUploadModal() {
-    //open upload modal component
-  }
-
 }

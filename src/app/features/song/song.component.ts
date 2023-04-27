@@ -1,32 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { SongsterrService } from '../../services/songsterr.service';
-import { SongsterrResponse } from '../../models/songsterrResponse';
 import { Observable } from 'rxjs';
 import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-song',
   templateUrl: './song.component.html',
-  providers: [ MessageService, SongsterrService ],
+  providers: [ MessageService ],
   styleUrls: ['./song.component.scss']
 })
 export class SongComponent implements OnInit {
-  searchResult$: Observable<SongsterrResponse[]>;
-  uploadModalVisible: boolean;
 
-  constructor(private songService: SongsterrService, private messageService: MessageService) {
+  constructor(private messageService: MessageService) {
   }
 
   ngOnInit(): void {
-    this.searchResult$ = this.songService.getSearchResults$('Marley');
   }
 
-  getSongs(callback): void {
-    this.songService.getSearchResults$('Marley').pipe().subscribe(callback);
-  }
-
-  openUploadModal() {
-    this.uploadModalVisible = true;
+  getSongs(): void {
+    // need a song service to get all songs similar to previous session compoonent
   }
 
   onUpload(event) {

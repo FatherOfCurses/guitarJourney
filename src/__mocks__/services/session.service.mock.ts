@@ -34,9 +34,9 @@ const sessions =[
 
 const SessionServiceMock = {
   // BASE_URL: 'https://some.url',
-  getSession: jest.fn(() => of(session as Session)),
-  getAllSessions: jest.fn(() => of(sessions as Array<Session>)),
-  putSession: jest.fn(() => of("12345" as String))
+  getSession$: jest.fn(() => of(session as Session)),
+  getAllSessions$: jest.fn(() => of(sessions as Array<Session>)),
+  putSession$: jest.fn(() => of('success' as String))
 }
 
 export default SessionServiceMock;

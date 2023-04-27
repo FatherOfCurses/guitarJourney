@@ -13,6 +13,7 @@ export class NavigationComponent implements OnInit{
   ngOnInit() {
     this.items = [
       {
+        label: 'Home',
         icon: 'pi pi-fw pi-home',
         routerLink: ['/']
       },
@@ -32,12 +33,6 @@ export class NavigationComponent implements OnInit{
         icon: 'pi pi-fw pi-eye',
         routerLink: ['/exercises']
       },
-
-      {
-        label: 'Testing ground',
-        icon: 'pi pi-fw pi-box',
-        routerLink: ['/test']
-      }
     ];
   }
 }

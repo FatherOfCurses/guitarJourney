@@ -23,7 +23,7 @@ export class SessionComponent implements OnInit {
     sessionIntent: "",
     postPracticeReflection: "",
     goalForNextTime: "",
-    id: "",
+    id: "6badcbb7-afbf-4e28-8fdd-b6e068a493c1",
     date: Date()
   };
   validationStatus: Option[];
@@ -31,7 +31,7 @@ export class SessionComponent implements OnInit {
   fieldValidationStatus = FieldValidationStatus;
   targetPracticeTime = 0;
   timeElapsed = 0;
-  sessionForm: FormGroup;
+  prePracticeForm: FormGroup;
   timerForm: FormGroup;
   afterForm: FormGroup;
   practiceTime: AbstractControl;
@@ -65,30 +65,29 @@ export class SessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.recordSessionActualTime(0);
     this.initializeForm();
     this.subscribeToFormChanges();
   }
 
   initializeForm(): void {
-    this.sessionForm = this.fb.group({
-      practiceTime: ["", [Validators.required]],
-      whatToPractice: ["", [Validators.required]],
-      sessionIntent: ["", [Validators.required]]
+    this.prePracticeForm = this.fb.group({
+      practiceTime: ["", [Validators.required, Validators.pattern('^[0-9]*$')]],
+      whatToPractice: ["", Validators.required],
+      sessionIntent: ["", Validators.required]
     });
     this.afterForm = this.fb.group({
       sessionReflection: ["", [Validators.required]],
       goalForNextTime: ["", [Validators.required]]
     });
-    this.practiceTime = this.sessionForm.get("practiceTime");
-    this.whatToPractice = this.sessionForm.get("whatToPractice");
-    this.sessionIntent = this.sessionForm.get("sessionIntent");
+    this.practiceTime = this.prePracticeForm.get("practiceTime");
+    this.whatToPractice = this.prePracticeForm.get("whatToPractice");
+    this.sessionIntent = this.prePracticeForm.get("sessionIntent");
     this.sessionReflection = this.afterForm.get("sessionReflection");
     this.goalForNextTime = this.afterForm.get("goalForNextTime");
   }
 
   subscribeToFormChanges(): void {
-    this.sessionForm.valueChanges.subscribe(value => {
+    this.prePracticeForm.valueChanges.subscribe(value => {
       this.practiceTimeValid = this.checkFieldValidation(this.practiceTime);
       this.whatToPracticeValid = this.checkFieldValidation(this.whatToPractice);
       this.sessionIntentValid = this.checkFieldValidation(this.sessionIntent);
@@ -99,28 +98,22 @@ export class SessionComponent implements OnInit {
     });
   }
 
-  checkFieldValidation(control: AbstractControl): string {
+  checkFieldValidation(control: AbstractControl): FieldValidationStatus {
     if (control.valid) {
       return this.fieldValidationStatus.VALID;
     }
     if (!control.valid) {
       return this.fieldValidationStatus.INVALID;
     }
-    return this.fieldValidationStatus.EMPTY;
   }
 
   onSubmit(): void {
-    this.session.whatToPractice = this.sessionForm.get("whatToPractice").value;
-    this.session.sessionIntent = this.sessionIntent.value;
-    this.session.postPracticeReflection = this.sessionReflection.value;
-    this.session.goalForNextTime = this.goalForNextTime.value;
+    this.session.whatToPractice = this.prePracticeForm.get("whatToPractice").value;
+    this.session.sessionIntent = this.prePracticeForm.get("sessionIntent").value;
+    this.session.postPracticeReflection = this.afterForm.get("sessionReflection").value;
+    this.session.goalForNextTime = this.afterForm.get("goalForNextTime").value;
     this.sessionService.putSession$(this.session);
-    this.router.navigate(["dashboard"]).then();
-  }
-
-  // function to take the value from the session-timer and record it as the practice time in the session object
-  recordSessionActualTime(actualTime: number): void {
-    this.session.practiceTime = Math.trunc(actualTime);
+    this.router.navigate(['/']);
   }
 
   //Timer functions

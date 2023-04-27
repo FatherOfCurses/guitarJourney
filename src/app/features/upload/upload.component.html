@@ -1,6 +1,18 @@
 <p-dialog header="Header" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-  <p class="m-0">
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </p>
+  <div id="uploadSection" class="card flex justify-content-center">
+    <p-button id="uploadItems" icon="pi pi-external-link" (click)="openUploadModal()" label="Upload items"></p-button>
+    <p-dialog header="Choose a file to upload" [(visible)]="uploadModalVisible" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+      <p-fileUpload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="true" accept="image/*" maxFileSize="1000000">
+        <ng-template pTemplate="toolbar">
+          <div class="py-3">Upload 3 Files</div>
+        </ng-template>
+        <ng-template let-file pTemplate="file">
+          <div>Custom UI to display a file</div>
+        </ng-template>
+        <ng-template pTemplate="content" let-files>
+          <div>Additional content.</div>
+        </ng-template>
+      </p-fileUpload>
+    </p-dialog>
+  </div>
 </p-dialog>

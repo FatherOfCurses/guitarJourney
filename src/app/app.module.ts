@@ -63,6 +63,9 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
   ],
   providers: [Convertors],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  exports: [
+    UploadComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

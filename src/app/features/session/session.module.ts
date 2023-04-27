@@ -8,7 +8,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { PreviousSessionsComponent } from './previous-sessions/previous-sessions.component';
 import { MatInputModule } from '@angular/material/input';
 import { SessionComponent } from './session.component';
-import { CdTimerModule } from "angular-cd-timer";
 import { HttpClientModule } from "@angular/common/http";
 import { ChipsModule } from "primeng/chips";
 import { InputTextareaModule } from "primeng/inputtextarea";
@@ -34,7 +33,6 @@ import { SessionResourcePickerComponent } from "./session-resource-picker/sessio
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    CdTimerModule,
     ChipsModule,
     InputTextareaModule,
     TableModule,
