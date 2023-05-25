@@ -1,23 +1,23 @@
 <h1>Previous Practice Sessions</h1>
-<p-table [value]="sessionData" [tableStyle]="{'min-width': '50rem'}">
+<p-table [value]="sessionData" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" selectionMode="single" [(selection)]="selectedSession" dataKey="id" (onRowSelect)="onRowSelect($event)">
   <ng-template pTemplate="header">
     <tr>
-      <th>Date</th>
-      <th>Practice Time</th>
-      <th>What Practiced</th>
+      <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>
+      <th pSortableColumn="timePracticed">Practice Time <p-sortIcon field="timePracticed"></p-sortIcon></th>
+      <th>What You Practiced</th>
       <th>Session Intent</th>
       <th>Reflection</th>
       <th>Goal for next time</th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-sessionData>
-    <tr>
-      <td>{{sessionData.date}}</td>
-      <td>{{sessionData.practiceTime}}</td>
-      <td>{{sessionData.whatToPractice}}</td>
-      <td>{{sessionData.sessionIntent}}</td>
-      <td>{{sessionData.postPracticeReflection}}</td>
-      <td>{{sessionData.goalForNextTime}}</td>
-    </tr>
-  </ng-template>
+    <ng-template pTemplate="body" let-sessionData>
+      <tr [pSelectableRow]="sessionData">
+        <td>{{sessionData.date}}</td>
+        <td>{{sessionData.practiceTime}}</td>
+        <td>{{sessionData.whatToPractice}}</td>
+        <td>{{sessionData.sessionIntent}}</td>
+        <td>{{sessionData.postPracticeReflection}}</td>
+        <td>{{sessionData.goalForNextTime}}</td>
+      </tr>
+    </ng-template>
 </p-table>

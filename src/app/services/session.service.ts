@@ -9,9 +9,8 @@ import { Convertors } from "../utilities/Convertors";
 })
 export class SessionService {
   private readonly BASE_URL = 'https://dx471dpyrj.execute-api.us-west-2.amazonaws.com';
-  private convertor: Convertors;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private convertor: Convertors) {
   }
 
   getSession$(sessionId: string): Observable<Session> {
