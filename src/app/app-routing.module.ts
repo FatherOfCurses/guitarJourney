@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: '', component: LandingPageComponent},
   {path: 'dashboard', component: LandingPageComponent},
   {path: 'session', component: SessionComponent},
-  {path: 'sessionDetail', component: DisplaySessionComponent},
+  {path: 'sessionDetail/:id', component: DisplaySessionComponent},
   {path: 'landing', component: LandingPageComponent},
   {path: 'test', component: ChordComponent},
   {path: 'songs', component: SongComponent},
