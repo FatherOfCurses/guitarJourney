@@ -1,6 +1,15 @@
 <p-card>
   <h1>Session Detail</h1>
-  <div id="detailsDisplay">SessionId {{session.id}}</div>
-  <button (click)="returnToTable()">Back</button>
+  <div id="detailsDisplay">
+   <ul>
+     <li>Date: {{session.date}}</li>
+     <li>Length of practice: {{session.practiceTime}} minutes</li>
+     <li>Practice goal: {{session.whatToPractice}}</li>
+     <li>Practice Intention: {{session.sessionIntent}}</li>
+     <li>Post-practice Reflection: {{session.postPracticeReflection}}</li>
+     <li>Goal for next time: {{session.goalForNextTime}}</li>
+   </ul>
+  </div>
+  <p-button (click)="returnToTable()">Back</p-button>
 </p-card>
 
