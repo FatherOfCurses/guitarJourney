@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Input, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { SessionService } from "../../../services/session.service";
+import { takeWhile } from "rxjs/operators";
+import { Session } from "../../../models/session";
 
 @Component({
   selector: 'app-display-single-session',
@@ -7,10 +10,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./display-session.component.scss']
 })
 export class DisplaySessionComponent implements OnInit {
+  session: Session;
+  componentIsAlive = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute, private sessionService: SessionService) { }
 
   ngOnInit(): void {
+    this.componentIsAlive = true;
+    this.route.paramMap
+      .pipe(takeWhile(() => this.componentIsAlive))
+      .subscribe((params) => {
+        const sessionId = params.get('id');
+        this.getSession(sessionId);
+      })
+  }
+
+  getSession(id: string) {
+    console.log(`Getting sessionId ${id}`)
+    this.sessionService.getSession$(id).subscribe(session => this.session = session);
+    console.log(this.session)
   }
 
   returnToTable() {
