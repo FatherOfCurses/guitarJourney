@@ -8,5 +8,4 @@ export class Song {
   appleMusicLink?: string;
   spotifyLink?: string;
   sessions: Session[];
-
 }
