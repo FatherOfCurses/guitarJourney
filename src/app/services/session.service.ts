@@ -14,6 +14,7 @@ export class SessionService {
   }
 
   getSession$(sessionId: string): Observable<Session> {
+    console.log(`received call to retrieve ${sessionId}`)
    return this.httpClient.get<Session>(`${this.BASE_URL}/sessions/${sessionId}`);
   }
 

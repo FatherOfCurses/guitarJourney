@@ -16,6 +16,7 @@ import { ButtonModule } from "primeng/button";
 import { SessionResourceComponent } from "./session-resource/session-resource.component";
 import { SessionResourcePickerComponent } from "./session-resource-picker/session-resource-picker.component";
 import { ToastModule } from "primeng/toast";
+import { CardModule } from "primeng/card";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ToastModule } from "primeng/toast";
     InputTextareaModule,
     TableModule,
     ButtonModule,
-    ToastModule
+    ToastModule,
+    CardModule
   ],
   exports: [
     DisplaySessionComponent,
