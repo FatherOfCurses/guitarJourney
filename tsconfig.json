@@ -12,15 +12,20 @@
     "module": "es2020",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2022",
     "paths": {
-      "@shared/*": ["src/app/shared/*"]
+      "@shared/*": [
+        "src/app/shared/*"
+      ]
     },
     "lib": [
       "es2018",
       "dom"
     ],
-    "types": ["jest"]
+    "types": [
+      "jest"
+    ],
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
