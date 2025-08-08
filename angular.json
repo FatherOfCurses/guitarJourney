@@ -155,7 +155,6 @@
       }
     }
   },
-  "defaultProject": "guitar-practice-journal",
   "cli": {
     "schematicCollections": [
       "@angular-eslint/schematics",
