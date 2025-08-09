@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
 @Component({
-  selector: 'app-navigation-menu',
-  templateUrl: './navigation.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  styleUrls: ['./navigation.component.scss']
+    selector: 'app-navigation-menu',
+    templateUrl: './navigation.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./navigation.component.scss'],
+    standalone: false
 })
 export class NavigationComponent implements OnInit{
   items: MenuItem[];

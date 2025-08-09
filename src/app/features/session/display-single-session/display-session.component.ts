@@ -5,9 +5,10 @@ import { takeWhile } from "rxjs/operators";
 import { Session } from "../../../models/session";
 
 @Component({
-  selector: 'app-display-single-session',
-  templateUrl: './display-session.component.html',
-  styleUrls: ['./display-session.component.scss']
+    selector: 'app-display-single-session',
+    templateUrl: './display-session.component.html',
+    styleUrls: ['./display-session.component.scss'],
+    standalone: false
 })
 export class DisplaySessionComponent implements OnInit {
   session: Session;

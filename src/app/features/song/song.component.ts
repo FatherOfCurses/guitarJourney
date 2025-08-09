@@ -3,10 +3,11 @@ import { Observable } from 'rxjs';
 import { MessageService } from "primeng/api";
 
 @Component({
-  selector: 'app-song',
-  templateUrl: './song.component.html',
-  providers: [ MessageService ],
-  styleUrls: ['./song.component.scss']
+    selector: 'app-song',
+    templateUrl: './song.component.html',
+    providers: [MessageService],
+    styleUrls: ['./song.component.scss'],
+    standalone: false
 })
 export class SongComponent implements OnInit {
 

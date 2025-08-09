@@ -3,9 +3,10 @@ import { SVGuitarChord } from 'svguitar';
 import { ChordObject } from '../../../models/chord';
 
 @Component({
-  selector: 'app-chord.ts',
-  templateUrl: './chord.component.html',
-  styleUrls: ['./chord.component.scss']
+    selector: 'app-chord.ts',
+    templateUrl: './chord.component.html',
+    styleUrls: ['./chord.component.scss'],
+    standalone: false
 })
 export class ChordComponent implements OnInit {
 

@@ -6,9 +6,10 @@ import { Router } from "@angular/router";
 
 
 @Component({
-  selector: 'app-previous-sessions',
-  templateUrl: './previous-sessions.component.html',
-  styleUrls: ['./previous-sessions.component.scss'],
+    selector: 'app-previous-sessions',
+    templateUrl: './previous-sessions.component.html',
+    styleUrls: ['./previous-sessions.component.scss'],
+    standalone: false
 })
 export class PreviousSessionsComponent implements OnInit {
   sessionData: Session[];
