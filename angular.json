@@ -94,14 +94,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "guitar-practice-journal:build"
+            "buildTarget": "guitar-practice-journal:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "guitar-practice-journal:build:production"
+              "buildTarget": "guitar-practice-journal:build:production"
             },
             "development": {
-              "browserTarget": "guitar-practice-journal:build:development"
+              "buildTarget": "guitar-practice-journal:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -109,7 +109,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "guitar-practice-journal:build"
+            "buildTarget": "guitar-practice-journal:build"
           }
         },
         "test": {
