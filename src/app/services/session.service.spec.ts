@@ -1,8 +1,7 @@
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { SessionService } from "./session.service";
 import { TestBed } from "@angular/core/testing";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
 import { Session } from "../models/session";
-import { response } from "express";
 
 describe('SessionService', () => {
   let httpTestingController: HttpTestingController;
@@ -10,10 +9,11 @@ describe('SessionService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule]
+      
+      providers: [SessionService, provideHttpClientTesting]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
+    httpTestingController = TestBed.inject(HttpTestingController);
     service = TestBed.inject(SessionService);
   });
 
@@ -32,17 +32,24 @@ describe('SessionService', () => {
       goalForNextTime: 'Fingerpicking at 100%'
     };
 
-    service.getSession$("id12345").subscribe(actualData => {
-      expect(actualData).toEqual(expectedData);
-      done();
+    service.getSession$("id12345").subscribe({
+      next: (actualData) => {
+        expect(actualData).toEqual(expectedData);
+        done();
+      },
+      error: (err) => {
+        fail(`Unexpected error: ${err}`);
+        done();
+      }
     });
 
     const testRequest = httpTestingController.expectOne('https://dx471dpyrj.execute-api.us-west-2.amazonaws.com/sessions/id12345');
+    expect(testRequest.request.method).toBe('GET');
     testRequest.flush(expectedData);
   });
 
-  it('getAll should return all sessions', (done) => {
-    const expectedData =[
+  it('getAllSessions should return all sessions', (done) => {
+    const expectedData = [
       {
         id: 'id12345',
         date: '10/01/2021',
@@ -63,18 +70,24 @@ describe('SessionService', () => {
       }
     ];
 
-    service.getAllSessions$().subscribe(actualData => {
-      expect(actualData).toEqual(expectedData);
-      done();
+    service.getAllSessions$().subscribe({
+      next: (actualData) => {
+        expect(actualData).toEqual(expectedData);
+        done();
+      },
+      error: (err) => {
+        fail(`Unexpected error: ${err}`);
+        done();
+      }
     });
 
     const testRequest = httpTestingController.expectOne('https://dx471dpyrj.execute-api.us-west-2.amazonaws.com/sessions');
+    expect(testRequest.request.method).toBe('GET');
     testRequest.flush(expectedData);
   });
 
-  // TODO: refine this test to be more precise
-  it('putSession should have a response', (done) => {
-    const expectedData: Session = {
+  it('putSession should send data and return the updated session', (done) => {
+    const inputData: Session = {
       id: 'id12345',
       date: '10/01/2021',
       practiceTime: 45,
@@ -84,11 +97,20 @@ describe('SessionService', () => {
       goalForNextTime: 'Fingerpicking at 100%'
     };
 
-    const putRecord = service.putSession$(expectedData);
+service.putSession$(inputData).subscribe({  
+  next: (response) => {
+    expect(response).toEqual(inputData);
     done();
-    expect(putRecord).toBeTruthy();
+  },
+  error: (err) => {
+    fail(`Unexpected error: ${err}`);
+    done();
+  }
+});
 
     const testRequest = httpTestingController.expectOne('https://dx471dpyrj.execute-api.us-west-2.amazonaws.com/sessions');
-    testRequest.flush(expectedData);
+    expect(testRequest.request.method).toBe('PUT');
+    expect(testRequest.request.body).toEqual(inputData);
+    testRequest.flush(inputData);
   });
 });

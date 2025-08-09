@@ -22,14 +22,10 @@ export class SessionService {
     return this.httpClient.get<Session[]>(`${this.BASE_URL}/sessions`);
   }
 
-  putSession$(session: Session): Subscription {
+  putSession$(session: Session): Observable<Session> {
+    console.log(`received call to update session ${session.id}`)
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
     session.date = this.convertor.transformDate(session.date);
-    return this.httpClient
-      .put(`${this.BASE_URL}/sessions`, JSON.stringify(session), {responseType: 'text', headers})
-      .subscribe(
-        res => console.log(`put result: success`),
-        err => console.log(`Error with put result: ${err.message}`)
-      );
+    return this.httpClient.put<Session>(`${this.BASE_URL}/sessions`, JSON.stringify(session), {headers});
   }
 }
