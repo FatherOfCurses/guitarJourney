@@ -8,7 +8,7 @@ import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/materia
 import { PreviousSessionsComponent } from './previous-sessions/previous-sessions.component';
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { SessionComponent } from './session.component';
-import { HttpClientModule } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { ChipsModule } from "primeng/chips";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { TableModule } from "primeng/table";
@@ -18,35 +18,29 @@ import { SessionResourcePickerComponent } from "./session-resource-picker/sessio
 import { ToastModule } from "primeng/toast";
 import { CardModule } from "primeng/card";
 
-@NgModule({
-  declarations: [
-    DisplaySessionComponent,
-    PreviousSessionsComponent,
-    SessionResourceComponent,
-    SessionResourcePickerComponent,
-    SessionComponent
-  ],
-  imports: [
-    ReactiveFormsModule,
-    FormsModule,
-    MatInputModule,
-    CommonModule,
-    HttpClientModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    ChipsModule,
-    InputTextareaModule,
-    TableModule,
-    ButtonModule,
-    ToastModule,
-    CardModule
-  ],
-  exports: [
-    DisplaySessionComponent,
-    PreviousSessionsComponent,
-    SessionComponent
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
+@NgModule({ declarations: [
+        DisplaySessionComponent,
+        PreviousSessionsComponent,
+        SessionResourceComponent,
+        SessionResourcePickerComponent,
+        SessionComponent
+    ],
+    exports: [
+        DisplaySessionComponent,
+        PreviousSessionsComponent,
+        SessionComponent
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA], imports: [ReactiveFormsModule,
+        FormsModule,
+        MatInputModule,
+        CommonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        ChipsModule,
+        InputTextareaModule,
+        TableModule,
+        ButtonModule,
+        ToastModule,
+        CardModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class SessionModule { }
