@@ -3,10 +3,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { DisplaySessionComponent } from './display-single-session/display-session.component';
 import { MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
-import { MatLegacyPaginatorModule as MatPaginatorModule } from '@angular/material/legacy-paginator';
 import { PreviousSessionsComponent } from './previous-sessions/previous-sessions.component';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { SessionComponent } from './session.component';
 import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { ChipsModule } from "primeng/chips";
@@ -32,10 +29,7 @@ import { CardModule } from "primeng/card";
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA], imports: [ReactiveFormsModule,
         FormsModule,
-        MatInputModule,
         CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
         MatSortModule,
         ChipsModule,
         InputTextareaModule,
