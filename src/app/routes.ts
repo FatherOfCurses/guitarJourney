@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AppShellComponent } from './app-shell.component';
+import { AppShellComponent } from './app-shell.component'
 import { LoginComponent } from './auth/login.component';
 import { HomeComponent } from './core/home/home.component';
 
@@ -16,12 +16,12 @@ export const routes: Routes = [
     component: AppShellComponent,
     children: [
       { path: '', pathMatch: 'full', loadComponent: () => import('./core/home/home.component').then(m => m.HomeComponent) },
-      { path: 'sessions', loadChildren: () => import('./sessions/routes').then(m => m.SESSIONS_ROUTES) },
-      { path: 'songs',    loadChildren: () => import('./songs/routes').then(m => m.SONGS_ROUTES) },
-      { path: 'metrics',  loadComponent: () => import('./metrics/metrics.component').then(m => m.MetricsComponent) },
+      { path: 'sessions', loadComponent: () => import('./features/session/session.component').then(m => m.SessionComponent) },
+      { path: 'songs',    loadComponent: () => import('./features/songs/songs.component').then(m => m.SongsComponent) },
+      { path: 'metrics',  loadComponent: () => import('./features/metrics/metrics.component').then(m => m.MetricsComponent) },
     ],
   },
 
   // 404
-  { path: '**', loadComponent: () => import('./not-found/not-found.component').then(m => m.NotFoundComponent) },
+  { path: '**', loadComponent: () => import('./core/not-found/not-found.component').then(m => m.NotFoundComponent) },
 ];
