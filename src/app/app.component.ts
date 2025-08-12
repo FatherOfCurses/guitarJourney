@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
-import { NavigationComponent } from './core/navigation/navigation.component';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    //styleUrls: ['./app.component.scss'],
-  imports: [NavigationComponent],
-    standalone: true
+  selector: 'app-root',
+  standalone: true,
+  template: '', // Nothing needed; shell comes from routing
 })
-export class AppComponent {
-  title = 'guitar-practice-journal';
-}
+export class AppComponent {}
