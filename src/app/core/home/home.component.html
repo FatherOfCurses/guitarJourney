@@ -1,0 +1,21 @@
+<section>
+    <header class="title">Practice Sessions</header>
+
+    @if (loading()) {
+      <p>Loading…</p>
+    } @else if (sessions()?.length === 0) {
+      <p>No sessions yet. Start your first practice!</p>
+    } @else {
+      <ul>
+        @for (s of sessions(); track s.id) {
+          <li (click)="select.emit(s.id)">
+            {{ s.startedAt | date:'short' }} — {{ (s.durationMs/60000) | number:'1.0-0' }} min
+          </li>
+        }
+      </ul>
+    }
+
+    @defer (on viewport) {
+      <!--<gj-stats [minutes]="totalMinutes()" />-->
+    } @placeholder { <p>Loading stats…</p> }
+  </section>
