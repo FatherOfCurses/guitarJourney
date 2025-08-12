@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
+import { NavigationComponent } from './core/navigation/navigation.component';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-    standalone: false
+    //styleUrls: ['./app.component.scss'],
+  imports: [NavigationComponent],
+    standalone: true
 })
 export class AppComponent {
   title = 'guitar-practice-journal';

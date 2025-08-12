@@ -4,11 +4,11 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withVi
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/routes';
-import { authInterceptor } from './app/auth/auth.interceptor';
+//import { authInterceptor } from './app/auth/auth.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
-    provideHttpClient(withInterceptors([authInterceptor])),
+  //  provideHttpClient(withInterceptors([authInterceptor])),
     provideRouter(
       routes,
       withComponentInputBinding(),

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import "primeflex/primeflex.css";
-@import 'assets/theme.css';
-@import "primeicons/primeicons.css";
 @tailwind base;
 @tailwind components;
+
+@import "primeicons/primeicons.css";
+
 @tailwind utilities;
