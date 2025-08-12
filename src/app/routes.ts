@@ -1,20 +1,29 @@
 // app/routes.ts
 import { Routes } from '@angular/router';
 import { inject } from '@angular/core';
+import { SessionComponent } from './features/session/session.component';
 //import { AuthService } from './core/auth.service';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'sessions' },
   {
     path: 'sessions',
-   // loadComponent: () => import('./features/sessions/sessions.page').then(m => m.SessionsPage),
+    component: SessionComponent
 //    canActivate: [() => inject(AuthService).isLoggedInSignal()]
   },
-  {
+/*
+ {
+    path: 'sessions/:id',
+    component: SessionComponent
+//    
+{
     path: 'songs/:id',
-   // loadComponent: () => import('./features/songs/song.page').then(m => m.SongPage),
-    resolve: {
-  //    song: () => inject(SongService).getResolvedSong() // returns Promise|Observable|value
-    }
-  }
+    component: SongComponent
+    
+  },
+{
+  path: 'practice',
+  component: PracticeComponent
+}
+  */
 ];

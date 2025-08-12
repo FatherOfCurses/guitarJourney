@@ -17,6 +17,7 @@ import { SessionService } from '../../services/session.service';
 
 // Angular Material snack bar
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ButtonModule} from 'primeng/button';
 
 enum SessionStatus {
   Before = 'before',
@@ -27,7 +28,7 @@ enum SessionStatus {
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatSnackBarModule],
+  imports: [CommonModule, ReactiveFormsModule, MatSnackBarModule, ButtonModule],
   templateUrl: './session.component.html',
 })
 export class SessionComponent {
