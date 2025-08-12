@@ -1,151 +1,159 @@
-import { Component, OnInit } from "@angular/core";
-import { Session } from "../../models/session";
-import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { FieldValidationStatus, Option } from "../../models/formHelpers";
-import { SessionService } from "../../services/session.service";
-import { fromEvent, interval, Subscription } from "rxjs";
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { interval, Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+
+import { Session } from '../../models/session';
+import { FieldValidationStatus, Option } from '../../models/formHelpers';
+import { SessionService } from '../../services/session.service';
+
+// Angular Material snack bar
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 enum SessionStatus {
-  Before = "before",
-  During = "during",
-  After = "after"
+  Before = 'before',
+  During = 'during',
+  After = 'after',
 }
+
 @Component({
-    selector: "app-session",
-    templateUrl: "./session.component.html",
-    styleUrls: ["./session.component.scss"],
-    standalone: false
+  selector: 'app-session',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, MatSnackBarModule],
+  templateUrl: './session.component.html',
 })
-export class SessionComponent implements OnInit {
-  session: Session = {
+export class SessionComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  private readonly sessionService = inject(SessionService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly snack = inject(MatSnackBar);
+
+  // UI flags
+  readonly saving = signal(false);
+
+  // Domain state
+  readonly session = signal<Session>({
     practiceTime: 0,
-    whatToPractice: "",
-    sessionIntent: "",
-    postPracticeReflection: "",
-    goalForNextTime: "",
-    id: "6badcbb7-afbf-4e28-8fdd-b6e068a493c1",
-    date: Date()
-  };
-  validationStatus: Option[];
-  sessionStatus: SessionStatus = SessionStatus.Before;
-  fieldValidationStatus = FieldValidationStatus;
-  targetPracticeTime = 0;
-  timeElapsed = 0;
-  prePracticeForm: FormGroup;
-  timerForm: FormGroup;
-  afterForm: FormGroup;
-  practiceTime: AbstractControl;
-  whatToPractice: AbstractControl;
-  sessionIntent: AbstractControl;
-  sessionReflection: AbstractControl;
-  goalForNextTime: AbstractControl;
-  practiceTimeValid = "default";
-  whatToPracticeValid = "default";
-  sessionIntentValid = "default";
-  sessionReflectionValid = "default";
-  goalForNextTimeValid = "default";
-  startButton = document.querySelector("#startButton");
-  stopButton = document.querySelector("#endButton");
-  startClick$ = fromEvent(this.startButton, "click");
-  stopClick$ = fromEvent(this.stopButton, "click");
-  time: string = '00:00:00';
-  timerSubscription: Subscription;
-  startTime: number;
-  elapsedTime: number = 0;
-  resourcesAdded: boolean;
+    whatToPractice: '',
+    sessionIntent: '',
+    postPracticeReflection: '',
+    goalForNextTime: '',
+    id: '6badcbb7-afbf-4e28-8fdd-b6e068a493c1',
+    date: Date(),
+  });
 
-  constructor(
-    private fb: FormBuilder, private router: Router, private sessionService: SessionService
-  ) {
-    this.validationStatus = [
-      { label: "invalid", value: FieldValidationStatus.INVALID },
-      { label: "warning", value: FieldValidationStatus.EMPTY },
-      { label: "valid", value: FieldValidationStatus.VALID }
-    ];
-  }
+  readonly sessionStatus = signal<SessionStatus>(SessionStatus.Before);
+  readonly resourcesAdded = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.initializeForm();
-    this.subscribeToFormChanges();
-  }
+  // Timer
+  private timerSub?: Subscription;
+  private startTimestamp = signal<number | null>(null);
+  readonly elapsedMs = signal<number>(0);
+  readonly timeDisplay = computed(() => this.formatTime(this.elapsedMs()));
 
-  initializeForm(): void {
-    this.prePracticeForm = this.fb.group({
-      practiceTime: ["", [Validators.required, Validators.pattern('^[0-9]*$')]],
-      whatToPractice: ["", Validators.required],
-      sessionIntent: ["", Validators.required]
-    });
-    this.afterForm = this.fb.group({
-      sessionReflection: ["", [Validators.required]],
-      goalForNextTime: ["", [Validators.required]]
-    });
-    this.practiceTime = this.prePracticeForm.get("practiceTime");
-    this.whatToPractice = this.prePracticeForm.get("whatToPractice");
-    this.sessionIntent = this.prePracticeForm.get("sessionIntent");
-    this.sessionReflection = this.afterForm.get("sessionReflection");
-    this.goalForNextTime = this.afterForm.get("goalForNextTime");
-  }
+  readonly fieldValidationStatus = FieldValidationStatus;
+  readonly validationStatus: Option[] = [
+    { label: 'invalid', value: FieldValidationStatus.INVALID },
+    { label: 'warning', value: FieldValidationStatus.EMPTY },
+    { label: 'valid', value: FieldValidationStatus.VALID },
+  ];
 
-  subscribeToFormChanges(): void {
-    this.prePracticeForm.valueChanges.subscribe(value => {
-      this.practiceTimeValid = this.checkFieldValidation(this.practiceTime);
-      this.whatToPracticeValid = this.checkFieldValidation(this.whatToPractice);
-      this.sessionIntentValid = this.checkFieldValidation(this.sessionIntent);
-    });
-    this.afterForm.valueChanges.subscribe(value => {
-      this.sessionReflectionValid = this.checkFieldValidation(this.sessionReflection);
-      this.goalForNextTimeValid = this.checkFieldValidation(this.goalForNextTime);
-    });
-  }
+  readonly prePracticeForm = this.fb.group({
+    practiceTime: this.fb.control<string>('', {
+      validators: [Validators.required, Validators.pattern(/^\d+$/)],
+    }),
+    whatToPractice: this.fb.control<string>('', { validators: [Validators.required] }),
+    sessionIntent: this.fb.control<string>('', { validators: [Validators.required] }),
+  });
 
-  checkFieldValidation(control: AbstractControl): FieldValidationStatus {
-    if (control.valid) {
-      return this.fieldValidationStatus.VALID;
-    }
-    if (!control.valid) {
-      return this.fieldValidationStatus.INVALID;
-    }
-  }
+  readonly afterForm = this.fb.group({
+    sessionReflection: this.fb.control<string>('', { validators: [Validators.required] }),
+    goalForNextTime: this.fb.control<string>('', { validators: [Validators.required] }),
+  });
 
+  // Getters for template
+  get practiceTimeCtrl(): AbstractControl { return this.prePracticeForm.get('practiceTime')!; }
+  get whatToPracticeCtrl(): AbstractControl { return this.prePracticeForm.get('whatToPractice')!; }
+  get sessionIntentCtrl(): AbstractControl { return this.prePracticeForm.get('sessionIntent')!; }
+  get sessionReflectionCtrl(): AbstractControl { return this.afterForm.get('sessionReflection')!; }
+  get goalForNextTimeCtrl(): AbstractControl { return this.afterForm.get('goalForNextTime')!; }
+
+  // Submit (Finish)
   onSubmit(): void {
-    this.session.whatToPractice = this.prePracticeForm.get("whatToPractice").value;
-    this.session.sessionIntent = this.prePracticeForm.get("sessionIntent").value;
-    this.session.postPracticeReflection = this.afterForm.get("sessionReflection").value;
-    this.session.goalForNextTime = this.afterForm.get("goalForNextTime").value;
-    this.sessionService.putSession$(this.session);
-    this.router.navigate(['/']);
-  }
+    if (this.afterForm.invalid || this.prePracticeForm.invalid) return;
 
-  //Timer functions
+    const pre = this.prePracticeForm.getRawValue();
+    const post = this.afterForm.getRawValue();
 
-  startTimer() {
-      this.startTime = Date.now() - this.elapsedTime;
-      this.timerSubscription = interval(1000).subscribe(() => {
-        this.elapsedTime = Date.now() - this.startTime;
-        this.time = this.formatTime(this.elapsedTime);
+    this.session.update((s) => ({
+      ...s,
+      whatToPractice: pre.whatToPractice ?? '',
+      sessionIntent: pre.sessionIntent ?? '',
+      postPracticeReflection: post.sessionReflection ?? '',
+      goalForNextTime: post.goalForNextTime ?? '',
+      practiceTime: this.elapsedMs(),
+    }));
+
+    this.saving.set(true);
+
+    this.sessionService.putSession$(this.session())
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.saving.set(false))
+      )
+      .subscribe({
+        next: () => {
+          this.snack.open('Session saved 🎸', 'Close', { duration: 2500 });
+          this.router.navigate(['/']);
+        },
+        error: () => {
+          this.snack.open('Could not save session. Please try again.', 'Dismiss', { duration: 4000 });
+        },
       });
-      this.sessionStatus = SessionStatus.During;
-    }
-
-  stopTimer() {
-      this.timerSubscription.unsubscribe();
-      this.session.practiceTime = this.elapsedTime;
-      this.sessionStatus = SessionStatus.After;
   }
 
-  formatTime(time: number): string {
-    const minutes = Math.floor(time / 60000);
-    const seconds = Math.floor((time % 60000) / 1000);
-    return `${this.padNumber(minutes)}:${this.padNumber(seconds)}`;
+  // Timer
+  startTimer(): void {
+    const now = Date.now();
+    const already = this.elapsedMs();
+    this.startTimestamp.set(now - already);
+
+    this.timerSub?.unsubscribe();
+    this.timerSub = interval(1000)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const start = this.startTimestamp();
+        if (start != null) this.elapsedMs.set(Date.now() - start);
+      });
+
+    this.sessionStatus.set(SessionStatus.During);
   }
 
-  padNumber(number: number): string {
-    return number.toString().padStart(2, '0');
+  stopTimer(): void {
+    this.timerSub?.unsubscribe();
+    this.timerSub = undefined;
+    this.startTimestamp.set(null);
+    this.session.update((s) => ({ ...s, practiceTime: this.elapsedMs() }));
+    this.sessionStatus.set(SessionStatus.After);
   }
 
-  addResourcesToSession() {
-    this.resourcesAdded = true;
-    //openModal resourcePicker
+  addResourcesToSession(): void {
+    this.resourcesAdded.set(true);
   }
+
+  private formatTime(ms: number): string {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${this.pad2(minutes)}:${this.pad2(seconds)}`;
+  }
+  private pad2(n: number): string { return n.toString().padStart(2, '0'); }
 }

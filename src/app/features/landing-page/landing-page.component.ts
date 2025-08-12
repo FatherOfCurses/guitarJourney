@@ -1,18 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { SessionService } from '../../services/session.service';
+// sessions-list.component.ts (standalone)
+import { Component, computed, signal, input, output, model } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-landing-page',
-    templateUrl: './landing-page.component.html',
-    styleUrls: ['./landing-page.component.scss'],
-    standalone: false
+  selector: 'gj-sessions-list',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './landing-page.component.html'
+  // styleUrls: ['./landing-page.component.css']
 })
-export class LandingPageComponent implements OnInit {
+export class SessionsListComponent {
+  // signal inputs (immutable from parent)
+  sessions = input.required<{ id: string; startedAt: string; durationMs: number }[]>();
+  loading = input(false);
 
-  constructor(private sessionService: SessionService) { }
+  // two-way example (if editing filters in child)
+  filter = model<string>('all');
 
-  ngOnInit(): void {
-    const sessionList = this.sessionService.getAllSessions$();
-  }
+  // outputs as signal-backed emitters
+  select = output<string>();
 
+  totalMinutes = computed(
+    () => Math.round((this.sessions()?.reduce((a, s) => a + s.durationMs, 0) ?? 0) / 60000)
+  );
 }

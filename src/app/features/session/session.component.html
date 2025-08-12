@@ -1,114 +1,228 @@
-<h1>Session</h1>
-<div id="formBucket">
-  <!-- TODO: Get all these styling elements into css classes -->
-  <!-- TODO: Text in form fields is very faint-->
-  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'before'" >
-    <form [formGroup]="prePracticeForm"
+<h1 class="text-2xl font-semibold tracking-tight text-neutral-900 mb-4">Session</h1>
+
+<div id="formBucket" class="px-4 py-6 md:px-6 lg:px-8">
+
+  @switch (sessionStatus())
+    @case ('before') {
+      <div class="bg-white shadow rounded-2xl p-6">
+        <form
+          [formGroup]="prePracticeForm"
           id="sessionForm"
-          class="grid formgrid p-fluid"
+          class="grid gap-6"
+          (ngSubmit)="startTimer()"
+          novalidate
+        >
+          <!-- Practice Time -->
+          <div>
+            <label for="practiceTime" class="block text-sm font-medium text-neutral-800 mb-1">
+              Practice Time Amount
+            </label>
+            <input
+              type="number"
+              id="practiceTime"
+              formControlName="practiceTime"
+              placeholder="Enter minutes you want to practice"
+              pInputText
+              inputmode="numeric"
+              min="0"
+              aria-describedby="practiceTimeHelp practiceTimeError"
+              [attr.aria-invalid]="practiceTimeCtrl.invalid && (practiceTimeCtrl.touched || practiceTimeCtrl.dirty)"
+              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+            <small id="practiceTimeHelp" class="text-sm text-neutral-500">Numbers only, in minutes.</small>
+
+            @if (practiceTimeCtrl.invalid && (practiceTimeCtrl.touched || practiceTimeCtrl.dirty)) {
+              <div id="practiceTimeError" class="text-sm text-red-600 mt-1" aria-live="polite">
+                Please enter the time in numbers.
+              </div>
+            }
+          </div>
+
+          <!-- What to Practice -->
+          <div>
+            <label for="whatToPractice" class="block text-sm font-medium text-neutral-800 mb-1">
+              What to Practice
+            </label>
+            <textarea
+              id="whatToPractice"
+              formControlName="whatToPractice"
+              placeholder="What are you planning on practicing today?"
+              pInputTextarea
+              rows="4"
+              [attr.aria-invalid]="whatToPracticeCtrl.invalid && (whatToPracticeCtrl.touched || whatToPracticeCtrl.dirty)"
+              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            ></textarea>
+
+            @if (whatToPracticeCtrl.invalid && (whatToPracticeCtrl.touched || whatToPracticeCtrl.dirty)) {
+              <div class="text-sm text-red-600 mt-1" aria-live="polite">
+                Please enter what you plan to practice.
+              </div>
+            }
+          </div>
+
+          <!-- Session Intent -->
+          <div>
+            <label for="sessionIntent" class="block text-sm font-medium text-neutral-800 mb-1">
+              Session Intent
+            </label>
+            <input
+              type="text"
+              id="sessionIntent"
+              formControlName="sessionIntent"
+              placeholder="Directed practice requires intent. Set yours…"
+              pInputText
+              [attr.aria-invalid]="sessionIntentCtrl.invalid && (sessionIntentCtrl.touched || sessionIntentCtrl.dirty)"
+              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            />
+            @if (sessionIntentCtrl.invalid && (sessionIntentCtrl.touched || sessionIntentCtrl.dirty)) {
+              <div class="text-sm text-red-600 mt-1" aria-live="polite">
+                Please enter your session intent.
+              </div>
+            }
+
+            <div id="sessionModeChoice" class="mt-4">
+              <p class="text-sm text-neutral-700 mb-2">Do you want to add practice resources?</p>
+              <p-button id="addResources" type="button" (click)="addResourcesToSession()">Yes</p-button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              id="startButton"
+              type="submit"
+              class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
+                     hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+              [disabled]="prePracticeForm.invalid"
+              aria-disabled="{{ prePracticeForm.invalid }}"
+            >
+              Start
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+
+    @case ('during') {
+      <div class="bg-white shadow rounded-2xl p-6 space-y-6">
+        <div id="timerSection">
+          <p class="font-semibold text-3xl tracking-tight text-neutral-900">{{ timeDisplay() }}</p>
+          <h2 class="text-lg text-neutral-700 mt-1">Keep going! Make it a good session!</h2>
+          <p class="text-neutral-600 mt-2">
+            Target Practice Time: <span class="font-medium">{{ practiceTimeCtrl.value || 0 }}</span> minutes
+          </p>
+          <button
+            id="endButton"
+            type="button"
+            class="mt-4 inline-flex items-center justify-center rounded-xl bg-rose-600 px-4 py-2 text-white font-medium
+                   hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500"
+            (click)="stopTimer()"
           >
-      <div class="field mb-4 col-12">
-        <label for="practiceTime" class="font-medium text-900">
-          Practice Time Amount
-        </label>
-        <input
-          type="number"
-          id="practiceTime"
-          formControlName="practiceTime"
-          placeholder="Enter the time (in minutes) that you want to practice"
-          pInputText
-        />
-        <div *ngIf="practiceTime.invalid">Please enter the time in numbers.</div>
-      </div>
-      <div class="field mb-4 col-12">
-        <label for="whatToPractice" class="font-medium text-900">
-          What to Practice
-        </label>
-        <textarea
-          id="whatToPractice"
-          formControlName="whatToPractice"
-          placeholder="What are you planning on practicing today?"
-          pInputTextarea
-        ></textarea>
-      </div>
-      <div class="field mb-4 col-12">
-        <label for="sessionIntent" class="text-900">
-          Session Intent
-        </label>
-        <input
-          type="text"
-          id="sessionIntent"
-          formControlName="sessionIntent"
-          placeholder="Directed practice requires intent. Take a moment, think of your intention for this session, and write it here:"
-          pInputText
-        />
-        <div id="sessionModeChoice">
-          <!-- TODO: New form entry for practice session style - focus vs all resources etc-->
-        <p>Do you want to add practice resources?</p>
-          <!-- TODO: Fix styling on this button -->
-        <p-button id="addResources" (click)="addResourcesToSession()">Yes</p-button>
+            End
+          </button>
+        </div>
 
+        @if (resourcesAdded()) {
+          <div id="resourcesSection" class="pt-4 border-t border-neutral-200">
+            <app-session-resource></app-session-resource>
+          </div>
+        }
       </div>
+    }
+
+    @case ('after') {
+      <div class="bg-white shadow rounded-2xl p-6">
+        <div class="mb-6 flex flex-col items-center">
+          <h2 class="text-xl font-semibold text-neutral-900 mb-2">You did it!</h2>
+          <img
+            [width]="400"
+            [height]="400"
+            src="assets/images/cherry-592.png"
+            alt="Man playing guitar"
+            class="rounded-xl shadow"
+          />
+        </div>
+
+        <form
+          [formGroup]="afterForm"
+          id="afterForm"
+          class="grid gap-6"
+          (ngSubmit)="onSubmit()"
+          novalidate
+        >
+          <!-- Reflection -->
+          <div>
+            <label for="sessionReflection" class="block text-sm font-medium text-neutral-800 mb-1">
+              Reflect on your session
+            </label>
+            <textarea
+              id="sessionReflection"
+              formControlName="sessionReflection"
+              placeholder="What worked? What didn’t? What surprised you?"
+              pInputTextarea
+              rows="6"
+              [attr.aria-invalid]="sessionReflectionCtrl.invalid && (sessionReflectionCtrl.touched || sessionReflectionCtrl.dirty)"
+              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            ></textarea>
+
+            @if (sessionReflectionCtrl.invalid && (sessionReflectionCtrl.touched || sessionReflectionCtrl.dirty)) {
+              <div class="text-sm text-red-600 mt-1" aria-live="polite">
+                Please enter a short reflection.
+              </div>
+            }
+          </div>
+
+          <!-- Goal for next time -->
+          <div>
+            <label for="goalForNextTime" class="block text-sm font-medium text-neutral-800 mb-1">
+              What do you want to remember next time?
+            </label>
+            <textarea
+              id="goalForNextTime"
+              formControlName="goalForNextTime"
+              placeholder="What do you want to work on next time?"
+              pInputTextarea
+              rows="4"
+              [attr.aria-invalid]="goalForNextTimeCtrl.invalid && (goalForNextTimeCtrl.touched || goalForNextTimeCtrl.dirty)"
+              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            ></textarea>
+
+            @if (goalForNextTimeCtrl.invalid && (goalForNextTimeCtrl.touched || goalForNextTimeCtrl.dirty)) {
+              <div class="text-sm text-red-600 mt-1" aria-live="polite">
+                Please enter your goal for next time.
+              </div>
+            }
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button
+              type="submit"
+              id="finishButton"
+              class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
+                     hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+              [disabled]="afterForm.invalid || saving()"
+              aria-busy="{{ saving() }}"
+            >
+              @if (!saving()) { <span>Finish</span> }
+              @if (saving()) {
+                <svg class="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                  <path class="opacity-75" d="M4 12a8 8 0 018-8v4A4 4 0 004 12z" fill="currentColor"></path>
+                </svg>
+                <span>Saving…</span>
+              }
+            </button>
+          </div>
+        </form>
       </div>
-
-
-      <p-button id="startButton" (click)="startTimer()">Start</p-button>
-    </form>
-  </div>
-
-  <div class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'during'">
-    <div id="timerSection">
-      <p class="font-bold text-xl">{{time}}</p>
-      <h2>Keep going! Make it a good session!</h2>
-      <p>Target Practice Time: {{this.prePracticeForm.get("practiceTime").value}} minutes</p>
-      <p-button id="endButton" (click)="stopTimer()">End</p-button>
-    </div>
-    <div id="resourcesSection" *ngIf="resourcesAdded">
-      <app-session-resource></app-session-resource>
-    </div>
-  </div>
-
-  <div style="align-items: center" class="surface-ground px-4 py-8 md:px-6 lg:px-8 card" *ngIf="sessionStatus === 'after'">
-    <div>
-      <h2>You did it!</h2>
-      <img
-        [width]="400"
-        [height]="400"
-        src="assets/images/cherry-592.png"
-        alt="Man playing guitar"
-      />
-    </div>
-    <form [formGroup]="afterForm" id="afterForm" class="grid formgrid p-fluid">
-      <div class="field mb-4 col-12">
-        <label for="sessionReflection" class="font-medium text-900">
-          Congratulations on taking some time for yourself to improve your skills!
-          Now take a few minutes to reflect on the session. How did it go? What
-          worked? What didn't work? What surprised you?
-        </label>
-        <textarea
-          type="text"
-          id="sessionReflection"
-          formControlName="sessionReflection"
-          placeholder="Enter your reflection here"
-          pInputTextarea></textarea>
-      </div>
-      <div class="field mb-4 col-12">
-        <label for="sessionReflection" class="font-medium text-900">
-          What do you want to remember the next time you do a similar practice?
-        </label>
-        <textarea
-          type="text"
-          id="goalForNextTime"
-          formControlName="goalForNextTime"
-          placeholder="What do you want to work on next time?"
-          pInputTextarea></textarea>
-      </div>
-      <p-button type="button" (click)="onSubmit()" id="finishButton">Finish</p-button>
-    </form>
-  </div>
-
+    }
+  @endswitch
 </div>
 
-  <div>
-    <app-previous-sessions></app-previous-sessions>
-  </div>
+<div class="mt-8">
+  <app-previous-sessions></app-previous-sessions>
+</div>

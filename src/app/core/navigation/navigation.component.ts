@@ -1,15 +1,21 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { Menubar } from 'primeng/menubar';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-navigation-menu',
     templateUrl: './navigation.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./navigation.component.scss'],
-    standalone: false
+    //styleUrls: ['./navigation.component.scss'],
+    imports: [Menubar, CommonModule], 
+    standalone: true
 })
 export class NavigationComponent implements OnInit{
-  items: MenuItem[];
+  items: MenuItem[] | undefined;
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.items = [

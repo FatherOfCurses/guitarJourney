@@ -2,3 +2,6 @@
 @import "primeflex/primeflex.css";
 @import 'assets/theme.css';
 @import "primeicons/primeicons.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
