@@ -84,7 +84,7 @@
                                     <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/MetricsComponent.html" >MetricsComponent</a>
+                                    <a href="components/MetricsComponent.html"  class="active" >MetricsComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/NotFoundComponent.html" >NotFoundComponent</a>
@@ -96,7 +96,7 @@
                                     <a href="components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                    <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -274,7 +274,7 @@
                                            <a href="components/LoginComponent.html" >LoginComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/MetricsComponent.html" >MetricsComponent</a>
+                                           <a href="components/MetricsComponent.html"  class="active" >MetricsComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/NotFoundComponent.html" >NotFoundComponent</a>
@@ -286,7 +286,7 @@
                                            <a href="components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                           <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -400,7 +400,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SessionResourceComponent</li>
+  <li>MetricsComponent</li>
 </ol>
 
 
@@ -418,7 +418,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/features/session/session-resource/session-resource.component.ts</code>
+    <code>src/app/features/metrics/metrics.component.ts</code>
 </p>
 
 
@@ -441,19 +441,15 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>app-session-resource</code></td>
+                <td class="col-md-9"><code>app-metrics</code></td>
             </tr>
 
-            <tr>
-                <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>session-resource.component.scss</code></td>
-            </tr>
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>session-resource.component.html</code></td>
+                <td class="col-md-9"><code>metrics.component.html</code></td>
             </tr>
 
 
@@ -463,37 +459,19 @@
 
 
 
-    <section>
-        <h3 id="constructor">Constructor</h3>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <code>constructor()</code>
-                        </td>
-                    </tr>
-    
-                </tbody>
-            </table>
-    </section>
 
 
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+            <pre><code class="hljs javascript">import { Component } from &#x27;@angular/core&#x27;;
 
 @Component({
-    selector: &#x27;app-session-resource&#x27;,
-    templateUrl: &#x27;./session-resource.component.html&#x27;,
-    styleUrls: [&#x27;./session-resource.component.scss&#x27;],
-    standalone: false
+  selector: &#x27;app-metrics&#x27;,
+  imports: [],
+  templateUrl: &#x27;./metrics.component.html&#x27;,
+  styleUrl: &#x27;./metrics.component.scss&#x27;
 })
-export class SessionResourceComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class MetricsComponent {
 
 }
 </code></pre>

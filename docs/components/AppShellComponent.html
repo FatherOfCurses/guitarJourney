@@ -66,7 +66,7 @@
                                     <a href="components/AppComponent.html" >AppComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/AppShellComponent.html" >AppShellComponent</a>
+                                    <a href="components/AppShellComponent.html"  class="active" >AppShellComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/AuthComponent.html" >AuthComponent</a>
@@ -96,7 +96,7 @@
                                     <a href="components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                    <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -256,7 +256,7 @@
                                            <a href="components/AppComponent.html" >AppComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/AppShellComponent.html" >AppShellComponent</a>
+                                           <a href="components/AppShellComponent.html"  class="active" >AppShellComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/AuthComponent.html" >AuthComponent</a>
@@ -286,7 +286,7 @@
                                            <a href="components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                           <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -400,7 +400,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SessionResourceComponent</li>
+  <li>AppShellComponent</li>
 </ol>
 
 
@@ -418,7 +418,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/features/session/session-resource/session-resource.component.ts</code>
+    <code>src/app/app-shell.component.ts</code>
 </p>
 
 
@@ -441,20 +441,16 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>app-session-resource</code></td>
-            </tr>
-
-            <tr>
-                <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>session-resource.component.scss</code></td>
+                <td class="col-md-9"><code>app-shell</code></td>
             </tr>
 
 
 
             <tr>
-                <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>session-resource.component.html</code></td>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><code>&lt;!--&nbsp;Sticky&nbsp;top&nbsp;bar&nbsp;--&gt;<br>&lt;header&nbsp;class&#x3D;&quot;sticky&nbsp;top-0&nbsp;z-50&nbsp;bg-white/90&nbsp;backdrop-blur&nbsp;border-b&nbsp;border-neutral-200&quot;&gt;<br>&nbsp;&nbsp;&lt;nav&nbsp;class&#x3D;&quot;mx-auto&nbsp;max-w-6xl&nbsp;px-4&nbsp;h-14&nbsp;flex&nbsp;items-center&nbsp;justify-between&quot;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;a&nbsp;routerLink&#x3D;&quot;/&quot;&nbsp;class&#x3D;&quot;font-semibold&quot;&gt;Guitar&nbsp;Journey&lt;/a&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&nbsp;class&#x3D;&quot;flex&nbsp;items-center&nbsp;gap-6&quot;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a&nbsp;routerLink&#x3D;&quot;/sessions&quot;&nbsp;routerLinkActive&#x3D;&quot;text-indigo-600&quot;&nbsp;class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Sessions&lt;/a&gt;&lt;/li&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a&nbsp;routerLink&#x3D;&quot;/songs&quot;&nbsp;&nbsp;&nbsp;&nbsp;routerLinkActive&#x3D;&quot;text-indigo-600&quot;&nbsp;class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Songs&lt;/a&gt;&lt;/li&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a&nbsp;routerLink&#x3D;&quot;/metrics&quot;&nbsp;&nbsp;routerLinkActive&#x3D;&quot;text-indigo-600&quot;&nbsp;class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;Example:&nbsp;simple&nbsp;profile&nbsp;menu&nbsp;toggle&nbsp;via&nbsp;a&nbsp;signal&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;class&#x3D;&quot;relative&quot;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button&nbsp;class&#x3D;&quot;rounded-xl&nbsp;px-3&nbsp;py-1.5&nbsp;hover:bg-neutral-100&quot;&gt;Profile&lt;/button&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;dropdown,&nbsp;notifications,&nbsp;etc.&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>&nbsp;&nbsp;&lt;/nav&gt;<br>&lt;/header&gt;<br><br>&lt;!--&nbsp;Page&nbsp;content&nbsp;--&gt;<br>&lt;main&nbsp;class&#x3D;&quot;mx-auto&nbsp;max-w-6xl&nbsp;px-4&nbsp;py-6&quot;&gt;<br>&nbsp;&nbsp;&lt;router-outlet&nbsp;/&gt;<br>&lt;/main&gt;<br></code></td>
             </tr>
+
 
 
         </tbody>
@@ -463,39 +459,46 @@
 
 
 
-    <section>
-        <h3 id="constructor">Constructor</h3>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <code>constructor()</code>
-                        </td>
-                    </tr>
-    
-                </tbody>
-            </table>
-    </section>
 
 
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+            <pre><code class="hljs javascript">import { Component, signal } from &#x27;@angular/core&#x27;;
+import { RouterLink, RouterLinkActive, RouterOutlet } from &#x27;@angular/router&#x27;;
+// If you prefer PrimeNG&#x27;s Menubar:
+// import { Menubar } from &#x27;primeng/menubar&#x27;;
 
 @Component({
-    selector: &#x27;app-session-resource&#x27;,
-    templateUrl: &#x27;./session-resource.component.html&#x27;,
-    styleUrls: [&#x27;./session-resource.component.scss&#x27;],
-    standalone: false
+  selector: &#x27;app-shell&#x27;,
+  standalone: true,
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  template: &#x60;
+    &lt;!-- Sticky top bar --&gt;
+    &lt;header class&#x3D;&quot;sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-neutral-200&quot;&gt;
+      &lt;nav class&#x3D;&quot;mx-auto max-w-6xl px-4 h-14 flex items-center justify-between&quot;&gt;
+        &lt;a routerLink&#x3D;&quot;/&quot; class&#x3D;&quot;font-semibold&quot;&gt;Guitar Journey&lt;/a&gt;
+
+        &lt;ul class&#x3D;&quot;flex items-center gap-6&quot;&gt;
+          &lt;li&gt;&lt;a routerLink&#x3D;&quot;/sessions&quot; routerLinkActive&#x3D;&quot;text-indigo-600&quot; class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Sessions&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a routerLink&#x3D;&quot;/songs&quot;    routerLinkActive&#x3D;&quot;text-indigo-600&quot; class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Songs&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a routerLink&#x3D;&quot;/metrics&quot;  routerLinkActive&#x3D;&quot;text-indigo-600&quot; class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+
+        &lt;!-- Example: simple profile menu toggle via a signal --&gt;
+        &lt;div class&#x3D;&quot;relative&quot;&gt;
+          &lt;button class&#x3D;&quot;rounded-xl px-3 py-1.5 hover:bg-neutral-100&quot;&gt;Profile&lt;/button&gt;
+          &lt;!-- dropdown, notifications, etc. --&gt;
+        &lt;/div&gt;
+      &lt;/nav&gt;
+    &lt;/header&gt;
+
+    &lt;!-- Page content --&gt;
+    &lt;main class&#x3D;&quot;mx-auto max-w-6xl px-4 py-6&quot;&gt;
+      &lt;router-outlet /&gt;
+    &lt;/main&gt;
+  &#x60;,
 })
-export class SessionResourceComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class AppShellComponent {}
 </code></pre>
         </div>
     </div>

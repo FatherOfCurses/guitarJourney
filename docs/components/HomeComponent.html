@@ -78,7 +78,7 @@
                                     <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/HomeComponent.html" >HomeComponent</a>
+                                    <a href="components/HomeComponent.html"  class="active" >HomeComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/LoginComponent.html" >LoginComponent</a>
@@ -96,7 +96,7 @@
                                     <a href="components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                    <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -268,7 +268,7 @@
                                            <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/HomeComponent.html" >HomeComponent</a>
+                                           <a href="components/HomeComponent.html"  class="active" >HomeComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/LoginComponent.html" >LoginComponent</a>
@@ -286,7 +286,7 @@
                                            <a href="components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                           <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -400,7 +400,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SessionResourceComponent</li>
+  <li>HomeComponent</li>
 </ol>
 
 
@@ -418,7 +418,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/features/session/session-resource/session-resource.component.ts</code>
+    <code>src/app/core/home/home.component.ts</code>
 </p>
 
 
@@ -441,19 +441,15 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>app-session-resource</code></td>
+                <td class="col-md-9"><code>app-home</code></td>
             </tr>
 
-            <tr>
-                <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>session-resource.component.scss</code></td>
-            </tr>
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>session-resource.component.html</code></td>
+                <td class="col-md-9"><code>home.component.html</code></td>
             </tr>
 
 
@@ -463,38 +459,111 @@
 
 
 
+
+
     <section>
-        <h3 id="constructor">Constructor</h3>
+        <h3 id="inputs">Properties</h3>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <code>constructor()</code>
+                            <b> filter</b>
                         </td>
                     </tr>
-    
+                    <tr>
+                        <td class="col-md-4">
+                            <code>filter:     <code>ModelSignal&lt;string&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> loading</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>loading:     <code>InputSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> select</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>select:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> sessions</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>sessions:     <code>InputSignal&lt;{ id: string; startedAt: string; durationMs: number; }[]&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> totalMinutes</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>totalMinutes:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
     </section>
-
-
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+            <pre><code class="hljs javascript">import { DatePipe, DecimalPipe } from &#x27;@angular/common&#x27;;
+import { Component, computed, signal, input, output, model } from &#x27;@angular/core&#x27;;
 
 @Component({
-    selector: &#x27;app-session-resource&#x27;,
-    templateUrl: &#x27;./session-resource.component.html&#x27;,
-    styleUrls: [&#x27;./session-resource.component.scss&#x27;],
-    standalone: false
+  selector: &#x27;app-home&#x27;,
+  imports: [DatePipe, DecimalPipe],
+  templateUrl: &#x27;./home.component.html&#x27;,
+  styleUrl: &#x27;./home.component.scss&#x27;
 })
-export class SessionResourceComponent implements OnInit {
+export class HomeComponent {
+ // signal inputs (immutable from parent)
+ sessions &#x3D; input.required&lt;{ id: string; startedAt: string; durationMs: number }[]&gt;();
+ loading &#x3D; input(false);
 
-  constructor() { }
+ // two-way example (if editing filters in child)
+ filter &#x3D; model&lt;string&gt;(&#x27;all&#x27;);
 
-  ngOnInit(): void {
-  }
+ // outputs as signal-backed emitters
+ select &#x3D; output&lt;string&gt;();
 
+ totalMinutes &#x3D; computed(
+   () &#x3D;&gt; Math.round((this.sessions()?.reduce((a, s) &#x3D;&gt; a + s.durationMs, 0) ?? 0) / 60000)
+ );
 }
 </code></pre>
         </div>

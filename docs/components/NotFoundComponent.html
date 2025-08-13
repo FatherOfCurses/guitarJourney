@@ -87,7 +87,7 @@
                                     <a href="components/MetricsComponent.html" >MetricsComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/NotFoundComponent.html" >NotFoundComponent</a>
+                                    <a href="components/NotFoundComponent.html"  class="active" >NotFoundComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
@@ -96,7 +96,7 @@
                                     <a href="components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                    <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -277,7 +277,7 @@
                                            <a href="components/MetricsComponent.html" >MetricsComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/NotFoundComponent.html" >NotFoundComponent</a>
+                                           <a href="components/NotFoundComponent.html"  class="active" >NotFoundComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
@@ -286,7 +286,7 @@
                                            <a href="components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/SessionResourceComponent.html"  class="active" >SessionResourceComponent</a>
+                                           <a href="components/SessionResourceComponent.html" >SessionResourceComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/SessionResourcePickerComponent.html" >SessionResourcePickerComponent</a>
@@ -400,7 +400,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>SessionResourceComponent</li>
+  <li>NotFoundComponent</li>
 </ol>
 
 
@@ -418,7 +418,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/features/session/session-resource/session-resource.component.ts</code>
+    <code>src/app/core/not-found/not-found.component.ts</code>
 </p>
 
 
@@ -441,19 +441,15 @@
 
             <tr>
                 <td class="col-md-3">selector</td>
-                <td class="col-md-9"><code>app-session-resource</code></td>
+                <td class="col-md-9"><code>app-not-found</code></td>
             </tr>
 
-            <tr>
-                <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>session-resource.component.scss</code></td>
-            </tr>
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>session-resource.component.html</code></td>
+                <td class="col-md-9"><code>not-found.component.html</code></td>
             </tr>
 
 
@@ -469,7 +465,7 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <code>constructor()</code>
+                            <code>constructor(router: <a href="https://angular.io/docs/ts/latest/api/router/index/Router-class.html" target="_blank" >Router</a>)</code>
                         </td>
                     </tr>
     
@@ -477,24 +473,52 @@
             </table>
     </section>
 
+    <section>
+        <h3 id="methods">Methods</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> goHome</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>goHome()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
 
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
+            <pre><code class="hljs javascript">import { Component } from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
 
 @Component({
-    selector: &#x27;app-session-resource&#x27;,
-    templateUrl: &#x27;./session-resource.component.html&#x27;,
-    styleUrls: [&#x27;./session-resource.component.scss&#x27;],
-    standalone: false
+  selector: &#x27;app-not-found&#x27;,
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: &#x27;./not-found.component.html&#x27;,
 })
-export class SessionResourceComponent implements OnInit {
+export class NotFoundComponent {
+  constructor(private router: Router) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  goHome(): void {
+    this.router.navigate([&#x27;/&#x27;]);
   }
-
 }
 </code></pre>
         </div>
