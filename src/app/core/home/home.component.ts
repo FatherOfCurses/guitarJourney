@@ -5,7 +5,7 @@ import { Component, computed, signal, input, output, model } from '@angular/core
   selector: 'app-home',
   imports: [DatePipe, DecimalPipe],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+
 })
 export class HomeComponent {
  // signal inputs (immutable from parent)

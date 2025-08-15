@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { AppShellComponent } from './app-shell.component'
-import { LoginComponent } from './auth/login.component';
-import { HomeComponent } from './core/home/home.component';
 
 export const routes: Routes = [
   // Public/auth routes (no shell)
