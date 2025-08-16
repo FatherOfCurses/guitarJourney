@@ -1,5 +1,5 @@
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, signal, input, output, model } from '@angular/core';
+import { Component, computed, input, output, model } from '@angular/core';
 
 @Component({
   selector: 'app-home',

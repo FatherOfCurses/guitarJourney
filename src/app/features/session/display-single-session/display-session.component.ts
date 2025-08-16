@@ -1,38 +1,48 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { SessionService } from "../../../services/session.service";
-import { takeWhile } from "rxjs/operators";
-import { Session } from "../../../models/session";
+import { Component, computed, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, filter, switchMap, catchError, of } from 'rxjs';
+import { SessionService } from '../../../services/session.service';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+
 
 @Component({
-    selector: 'app-display-single-session',
-    templateUrl: './display-session.component.html',
-    styleUrls: ['./display-session.component.scss'],
-    standalone: false
+  selector: 'app-display-single-session',
+  standalone: true,
+  imports: [CommonModule, ButtonModule, CardModule],
+  templateUrl: './display-session.component.html',
 })
-export class DisplaySessionComponent implements OnInit {
-  session: Session;
-  componentIsAlive = false;
+export class DisplaySessionComponent {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly sessionService = inject(SessionService);
 
-  constructor(private router: Router, private route: ActivatedRoute, private sessionService: SessionService) { }
+  // route param as a signal
+  readonly sessionId = toSignal(
+    this.route.paramMap.pipe(
+      map(pm => pm.get('id')),
+      filter((id): id is string => !!id)
+    ),
+    { initialValue: null }
+  );
 
-  ngOnInit(): void {
-    this.componentIsAlive = true;
-    this.route.paramMap
-      .pipe(takeWhile(() => this.componentIsAlive))
-      .subscribe((params) => {
-        const sessionId = params.get('id');
-        this.getSession(sessionId);
-      })
-  }
+  // session data as a signal (auto-updates when id changes)
+  readonly session = toSignal(
+    this.route.paramMap.pipe(
+      map(pm => pm.get('id')),
+      filter((id): id is string => !!id),
+      switchMap(id => this.sessionService.getSession$(id)),
+      catchError(() => of(null))
+    ),
+    { initialValue: null }
+  );
 
-  getSession(id: string) {
-    console.log(`Getting sessionId ${id}`)
-    this.sessionService.getSession$(id).subscribe(session => this.session = session);
-    console.log(this.session)
-  }
+  readonly loading = computed(() => this.session() === null && this.sessionId() !== null);
+  readonly hasError = computed(() => this.sessionId() !== null && this.session() === null);
 
-  returnToTable() {
-    this.router.navigate(['session']).then();
+  returnToTable(): void {
+    this.router.navigate(['/sessions']);
   }
 }

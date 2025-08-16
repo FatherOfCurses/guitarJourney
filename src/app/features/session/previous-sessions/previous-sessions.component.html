@@ -1,5 +1,11 @@
 <h1>Previous Practice Sessions</h1>
-<p-table [value]="sessionData" styleClass="p-datatable-gridlines" [tableStyle]="{'min-width': '50rem'}" selectionMode="single" [(selection)]="selectedSession" dataKey="id" (onRowSelect)="onRowSelect($event)">
+<p-table 
+  [value]="sessionData" 
+  styleClass="p-datatable-gridlines" 
+  [tableStyle]="{'min-width': '50rem'}" 
+  selectionMode="single" 
+  [(selection)]="selectedSession" 
+  dataKey="id" (onRowSelect)="onRowSelect($event)">
   <ng-template pTemplate="header">
     <tr>
       <th pSortableColumn="date">Date <p-sortIcon field="date"></p-sortIcon></th>

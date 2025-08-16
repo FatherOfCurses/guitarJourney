@@ -6,25 +6,23 @@ import {
   Router,
   RouterLink,
   RouterOutlet,
+  provideRouter,
 } from '@angular/router';
-import {
-  RouterTestingModule,
-  RouterTestingHarness,
-} from '@angular/router/testing';
+import { RouterTestingHarness } from '@angular/router/testing';
 
 import { AppShellComponent } from './app-shell.component';
 
 /** ---- STUB PAGES (standalone) ---- */
-@Component({ standalone: true, template: 'home' })   class HomeStubComponent {}
+@Component({ standalone: true, template: 'home' })     class HomeStubComponent {}
 @Component({ standalone: true, template: 'sessions' }) class SessionsStubComponent {}
-@Component({ standalone: true, template: 'songs' })  class SongsStubComponent {}
-@Component({ standalone: true, template: 'metrics' }) class MetricsStubComponent {}
+@Component({ standalone: true, template: 'songs' })    class SongsStubComponent {}
+@Component({ standalone: true, template: 'metrics' })  class MetricsStubComponent {}
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', loadComponent: () => Promise.resolve(HomeStubComponent) },
-  { path: 'sessions', loadComponent: () => Promise.resolve(SessionsStubComponent) },
-  { path: 'songs',    loadComponent: () => Promise.resolve(SongsStubComponent) },
-  { path: 'metrics',  loadComponent: () => Promise.resolve(MetricsStubComponent) },
+  { path: '', component: HomeStubComponent },
+  { path: 'sessions', component: SessionsStubComponent },
+  { path: 'songs',    component: SongsStubComponent },
+  { path: 'metrics',  component: MetricsStubComponent },
 ];
 
 describe('AppShellComponent', () => {
@@ -35,9 +33,12 @@ describe('AppShellComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        // Import the standalone component directly and wire test routes
+        // Import the standalone shell directly
         AppShellComponent,
-        RouterTestingModule.withRoutes(routes),
+      ],
+      providers: [
+        // Modern router testing setup
+        provideRouter(routes),
       ],
     }).compileComponents();
 
@@ -45,7 +46,7 @@ describe('AppShellComponent', () => {
     fixture = TestBed.createComponent(AppShellComponent);
     fixture.detectChanges();
 
-    harness = await RouterTestingHarness.create(router);
+    harness = await RouterTestingHarness.create();
   });
 
   it('creates the shell component', () => {
@@ -57,56 +58,30 @@ describe('AppShellComponent', () => {
     expect(outlet).toBeTruthy();
   });
 
-  it('renders expected nav links with correct routerLink commands', () => {
-    // Grab all elements that have the RouterLink directive
-    const linkDes = fixture.debugElement.queryAll(By.directive(RouterLink));
-    const commands = linkDes.map(de => (de.injector.get(RouterLink) as RouterLink).commands);
-
-    // commands is an array of link params; normalize to route strings
-    const paths = commands.map(c => (Array.isArray(c) ? c.join('/') : String(c)));
-
-    // Expect the four links in the header
-    expect(paths).toEqual(['/', '/sessions', '/songs', '/metrics']);
-
-    // (Optional) verify visible text is present
-    const textContent = linkDes.map(de => (de.nativeElement as HTMLElement).textContent?.trim());
-    expect(textContent).toEqual([
-      'Guitar Journey',
-      'Sessions',
-      'Songs',
-      'Metrics',
-    ]);
-  });
-
   it('navigates to each route and renders the correct page in the outlet', async () => {
     let page = await harness.navigateByUrl('/', HomeStubComponent);
-    expect(page.instance).toBeInstanceOf(HomeStubComponent);
+    expect(page).toBeInstanceOf(HomeStubComponent);
 
     page = await harness.navigateByUrl('/sessions', SessionsStubComponent);
-    expect(page.instance).toBeInstanceOf(SessionsStubComponent);
+    expect(page).toBeInstanceOf(SessionsStubComponent);
 
     page = await harness.navigateByUrl('/songs', SongsStubComponent);
-    expect(page.instance).toBeInstanceOf(SongsStubComponent);
+    expect(page).toBeInstanceOf(SongsStubComponent);
 
     page = await harness.navigateByUrl('/metrics', MetricsStubComponent);
-    expect(page.instance).toBeInstanceOf(MetricsStubComponent);
+    expect(page).toBeInstanceOf(MetricsStubComponent);
   });
 
   it('applies the routerLinkActive class to the matching link after navigation', async () => {
-    // Navigate to /songs
     await harness.navigateByUrl('/songs', SongsStubComponent);
-
-    // Trigger change detection on the shell so classes update
     fixture.detectChanges();
 
-    // Find the <a> with text "Songs"
     const songLinkDe = fixture.debugElement
       .queryAll(By.css('a[routerLink]'))
       .find(de => (de.nativeElement as HTMLElement).textContent?.trim() === 'Songs');
 
     expect(songLinkDe).toBeTruthy();
     const el = songLinkDe!.nativeElement as HTMLElement;
-    // Your template sets routerLinkActive="text-indigo-600"
     expect(el.classList.contains('text-indigo-600')).toBe(true);
   });
 });

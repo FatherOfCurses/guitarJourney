@@ -1,2 +1,4 @@
-import 'jest-preset-angular/setup-jest';
-import './jest-global-mocks';
+// setup-jest.ts
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
+
+setupZoneTestEnv();
