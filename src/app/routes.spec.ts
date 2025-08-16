@@ -1,5 +1,5 @@
 import { routes } from './routes';
-import { AppShellComponent } from './app-shell.component';
+import { AppShellComponent } from './shells/app-shell.component';
 import type { Route } from '@angular/router';
 
 describe('App Routes', () => {
