@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build -c production",
     "test": "npx jest --coverage",
     "e2e": "ng e2e",
     "deploy": "cd dist && zip -r -X guitar-practice.zip ./*",
