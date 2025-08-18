@@ -1,6 +1,7 @@
 
 export const environment = {
   production: false,
+  useEmulators: true,
   firebase: {
     apiKey: "AIzaSyDpVWqhgUIDm9NyZPMm1SHV6GPDA7XkR4A",
     authDomain: "guitar-journey-b3295.firebaseapp.com",

@@ -37,6 +37,8 @@ export class SessionComponent {
   private readonly sessionService = inject(SessionService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly snack = inject(MatSnackBar);
+  readonly loading = signal(false);
+  readonly hasError = signal(false);
 
   // UI flags
   readonly saving = signal(false);
@@ -92,21 +94,14 @@ export class SessionComponent {
   onSubmit(): void {
     if (this.afterForm.invalid || this.prePracticeForm.invalid) return;
 
-    const pre = this.prePracticeForm.getRawValue();
-    const post = this.afterForm.getRawValue();
+    const payload = this.buildCreatePayload();
 
-    this.session.update((s) => ({
-      ...s,
-      whatToPractice: pre.whatToPractice ?? '',
-      sessionIntent: pre.sessionIntent ?? '',
-      postPracticeReflection: post.sessionReflection ?? '',
-      goalForNextTime: post.goalForNextTime ?? '',
-      practiceTime: this.elapsedMs(),
-    }));
+    this.loading.set(true);
+    this.hasError.set(false);
 
     this.saving.set(true);
 
-    this.sessionService.putSession$(this.session())
+    this.sessionService.create(payload)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.saving.set(false))
@@ -157,4 +152,21 @@ export class SessionComponent {
     return `${this.pad2(minutes)}:${this.pad2(seconds)}`;
   }
   private pad2(n: number): string { return n.toString().padStart(2, '0'); }
+
+  private buildCreatePayload() {
+    const pre = this.prePracticeForm.value;
+    const post = this.afterForm.value;
+
+    // Map your form → Firestore document shape
+    // Adjust these property names to match your Session/Firestore schema
+    return {
+      whatToPractice: pre.whatToPractice.trim() ?? '',
+      sessionIntent: pre.sessionIntent ?? '' ,
+      postPracticeReflection: post.sessionReflection ?? '',
+      goalForNextTime: post.goalForNextTime ?? '',
+      practiceTime: this.elapsedMs()
+      // Any other fields you currently save, EXCEPT id/date/startedAt
+    }
+  }
+
 }
