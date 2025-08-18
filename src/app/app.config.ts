@@ -2,8 +2,13 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient /*, withInterceptors */ } from '@angular/common/http';
+import { provideHttpClient, withInterceptors /*, withInterceptors */ } from "@angular/common/http";
 import { routes } from './routes';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
+import { environment} from "../environments/environment";
 
 // PrimeNG global config (optional)
 // import { PrimeNGConfig } from 'primeng/api';
@@ -13,7 +18,7 @@ import { routes } from './routes';
 // import { InputTextModule } from 'primeng/inputtext';
 // import { InputTextareaModule } from 'primeng/inputtextarea';
 
-// import { authInterceptor } from './auth/auth.interceptor';
+ //import { authInterceptor } from './auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,8 +30,12 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimations(),
     provideHttpClient(
-      // withInterceptors([authInterceptor])
+       //withInterceptors([authInterceptor])
     ),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
 
     // If you truly need module-based providers (not typical for PrimeNG 20):
     // importProvidersFrom(ButtonModule, InputTextModule, InputTextareaModule),

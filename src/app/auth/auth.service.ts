@@ -1,5 +1,6 @@
 // auth/auth.service.ts
 import { Injectable, signal, computed } from '@angular/core';
+import { Auth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, User } from '@angular/fire/auth';
 
 export interface User {
   id: string;
@@ -13,11 +14,12 @@ export class AuthService {
   user = computed(() => this._user());
 
   // wire up to your real backend later
-  login = async (email: string, password: string) => {
-    // fake:
-    this._user.set({ id: 'u1', name: 'Guitarist' });
-  };
+  constructor(private auth: Auth) {
+    onAuthStateChanged(this.auth, u => this._user.set(u));
+  }
 
-  logout = () => this._user.set(null);
-  isAuthed = computed(() => !!this._user());
+  signInWithGoogle() {
+    return signInWithPopup(this.auth, new GoogleAuthProvider());
+  }
+  signOut() { return signOut(this.auth); }
 }
