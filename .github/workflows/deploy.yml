@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4https://chatgpt.com/c/68a274ee-7840-8328-adf9-d3c893ffd38a
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
