@@ -1,0 +1,88 @@
+<section class="max-w-lg mx-auto p-6 bg-white rounded-2xl shadow">
+    <h1 class="text-2xl font-semibold mb-4">Create your account</h1>
+  
+    <form [formGroup]="form" (ngSubmit)="submit()" class="grid gap-4" novalidate>
+      <!-- Name -->
+      <div class="grid gap-1">
+        <label for="displayName" class="text-sm font-medium">Name</label>
+        <input id="displayName" type="text" pInputText formControlName="displayName" placeholder="Your name" />
+        <small class="text-neutral-500">Optional — used for your profile.</small>
+      </div>
+  
+      <!-- Email -->
+      <div class="grid gap-1">
+        <label for="email" class="text-sm font-medium">Email</label>
+        <input 
+        id="email" type="email" pInputText formControlName="email" placeholder="you@example.com" />
+        @if (email.touched && email.invalid) {
+          <p class="text-sm text-red-600">Enter a valid email.</p>
+        }
+      </div>
+  
+      <!-- Passwords (PrimeNG Password) -->
+      <div class="grid gap-3 md:grid-cols-2">
+        <div class="grid gap-1">
+          <label for="password" class="text-sm font-medium">Password</label>
+          <p-password
+            inputId="password"
+            formControlName="password"
+            [feedback]="true"
+            [toggleMask]="true"
+            placeholder="At least 8 characters"
+          ></p-password>
+        </div>
+  
+        <div class="grid gap-1">
+          <label for="confirmPassword" class="text-sm font-medium">Confirm Password</label>
+          <p-password
+            inputId="confirmPassword"
+            formControlName="confirmPassword"
+            [feedback]="false"
+            [toggleMask]="true"
+            placeholder="Repeat password"
+          ></p-password>
+        </div>
+      </div>
+  
+      @if (form.errors?.passwordsDontMatch && (password.touched || confirmPassword.touched)) {
+        <p class="text-sm text-red-600">
+          Passwords don’t match.
+        </p>
+      }
+  
+      <!-- Error banner -->
+      @if (error()) {
+        <p-message
+          severity="error"
+          [text]="error()!"
+          class="mt-1"
+        ></p-message>
+      }
+  
+      <!-- Submit -->
+      <p-button
+        [label]="loading() ? 'Creating…' : 'Create account'"
+        styleClass="w-full"
+        [disabled]="form.invalid || loading()"
+        type="submit"
+      ></p-button>
+  
+      <p-divider align="center" type="solid"><b>or</b></p-divider>
+  
+      <!-- Google -->
+      <p-button
+        label="Continue with Google"
+        icon="pi pi-google"
+        styleClass="w-full p-button-outlined"
+        (onClick)="google()"
+        [disabled]="loading()"
+        type="button"
+      ></p-button>
+  
+      <p class="text-sm text-neutral-700 text-center">
+        Already have an account?
+        <a routerLink="/login" class="text-indigo-600 hover:underline">Sign in</a>
+      </p>
+    </form>
+  </section>
+  

@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 import { PublicShellComponent } from './shells/public-shell.component';
 import { AppShellComponent } from './shells/app-shell.component';
 import { authGuard } from "./auth/auth.guard";
+import { RegisterComponent } from './auth/register.component';
 import { AlreadyAuthedGuard } from './auth/already-authed.guard';
 
 export const routes: Routes = [
@@ -25,6 +26,11 @@ export const routes: Routes = [
           import('./auth/login.component').then(m => m.LoginComponent),
         title: 'Sign in',
       },
+      {
+        path: 'register',
+        loadComponent: () =>
+          import('./auth/register.component').then(m => m.RegisterComponent),
+      }
     ],
   },
 

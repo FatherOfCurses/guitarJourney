@@ -36,6 +36,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
+              "node_modules/primeicons/primeicons.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -121,6 +122,7 @@
               "tsconfig.spec.json"
             ],
             "styles": [
+              "node_modules/primeicons/primeicons.css",
               "src/styles.scss",
               "src/assets/theme.css"
             ],
