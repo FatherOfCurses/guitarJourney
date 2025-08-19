@@ -1,19 +1,29 @@
-;// app.config.ts
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+// app.config.ts
+import { ApplicationConfig, APP_INITIALIZER, inject } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient /*, withInterceptors */ } from '@angular/common/http';
+import { provideHttpClient } from "@angular/common/http";
 import { routes } from './routes';
 
-// PrimeNG global config (optional)
-// import { PrimeNGConfig } from 'primeng/api';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth, getAuth, Auth, connectAuthEmulator } from '@angular/fire/auth';
+import { provideFirestore, getFirestore, Firestore, connectFirestoreEmulator } from '@angular/fire/firestore';
+import { provideStorage, getStorage, Storage, connectStorageEmulator } from '@angular/fire/storage';
+import { environment } from "../environments/environment";
 
-// If you need *module* providers (rare in PrimeNG 20; most components are standalone):
-// import { ButtonModule } from 'primeng/button';
-// import { InputTextModule } from 'primeng/inputtext';
-// import { InputTextareaModule } from 'primeng/inputtextarea';
+function connectEmulatorsIfNeededFactory() {
+  return () => {
+    if (!environment.production && environment.useEmulators !== false) {
+      const auth = inject(Auth);
+      const fs = inject(Firestore);
+      const storage = inject(Storage);
 
-// import { authInterceptor } from './auth/auth.interceptor';
+      connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+      connectFirestoreEmulator(fs, 'localhost', 8080);
+      connectStorageEmulator(storage, 'localhost', 9199);
+    }
+  };
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,14 +34,18 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions()
     ),
     provideAnimations(),
-    provideHttpClient(
-      // withInterceptors([authInterceptor])
-    ),
+    provideHttpClient(),
 
-    // If you truly need module-based providers (not typical for PrimeNG 20):
-    // importProvidersFrom(ButtonModule, InputTextModule, InputTextareaModule),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+    provideStorage(() => getStorage()),
 
-    // Optionally set/override global PrimeNG config:
-    // { provide: PrimeNGConfig, useValue: { ripple: true } },
+    // Ensure emulator connections happen before the app starts using the services
+    {
+      provide: APP_INITIALIZER,
+      useFactory: connectEmulatorsIfNeededFactory,
+      multi: true
+    }
   ],
 };

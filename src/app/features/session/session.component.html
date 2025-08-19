@@ -9,7 +9,8 @@
           [formGroup]="prePracticeForm"
           id="sessionForm"
           class="grid gap-6"
-          (ngSubmit)="startTimer()"
+          (ngSubmit)="startTimer()
+          "
           novalidate
         >
           <!-- Practice Time -->
@@ -28,7 +29,7 @@
               aria-describedby="practiceTimeHelp practiceTimeError"
               [attr.aria-invalid]="practiceTimeCtrl.invalid && (practiceTimeCtrl.touched || practiceTimeCtrl.dirty)"
               class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
             <small id="practiceTimeHelp" class="text-sm text-neutral-500">Numbers only, in minutes.</small>
 
@@ -52,7 +53,7 @@
               rows="4"
               [attr.aria-invalid]="whatToPracticeCtrl.invalid && (whatToPracticeCtrl.touched || whatToPracticeCtrl.dirty)"
               class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             ></textarea>
 
             @if (whatToPracticeCtrl.invalid && (whatToPracticeCtrl.touched || whatToPracticeCtrl.dirty)) {
@@ -75,7 +76,7 @@
               pInputText
               [attr.aria-invalid]="sessionIntentCtrl.invalid && (sessionIntentCtrl.touched || sessionIntentCtrl.dirty)"
               class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
             @if (sessionIntentCtrl.invalid && (sessionIntentCtrl.touched || sessionIntentCtrl.dirty)) {
               <div class="text-sm text-red-600 mt-1" aria-live="polite">
@@ -94,9 +95,8 @@
               id="startButton"
               type="submit"
               class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
-                     hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+                         hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
               [disabled]="prePracticeForm.invalid"
-              
             >
               Start
             </button>
@@ -117,7 +117,7 @@
             id="endButton"
             type="button"
             class="mt-4 inline-flex items-center justify-center rounded-xl bg-rose-600 px-4 py-2 text-white font-medium
-                   hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                       hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500"
             (click)="stopTimer()"
           >
             End
@@ -126,11 +126,11 @@
 
         @if (resourcesAdded()) {
           <div id="resourcesSection" class="pt-4 border-t border-neutral-200">
-          <!--  <app-session-resource></app-session-resource> -->
+            <!--  <app-session-resource></app-session-resource> -->
           </div>
         }
-      </div> 
-    }  
+      </div>
+    }
 
     @case ('after') {
       <div class="bg-white shadow rounded-2xl p-6">
@@ -165,7 +165,7 @@
               rows="6"
               [attr.aria-invalid]="sessionReflectionCtrl.invalid && (sessionReflectionCtrl.touched || sessionReflectionCtrl.dirty)"
               class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             ></textarea>
 
             @if (sessionReflectionCtrl.invalid && (sessionReflectionCtrl.touched || sessionReflectionCtrl.dirty)) {
@@ -188,7 +188,7 @@
               rows="4"
               [attr.aria-invalid]="goalForNextTimeCtrl.invalid && (goalForNextTimeCtrl.touched || goalForNextTimeCtrl.dirty)"
               class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                     focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             ></textarea>
 
             @if (goalForNextTimeCtrl.invalid && (goalForNextTimeCtrl.touched || goalForNextTimeCtrl.dirty)) {
@@ -200,11 +200,11 @@
 
           <div class="flex items-center gap-3">
             <button
-              type="submit"
-              id="finishButton"
+              type="button"
+              (click)="onSubmit()"
+              [disabled]="loading()"
               class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
-                     hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
-              [disabled]="afterForm.invalid || saving()"
+                         hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
             >
               @if (!saving()) { <span>Finish</span> }
               @if (saving()) {
@@ -219,6 +219,5 @@
         </form>
       </div>
     }
-   } @endswitch
+  }
 </div>
-

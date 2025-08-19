@@ -17,7 +17,7 @@ export class LoginComponent {
   password = '';
 
   async submit() {
-    await this.auth.login(this.email, this.password);
+    await this.auth.signInWithGoogle();
     this.router.navigateByUrl('/app');
   }
 }

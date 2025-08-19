@@ -1,32 +1,43 @@
-import { Injectable, InjectionToken, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Session } from '../models/session';
-
-export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL', {
-  providedIn: 'root',
-  factory: () => 'https://dx471dpyrj.execute-api.us-west-2.amazonaws.com',
-});
+// session.service.ts
+import { Injectable } from '@angular/core';
+import { Firestore, collection, collectionData, doc, docData, setDoc, addDoc, updateDoc, deleteDoc, query, where, orderBy, limit } from '@angular/fire/firestore';
+import { Auth } from '@angular/fire/auth';
+import { Timestamp } from 'firebase/firestore';
+import { from, map, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {
-  private readonly http = inject(HttpClient);
-  private readonly baseUrl = inject(API_BASE_URL);
+  constructor(private fs: Firestore, private auth: Auth) {}
 
-  getSession$(sessionId: string): Observable<Session> {
-    // Prefer a real logger in production; remove noisy console logs
-    return this.http.get<Session>(`${this.baseUrl}/sessions/${sessionId}`);
+  private userCol(path: string) {
+    const uid = this.auth.currentUser?.uid!;
+    return collection(this.fs, `users/${uid}/${path}`);
   }
 
-  getAllSessions$(): Observable<Session[]> {
-    return this.http.get<Session[]>(`${this.baseUrl}/sessions`);
+  listRecent(limitN = 20) {
+    const q = query(this.userCol('sessions'), orderBy('startedAt', 'desc'), limit(limitN));
+    return collectionData(q, { idField: 'id' });
   }
 
-  putSession$(session: Session): Observable<Session> {
-    return this.http.put<Session>(
-      `${this.baseUrl}/sessions`,
-      session,
-      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
-    );
+  getById(id: string) {
+    const uid = this.auth.currentUser?.uid!;
+    return docData(doc(this.fs, `users/${uid}/sessions/${id}`), { idField: 'id' });
+  }
+
+  create(partial: any) {
+    return from(addDoc(this.userCol('sessions'), {
+      ...partial,
+      startedAt: Timestamp.now()
+    }));
+  }
+
+  update(id: string, patch: any) {
+    const uid = this.auth.currentUser?.uid!;
+    return from(updateDoc(doc(this.fs, `users/${uid}/sessions/${id}`), patch));
+  }
+
+  delete(id: string) {
+    const uid = this.auth.currentUser?.uid!;
+    return from(deleteDoc(doc(this.fs, `users/${uid}/sessions/${id}`)));
   }
 }

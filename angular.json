@@ -21,7 +21,8 @@
               "angular-cd-timer"
             ],
             "outputPath": {
-              "base": "dist/guitar-practice-journal"
+              "base": "dist/guitar-practice-journal",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
@@ -37,9 +38,8 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [],
-            "browser": "src/main.ts"
-          },
+            "scripts": []
+                    },
           "configurations": {
             "production": {
               "fileReplacements": [
