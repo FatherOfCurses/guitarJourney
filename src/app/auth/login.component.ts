@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 @Component({
   standalone: true,
   imports: [FormsModule],
-  template: './login.component.html',
+  templateUrl: './login.component.html',
 
 })
 export class LoginComponent {
@@ -17,6 +17,11 @@ export class LoginComponent {
   password = '';
 
   async submit() {
+    await this.auth.signInWithEmail(this.email, this.password);
+    this.router.navigateByUrl('/app');
+  }
+
+  async signInWithGoogle() {
     await this.auth.signInWithGoogle();
     this.router.navigateByUrl('/app');
   }

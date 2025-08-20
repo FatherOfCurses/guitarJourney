@@ -1,8 +1,29 @@
 <h1 class="text-2xl font-semibold mb-4">Sign in</h1>
+
 <form (ngSubmit)="submit()" class="space-y-3 max-w-sm">
   <input [(ngModel)]="email" name="email" placeholder="Email"
          class="w-full rounded border px-3 py-2" />
+
   <input [(ngModel)]="password" name="password" type="password" placeholder="Password"
          class="w-full rounded border px-3 py-2" />
-  <button class="rounded-xl px-4 py-2 bg-indigo-600 text-white">Sign in</button>
+
+  <button type="submit"
+          class="w-full rounded-xl px-4 py-2 bg-indigo-600 text-white font-medium hover:bg-indigo-500">
+    Sign in
+  </button>
 </form>
+
+<!-- Divider -->
+<div class="flex items-center my-6 max-w-sm">
+  <div class="flex-grow border-t border-neutral-300"></div>
+  <span class="mx-3 text-neutral-500 text-sm">or</span>
+  <div class="flex-grow border-t border-neutral-300"></div>
+</div>
+
+<!-- Google Sign-in -->
+<button type="button"
+        (click)="signInWithGoogle()"
+        class="w-full max-w-sm flex items-center justify-center rounded-xl border px-4 py-2 font-medium text-neutral-700 hover:bg-neutral-50">
+  <i class="pi pi-google mr-2"></i>
+  Sign in with Google
+</button>

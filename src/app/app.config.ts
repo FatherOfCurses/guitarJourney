@@ -10,6 +10,8 @@ import { provideAuth, getAuth, Auth, connectAuthEmulator } from '@angular/fire/a
 import { provideFirestore, getFirestore, Firestore, connectFirestoreEmulator } from '@angular/fire/firestore';
 import { provideStorage, getStorage, Storage, connectStorageEmulator } from '@angular/fire/storage';
 import { environment } from "../environments/environment";
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 function connectEmulatorsIfNeededFactory() {
   return () => {
@@ -35,7 +37,14 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimations(),
     provideHttpClient(),
-
+    providePrimeNG({
+      theme: {
+          preset: Aura,
+          options: {
+            darkModeSelector: false || 'none'
+        }
+      }
+  }),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
