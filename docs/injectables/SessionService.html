@@ -149,6 +149,9 @@
                                 <li class="link">
                                     <a href="../classes/Song.html" >Song</a>
                                 </li>
+                                <li class="link">
+                                    <a href="../classes/SongsService.html" >SongsService</a>
+                                </li>
                         </ul>
                     </li>
             
@@ -195,6 +198,15 @@
                                 </li>
                                 <li class="link">
                                     <a href="../interfaces/DashboardData.html" >DashboardData</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Session.html" >Session</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Song.html" >Song</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/UserDocument.html" >UserDocument</a>
                                 </li>
                         </ul>
                     </li>
@@ -354,6 +366,9 @@
                                        <li class="link">
                                            <a href="../classes/Song.html" >Song</a>
                                        </li>
+                                       <li class="link">
+                                           <a href="../classes/SongsService.html" >SongsService</a>
+                                       </li>
                                </ul>
                            </li>
                    
@@ -400,6 +415,15 @@
                                        </li>
                                        <li class="link">
                                            <a href="../interfaces/DashboardData.html" >DashboardData</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Session.html" >Session</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Song.html" >Song</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/UserDocument.html" >UserDocument</a>
                                        </li>
                                </ul>
                            </li>
@@ -474,7 +498,7 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-4">
-                                    <b><span class="modifier">Private</span> userCol</b>
+                                    <b><span class="modifier">Private</span> uid</b>
                                 </td>
                             </tr>
             
@@ -483,7 +507,36 @@
                                         <span class="modifier-icon method fa fa-play lock">
                                             <span class="fa fa-lock"></span>
                                         </span>
-                                    <code>userCol(path: string)</code>
+                                    <code>uid()</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Convenience to ensure we have a user id </p>
+            </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>string</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b><span class="modifier">Private</span> sessionsCol</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <span class="modifier-icon method fa fa-play lock">
+                                            <span class="fa fa-lock"></span>
+                                        </span>
+                                    <code>sessionsCol(uid: string)</code>
                                 </td>
                             </tr>
             
@@ -501,20 +554,22 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-4">
-                                    <b> listRecent</b>
+                                    <b> list$</b>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
-            <code>listRecent(limitN: number)</code>
+            <code>list$(pageSize: number)</code>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
+                                        <div class="io-description"><p>Live list of the current user&#39;s sessions, newest first. </p>
+            </div>
                                         <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
+                                            <b>Returns: </b>    <code>any</code>
             
                                         </div>
                                 </td>
@@ -525,20 +580,48 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-4">
-                                    <b> getById</b>
+                                    <b> listByDate$</b>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
-            <code>getById(id: string)</code>
+            <code>listByDate$(start: Date, end: Date, pageSize: number)</code>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
+                                        <div class="io-description"><p>Live list filtered by date range (inclusive start/end) </p>
+            </div>
                                         <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
+                                            <b>Returns: </b>    <code>any</code>
+            
+                                        </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b> get$</b>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+            <code>get$(id: string)</code>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td class="col-md-4">
+                                        <div class="io-description"><p>Stream a single session by id </p>
+            </div>
+                                        <div class="io-description">
+                                            <b>Returns: </b>    <code>any</code>
             
                                         </div>
                                 </td>
@@ -555,14 +638,16 @@
             
                             <tr>
                                 <td class="col-md-4">
-            <code>create(partial: any)</code>
+            <code>create(input: any)</code>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
+                                        <div class="io-description"><p>Create a new session for current user. Provide partial; owner/date filled automatically. </p>
+            </div>
                                         <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
+                                            <b>Returns: </b>    <code>any</code>
             
                                         </div>
                                 </td>
@@ -579,12 +664,14 @@
             
                             <tr>
                                 <td class="col-md-4">
-            <code>update(id: string, patch: any)</code>
+            <code>update(id: string, patch: <a href="../classes/Session.html" >Partial<Session></a>)</code>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
+                                        <div class="io-description"><p>Patch fields on an existing session </p>
+            </div>
                                         <div class="io-description">
                                             <b>Returns: </b>    <code>void</code>
             
@@ -609,6 +696,8 @@
             
                             <tr>
                                 <td class="col-md-4">
+                                        <div class="io-description"><p>Delete a session </p>
+            </div>
                                         <div class="io-description">
                                             <b>Returns: </b>    <code>void</code>
             
@@ -622,45 +711,105 @@
     </div>
     <div class="tab-pane fade tab-source-code" id="source">
         <pre><code class="hljs javascript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { Firestore, collection, collectionData, doc, docData, setDoc, addDoc, updateDoc, deleteDoc, query, where, orderBy, limit } from &#x27;@angular/fire/firestore&#x27;;
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  docData,
+  updateDoc,
+  deleteDoc,
+  query,
+  where,
+  orderBy,
+  limit,
+} from &#x27;@angular/fire/firestore&#x27;;
 import { Auth } from &#x27;@angular/fire/auth&#x27;;
-import { Timestamp } from &#x27;firebase/firestore&#x27;;
-import { from, map, switchMap } from &#x27;rxjs&#x27;;
+import { getFirestore, Timestamp, addDoc } from &quot;firebase/firestore&quot;;
+import { Observable, from } from &#x27;rxjs&#x27;;
+import { Session } from &#x27;../models/session&#x27;;
+import { sessionConverter } from &quot;../storage/converters&quot;;
+import { CollectionReference } from &quot;@angular/fire/compat/firestore&quot;;
+
 
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class SessionService {
   constructor(private fs: Firestore, private auth: Auth) {}
 
-  private userCol(path: string) {
-    const uid &#x3D; this.auth.currentUser?.uid!;
-    return collection(this.fs, &#x60;users/${uid}/${path}&#x60;);
+  /** Convenience to ensure we have a user id */
+  private uid(): string {
+    const uid &#x3D; this.auth.currentUser?.uid;
+    if (!uid) throw new Error(&#x27;No authenticated user&#x27;);
+    return uid;
   }
 
-  listRecent(limitN &#x3D; 20) {
-    const q &#x3D; query(this.userCol(&#x27;sessions&#x27;), orderBy(&#x27;startedAt&#x27;, &#x27;desc&#x27;), limit(limitN));
-    return collectionData(q, { idField: &#x27;id&#x27; });
+  private sessionsCol(uid &#x3D; this.uid()) {
+    // users/{uid}/sessions with strong typing via converter
+    return collection(this.fs, &#x60;users/${uid}/sessions&#x60;).withConverter(sessionConverter);
   }
 
-  getById(id: string) {
-    const uid &#x3D; this.auth.currentUser?.uid!;
-    return docData(doc(this.fs, &#x60;users/${uid}/sessions/${id}&#x60;), { idField: &#x27;id&#x27; });
+  /** Live list of the current user&#x27;s sessions, newest first. */
+  list$(pageSize &#x3D; 50): Observable&lt;Session[]&gt; {
+    const uid &#x3D; this.uid();
+    const col &#x3D; this.sessionsCol(uid);
+    const q &#x3D; query(col, where(&#x27;ownerUid&#x27;, &#x27;&#x3D;&#x3D;&#x27;, uid), orderBy(&#x27;date&#x27;, &#x27;desc&#x27;), limit(pageSize));
+    return collectionData(q, { idField: &#x27;id&#x27; }) as unknown as Observable&lt;Session[]&gt;;
   }
 
-  create(partial: any) {
-    return from(addDoc(this.userCol(&#x27;sessions&#x27;), {
-      ...partial,
-      startedAt: Timestamp.now()
-    }));
+  /** Live list filtered by date range (inclusive start/end) */
+  listByDate$(start: Date, end: Date, pageSize &#x3D; 100): Observable&lt;Session[]&gt; {
+    const uid &#x3D; this.uid();
+    const col &#x3D; this.sessionsCol(uid);
+    // Convert to Firestore Timestamps for range queries
+    const startTs &#x3D; Timestamp.fromDate(start);
+    const endTs &#x3D; Timestamp.fromDate(end);
+    const q &#x3D; query(
+      col,
+      where(&#x27;ownerUid&#x27;, &#x27;&#x3D;&#x3D;&#x27;, uid),
+      where(&#x27;date&#x27;, &#x27;&gt;&#x3D;&#x27;, startTs),
+      where(&#x27;date&#x27;, &#x27;&lt;&#x3D;&#x27;, endTs),
+      orderBy(&#x27;date&#x27;, &#x27;desc&#x27;),
+      limit(pageSize)
+    );
+    return collectionData(q, { idField: &#x27;id&#x27; }) as unknown as Observable&lt;Session[]&gt;;
   }
 
-  update(id: string, patch: any) {
-    const uid &#x3D; this.auth.currentUser?.uid!;
-    return from(updateDoc(doc(this.fs, &#x60;users/${uid}/sessions/${id}&#x60;), patch));
+  /** Stream a single session by id */
+  get$(id: string): Observable&lt;Session | undefined&gt; {
+    const uid &#x3D; self?.crypto ? this.uid() : this.uid(); // keeps tree-shaking happy in some setups
+    const ref &#x3D; doc(this.fs, &#x60;users/${uid}/sessions/${id}&#x60;).withConverter(sessionConverter);
+    return docData(ref, { idField: &#x27;id&#x27; }) as unknown as Observable&lt;Session | undefined&gt;;
   }
 
+  /** Create a new session for current user. Provide partial; owner/date filled automatically. */
+  create(input: Omit&lt;Session, &#x27;id&#x27; | &#x27;ownerUid&#x27; | &#x27;date&#x27;&gt; &amp; { date?: Timestamp }): Promise&lt;string&gt; {
+    const db &#x3D; getFirestore();
+    const uid &#x3D; this.uid();
+    const col &#x3D; collection(db, &#x60;users/${uid}/sessions&#x60;).withConverter(sessionConverter);
+    const payload: Session &#x3D; {
+      ownerUid: uid,
+      date: input.date ?? Timestamp.now(),
+      practiceTime: input.practiceTime,
+      whatToPractice: input.whatToPractice,
+      sessionIntent: input.sessionIntent,
+      postPracticeReflection: input.postPracticeReflection,
+      goalForNextTime: input.goalForNextTime,
+    };
+    return addDoc(col, payload).then((res) &#x3D;&gt; res.id);
+  }
+
+  /** Patch fields on an existing session */
+  update(id: string, patch: Partial&lt;Session&gt;) {
+    const uid &#x3D; this.uid();
+    const ref &#x3D; doc(this.fs, &#x60;users/${uid}/sessions/${id}&#x60;).withConverter(sessionConverter);
+    return from(updateDoc(ref, patch as any));
+  }
+
+  /** Delete a session */
   delete(id: string) {
-    const uid &#x3D; this.auth.currentUser?.uid!;
-    return from(deleteDoc(doc(this.fs, &#x60;users/${uid}/sessions/${id}&#x60;)));
+    const uid &#x3D; this.uid();
+    const ref &#x3D; doc(this.fs, &#x60;users/${uid}/sessions/${id}&#x60;);
+    return from(deleteDoc(ref));
   }
 }
 </code></pre>

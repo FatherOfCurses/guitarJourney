@@ -168,7 +168,7 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
-                                    <a href="../injectables/AuthService.html"  class="active" >AuthService</a>
+                                    <a href="../injectables/AuthService.html" >AuthService</a>
                                 </li>
                                 <li class="link">
                                     <a href="../injectables/SessionService.html" >SessionService</a>
@@ -206,7 +206,7 @@
                                     <a href="../interfaces/Song.html" >Song</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../interfaces/UserDocument.html" >UserDocument</a>
+                                    <a href="../interfaces/UserDocument.html"  class="active" >UserDocument</a>
                                 </li>
                         </ul>
                     </li>
@@ -385,7 +385,7 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
-                                           <a href="../injectables/AuthService.html"  class="active" >AuthService</a>
+                                           <a href="../injectables/AuthService.html" >AuthService</a>
                                        </li>
                                        <li class="link">
                                            <a href="../injectables/SessionService.html" >SessionService</a>
@@ -423,7 +423,7 @@
                                            <a href="../interfaces/Song.html" >Song</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../interfaces/UserDocument.html" >UserDocument</a>
+                                           <a href="../interfaces/UserDocument.html"  class="active" >UserDocument</a>
                                        </li>
                                </ul>
                            </li>
@@ -448,15 +448,18 @@
                    
                    </nav>
                </div>
-               <div class="content injectable">
+               <div class="content interface">
                    <div class="content-data">
 
 
 
 
+
+
+
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li>AuthService</li>
+  <li>Interfaces</li>
+  <li>UserDocument</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -474,379 +477,220 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/auth/auth.service.ts</code>
+            <code>src/app/storage/converters.ts</code>
         </p>
 
 
-            <section>
-                <h3 id="constructor">Constructor</h3>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>constructor(auth: Auth)</code>
-                                </td>
-                            </tr>
-            
-                        </tbody>
-                    </table>
-            </section>
 
-            <section>
-                <h3 id="methods">Methods</h3>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> signInWithGoogle</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-            <code>signInWithGoogle()</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Google OAuth sign-in (popup) </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> signInWithEmail</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-            <code>signInWithEmail(email: string, password: string)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Email + password sign-in </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> registerWithEmail</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <span class="modifier-icon method fa fa-play ">
-                                            <span class="fa fa-"></span>
-                                        </span>
-                                    <code>registerWithEmail(email: string, password: string, displayName: string)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Create account with email + password (optional displayName) </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> sendPasswordReset</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-            <code>sendPasswordReset(email: string)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Send password reset email </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> signOut</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-            <code>signOut()</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Sign out </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> idToken</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <span class="modifier-icon method fa fa-play ">
-                                            <span class="fa fa-"></span>
-                                        </span>
-                                    <code>idToken(forceRefresh: boolean)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Fetch ID token (e.g., for calling your backend) </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>any</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-            </section>
+
 
             <section>
                 <h3 id="inputs">Properties</h3>
                     <table class="table table-sm table-bordered">
                         <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier">Private</span> _user</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-lock"></span><code>_user:     <code>WritableSignal&lt;User&gt;</code>
-            </bcode>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <b>description</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>description:     <code>string</code>
+</bcode>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string</code>
+
+                                        </td>
+                                    </tr>
+
+
+
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> displayName</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>displayName:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <b>id</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:     <code>string</code>
+</bcode>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string</code>
+
+                                        </td>
+                                    </tr>
+
+
+
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> email</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>email:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <b>ownerUid</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>ownerUid:     <code>string</code>
+</bcode>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string</code>
+
+                                        </td>
+                                    </tr>
+
+
+
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> isAuthed</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-"></span><code>isAuthed:     <code>any</code>
-            </bcode>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>True if signed in </p>
-            </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <b>storagePath</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>storagePath:     <code>string</code>
+</bcode>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string</code>
+
+                                        </td>
+                                    </tr>
+
+
+
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> uid</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>uid:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>Convenience getters </p>
-            </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> user</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-"></span><code>user:     <code>any</code>
-            </bcode>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>Current Firebase user (signal) </p>
-            </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <b>title</b>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>title:     <code>string</code>
+</bcode>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>string</code>
+
+                                        </td>
+                                    </tr>
+
+
+
                         </tbody>
                     </table>
             </section>
     </div>
     <div class="tab-pane fade tab-source-code" id="source">
-        <pre><code class="hljs javascript">import { Injectable, computed, signal } from &#x27;@angular/core&#x27;;
-import {
-  Auth,
-  User,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut as fbSignOut,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  updateProfile,
-  getIdToken
-} from &#x27;@angular/fire/auth&#x27;;
+        <pre><code class="hljs javascript">import { FirestoreDataConverter, Timestamp } from &#x27;firebase/firestore&#x27;;
 
-@Injectable({ providedIn: &#x27;root&#x27; })
-export class AuthService {
-  private _user &#x3D; signal&lt;User | null&gt;(null);
-  /** Current Firebase user (signal) */
-  readonly user &#x3D; computed(() &#x3D;&gt; this._user());
-  /** True if signed in */
-  readonly isAuthed &#x3D; computed(() &#x3D;&gt; this._user() !&#x3D;&#x3D; null);
-
-  constructor(private auth: Auth) {
-    onAuthStateChanged(this.auth, (u) &#x3D;&gt; this._user.set(u));
-  }
-
-  /** Google OAuth sign-in (popup) */
-  signInWithGoogle() {
-    return signInWithPopup(this.auth, new GoogleAuthProvider());
-  }
-
-  /** Email + password sign-in */
-  signInWithEmail(email: string, password: string) {
-    return signInWithEmailAndPassword(this.auth, email, password);
-  }
-
-  /** Create account with email + password (optional displayName) */
-  async registerWithEmail(email: string, password: string, displayName?: string) {
-    const cred &#x3D; await createUserWithEmailAndPassword(this.auth, email, password);
-    if (displayName) {
-      await updateProfile(cred.user, { displayName });
-      // onAuthStateChanged will update the signal automatically,
-      // but we can also set it to reflect the displayName immediately:
-      this._user.set({ ...cred.user } as User);
-    }
-    return cred;
-  }
-
-  /** Send password reset email */
-  sendPasswordReset(email: string) {
-    return sendPasswordResetEmail(this.auth, email);
-  }
-
-  /** Sign out */
-  signOut() {
-    return fbSignOut(this.auth);
-  }
-
-  /** Convenience getters */
-  get uid(): string | null { return this._user()?.uid ?? null; }
-  get displayName(): string | null { return this._user()?.displayName ?? null; }
-  get email(): string | null { return this._user()?.email ?? null; }
-
-  /** Fetch ID token (e.g., for calling your backend) */
-  async idToken(forceRefresh &#x3D; false): Promise&lt;string | null&gt; {
-    const u &#x3D; this._user();
-    return u ? getIdToken(u, forceRefresh) : null;
-  }
+export interface Session {
+  id?: string;
+  ownerUid: string;
+  date: Timestamp;           // Firestore Timestamp for proper sorting
+  practiceTime: number;      // minutes
+  whatToPractice?: string;
+  sessionIntent?: string;
+  postPracticeReflection?: string;
+  goalForNextTime?: string;
 }
+
+export const sessionConverter: FirestoreDataConverter&lt;Session&gt; &#x3D; {
+  toFirestore: (s) &#x3D;&gt; ({
+    ownerUid: s.ownerUid,
+    date: s.date,
+    practiceTime: s.practiceTime,
+    whatToPractice: s.whatToPractice ?? null,
+    sessionIntent: s.sessionIntent ?? null,
+    postPracticeReflection: s.postPracticeReflection ?? null,
+    goalForNextTime: s.goalForNextTime ?? null
+  }),
+  fromFirestore: (snap) &#x3D;&gt; ({ id: snap.id, ...snap.data() } as Session),
+};
+
+export interface Song {
+  id?: string;
+  title: string;
+  artist: string;
+  genre?: string;
+  appleMusicLink?: string;
+  spotifyLink?: string;
+  // Light denormalization for listing
+  sortTitle?: string;   // precomputed lowercase title for case-insensitive sort (optional)
+  sortArtist?: string;  // precomputed lowercase artist
+}
+
+export const songConverter: FirestoreDataConverter&lt;Song&gt; &#x3D; {
+  toFirestore: (s) &#x3D;&gt; ({
+    title: s.title,
+    artist: s.artist,
+    genre: s.genre ?? null,
+    appleMusicLink: s.appleMusicLink ?? null,
+    spotifyLink: s.spotifyLink ?? null,
+    sortTitle: (s.sortTitle ?? s.title).toLowerCase(),
+    sortArtist: (s.sortArtist ?? s.artist).toLowerCase()
+  }),
+  fromFirestore: (snap) &#x3D;&gt; ({ id: snap.id, ...snap.data() } as Song),
+};
+
+// Optional file/document metadata (store actual files in Firebase Storage)
+export interface UserDocument {
+  id?: string;
+  ownerUid: string;
+  title: string;
+  description?: string;
+  storagePath: string;  // e.g., users/{uid}/docs/{docId}.pdf
+}
+
+export const userDocumentConverter: FirestoreDataConverter&lt;UserDocument&gt; &#x3D; {
+  toFirestore: (d) &#x3D;&gt; ({
+    ownerUid: d.ownerUid,
+    title: d.title,
+    description: d.description ?? null,
+    storagePath: d.storagePath
+  }),
+  fromFirestore: (snap) &#x3D;&gt; ({ id: snap.id, ...snap.data() } as UserDocument),
+};
 </code></pre>
     </div>
 </div>
-
-
-
 
 
 

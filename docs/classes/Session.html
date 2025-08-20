@@ -149,6 +149,9 @@
                                 <li class="link">
                                     <a href="../classes/Song.html" >Song</a>
                                 </li>
+                                <li class="link">
+                                    <a href="../classes/SongsService.html" >SongsService</a>
+                                </li>
                         </ul>
                     </li>
             
@@ -195,6 +198,15 @@
                                 </li>
                                 <li class="link">
                                     <a href="../interfaces/DashboardData.html" >DashboardData</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Session.html"  class="active" >Session</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/Song.html" >Song</a>
+                                </li>
+                                <li class="link">
+                                    <a href="../interfaces/UserDocument.html" >UserDocument</a>
                                 </li>
                         </ul>
                     </li>
@@ -354,6 +366,9 @@
                                        <li class="link">
                                            <a href="../classes/Song.html" >Song</a>
                                        </li>
+                                       <li class="link">
+                                           <a href="../classes/SongsService.html" >SongsService</a>
+                                       </li>
                                </ul>
                            </li>
                    
@@ -400,6 +415,15 @@
                                        </li>
                                        <li class="link">
                                            <a href="../interfaces/DashboardData.html" >DashboardData</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Session.html"  class="active" >Session</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/Song.html" >Song</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="../interfaces/UserDocument.html" >UserDocument</a>
                                        </li>
                                </ul>
                            </li>
@@ -470,7 +494,7 @@
                             </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <code>date:     <code>string</code>
+                                    <code>date:     <code>Timestamp</code>
             </bcode>
                                 </td>
                             </tr>
@@ -501,6 +525,21 @@
                             <tr>
                                 <td class="col-md-4">
                                     <code>id:     <code>string</code>
+            </bcode>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="col-md-4">
+                                    <b> ownerUid</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <code>ownerUid:     <code>string</code>
             </bcode>
                                 </td>
                             </tr>
@@ -569,9 +608,12 @@
             </section>
     </div>
     <div class="tab-pane fade tab-source-code" id="source">
-        <pre><code class="hljs javascript">export class Session {
-  id: string;
-  date: string;
+        <pre><code class="hljs javascript">import { Timestamp } from &#x27;firebase/firestore&#x27;;
+
+export class Session {
+  id?: string;
+  ownerUid: string;
+  date: Timestamp;
   practiceTime: number;
   whatToPractice: string;
   sessionIntent: string;

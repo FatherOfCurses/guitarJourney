@@ -150,7 +150,7 @@
                                     <a href="../classes/Song.html" >Song</a>
                                 </li>
                                 <li class="link">
-                                    <a href="../classes/SongsService.html" >SongsService</a>
+                                    <a href="../classes/SongsService.html"  class="active" >SongsService</a>
                                 </li>
                         </ul>
                     </li>
@@ -168,7 +168,7 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
-                                    <a href="../injectables/AuthService.html"  class="active" >AuthService</a>
+                                    <a href="../injectables/AuthService.html" >AuthService</a>
                                 </li>
                                 <li class="link">
                                     <a href="../injectables/SessionService.html" >SessionService</a>
@@ -367,7 +367,7 @@
                                            <a href="../classes/Song.html" >Song</a>
                                        </li>
                                        <li class="link">
-                                           <a href="../classes/SongsService.html" >SongsService</a>
+                                           <a href="../classes/SongsService.html"  class="active" >SongsService</a>
                                        </li>
                                </ul>
                            </li>
@@ -385,7 +385,7 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
-                                           <a href="../injectables/AuthService.html"  class="active" >AuthService</a>
+                                           <a href="../injectables/AuthService.html" >AuthService</a>
                                        </li>
                                        <li class="link">
                                            <a href="../injectables/SessionService.html" >SessionService</a>
@@ -448,15 +448,17 @@
                    
                    </nav>
                </div>
-               <div class="content injectable">
+               <div class="content class">
                    <div class="content-data">
 
 
 
 
+
+
 <ol class="breadcrumb">
-  <li>Injectables</li>
-  <li>AuthService</li>
+  <li>Classes</li>
+  <li>SongsService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -474,23 +476,10 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/auth/auth.service.ts</code>
+            <code>src/app/services/songs.service.ts</code>
         </p>
 
 
-            <section>
-                <h3 id="constructor">Constructor</h3>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>constructor(auth: Auth)</code>
-                                </td>
-                            </tr>
-            
-                        </tbody>
-                    </table>
-            </section>
 
             <section>
                 <h3 id="methods">Methods</h3>
@@ -498,158 +487,20 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-4">
-                                    <b> signInWithGoogle</b>
+                                    <b> list</b>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
-            <code>signInWithGoogle()</code>
+            <code>list(pageSize: number)</code>
                                 </td>
                             </tr>
             
                             <tr>
                                 <td class="col-md-4">
-                                        <div class="io-description"><p>Google OAuth sign-in (popup) </p>
-            </div>
                                         <div class="io-description">
                                             <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> signInWithEmail</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-            <code>signInWithEmail(email: string, password: string)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Email + password sign-in </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> registerWithEmail</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <span class="modifier-icon method fa fa-play ">
-                                            <span class="fa fa-"></span>
-                                        </span>
-                                    <code>registerWithEmail(email: string, password: string, displayName: string)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Create account with email + password (optional displayName) </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> sendPasswordReset</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-            <code>sendPasswordReset(email: string)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Send password reset email </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> signOut</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-            <code>signOut()</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Sign out </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>void</code>
-            
-                                        </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> idToken</b>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <span class="modifier-icon method fa fa-play ">
-                                            <span class="fa fa-"></span>
-                                        </span>
-                                    <code>idToken(forceRefresh: boolean)</code>
-                                </td>
-                            </tr>
-            
-                            <tr>
-                                <td class="col-md-4">
-                                        <div class="io-description"><p>Fetch ID token (e.g., for calling your backend) </p>
-            </div>
-                                        <div class="io-description">
-                                            <b>Returns: </b>    <code>any</code>
             
                                         </div>
                                 </td>
@@ -657,6 +508,7 @@
                         </tbody>
                     </table>
             </section>
+
 
             <section>
                 <h3 id="inputs">Properties</h3>
@@ -664,106 +516,13 @@
                         <tbody>
                             <tr>
                                 <td class="col-md-4">
-                                    <b><span class="modifier">Private</span> _user</b>
+                                    <b><span class="modifier">Private</span> db</b>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-lock"></span><code>_user:     <code>WritableSignal&lt;User&gt;</code>
+                                    <span class="modifier-icon fa fa-lock"></span><code>db:     <code>Firestore</code>
             </bcode>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> displayName</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>displayName:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> email</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>email:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> isAuthed</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-"></span><code>isAuthed:     <code>any</code>
-            </bcode>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>True if signed in </p>
-            </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b> uid</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <code>uid:     <code>string</code>
-            </bcode>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>Convenience getters </p>
-            </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                            <tr>
-                                <td class="col-md-4">
-                                    <b><span class="modifier"></span> user</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <span class="modifier-icon fa fa-"></span><code>user:     <code>any</code>
-            </bcode>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>Current Firebase user (signal) </p>
-            </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -771,81 +530,23 @@
             </section>
     </div>
     <div class="tab-pane fade tab-source-code" id="source">
-        <pre><code class="hljs javascript">import { Injectable, computed, signal } from &#x27;@angular/core&#x27;;
-import {
-  Auth,
-  User,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signInWithPopup,
-  signOut as fbSignOut,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  updateProfile,
-  getIdToken
-} from &#x27;@angular/fire/auth&#x27;;
+        <pre><code class="hljs javascript">import { getFirestore, collection, query, orderBy, limit } from &#x27;firebase/firestore&#x27;;
+import { songConverter } from &#x27;../storage/converters&#x27;;
+import { Song } from &#x27;../models/song&#x27;;
+import { Observable } from &quot;rxjs&quot;;
+import { collectionData } from &quot;@angular/fire/firestore/lite&quot;;
 
-@Injectable({ providedIn: &#x27;root&#x27; })
-export class AuthService {
-  private _user &#x3D; signal&lt;User | null&gt;(null);
-  /** Current Firebase user (signal) */
-  readonly user &#x3D; computed(() &#x3D;&gt; this._user());
-  /** True if signed in */
-  readonly isAuthed &#x3D; computed(() &#x3D;&gt; this._user() !&#x3D;&#x3D; null);
-
-  constructor(private auth: Auth) {
-    onAuthStateChanged(this.auth, (u) &#x3D;&gt; this._user.set(u));
-  }
-
-  /** Google OAuth sign-in (popup) */
-  signInWithGoogle() {
-    return signInWithPopup(this.auth, new GoogleAuthProvider());
-  }
-
-  /** Email + password sign-in */
-  signInWithEmail(email: string, password: string) {
-    return signInWithEmailAndPassword(this.auth, email, password);
-  }
-
-  /** Create account with email + password (optional displayName) */
-  async registerWithEmail(email: string, password: string, displayName?: string) {
-    const cred &#x3D; await createUserWithEmailAndPassword(this.auth, email, password);
-    if (displayName) {
-      await updateProfile(cred.user, { displayName });
-      // onAuthStateChanged will update the signal automatically,
-      // but we can also set it to reflect the displayName immediately:
-      this._user.set({ ...cred.user } as User);
-    }
-    return cred;
-  }
-
-  /** Send password reset email */
-  sendPasswordReset(email: string) {
-    return sendPasswordResetEmail(this.auth, email);
-  }
-
-  /** Sign out */
-  signOut() {
-    return fbSignOut(this.auth);
-  }
-
-  /** Convenience getters */
-  get uid(): string | null { return this._user()?.uid ?? null; }
-  get displayName(): string | null { return this._user()?.displayName ?? null; }
-  get email(): string | null { return this._user()?.email ?? null; }
-
-  /** Fetch ID token (e.g., for calling your backend) */
-  async idToken(forceRefresh &#x3D; false): Promise&lt;string | null&gt; {
-    const u &#x3D; this._user();
-    return u ? getIdToken(u, forceRefresh) : null;
+export class SongsService {
+  private db &#x3D; getFirestore();
+  list(pageSize &#x3D; 100) {
+    const col &#x3D; collection(this.db, &#x27;songs&#x27;).withConverter(songConverter);
+    const q &#x3D; query(col, orderBy(&#x27;title&#x27;), orderBy(&#x27;artist&#x27;), limit(pageSize));
+    return collectionData(q, { idField: &#x27;id&#x27; }) as any as Observable&lt;Song[]&gt;;
   }
 }
 </code></pre>
     </div>
 </div>
-
-
 
 
 
