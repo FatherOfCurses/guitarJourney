@@ -69,10 +69,10 @@
                                     <a href="components/AppShellComponent.html" >AppShellComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/AuthComponent.html" >AuthComponent</a>
+                                    <a href="components/ChordComponent.html" >ChordComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/ChordComponent.html" >ChordComponent</a>
+                                    <a href="components/DashboardComponent.html" >DashboardComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/DisplaySessionComponent.html"  class="active" >DisplaySessionComponent</a>
@@ -93,6 +93,12 @@
                                     <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                 </li>
                                 <li class="link">
+                                    <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                </li>
+                                <li class="link">
                                     <a href="components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
@@ -103,6 +109,9 @@
                                 </li>
                                 <li class="link">
                                     <a href="components/SongsComponent.html" >SongsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="components/WelcomeComponent.html" >WelcomeComponent</a>
                                 </li>
                         </ul>
                     </li>
@@ -156,6 +165,9 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
+                                    <a href="injectables/AuthService.html" >AuthService</a>
+                                </li>
+                                <li class="link">
                                     <a href="injectables/SessionService.html" >SessionService</a>
                                 </li>
                         </ul>
@@ -180,6 +192,9 @@
                                 </li>
                                 <li class="link">
                                     <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                </li>
+                                <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                         </ul>
                     </li>
@@ -259,10 +274,10 @@
                                            <a href="components/AppShellComponent.html" >AppShellComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/AuthComponent.html" >AuthComponent</a>
+                                           <a href="components/ChordComponent.html" >ChordComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/ChordComponent.html" >ChordComponent</a>
+                                           <a href="components/DashboardComponent.html" >DashboardComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html"  class="active" >DisplaySessionComponent</a>
@@ -283,6 +298,12 @@
                                            <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                        </li>
                                        <li class="link">
+                                           <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
@@ -293,6 +314,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/SongsComponent.html" >SongsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="components/WelcomeComponent.html" >WelcomeComponent</a>
                                        </li>
                                </ul>
                            </li>
@@ -346,6 +370,9 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
+                                           <a href="injectables/AuthService.html" >AuthService</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="injectables/SessionService.html" >SessionService</a>
                                        </li>
                                </ul>
@@ -370,6 +397,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                </ul>
                            </li>
@@ -444,10 +474,6 @@
                 <td class="col-md-9"><code>app-display-single-session</code></td>
             </tr>
 
-            <tr>
-                <td class="col-md-3">styleUrls</td>
-                <td class="col-md-9"><code>display-session.component.scss</code></td>
-            </tr>
 
 
 
@@ -463,46 +489,9 @@
 
 
 
-    <section>
-        <h3 id="constructor">Constructor</h3>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <code>constructor(router: <a href="https://angular.io/docs/ts/latest/api/router/index/Router-class.html" target="_blank" >Router</a>, route: <a href="https://angular.io/docs/ts/latest/api/router/index/ActivatedRoute-interface.html" target="_blank" >ActivatedRoute</a>, sessionService: <a href="../injectables/SessionService.html" >SessionService</a>)</code>
-                        </td>
-                    </tr>
-    
-                </tbody>
-            </table>
-    </section>
 
     <section>
         <h3 id="methods">Methods</h3>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b> getSession</b>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-    <code>getSession(id: string)</code>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description">
-                                    <b>Returns: </b>    <code>void</code>
-    
-                                </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
@@ -535,32 +524,102 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b> componentIsAlive</b>
+                            <b><span class="modifier"></span> hasError</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>componentIsAlive:     <code>boolean</code>
+                            <span class="modifier-icon fa fa-"></span><code>hasError:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <i>Default value: </i><code>false</code>
-                            </td>
-                        </tr>
                 </tbody>
             </table>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b> session</b>
+                            <b><span class="modifier"></span> loading</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>session:     <code><a href="../classes/Session.html" target="_self" >Session</a></code>
+                            <span class="modifier-icon fa fa-"></span><code>loading:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> route</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>route:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> router</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>router:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> session</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>session:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> sessionId</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>sessionId:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> sessionService</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>sessionService:     <code>{}</code>
     </bcode>
                         </td>
                     </tr>
@@ -569,42 +628,52 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, Input, OnInit } from &quot;@angular/core&quot;;
-import { ActivatedRoute, Router } from &quot;@angular/router&quot;;
-import { SessionService } from &quot;../../../services/session.service&quot;;
-import { takeWhile } from &quot;rxjs/operators&quot;;
-import { Session } from &quot;../../../models/session&quot;;
+            <pre><code class="hljs javascript">import { Component, computed, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
+import { toSignal } from &#x27;@angular/core/rxjs-interop&#x27;;
+import { map, filter, switchMap, catchError, of } from &#x27;rxjs&#x27;;
+import { SessionService } from &#x27;../../../services/session.service&#x27;;
+import { ButtonModule } from &#x27;primeng/button&#x27;;
+import { CardModule } from &#x27;primeng/card&#x27;;
+
 
 @Component({
-    selector: &#x27;app-display-single-session&#x27;,
-    templateUrl: &#x27;./display-session.component.html&#x27;,
-    styleUrls: [&#x27;./display-session.component.scss&#x27;],
-    standalone: false
+  selector: &#x27;app-display-single-session&#x27;,
+  standalone: true,
+  imports: [CommonModule, ButtonModule, CardModule],
+  templateUrl: &#x27;./display-session.component.html&#x27;,
 })
-export class DisplaySessionComponent implements OnInit {
-  session: Session;
-  componentIsAlive &#x3D; false;
+export class DisplaySessionComponent {
+  private readonly router &#x3D; inject(Router);
+  private readonly route &#x3D; inject(ActivatedRoute);
+  private readonly sessionService &#x3D; inject(SessionService);
 
-  constructor(private router: Router, private route: ActivatedRoute, private sessionService: SessionService) { }
+  // route param as a signal
+  readonly sessionId &#x3D; toSignal(
+    this.route.paramMap.pipe(
+      map(pm &#x3D;&gt; pm.get(&#x27;id&#x27;)),
+      filter((id): id is string &#x3D;&gt; !!id)
+    ),
+    { initialValue: null }
+  );
 
-  ngOnInit(): void {
-    this.componentIsAlive &#x3D; true;
-    this.route.paramMap
-      .pipe(takeWhile(() &#x3D;&gt; this.componentIsAlive))
-      .subscribe((params) &#x3D;&gt; {
-        const sessionId &#x3D; params.get(&#x27;id&#x27;);
-        this.getSession(sessionId);
-      })
-  }
+  // session data as a signal (auto-updates when id changes)
+  readonly session &#x3D; toSignal(
+    this.route.paramMap.pipe(
+      map(pm &#x3D;&gt; pm.get(&#x27;id&#x27;)),
+      filter((id): id is string &#x3D;&gt; !!id),
+      switchMap(id &#x3D;&gt; this.sessionService.getSession$(id)),
+      catchError(() &#x3D;&gt; of(null))
+    ),
+    { initialValue: null }
+  );
 
-  getSession(id: string) {
-    console.log(&#x60;Getting sessionId ${id}&#x60;)
-    this.sessionService.getSession$(id).subscribe(session &#x3D;&gt; this.session &#x3D; session);
-    console.log(this.session)
-  }
+  readonly loading &#x3D; computed(() &#x3D;&gt; this.session() &#x3D;&#x3D;&#x3D; null &amp;&amp; this.sessionId() !&#x3D;&#x3D; null);
+  readonly hasError &#x3D; computed(() &#x3D;&gt; this.sessionId() !&#x3D;&#x3D; null &amp;&amp; this.session() &#x3D;&#x3D;&#x3D; null);
 
-  returnToTable() {
-    this.router.navigate([&#x27;session&#x27;]).then();
+  returnToTable(): void {
+    this.router.navigate([&#x27;/sessions&#x27;]);
   }
 }
 </code></pre>

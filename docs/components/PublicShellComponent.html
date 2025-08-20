@@ -81,7 +81,7 @@
                                     <a href="components/HomeComponent.html" >HomeComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/LoginComponent.html"  class="active" >LoginComponent</a>
+                                    <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/MetricsComponent.html" >MetricsComponent</a>
@@ -93,7 +93,7 @@
                                     <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                    <a href="components/PublicShellComponent.html"  class="active" >PublicShellComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/RegisterComponent.html" >RegisterComponent</a>
@@ -286,7 +286,7 @@
                                            <a href="components/HomeComponent.html" >HomeComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/LoginComponent.html"  class="active" >LoginComponent</a>
+                                           <a href="components/LoginComponent.html" >LoginComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/MetricsComponent.html" >MetricsComponent</a>
@@ -298,7 +298,7 @@
                                            <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                           <a href="components/PublicShellComponent.html"  class="active" >PublicShellComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/RegisterComponent.html" >RegisterComponent</a>
@@ -430,7 +430,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>LoginComponent</li>
+  <li>PublicShellComponent</li>
 </ol>
 
 
@@ -448,7 +448,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/auth/login.component.ts</code>
+    <code>src/app/shells/public-shell.component.ts</code>
 </p>
 
 
@@ -469,14 +469,18 @@
 
 
 
-
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>gj-public-shell</code></td>
+            </tr>
 
 
 
             <tr>
-                <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>login.component.html</code></td>
+                <td class="col-md-3">template</td>
+                <td class="col-md-9"><code>&lt;header&nbsp;class&#x3D;&quot;sticky&nbsp;top-0&nbsp;z-50&nbsp;bg-white/80&nbsp;backdrop-blur&nbsp;border-b&quot;&gt;<br>&nbsp;&nbsp;&lt;nav&nbsp;class&#x3D;&quot;mx-auto&nbsp;max-w-6xl&nbsp;px-4&nbsp;h-14&nbsp;flex&nbsp;items-center&nbsp;justify-between&quot;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;a&nbsp;routerLink&#x3D;&quot;/&quot;&nbsp;class&#x3D;&quot;font-semibold&quot;&gt;Guitar&nbsp;Journey&lt;/a&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;a&nbsp;routerLink&#x3D;&quot;/login&quot;&nbsp;class&#x3D;&quot;rounded&nbsp;px-3&nbsp;py-1.5&nbsp;hover:bg-neutral-100&quot;&gt;Sign&nbsp;in&lt;/a&gt;<br>&nbsp;&nbsp;&lt;/nav&gt;<br>&lt;/header&gt;<br>&lt;main&nbsp;class&#x3D;&quot;mx-auto&nbsp;max-w-6xl&nbsp;px-4&nbsp;py-8&quot;&gt;<br>&nbsp;&nbsp;&lt;router-outlet/&gt;<br>&lt;/main&gt;<br>&lt;footer&nbsp;class&#x3D;&quot;border-t&nbsp;mt-12&nbsp;py-6&nbsp;text-center&nbsp;text-sm&nbsp;text-neutral-500&quot;&gt;<br>&nbsp;&nbsp;©&nbsp;{{&nbsp;currentYear&nbsp;}}&nbsp;Guitar&nbsp;Journey<br>&lt;/footer&gt;<br></code></td>
             </tr>
+
 
 
         </tbody>
@@ -486,63 +490,6 @@
 
 
 
-    <section>
-        <h3 id="methods">Methods</h3>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b><span class="modifier"></span> submit</b>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-                                <span class="modifier-icon method fa fa-play ">
-                                    <span class="fa fa-"></span>
-                                </span>
-                            <code>submit()</code>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description">
-                                    <b>Returns: </b>    <code>void</code>
-    
-                                </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b><span class="modifier"></span> signInWithGoogle</b>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-                                <span class="modifier-icon method fa fa-play ">
-                                    <span class="fa fa-"></span>
-                                </span>
-                            <code>signInWithGoogle()</code>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description">
-                                    <b>Returns: </b>    <code>void</code>
-    
-                                </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-    </section>
 
     <section>
         <h3 id="inputs">Properties</h3>
@@ -550,57 +497,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier">Private</span> auth</b>
+                            <b> currentYear</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>auth:     <code>{}</code>
-    </bcode>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b> email</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <code>email:     <code>string</code>
-    </bcode>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b> password</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <code>password:     <code>string</code>
-    </bcode>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b><span class="modifier">Private</span> router</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>router:     <code>{}</code>
+                            <code>currentYear:     <code>number</code>
     </bcode>
                         </td>
                     </tr>
@@ -609,32 +511,30 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, inject, signal } from &#x27;@angular/core&#x27;;
-import { Router } from &#x27;@angular/router&#x27;;
-import { FormsModule } from &#x27;@angular/forms&#x27;;
-import { AuthService } from &#x27;./auth.service&#x27;;
+            <pre><code class="hljs javascript">import { Component } from &#x27;@angular/core&#x27;;
+import { RouterOutlet, RouterLink } from &#x27;@angular/router&#x27;;
 
 @Component({
   standalone: true,
-  imports: [FormsModule],
-  templateUrl: &#x27;./login.component.html&#x27;,
-
+  selector: &#x27;gj-public-shell&#x27;,
+  imports: [RouterOutlet, RouterLink],
+  template: &#x60;
+    &lt;header class&#x3D;&quot;sticky top-0 z-50 bg-white/80 backdrop-blur border-b&quot;&gt;
+      &lt;nav class&#x3D;&quot;mx-auto max-w-6xl px-4 h-14 flex items-center justify-between&quot;&gt;
+        &lt;a routerLink&#x3D;&quot;/&quot; class&#x3D;&quot;font-semibold&quot;&gt;Guitar Journey&lt;/a&gt;
+        &lt;a routerLink&#x3D;&quot;/login&quot; class&#x3D;&quot;rounded px-3 py-1.5 hover:bg-neutral-100&quot;&gt;Sign in&lt;/a&gt;
+      &lt;/nav&gt;
+    &lt;/header&gt;
+    &lt;main class&#x3D;&quot;mx-auto max-w-6xl px-4 py-8&quot;&gt;
+      &lt;router-outlet/&gt;
+    &lt;/main&gt;
+    &lt;footer class&#x3D;&quot;border-t mt-12 py-6 text-center text-sm text-neutral-500&quot;&gt;
+      © {{ currentYear }} Guitar Journey
+    &lt;/footer&gt;
+  &#x60;,
 })
-export class LoginComponent {
-  private auth &#x3D; inject(AuthService);
-  private router &#x3D; inject(Router);
-  email &#x3D; &#x27;&#x27;;
-  password &#x3D; &#x27;&#x27;;
-
-  async submit() {
-    await this.auth.signInWithEmail(this.email, this.password);
-    this.router.navigateByUrl(&#x27;/app&#x27;);
-  }
-
-  async signInWithGoogle() {
-    await this.auth.signInWithGoogle();
-    this.router.navigateByUrl(&#x27;/app&#x27;);
-  }
+export class PublicShellComponent {
+  currentYear: number &#x3D; new Date().getFullYear();
 }
 </code></pre>
         </div>

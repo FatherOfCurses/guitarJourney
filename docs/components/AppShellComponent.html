@@ -69,10 +69,10 @@
                                     <a href="components/AppShellComponent.html"  class="active" >AppShellComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/AuthComponent.html" >AuthComponent</a>
+                                    <a href="components/ChordComponent.html" >ChordComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/ChordComponent.html" >ChordComponent</a>
+                                    <a href="components/DashboardComponent.html" >DashboardComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
@@ -93,6 +93,12 @@
                                     <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                 </li>
                                 <li class="link">
+                                    <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                </li>
+                                <li class="link">
                                     <a href="components/SessionComponent.html" >SessionComponent</a>
                                 </li>
                                 <li class="link">
@@ -103,6 +109,9 @@
                                 </li>
                                 <li class="link">
                                     <a href="components/SongsComponent.html" >SongsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="components/WelcomeComponent.html" >WelcomeComponent</a>
                                 </li>
                         </ul>
                     </li>
@@ -156,6 +165,9 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
+                                    <a href="injectables/AuthService.html" >AuthService</a>
+                                </li>
+                                <li class="link">
                                     <a href="injectables/SessionService.html" >SessionService</a>
                                 </li>
                         </ul>
@@ -180,6 +192,9 @@
                                 </li>
                                 <li class="link">
                                     <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                </li>
+                                <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                         </ul>
                     </li>
@@ -259,10 +274,10 @@
                                            <a href="components/AppShellComponent.html"  class="active" >AppShellComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/AuthComponent.html" >AuthComponent</a>
+                                           <a href="components/ChordComponent.html" >ChordComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/ChordComponent.html" >ChordComponent</a>
+                                           <a href="components/DashboardComponent.html" >DashboardComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
@@ -283,6 +298,12 @@
                                            <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                        </li>
                                        <li class="link">
+                                           <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="components/SessionComponent.html" >SessionComponent</a>
                                        </li>
                                        <li class="link">
@@ -293,6 +314,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/SongsComponent.html" >SongsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="components/WelcomeComponent.html" >WelcomeComponent</a>
                                        </li>
                                </ul>
                            </li>
@@ -346,6 +370,9 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
+                                           <a href="injectables/AuthService.html" >AuthService</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="injectables/SessionService.html" >SessionService</a>
                                        </li>
                                </ul>
@@ -370,6 +397,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                </ul>
                            </li>
@@ -418,7 +448,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/app-shell.component.ts</code>
+    <code>src/app/shells/app-shell.component.ts</code>
 </p>
 
 
@@ -446,11 +476,11 @@
 
 
 
-            <tr>
-                <td class="col-md-3">template</td>
-                <td class="col-md-9"><code>&lt;!--&nbsp;Sticky&nbsp;top&nbsp;bar&nbsp;--&gt;<br>&lt;header&nbsp;class&#x3D;&quot;sticky&nbsp;top-0&nbsp;z-50&nbsp;bg-white/90&nbsp;backdrop-blur&nbsp;border-b&nbsp;border-neutral-200&quot;&gt;<br>&nbsp;&nbsp;&lt;nav&nbsp;class&#x3D;&quot;mx-auto&nbsp;max-w-6xl&nbsp;px-4&nbsp;h-14&nbsp;flex&nbsp;items-center&nbsp;justify-between&quot;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;a&nbsp;routerLink&#x3D;&quot;/&quot;&nbsp;class&#x3D;&quot;font-semibold&quot;&gt;Guitar&nbsp;Journey&lt;/a&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&nbsp;class&#x3D;&quot;flex&nbsp;items-center&nbsp;gap-6&quot;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a&nbsp;routerLink&#x3D;&quot;/sessions&quot;&nbsp;routerLinkActive&#x3D;&quot;text-indigo-600&quot;&nbsp;class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Sessions&lt;/a&gt;&lt;/li&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a&nbsp;routerLink&#x3D;&quot;/songs&quot;&nbsp;&nbsp;&nbsp;&nbsp;routerLinkActive&#x3D;&quot;text-indigo-600&quot;&nbsp;class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Songs&lt;/a&gt;&lt;/li&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;&lt;a&nbsp;routerLink&#x3D;&quot;/metrics&quot;&nbsp;&nbsp;routerLinkActive&#x3D;&quot;text-indigo-600&quot;&nbsp;class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;Example:&nbsp;simple&nbsp;profile&nbsp;menu&nbsp;toggle&nbsp;via&nbsp;a&nbsp;signal&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;div&nbsp;class&#x3D;&quot;relative&quot;&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;button&nbsp;class&#x3D;&quot;rounded-xl&nbsp;px-3&nbsp;py-1.5&nbsp;hover:bg-neutral-100&quot;&gt;Profile&lt;/button&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!--&nbsp;dropdown,&nbsp;notifications,&nbsp;etc.&nbsp;--&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br>&nbsp;&nbsp;&lt;/nav&gt;<br>&lt;/header&gt;<br><br>&lt;!--&nbsp;Page&nbsp;content&nbsp;--&gt;<br>&lt;main&nbsp;class&#x3D;&quot;mx-auto&nbsp;max-w-6xl&nbsp;px-4&nbsp;py-6&quot;&gt;<br>&nbsp;&nbsp;&lt;router-outlet&nbsp;/&gt;<br>&lt;/main&gt;<br></code></td>
-            </tr>
 
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>app-shell.component.html</code></td>
+            </tr>
 
 
         </tbody>
@@ -460,45 +490,203 @@
 
 
 
+    <section>
+        <h3 id="methods">Methods</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> onSignOut</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <span class="modifier-icon method fa fa-play ">
+                                    <span class="fa fa-"></span>
+                                </span>
+                            <code>onSignOut()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> toggleUserMenu</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>toggleUserMenu(event: <a href="https://angular.io/docs/ts/latest/api/router/index/Event-type-alias.html" target="_blank" >Event</a>)</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
 
+    <section>
+        <h3 id="inputs">Properties</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> auth</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>auth:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> items</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>items:     <code>WritableSignal&lt;any[]&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> router</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>router:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> TieredMenu</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>TieredMenu:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> userItems</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>userItems:     <code>WritableSignal&lt;any[]&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> userMenu</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>userMenu:     <code>boolean</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, signal } from &#x27;@angular/core&#x27;;
-import { RouterLink, RouterLinkActive, RouterOutlet } from &#x27;@angular/router&#x27;;
-// If you prefer PrimeNG&#x27;s Menubar:
-// import { Menubar } from &#x27;primeng/menubar&#x27;;
+            <pre><code class="hljs javascript">import { Component, signal, ViewChild, inject } from &#x27;@angular/core&#x27;;
+import { Router, RouterOutlet } from &#x27;@angular/router&#x27;;
+import { MenuItem } from &#x27;primeng/api&#x27;;
+import { MenubarModule } from &#x27;primeng/menubar&#x27;;
+import { TieredMenu, TieredMenuModule } from &#x27;primeng/tieredmenu&#x27;;
+import { ButtonModule } from &#x27;primeng/button&#x27;;
+import { Auth, signOut } from &#x27;@angular/fire/auth&#x27;;
 
 @Component({
   selector: &#x27;app-shell&#x27;,
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
-  template: &#x60;
-    &lt;!-- Sticky top bar --&gt;
-    &lt;header class&#x3D;&quot;sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-neutral-200&quot;&gt;
-      &lt;nav class&#x3D;&quot;mx-auto max-w-6xl px-4 h-14 flex items-center justify-between&quot;&gt;
-        &lt;a routerLink&#x3D;&quot;/&quot; class&#x3D;&quot;font-semibold&quot;&gt;Guitar Journey&lt;/a&gt;
-
-        &lt;ul class&#x3D;&quot;flex items-center gap-6&quot;&gt;
-          &lt;li&gt;&lt;a routerLink&#x3D;&quot;/sessions&quot; routerLinkActive&#x3D;&quot;text-indigo-600&quot; class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Sessions&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a routerLink&#x3D;&quot;/songs&quot;    routerLinkActive&#x3D;&quot;text-indigo-600&quot; class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Songs&lt;/a&gt;&lt;/li&gt;
-          &lt;li&gt;&lt;a routerLink&#x3D;&quot;/metrics&quot;  routerLinkActive&#x3D;&quot;text-indigo-600&quot; class&#x3D;&quot;hover:text-indigo-600&quot;&gt;Metrics&lt;/a&gt;&lt;/li&gt;
-        &lt;/ul&gt;
-
-        &lt;!-- Example: simple profile menu toggle via a signal --&gt;
-        &lt;div class&#x3D;&quot;relative&quot;&gt;
-          &lt;button class&#x3D;&quot;rounded-xl px-3 py-1.5 hover:bg-neutral-100&quot;&gt;Profile&lt;/button&gt;
-          &lt;!-- dropdown, notifications, etc. --&gt;
-        &lt;/div&gt;
-      &lt;/nav&gt;
-    &lt;/header&gt;
-
-    &lt;!-- Page content --&gt;
-    &lt;main class&#x3D;&quot;mx-auto max-w-6xl px-4 py-6&quot;&gt;
-      &lt;router-outlet /&gt;
-    &lt;/main&gt;
-  &#x60;,
+  imports: [RouterOutlet, MenubarModule, TieredMenuModule, ButtonModule],
+  templateUrl: &#x27;./app-shell.component.html&#x27;,
 })
-export class AppShellComponent {}
+export class AppShellComponent {
+  @ViewChild(&#x27;userMenu&#x27;) userMenu!: TieredMenu;
+
+  // Top-level nav
+  readonly items &#x3D; signal&lt;MenuItem[]&gt;([
+    { label: &#x27;Sessions&#x27;, icon: &#x27;pi pi-clock&#x27;, routerLink: [&#x27;/sessions&#x27;] },
+    { label: &#x27;Songs&#x27;,    icon: &#x27;pi pi-music&#x27;, routerLink: [&#x27;/songs&#x27;] },
+    { label: &#x27;Metrics&#x27;,  icon: &#x27;pi pi-chart-bar&#x27;, routerLink: [&#x27;/metrics&#x27;] },
+  ]);
+
+  // User dropdown items
+  readonly userItems &#x3D; signal&lt;MenuItem[]&gt;([
+    { label: &#x27;My Profile&#x27;, icon: &#x27;pi pi-user&#x27;,   routerLink: [&#x27;/profile&#x27;] },
+    { label: &#x27;Settings&#x27;,   icon: &#x27;pi pi-cog&#x27;,    routerLink: [&#x27;/settings&#x27;] },
+    { separator: true },
+    { label: &#x27;Sign out&#x27;,   icon: &#x27;pi pi-sign-out&#x27;, command: () &#x3D;&gt; this.onSignOut() },
+  ]);
+
+  private readonly auth &#x3D; inject(Auth);
+  private readonly router &#x3D; inject(Router);
+
+  async onSignOut() {
+    try {
+      await signOut(this.auth);
+    } finally {
+      this.router.navigate([&#x27;/&#x27;]);
+    }
+  }
+
+  toggleUserMenu(event: Event) {
+    this.userMenu.toggle(event);
+  }
+}
 </code></pre>
         </div>
     </div>

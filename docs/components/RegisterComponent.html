@@ -81,7 +81,7 @@
                                     <a href="components/HomeComponent.html" >HomeComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/LoginComponent.html"  class="active" >LoginComponent</a>
+                                    <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/MetricsComponent.html" >MetricsComponent</a>
@@ -96,7 +96,7 @@
                                     <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                    <a href="components/RegisterComponent.html"  class="active" >RegisterComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/SessionComponent.html" >SessionComponent</a>
@@ -286,7 +286,7 @@
                                            <a href="components/HomeComponent.html" >HomeComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/LoginComponent.html"  class="active" >LoginComponent</a>
+                                           <a href="components/LoginComponent.html" >LoginComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/MetricsComponent.html" >MetricsComponent</a>
@@ -301,7 +301,7 @@
                                            <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                           <a href="components/RegisterComponent.html"  class="active" >RegisterComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/SessionComponent.html" >SessionComponent</a>
@@ -430,7 +430,7 @@
 
 <ol class="breadcrumb">
   <li>Components</li>
-  <li>LoginComponent</li>
+  <li>RegisterComponent</li>
 </ol>
 
 
@@ -448,7 +448,7 @@
     <h3>File</h3>
 </p>
 <p class="comment">
-    <code>src/app/auth/login.component.ts</code>
+    <code>src/app/auth/register.component.ts</code>
 </p>
 
 
@@ -469,13 +469,17 @@
 
 
 
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-register</code></td>
+            </tr>
 
 
 
 
             <tr>
                 <td class="col-md-3">templateUrl</td>
-                <td class="col-md-9"><code>login.component.html</code></td>
+                <td class="col-md-9"><code>register.component.html</code></td>
             </tr>
 
 
@@ -485,6 +489,19 @@
 
 
 
+    <section>
+        <h3 id="constructor">Constructor</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>constructor(auth: Auth, router: <a href="https://angular.io/docs/ts/latest/api/router/index/Router-class.html" target="_blank" >Router</a>, fb: any)</code>
+                        </td>
+                    </tr>
+    
+                </tbody>
+            </table>
+    </section>
 
     <section>
         <h3 id="methods">Methods</h3>
@@ -519,7 +536,7 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier"></span> signInWithGoogle</b>
+                            <b><span class="modifier"></span> google</b>
                         </td>
                     </tr>
     
@@ -528,7 +545,7 @@
                                 <span class="modifier-icon method fa fa-play ">
                                     <span class="fa fa-"></span>
                                 </span>
-                            <code>signInWithGoogle()</code>
+                            <code>google()</code>
                         </td>
                     </tr>
     
@@ -550,12 +567,27 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier">Private</span> auth</b>
+                            <b> confirmPassword</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>auth:     <code>{}</code>
+                            <code>confirmPassword:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> displayName</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>displayName:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -570,7 +602,52 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>email:     <code>string</code>
+                            <code>email:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> error</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>error:     <code>WritableSignal&lt;string&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> form</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>form:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> loading</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>loading:     <code>WritableSignal&lt;boolean&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -585,22 +662,7 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>password:     <code>string</code>
-    </bcode>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b><span class="modifier">Private</span> router</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>router:     <code>{}</code>
+                            <code>password:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -609,31 +671,107 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, inject, signal } from &#x27;@angular/core&#x27;;
-import { Router } from &#x27;@angular/router&#x27;;
-import { FormsModule } from &#x27;@angular/forms&#x27;;
-import { AuthService } from &#x27;./auth.service&#x27;;
+            <pre><code class="hljs javascript">import { Component, signal, DestroyRef, inject } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { Router, RouterLink } from &#x27;@angular/router&#x27;;
+import {
+  AbstractControl, ValidationErrors, ReactiveFormsModule,
+  Validators, FormGroup, FormControl, FormBuilder
+} from &quot;@angular/forms&quot;;
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider,
+  onAuthStateChanged, signInWithPopup, updateProfile } from &#x27;@angular/fire/auth&#x27;;
+
+// PrimeNG
+import { InputTextModule } from &#x27;primeng/inputtext&#x27;;
+import { PasswordModule } from &#x27;primeng/password&#x27;;
+import { ButtonModule } from &#x27;primeng/button&#x27;;
+import { DividerModule } from &#x27;primeng/divider&#x27;;
+import { MessageModule } from &#x27;primeng/message&#x27;;
+
+function matchPasswords(ctrl: AbstractControl): ValidationErrors | null {
+  const pwd &#x3D; ctrl.get(&#x27;password&#x27;)?.value;
+  const cfm &#x3D; ctrl.get(&#x27;confirmPassword&#x27;)?.value;
+  return pwd &amp;&amp; cfm &amp;&amp; pwd !&#x3D;&#x3D; cfm ? { passwordsDontMatch: true } : null;
+}
 
 @Component({
   standalone: true,
-  imports: [FormsModule],
-  templateUrl: &#x27;./login.component.html&#x27;,
-
+  selector: &#x27;app-register&#x27;,
+  templateUrl: &#x27;./register.component.html&#x27;,
+  imports: [
+    CommonModule, ReactiveFormsModule, RouterLink,
+    InputTextModule, PasswordModule, ButtonModule, DividerModule, MessageModule
+  ],
 })
-export class LoginComponent {
-  private auth &#x3D; inject(AuthService);
-  private router &#x3D; inject(Router);
-  email &#x3D; &#x27;&#x27;;
-  password &#x3D; &#x27;&#x27;;
+export class RegisterComponent {
+  // template state
+  loading &#x3D; signal(false);
+  error &#x3D; signal&lt;string | null&gt;(null);
+  form: FormGroup;
 
-  async submit() {
-    await this.auth.signInWithEmail(this.email, this.password);
-    this.router.navigateByUrl(&#x27;/app&#x27;);
+  constructor(
+    private auth: Auth,
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.form &#x3D; this.fb.group(
+      {
+        displayName: new FormControl(&#x27;&#x27;, { nonNullable: true, validators: [Validators.maxLength(80)] }),
+        email:       new FormControl(&#x27;&#x27;, { nonNullable: true, validators: [Validators.required, Validators.email] }),
+        password:    new FormControl(&#x27;&#x27;, { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
+        confirmPassword: new FormControl(&#x27;&#x27;, { nonNullable: true, validators: [Validators.required] }),
+      },
+      { validators: matchPasswords }
+    );
+    onAuthStateChanged(this.auth, u &#x3D;&gt; { if (u) this.router.navigate([&#x27;/app&#x27;]); });
   }
 
-  async signInWithGoogle() {
-    await this.auth.signInWithGoogle();
-    this.router.navigateByUrl(&#x27;/app&#x27;);
+  get displayName() { return this.form.controls.displayName; }
+  get email()        { return this.form.controls.email; }
+  get password()     { return this.form.controls.password; }
+  get confirmPassword() { return this.form.controls.confirmPassword; }
+
+  async submit() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.loading.set(true);
+    this.error.set(null);
+
+    const { email, password, displayName } &#x3D; this.form.value;
+
+    try {
+      const cred &#x3D; await createUserWithEmailAndPassword(this.auth, email!, password!);
+      if (displayName) {
+        await updateProfile(cred.user, { displayName: displayName! });
+      }
+      await this.router.navigate([&#x27;/app&#x27;]);
+    } catch (e: any) {
+      const msg &#x3D;
+        e?.code &#x3D;&#x3D;&#x3D; &#x27;auth/email-already-in-use&#x27; ? &#x27;That email is already in use.&#x27; :
+          e?.code &#x3D;&#x3D;&#x3D; &#x27;auth/weak-password&#x27; ? &#x27;Please choose a stronger password (8+ characters).&#x27; :
+            e?.code &#x3D;&#x3D;&#x3D; &#x27;auth/invalid-email&#x27; ? &#x27;Please enter a valid email address.&#x27; :
+              &#x27;Could not create your account. Please try again.&#x27;;
+      this.error.set(msg);
+      console.error(e);
+    } finally {
+      this.loading.set(false);
+    }
+  }
+
+  async google() {
+    this.loading.set(true);
+    this.error.set(null);
+    try {
+      await signInWithPopup(this.auth, new GoogleAuthProvider());
+      await this.router.navigate([&#x27;/app&#x27;]);
+    } catch (e) {
+      this.error.set(&#x27;Google sign-in failed. Please try again.&#x27;);
+      console.error(e);
+    } finally {
+      this.loading.set(false);
+    }
   }
 }
 </code></pre>

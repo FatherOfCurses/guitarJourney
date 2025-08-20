@@ -69,10 +69,10 @@
                                     <a href="components/AppShellComponent.html" >AppShellComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/AuthComponent.html" >AuthComponent</a>
+                                    <a href="components/ChordComponent.html" >ChordComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/ChordComponent.html" >ChordComponent</a>
+                                    <a href="components/DashboardComponent.html" >DashboardComponent</a>
                                 </li>
                                 <li class="link">
                                     <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
@@ -93,6 +93,12 @@
                                     <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                 </li>
                                 <li class="link">
+                                    <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                </li>
+                                <li class="link">
                                     <a href="components/SessionComponent.html"  class="active" >SessionComponent</a>
                                 </li>
                                 <li class="link">
@@ -103,6 +109,9 @@
                                 </li>
                                 <li class="link">
                                     <a href="components/SongsComponent.html" >SongsComponent</a>
+                                </li>
+                                <li class="link">
+                                    <a href="components/WelcomeComponent.html" >WelcomeComponent</a>
                                 </li>
                         </ul>
                     </li>
@@ -156,6 +165,9 @@
                                 id="xs-injectables-links"
                             >
                                 <li class="link">
+                                    <a href="injectables/AuthService.html" >AuthService</a>
+                                </li>
+                                <li class="link">
                                     <a href="injectables/SessionService.html" >SessionService</a>
                                 </li>
                         </ul>
@@ -180,6 +192,9 @@
                                 </li>
                                 <li class="link">
                                     <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                </li>
+                                <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                         </ul>
                     </li>
@@ -259,10 +274,10 @@
                                            <a href="components/AppShellComponent.html" >AppShellComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/AuthComponent.html" >AuthComponent</a>
+                                           <a href="components/ChordComponent.html" >ChordComponent</a>
                                        </li>
                                        <li class="link">
-                                           <a href="components/ChordComponent.html" >ChordComponent</a>
+                                           <a href="components/DashboardComponent.html" >DashboardComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
@@ -283,6 +298,12 @@
                                            <a href="components/PreviousSessionsComponent.html" >PreviousSessionsComponent</a>
                                        </li>
                                        <li class="link">
+                                           <a href="components/PublicShellComponent.html" >PublicShellComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="components/RegisterComponent.html" >RegisterComponent</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="components/SessionComponent.html"  class="active" >SessionComponent</a>
                                        </li>
                                        <li class="link">
@@ -293,6 +314,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/SongsComponent.html" >SongsComponent</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="components/WelcomeComponent.html" >WelcomeComponent</a>
                                        </li>
                                </ul>
                            </li>
@@ -346,6 +370,9 @@
                                        id="injectables-links"
                    >
                                        <li class="link">
+                                           <a href="injectables/AuthService.html" >AuthService</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="injectables/SessionService.html" >SessionService</a>
                                        </li>
                                </ul>
@@ -370,6 +397,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                </ul>
                            </li>
@@ -612,6 +642,33 @@
                     </tr>
                 </tbody>
             </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> buildCreatePayload</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <span class="modifier-icon method fa fa-play lock">
+                                    <span class="fa fa-lock"></span>
+                                </span>
+                            <code>buildCreatePayload()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
     </section>
 
     <section>
@@ -706,6 +763,36 @@
                     <tr>
                         <td class="col-md-4">
                             <code>goalForNextTimeCtrl:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> hasError</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>hasError:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier"></span> loading</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-"></span><code>loading:     <code>WritableSignal&lt;boolean&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -993,6 +1080,8 @@ export class SessionComponent {
   private readonly sessionService &#x3D; inject(SessionService);
   private readonly destroyRef &#x3D; inject(DestroyRef);
   private readonly snack &#x3D; inject(MatSnackBar);
+  readonly loading &#x3D; signal(false);
+  readonly hasError &#x3D; signal(false);
 
   // UI flags
   readonly saving &#x3D; signal(false);
@@ -1048,21 +1137,14 @@ export class SessionComponent {
   onSubmit(): void {
     if (this.afterForm.invalid || this.prePracticeForm.invalid) return;
 
-    const pre &#x3D; this.prePracticeForm.getRawValue();
-    const post &#x3D; this.afterForm.getRawValue();
+    const payload &#x3D; this.buildCreatePayload();
 
-    this.session.update((s) &#x3D;&gt; ({
-      ...s,
-      whatToPractice: pre.whatToPractice ?? &#x27;&#x27;,
-      sessionIntent: pre.sessionIntent ?? &#x27;&#x27;,
-      postPracticeReflection: post.sessionReflection ?? &#x27;&#x27;,
-      goalForNextTime: post.goalForNextTime ?? &#x27;&#x27;,
-      practiceTime: this.elapsedMs(),
-    }));
+    this.loading.set(true);
+    this.hasError.set(false);
 
     this.saving.set(true);
 
-    this.sessionService.putSession$(this.session())
+    this.sessionService.create(payload)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() &#x3D;&gt; this.saving.set(false))
@@ -1113,6 +1195,23 @@ export class SessionComponent {
     return &#x60;${this.pad2(minutes)}:${this.pad2(seconds)}&#x60;;
   }
   private pad2(n: number): string { return n.toString().padStart(2, &#x27;0&#x27;); }
+
+  private buildCreatePayload() {
+    const pre &#x3D; this.prePracticeForm.value;
+    const post &#x3D; this.afterForm.value;
+
+    // Map your form → Firestore document shape
+    // Adjust these property names to match your Session/Firestore schema
+    return {
+      whatToPractice: pre.whatToPractice.trim() ?? &#x27;&#x27;,
+      sessionIntent: pre.sessionIntent ?? &#x27;&#x27; ,
+      postPracticeReflection: post.sessionReflection ?? &#x27;&#x27;,
+      goalForNextTime: post.goalForNextTime ?? &#x27;&#x27;,
+      practiceTime: this.elapsedMs()
+      // Any other fields you currently save, EXCEPT id/date/startedAt
+    }
+  }
+
 }
 </code></pre>
         </div>
