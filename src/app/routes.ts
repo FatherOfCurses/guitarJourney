@@ -44,13 +44,9 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () =>
-          import('./features/dashboard/dashboard.component')
-            .then(m => m.DashboardComponent),
-        resolve: {
-          prefetch: () =>('./features/dashboard/dashboard.resolver')
-
-        },
-        title: 'Dashboard',
+          import('./core/home/home.component')
+            .then(m => m.HomeComponent),
+        title: 'Welcome',
       },
       {
         path: 'sessions',
