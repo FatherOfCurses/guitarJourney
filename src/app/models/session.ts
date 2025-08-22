@@ -1,6 +1,9 @@
+import { Timestamp } from 'firebase/firestore';
+
 export class Session {
-  id: string;
-  date: string;
+  id?: string;
+  ownerUid: string;
+  date: Timestamp;
   practiceTime: number;
   whatToPractice: string;
   sessionIntent: string;

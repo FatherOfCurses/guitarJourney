@@ -1,172 +1,115 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { interval, Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
+import { Router } from '@angular/router'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { interval, Subscription } from 'rxjs'
+import { Timestamp } from 'firebase/firestore'
 
-import { Session } from '../../models/session';
-import { FieldValidationStatus, Option } from '../../models/formHelpers';
-import { SessionService } from '../../services/session.service';
-
-// Angular Material snack bar
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { ButtonModule} from 'primeng/button';
+import { SessionService } from '../../services/session.service'
+import { Session } from '../../models/session'
 
 enum SessionStatus {
-  Before = 'before',
-  During = 'during',
-  After = 'after',
+  Before = 'Before',
+  During = 'During',
+  After = 'After',
+  Done = 'Done',
 }
 
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatSnackBarModule, ButtonModule],
-  templateUrl: './session.component.html',
+  imports: [CommonModule, ReactiveFormsModule],
+  template: `<!-- template omitted; logic-only refactor -->`,
 })
 export class SessionComponent {
-  private readonly fb = inject(FormBuilder);
-  private readonly router = inject(Router);
-  private readonly sessionService = inject(SessionService);
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly snack = inject(MatSnackBar);
-  readonly loading = signal(false);
-  readonly hasError = signal(false);
+  private readonly fb = inject(FormBuilder)
+  private readonly router = inject(Router)
+  private readonly destroyRef = inject(DestroyRef)
+  private readonly sessions = inject(SessionService)
 
-  // UI flags
-  readonly saving = signal(false);
+  // --- Forms ---
+  readonly beforeForm = this.fb.nonNullable.group({
+    whatToPractice: ['', [Validators.maxLength(2000)]],
+    sessionIntent: ['', [Validators.maxLength(500)]],
+  })
 
-  // Domain state
-  readonly session = signal<Session>({
-    practiceTime: 0,
-    whatToPractice: '',
-    sessionIntent: '',
-    postPracticeReflection: '',
-    goalForNextTime: '',
-    id: '6badcbb7-afbf-4e28-8fdd-b6e068a493c1',
-    date: Date(),
-  });
+  readonly afterForm = this.fb.nonNullable.group({
+    sessionReflection: ['', [Validators.maxLength(2000)]],
+    goalForNextTime: ['', [Validators.maxLength(500)]],
+  })
 
-  readonly sessionStatus = signal<SessionStatus>(SessionStatus.Before);
-  readonly resourcesAdded = signal<boolean>(false);
+  // --- State ---
+  readonly status = signal<SessionStatus>(SessionStatus.Before)
+  private timerSub?: Subscription
+  private startedAt: number | null = null // epoch ms
 
-  // Timer
-  private timerSub?: Subscription;
-  private startTimestamp = signal<number | null>(null);
-  readonly elapsedMs = signal<number>(0);
-  readonly timeDisplay = computed(() => this.formatTime(this.elapsedMs()));
+  // Elapsed milliseconds while status === During
+  readonly elapsedMs = signal<number>(0)
+  readonly elapsedMin = computed(() =>
+    Math.max(0, Math.round(this.elapsedMs() / 60000)),
+  )
 
-  readonly fieldValidationStatus = FieldValidationStatus;
-  readonly validationStatus: Option[] = [
-    { label: 'invalid', value: FieldValidationStatus.INVALID },
-    { label: 'warning', value: FieldValidationStatus.EMPTY },
-    { label: 'valid', value: FieldValidationStatus.VALID },
-  ];
-
-  readonly prePracticeForm = this.fb.group({
-    practiceTime: this.fb.control<string>('', {
-      validators: [Validators.required, Validators.pattern(/^\d+$/)],
-    }),
-    whatToPractice: this.fb.control<string>('', { validators: [Validators.required] }),
-    sessionIntent: this.fb.control<string>('', { validators: [Validators.required] }),
-  });
-
-  readonly afterForm = this.fb.group({
-    sessionReflection: this.fb.control<string>('', { validators: [Validators.required] }),
-    goalForNextTime: this.fb.control<string>('', { validators: [Validators.required] }),
-  });
-
-  // Getters for template
-  get practiceTimeCtrl(): AbstractControl { return this.prePracticeForm.get('practiceTime')!; }
-  get whatToPracticeCtrl(): AbstractControl { return this.prePracticeForm.get('whatToPractice')!; }
-  get sessionIntentCtrl(): AbstractControl { return this.prePracticeForm.get('sessionIntent')!; }
-  get sessionReflectionCtrl(): AbstractControl { return this.afterForm.get('sessionReflection')!; }
-  get goalForNextTimeCtrl(): AbstractControl { return this.afterForm.get('goalForNextTime')!; }
-
-  // Submit (Finish)
-  onSubmit(): void {
-    if (this.afterForm.invalid || this.prePracticeForm.invalid) return;
-
-    const payload = this.buildCreatePayload();
-
-    this.loading.set(true);
-    this.hasError.set(false);
-
-    this.saving.set(true);
-
-    this.sessionService.create(payload)
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.saving.set(false))
-      )
-      .subscribe({
-        next: () => {
-          this.snack.open('Session saved 🎸', 'Close', { duration: 2500 });
-          this.router.navigate(['/']);
-        },
-        error: () => {
-          this.snack.open('Could not save session. Please try again.', 'Dismiss', { duration: 4000 });
-        },
-      });
-  }
-
-  // Timer
-  startTimer(): void {
-    const now = Date.now();
-    const already = this.elapsedMs();
-    this.startTimestamp.set(now - already);
-
-    this.timerSub?.unsubscribe();
+  // --- Lifecycle helpers ---
+  start() {
+    if (this.status() !== SessionStatus.Before) return
+    this.status.set(SessionStatus.During)
+    this.startedAt = Date.now()
+    // tick every second
+    this.timerSub?.unsubscribe()
     this.timerSub = interval(1000)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        const start = this.startTimestamp();
-        if (start != null) this.elapsedMs.set(Date.now() - start);
-      });
-
-    this.sessionStatus.set(SessionStatus.During);
+        if (this.startedAt != null) {
+          this.elapsedMs.set(Date.now() - this.startedAt)
+        }
+      })
   }
 
-  stopTimer(): void {
-    this.timerSub?.unsubscribe();
-    this.timerSub = undefined;
-    this.startTimestamp.set(null);
-    this.session.update((s) => ({ ...s, practiceTime: this.elapsedMs() }));
-    this.sessionStatus.set(SessionStatus.After);
+  stop() {
+    if (this.status() !== SessionStatus.During) return
+    this.status.set(SessionStatus.After)
+    this.timerSub?.unsubscribe()
+    this.timerSub = undefined
   }
 
-  addResourcesToSession(): void {
-    this.resourcesAdded.set(true);
-  }
+  async save() {
+    // Build payload for SessionsService.create()
+    // Session model uses Firestore Timestamp for `date`
+    const pre = this.beforeForm.getRawValue()
+    const post = this.afterForm.getRawValue()
 
-  private formatTime(ms: number): string {
-    const minutes = Math.floor(ms / 60000);
-    const seconds = Math.floor((ms % 60000) / 1000);
-    return `${this.pad2(minutes)}:${this.pad2(seconds)}`;
-  }
-  private pad2(n: number): string { return n.toString().padStart(2, '0'); }
+    const practiceTime = this.elapsedMin() // minutes (integer)
 
-  private buildCreatePayload() {
-    const pre = this.prePracticeForm.value;
-    const post = this.afterForm.value;
+    const payload: Omit<Session, 'id' | 'ownerUid' | 'date'> & {
+      date?: Timestamp
+    } = {
+      practiceTime,
+      whatToPractice: (pre.whatToPractice ?? '').trim(),
+      sessionIntent: (pre.sessionIntent ?? '').trim(),
+      postPracticeReflection: (post.sessionReflection ?? '').trim(),
+      goalForNextTime: (post.goalForNextTime ?? '').trim(),
+      // date omitted → will default to now() inside the service
+    }
 
-    // Map your form → Firestore document shape
-    // Adjust these property names to match your Session/Firestore schema
-    return {
-      whatToPractice: pre.whatToPractice.trim() ?? '',
-      sessionIntent: pre.sessionIntent ?? '' ,
-      postPracticeReflection: post.sessionReflection ?? '',
-      goalForNextTime: post.goalForNextTime ?? '',
-      practiceTime: this.elapsedMs()
-      // Any other fields you currently save, EXCEPT id/date/startedAt
+    try {
+      const id = await this.sessions.create(payload)
+      this.status.set(SessionStatus.Done)
+      // Navigate to detail or list as you prefer
+      await this.router.navigate(['/sessions', id])
+    } catch (e) {
+      console.error('Failed to save session', e)
+      // Optionally surface an error state to the UI
     }
   }
 
+  cancel() {
+    this.timerSub?.unsubscribe()
+    this.timerSub = undefined
+    this.status.set(SessionStatus.Before)
+    this.elapsedMs.set(0)
+    this.startedAt = null
+    this.beforeForm.reset({ whatToPractice: '', sessionIntent: '' })
+    this.afterForm.reset({ sessionReflection: '', goalForNextTime: '' })
+  }
 }

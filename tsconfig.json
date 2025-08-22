@@ -12,17 +12,10 @@
     "importHelpers": true,
     "target": "ES2022",
     "paths": {
-      "@shared/*": [
-        "src/app/shared/*"
-      ]
+      "@shared/*": ["src/app/shared/*"]
     },
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "types": [
-      "jest"
-    ],
+    "lib": ["es2018", "dom"],
+    "types": ["jest", "node"],
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
