@@ -18,14 +18,15 @@ export class PreviousSessionsComponent implements OnInit {
   constructor(private sessionService: SessionService, private router: Router) { }
 
   ngOnInit(): void {
-    this.sessionService.getAllSessions$().subscribe(session => this.sessionData = session);
+    this.sessionService.list$().subscribe(session => this.sessionData = session);
   }
 
   retrieveSessionById(id: string): Observable<Session> {
-    return this.sessionService.getSession$(id);
+    return this.sessionService.get$(id);
   }
 
   onRowSelect(event) {
-    this.router.navigate(['sessionDetail', event.data.id]);
+    console.log('Row selected:', event.data);
+    this.router.navigate(['/app','sessionDetail', event.data.id]);
   }
 }

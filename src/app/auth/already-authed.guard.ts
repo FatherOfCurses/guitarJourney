@@ -10,7 +10,7 @@ export const AlreadyAuthedGuard: CanActivateFn = () => {
     const unsub = auth.onAuthStateChanged(user => {
       unsub();
       if (user) {
-        router.navigateByUrl('/sessions'); // or '/app'
+        router.navigateByUrl('/app'); // or '/app'
         resolve(false);
       } else {
         resolve(true);
