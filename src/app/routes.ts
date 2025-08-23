@@ -44,8 +44,11 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () =>
-          import('./core/home/home.component')
-            .then(m => m.HomeComponent),
+          import('./features/dashboard/dashboard.component')
+            .then(m => m.DashboardComponent),
+//        loadComponent: () =>
+//          import('./core/home/home.component')
+//            .then(m => m.HomeComponent),
         title: 'Welcome',
       },
       {
