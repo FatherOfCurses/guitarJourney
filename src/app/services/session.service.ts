@@ -18,8 +18,6 @@ import { getFirestore, Timestamp, addDoc } from "firebase/firestore";
 import { Observable, from } from 'rxjs';
 import { Session } from '../models/session';
 import { sessionConverter } from "../storage/converters";
-import { CollectionReference } from "@angular/fire/compat/firestore";
-
 
 @Injectable({ providedIn: 'root' })
 export class SessionService {

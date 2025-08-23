@@ -6,12 +6,12 @@ import { map, filter, switchMap, catchError, of } from 'rxjs';
 import { SessionService } from '../../../services/session.service';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-display-single-session',
   standalone: true,
-  imports: [CommonModule, ButtonModule, CardModule],
+  imports: [CommonModule, ButtonModule, CardModule, TableModule],
   templateUrl: './display-session.component.html',
 })
 export class DisplaySessionComponent {
@@ -27,13 +27,13 @@ export class DisplaySessionComponent {
     ),
     { initialValue: null }
   );
-
+  
   // session data as a signal (auto-updates when id changes)
   readonly session = toSignal(
     this.route.paramMap.pipe(
       map(pm => pm.get('id')),
       filter((id): id is string => !!id),
-      switchMap(id => this.sessionService.getSession$(id)),
+      switchMap(id => this.sessionService.get$(id)),
       catchError(() => of(null))
     ),
     { initialValue: null }
@@ -42,7 +42,12 @@ export class DisplaySessionComponent {
   readonly loading = computed(() => this.session() === null && this.sessionId() !== null);
   readonly hasError = computed(() => this.sessionId() !== null && this.session() === null);
 
+ngOnInit() {
+    console.log('Session ID:', this.sessionId());
+    console.log('Session Data:', this.session());
+}
+
   returnToTable(): void {
-    this.router.navigate(['/sessions']);
+    this.router.navigate(['/app','sessions']);
   }
 }

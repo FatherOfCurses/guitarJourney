@@ -1,21 +1,41 @@
 <!-- display-session.component.html -->
-@if (loading) {
+@if (loading()) {
   <p>Loading…</p>
 } @else if (hasError()) {
   <p class="text-red-600">Could not load the session.</p>
-} @else if (session) {
-  <!-- render session -->
-}
-<button pButton type="button" (click)="returnToTable()">Back</button>
-<div class="flex flex-column md:flex-row gap-3">
-  <div class="flex-1">
+} @else if (session()) {
+  <div class="flex flex-col gap-4">
     <p-card>
       <ng-template pTemplate="header">
         <div class="text-2xl font-bold">Session Details</div>
       </ng-template>
+
       <ng-template pTemplate="content">
-        <p>Loading session details...</p>
+        <!-- Portrait mode: headings left, data right -->
+        <dl class="grid grid-cols-1 md:grid-cols-[240px,1fr] gap-x-6 gap-y-3">
+          <dt class="text-sm font-medium text-neutral-500">Date</dt>
+          <dd class="text-neutral-900">{{ session().date }}</dd>
+
+          <dt class="text-sm font-medium text-neutral-500">Practice Time</dt>
+          <dd class="text-neutral-900">{{ session().practiceTime }}</dd>
+
+          <dt class="text-sm font-medium text-neutral-500">What You Practiced</dt>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ session().whatToPractice }}</dd>
+
+          <dt class="text-sm font-medium text-neutral-500">Session Intent</dt>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ session().sessionIntent }}</dd>
+
+          <dt class="text-sm font-medium text-neutral-500">Reflection</dt>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ session().postPracticeReflection }}</dd>
+
+          <dt class="text-sm font-medium text-neutral-500">Goal for next time</dt>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ session().goalForNextTime }}</dd>
+        </dl>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button pButton type="button" (click)="returnToTable()" label="Back"></button>
       </ng-template>
     </p-card>
   </div>
-
+}

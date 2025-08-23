@@ -44,14 +44,22 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         loadComponent: () =>
-          import('./core/home/home.component')
-            .then(m => m.HomeComponent),
+          import('./features/dashboard/dashboard.component')
+            .then(m => m.DashboardComponent),
+//        loadComponent: () =>
+//          import('./core/home/home.component')
+//            .then(m => m.HomeComponent),
         title: 'Welcome',
       },
       {
         path: 'sessions',
         loadComponent: () =>
-          import('./features/session/session.component').then(m => m.SessionComponent),
+          import('./features/session/previous-sessions/previous-sessions.component').then(m => m.PreviousSessionsComponent),
+      },
+      {
+        path: 'sessionDetail/:id',
+        loadComponent: () =>
+          import('./features/session/display-single-session/display-session.component').then(m => m.DisplaySessionComponent),
       },
       {
         path: 'songs',
@@ -63,6 +71,9 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/metrics/metrics.component').then(m => m.MetricsComponent),
       },
+      {
+        path: '**', redirectTo: 'app'  // catch-all, must be last
+      }
     ],
   },
 

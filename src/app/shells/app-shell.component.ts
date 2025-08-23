@@ -17,9 +17,9 @@ export class AppShellComponent {
 
   // Top-level nav
   readonly items = signal<MenuItem[]>([
-    { label: 'Sessions', icon: 'pi pi-clock', routerLink: ['/sessions'] },
-    { label: 'Songs',    icon: 'pi pi-music', routerLink: ['/songs'] },
-    { label: 'Metrics',  icon: 'pi pi-chart-bar', routerLink: ['/metrics'] },
+    { label: 'Sessions', icon: 'pi pi-clock', routerLink: ['sessions'] },
+    { label: 'Songs',    icon: 'pi pi-music', routerLink: ['songs'] },
+    { label: 'Metrics',  icon: 'pi pi-chart-bar', routerLink: ['metrics'] },
   ]);
 
   // User dropdown items
