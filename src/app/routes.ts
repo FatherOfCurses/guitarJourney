@@ -28,6 +28,7 @@ export const routes: Routes = [
       },
       {
         path: 'register',
+        canActivate: [AlreadyAuthedGuard],
         loadComponent: () =>
           import('./auth/register.component').then(m => m.RegisterComponent),
       }
@@ -46,9 +47,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/dashboard.component')
             .then(m => m.DashboardComponent),
-//        loadComponent: () =>
-//          import('./core/home/home.component')
-//            .then(m => m.HomeComponent),
         title: 'Welcome',
       },
       {
@@ -72,11 +70,19 @@ export const routes: Routes = [
           import('./features/metrics/metrics.component').then(m => m.MetricsComponent),
       },
       {
-        path: '**', redirectTo: 'app'  // catch-all, must be last
-      }
+        path: '**', 
+        loadComponent:()  =>
+          import('./core/not-found/not-found.component')
+            .then(m => m.NotFoundComponent),
+        },        
     ],
   },
 
   // Fallback
-  { path: '**', redirectTo: '' },
+  {
+    path: '**', 
+    loadComponent:()  =>
+      import('./core/not-found/not-found.component')
+        .then(m => m.NotFoundComponent),
+    }, 
 ];

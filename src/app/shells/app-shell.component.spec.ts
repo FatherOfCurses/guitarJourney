@@ -10,7 +10,7 @@ import {
 } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
-import { AppShellComponent } from './shells/app-shell.component';
+import { AppShellComponent } from './app-shell.component';
 
 /** ---- STUB PAGES (standalone) ---- */
 @Component({ standalone: true, template: 'home' })     class HomeStubComponent {}

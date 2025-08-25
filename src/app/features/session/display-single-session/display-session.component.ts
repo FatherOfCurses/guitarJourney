@@ -42,11 +42,6 @@ export class DisplaySessionComponent {
   readonly loading = computed(() => this.session() === null && this.sessionId() !== null);
   readonly hasError = computed(() => this.sessionId() !== null && this.session() === null);
 
-ngOnInit() {
-    console.log('Session ID:', this.sessionId());
-    console.log('Session Data:', this.session());
-}
-
   returnToTable(): void {
     this.router.navigate(['/app','sessions']);
   }
