@@ -6,7 +6,6 @@ import { DisplaySessionComponent } from './display-session.component';
 import { SessionService } from '../../../services/session.service';
 import type { Session } from '../../../models/session';
 import { render, screen } from '@testing-library/angular';
-import { fakeAsync, tick } from '@angular/core/testing';
 
 describe('DisplaySessionComponent (standalone)', () => {
   let fixture: ComponentFixture<DisplaySessionComponent>;
