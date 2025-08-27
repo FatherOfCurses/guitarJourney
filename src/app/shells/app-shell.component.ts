@@ -4,14 +4,14 @@ import { MenuItem } from 'primeng/api';
 import { MenubarModule } from 'primeng/menubar';
 import { TieredMenu, TieredMenuModule } from 'primeng/tieredmenu';
 import { ButtonModule } from 'primeng/button';
-import { Auth, AuthModule, signOut } from '@angular/fire/auth';
-import { FirebaseApp, FirebaseAppModule } from '@angular/fire/app';
+import { Auth, signOut } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, MenubarModule, TieredMenuModule, ButtonModule, AuthModule, FirebaseAppModule],
+  imports: [RouterOutlet, MenubarModule, TieredMenuModule, ButtonModule ],
   templateUrl: './app-shell.component.html',
+
 })
 export class AppShellComponent {
   @ViewChild('userMenu') userMenu!: TieredMenu;
