@@ -9,7 +9,10 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {  
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, Auth]
+      imports: [LoginComponent],
+      providers: [
+        { provide: AuthService, useValue: { login: jest.fn() } }
+      ]
     })
     .compileComponents();
 
