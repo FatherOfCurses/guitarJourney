@@ -1,115 +1,154 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core'
-import { CommonModule } from '@angular/common'
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
-import { interval, Subscription } from 'rxjs'
-import { Timestamp } from 'firebase/firestore'
-
-import { SessionService } from '../../services/session.service'
-import { Session } from '../../models/session'
-
-enum SessionStatus {
-  Before = 'Before',
-  During = 'During',
-  After = 'After',
-  Done = 'Done',
-}
+import { Component, DestroyRef, effect, inject, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+export type SessionPhase = 'Before' | 'During' | 'After';
 
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  template: `<!-- template omitted; logic-only refactor -->`,
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
+  templateUrl: './session.component.html',
 })
 export class SessionComponent {
-  private readonly fb = inject(FormBuilder)
-  private readonly router = inject(Router)
-  private readonly destroyRef = inject(DestroyRef)
-  private readonly sessions = inject(SessionService)
+  private fb = inject(FormBuilder);
+  private destroyRef = inject(DestroyRef);
 
-  // --- Forms ---
-  readonly beforeForm = this.fb.nonNullable.group({
-    whatToPractice: ['', [Validators.maxLength(2000)]],
-    sessionIntent: ['', [Validators.maxLength(500)]],
-  })
+  // ---------- STATE ----------
+  // Session phase for the @switch in the template
+  private _status = signal<SessionPhase>('Before');
+  status = this._status.asReadonly();
 
-  readonly afterForm = this.fb.nonNullable.group({
-    sessionReflection: ['', [Validators.maxLength(2000)]],
-    goalForNextTime: ['', [Validators.maxLength(500)]],
-  })
+  // Track whether user opted to add resources (your HTML checks resourcesAdded())
+  private _resourcesAdded = signal(false);
+  resourcesAdded = this._resourcesAdded.asReadonly();
 
-  // --- State ---
-  readonly status = signal<SessionStatus>(SessionStatus.Before)
-  private timerSub?: Subscription
-  private startedAt: number | null = null // epoch ms
+  // Loading/saving flags for the AFTER form buttons
+  private _loading = signal(false);
+  loading = this._loading.asReadonly();
 
-  // Elapsed milliseconds while status === During
-  readonly elapsedMs = signal<number>(0)
-  readonly elapsedMin = computed(() =>
-    Math.max(0, Math.round(this.elapsedMs() / 60000)),
-  )
+  private _saving = signal(false);
+  saving = this._saving.asReadonly();
 
-  // --- Lifecycle helpers ---
+  // Practice goal (in minutes) set before starting
+  private _practiceGoalMinutes = signal<number>(0);
+  practiceGoalMinutes = this._practiceGoalMinutes.asReadonly();
+
+  // Timer
+  private tickHandle: any = null;
+  private _elapsedSeconds = signal(0);
+  elapsedSeconds = this._elapsedSeconds.asReadonly();
+
+  // Display the elapsed time as mm:ss in the template
+  timeDisplay = computed(() => {
+    const s = this._elapsedSeconds();
+    const m = Math.floor(s / 60);
+    const ss = String(s % 60).padStart(2, '0');
+    return `${m}:${ss}`;
+  });
+
+  // True once the goal is met/exceeded (timer keeps running!)
+  goalReached = computed(() => {
+    const goal = this._practiceGoalMinutes();
+    return goal > 0 && this._elapsedSeconds() >= goal * 60;
+  });
+
+  // Optional: side-effect when user first reaches the goal (toast/log/etc.)
+  private onGoalReachOnce = effect(() => {
+    if (this.goalReached()) {
+      // Replace with your toast/snackbar if desired
+      // e.g., this.toast.success('Goal time reached! Keep going or end when ready.');
+      // console.log('🎉 Practice goal reached!');
+    }
+  });
+
+  // ---------- FORMS ----------
+  // BEFORE form
+  beforeForm: FormGroup = this.fb.group({
+    practiceTime: [0, [Validators.required, Validators.min(0)]],
+    whatToPractice: ['', [Validators.required, Validators.minLength(2)]],
+    sessionIntent: ['', [Validators.required, Validators.minLength(2)]],
+  });
+
+  // AFTER form
+  afterForm: FormGroup = this.fb.group({
+    sessionReflection: ['', [Validators.required, Validators.minLength(2)]],
+    goalForNextTime: ['', [Validators.required, Validators.minLength(2)]],
+  });
+
+  // Template expects these getters & names
+  get practiceTimeCtrl() { return this.beforeForm.get('practiceTime')!; }
+  get whatToPracticeCtrl() { return this.beforeForm.get('whatToPractice')!; }
+  get sessionIntentCtrl() { return this.beforeForm.get('sessionIntent')!; }
+
+  get sessionReflectionCtrl() { return this.afterForm.get('sessionReflection')!; }
+  get goalForNextTimeCtrl() { return this.afterForm.get('goalForNextTime')!; }
+
+  // Your HTML disables Start with "prePracticeForm.invalid"; keep this alias for compatibility.
+  get prePracticeForm() { return this.beforeForm; }
+
+  // ---------- TEMPLATE CALLED HELPERS ----------
+  addResourcesToSession() {
+    this._resourcesAdded.set(true);
+  }
+
+  // Called by BEFORE form submit
   start() {
-    if (this.status() !== SessionStatus.Before) return
-    this.status.set(SessionStatus.During)
-    this.startedAt = Date.now()
-    // tick every second
-    this.timerSub?.unsubscribe()
-    this.timerSub = interval(1000)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        if (this.startedAt != null) {
-          this.elapsedMs.set(Date.now() - this.startedAt)
-        }
-      })
-  }
-
-  stop() {
-    if (this.status() !== SessionStatus.During) return
-    this.status.set(SessionStatus.After)
-    this.timerSub?.unsubscribe()
-    this.timerSub = undefined
-  }
-
-  async save() {
-    // Build payload for SessionsService.create()
-    // Session model uses Firestore Timestamp for `date`
-    const pre = this.beforeForm.getRawValue()
-    const post = this.afterForm.getRawValue()
-
-    const practiceTime = this.elapsedMin() // minutes (integer)
-
-    const payload: Omit<Session, 'id' | 'ownerUid' | 'date'> & {
-      date?: Timestamp
-    } = {
-      practiceTime,
-      whatToPractice: (pre.whatToPractice ?? '').trim(),
-      sessionIntent: (pre.sessionIntent ?? '').trim(),
-      postPracticeReflection: (post.sessionReflection ?? '').trim(),
-      goalForNextTime: (post.goalForNextTime ?? '').trim(),
-      // date omitted → will default to now() inside the service
+    if (this.beforeForm.invalid) {
+      this.beforeForm.markAllAsTouched();
+      return;
     }
 
-    try {
-      const id = await this.sessions.create(payload)
-      this.status.set(SessionStatus.Done)
-      // Navigate to detail or list as you prefer
-      await this.router.navigate(['/sessions', id])
-    } catch (e) {
-      console.error('Failed to save session', e)
-      // Optionally surface an error state to the UI
+    // Set practice goal in minutes (can be 0 = no goal)
+    const goalMinutes = Number(this.practiceTimeCtrl.value) || 0;
+    this._practiceGoalMinutes.set(goalMinutes);
+
+    // Reset timer and move to DURING
+    this._elapsedSeconds.set(0);
+    this._status.set('During');
+
+    // Start ticking every second; keeps going even after reaching the goal
+    this.clearTick();
+    this.tickHandle = setInterval(() => {
+      this._elapsedSeconds.update(v => v + 1);
+    }, 1000);
+  }
+
+  // Called by DURING End button
+  stopTimer() {
+    this.clearTick();
+    this._status.set('After');
+  }
+
+  // Called by AFTER form button(s)
+  onSubmit() {
+    if (this.afterForm.invalid) {
+      this.afterForm.markAllAsTouched();
+      return;
+    }
+    this._loading.set(true);
+    this._saving.set(true);
+
+    // Simulate save; replace with your real save logic
+    // Example: await this.sessionService.finishSession({ ... });
+    setTimeout(() => {
+      this._saving.set(false);
+      this._loading.set(false);
+      // You could navigate away or reset here
+      // this.router.navigate(['/sessions']);
+    }, 800);
+  }
+
+  // ---------- UTIL ----------
+  private clearTick() {
+    if (this.tickHandle) {
+      clearInterval(this.tickHandle);
+      this.tickHandle = null;
     }
   }
 
-  cancel() {
-    this.timerSub?.unsubscribe()
-    this.timerSub = undefined
-    this.status.set(SessionStatus.Before)
-    this.elapsedMs.set(0)
-    this.startedAt = null
-    this.beforeForm.reset({ whatToPractice: '', sessionIntent: '' })
-    this.afterForm.reset({ sessionReflection: '', goalForNextTime: '' })
+  // Clean up interval on destroy
+  ngOnDestroy() {
+    this.clearTick();
   }
 }

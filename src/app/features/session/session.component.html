@@ -2,14 +2,14 @@
 
 <div id="formBucket" class="px-4 py-6 md:px-6 lg:px-8">
 
-  @switch (sessionStatus()) {
-    @case ('before') {
+  @switch (status()) {
+    @case ('Before') {
       <div class="bg-white shadow rounded-2xl p-6">
         <form
-          [formGroup]="prePracticeForm"
+          [formGroup]="beforeForm"
           id="sessionForm"
           class="grid gap-6"
-          (ngSubmit)="startTimer()
+          (ngSubmit)="start()
           "
           novalidate
         >
@@ -105,7 +105,7 @@
       </div>
     }
 
-    @case ('during') {
+    @case ('During') {
       <div class="bg-white shadow rounded-2xl p-6 space-y-6">
         <div id="timerSection">
           <p class="font-semibold text-3xl tracking-tight text-neutral-900">{{ timeDisplay() }}</p>
@@ -132,7 +132,7 @@
       </div>
     }
 
-    @case ('after') {
+    @case ('After') {
       <div class="bg-white shadow rounded-2xl p-6">
         <div class="mb-6 flex flex-col items-center">
           <h2 class="text-xl font-semibold text-neutral-900 mb-2">You did it!</h2>
