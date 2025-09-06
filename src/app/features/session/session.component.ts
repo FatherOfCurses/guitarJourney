@@ -2,6 +2,8 @@ import { Component, DestroyRef, effect, inject, signal, computed } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { SessionService } from '@services/session.service';
+import { Router } from '@angular/router';
 export type SessionPhase = 'Before' | 'During' | 'After';
 
 @Component({
@@ -12,6 +14,8 @@ export type SessionPhase = 'Before' | 'During' | 'After';
 })
 export class SessionComponent {
   private fb = inject(FormBuilder);
+  private sessionService = inject(SessionService);
+  private router = inject(Router);
   private destroyRef = inject(DestroyRef);
 
   // ---------- STATE ----------
@@ -122,21 +126,27 @@ export class SessionComponent {
 
   // Called by AFTER form button(s)
   onSubmit() {
-    if (this.afterForm.invalid) {
-      this.afterForm.markAllAsTouched();
-      return;
-    }
+
     this._loading.set(true);
     this._saving.set(true);
 
-    // Simulate save; replace with your real save logic
-    // Example: await this.sessionService.finishSession({ ... });
+    this.sessionService.create({
+      whatToPractice: this.whatToPracticeCtrl.value,
+      sessionIntent: this.sessionIntentCtrl.value,
+      postPracticeReflection: this.sessionReflectionCtrl.value,
+      goalForNextTime: this.goalForNextTimeCtrl.value,
+      practiceTime: this.elapsedSeconds() / 60,
+    }).then(() => {
     setTimeout(() => {
       this._saving.set(false);
       this._loading.set(false);
-      // You could navigate away or reset here
-      // this.router.navigate(['/sessions']);
+      this.router.navigate(['/app']);
     }, 800);
+  }).catch((error) => {
+    console.error('Error saving session:', error);
+    this._saving.set(false);
+    this._loading.set(false);
+  });
   }
 
   // ---------- UTIL ----------

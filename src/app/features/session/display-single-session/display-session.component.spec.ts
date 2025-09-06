@@ -1,11 +1,10 @@
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { provideRouter, Router, ActivatedRoute, convertToParamMap } from '@angular/router';
-import { Subject, of, throwError, BehaviorSubject } from 'rxjs';
-import { By } from '@angular/platform-browser';
+import { Subject, of} from 'rxjs';
 import { DisplaySessionComponent } from './display-session.component';
-import { SessionService } from '../../../services/session.service';
-import type { Session } from '../../../models/session';
-import { render, screen } from '@testing-library/angular';
+import { SessionService } from '@services/session.service';
+import type { Session } from '@models/session';
+import { screen } from '@testing-library/angular';
 
 describe('DisplaySessionComponent (standalone)', () => {
   let fixture: ComponentFixture<DisplaySessionComponent>;

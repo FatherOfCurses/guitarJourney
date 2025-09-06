@@ -4,8 +4,8 @@ import { By } from '@angular/platform-browser';
 import { SessionComponent } from './session.component';
 import { of, Subject } from 'rxjs';
 import { convertToParamMap } from '@angular/router';
-import { Session } from 'src/app/models/session';
-import { SessionService } from '../../services/session.service'
+import { Session } from '@models/session';
+import { SessionService } from '@services/session.service'
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
     el.value = value;
@@ -33,6 +33,7 @@ const makeSession = (over: Partial<Session> = {}): Session => ({
     getSessionById: jest.fn((id: string) => get$ ?? of(makeSession())),
     getById:         jest.fn((id: string) => get$ ?? of(makeSession())),
     findOne:         jest.fn((id: string) => get$ ?? of(makeSession())),
+    create:          jest.fn((session: Partial<Session>) => Promise.resolve('new-id')),
   };
 
   async function setup() {
@@ -147,7 +148,7 @@ describe('SessionComponent (template-driven behaviors)', () => {
   });
 
   describe('AFTER state', () => {
-    it('disables Finish when loading() is true', () => {
+    it('disables Finish when loading() is true', async () => {
       const { fixture, cmp } = createFixtureWithStatus('After');
 
       // Initially false (enabled)
@@ -155,20 +156,19 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(finishBtn.disabled).toBe(false);
 
       // Simulate loading state
+      cmp['_loading'].set(true);
       fixture.detectChanges();
-
-      finishBtn = fixture.debugElement.query(By.css('#afterForm button'))?.nativeElement as HTMLButtonElement;
       expect(finishBtn.disabled).toBe(true);
     });
 
-    it('clicking Finish calls onSubmit() when not loading', () => {
+    it('clicking Finish calls onSubmit() when not loading', async () => {
       const { fixture, cmp } = createFixtureWithStatus('After');
 
       // Make sure not loading
       fixture.detectChanges();
 
       const finishBtn = fixture.debugElement.query(By.css('#afterForm button'))?.nativeElement as HTMLButtonElement;
-      finishBtn.click();
+      finishBtn.click()
       fixture.detectChanges();
 
       expect(cmp.saving()).toBe(true);});
