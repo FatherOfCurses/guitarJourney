@@ -6,6 +6,8 @@ import { of, Subject } from 'rxjs';
 import { convertToParamMap } from '@angular/router';
 import { Session } from '@models/session';
 import { SessionService } from '@services/session.service'
+import { fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
+
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
     el.value = value;
@@ -91,7 +93,6 @@ describe('SessionComponent (template-driven behaviors)', () => {
       // Initially invalid -> disabled
       expect(startBtn).toBeTruthy();
       expect(startBtn.disabled).toBe(false);
-
     });
 
     it('clicking Start calls startTimer()', () => {
@@ -195,4 +196,98 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(errors.length).toBe(0);
     });
   });
+
+  describe('onSubmit promise paths', () => {
+    let createSpy: jest.SpyInstance;
+  
+    function primeValidForm(cmp: SessionComponent) {
+      // Fill the controls with valid values so create() gets called
+      cmp.whatToPracticeCtrl.setValue('Chord changes: C ↔︎ F');
+      cmp.sessionIntentCtrl.setValue('Improve clean transitions');
+      cmp.sessionReflectionCtrl.setValue('Barre chords improving');
+      cmp.goalForNextTimeCtrl.setValue('Metronome @ 70 BPM, 10 mins');
+      // Ensure elapsedSeconds() returns something deterministic
+      jest.spyOn(cmp as any, 'elapsedSeconds').mockReturnValue(1200); // 20 minutes
+    }
+  
+    it('resolves: turns off saving/loading after 800ms and navigates to /app', fakeAsync(() => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+  
+      // Stub router directly on the component to avoid TestBed changes
+      const navigate = jest.fn();
+      (cmp as any).router = { navigate };
+  
+      // Mock create() -> resolved promise
+      // If your spec already has sessionSvcMock, reuse it; otherwise adapt as needed.
+      const svc = TestBed.inject(SessionService) as any;
+      createSpy = jest.spyOn(svc, 'create').mockResolvedValue(undefined);
+  
+      primeValidForm(cmp);
+  
+      // Call
+      cmp.onSubmit();
+  
+      // Immediately after calling, flags should be true
+      expect(cmp.saving()).toBe(true);
+      expect(cmp.loading()).toBe(true);
+  
+      // Let the promise resolve
+      flushMicrotasks();
+  
+      // The success branch sets a setTimeout(800) before flipping flags + navigate
+      tick(800);
+      fixture.detectChanges();
+  
+      expect(createSpy).toHaveBeenCalledWith({
+        whatToPractice: 'Chord changes: C ↔︎ F',
+        sessionIntent: 'Improve clean transitions',
+        postPracticeReflection: 'Barre chords improving',
+        goalForNextTime: 'Metronome @ 70 BPM, 10 mins',
+        practiceTime: 1200 / 60, // 20
+      });
+      expect(cmp.saving()).toBe(false);
+      expect(cmp.loading()).toBe(false);
+      expect(navigate).toHaveBeenCalledWith(['/app']);
+    }));
+  
+    it('rejects: logs error and turns off saving/loading; does not navigate', fakeAsync(() => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+  
+      // Stub router again
+      const navigate = jest.fn();
+      (cmp as any).router = { navigate };
+  
+      // Mock create() -> rejected promise
+      const svc = TestBed.inject(SessionService) as any;
+      const err = new Error('create failed');
+      createSpy = jest.spyOn(svc, 'create').mockRejectedValue(err);
+  
+      // Spy on console.error to assert it’s called (optional but nice)
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  
+      primeValidForm(cmp);
+  
+      // Call
+      cmp.onSubmit();
+  
+      // Immediately after calling, flags should be true
+      expect(cmp.saving()).toBe(true);
+      expect(cmp.loading()).toBe(true);
+  
+      // Let the promise reject
+      flushMicrotasks();
+      fixture.detectChanges();
+  
+      // No 800ms delay on the error path — flags flip immediately
+      expect(errorSpy).toHaveBeenCalledWith('Error saving session:', err);
+      expect(cmp.saving()).toBe(false);
+      expect(cmp.loading()).toBe(false);
+      expect(navigate).not.toHaveBeenCalled();
+  
+      errorSpy.mockRestore();
+    }));
+  });
+  
 });

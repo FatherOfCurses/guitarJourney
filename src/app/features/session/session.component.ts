@@ -98,10 +98,6 @@ export class SessionComponent {
 
   // Called by BEFORE form submit
   start() {
-    if (this.beforeForm.invalid) {
-      this.beforeForm.markAllAsTouched();
-      return;
-    }
 
     // Set practice goal in minutes (can be 0 = no goal)
     const goalMinutes = Number(this.practiceTimeCtrl.value) || 0;
