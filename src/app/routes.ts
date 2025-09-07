@@ -3,7 +3,6 @@ import { Routes } from '@angular/router';
 import { PublicShellComponent } from './shells/public-shell.component';
 import { AppShellComponent } from './shells/app-shell.component';
 import { authGuard } from "./auth/auth.guard";
-import { RegisterComponent } from './auth/register.component';
 import { AlreadyAuthedGuard } from './auth/already-authed.guard';
 
 export const routes: Routes = [

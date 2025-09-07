@@ -1,10 +1,10 @@
 import { Route } from '@angular/router';
 import { routes } from './routes';
-import { PublicShellComponent } from './shells/public-shell.component';
-import { AppShellComponent } from './shells/app-shell.component';
-import { RegisterComponent } from './auth/register.component';
-import { AlreadyAuthedGuard } from './auth/already-authed.guard';
-import { authGuard } from './auth/auth.guard';
+import { PublicShellComponent } from '@shells/public-shell.component';
+import { AppShellComponent } from '@shells/app-shell.component';
+import { RegisterComponent } from '@auth/register.component';
+import { AlreadyAuthedGuard } from '@auth/already-authed.guard';
+import { authGuard } from '@auth/auth.guard';
 
 describe('App Routes', () => {
   it('should export a non-empty Routes array', () => {
@@ -116,4 +116,35 @@ describe('App Routes', () => {
     const paths = routes.map(r => r.path);
     expect(new Set(paths).size).toBe(paths.length);
   });
+
+  // Helper: flatten routes (including deeply nested children)
+function flattenRoutes(rs: readonly any[]): any[] {
+  const out: any[] = [];
+  const walk = (arr: readonly any[]) => {
+    for (const r of arr) {
+      out.push(r);
+      if (r.children?.length) walk(r.children);
+    }
+  };
+  walk(rs);
+  return out;
+}
+
+describe('lazy loaders execute (coverage)', () => {
+  it('invokes all loadComponent functions so lazy routes are covered', async () => {
+    const all = flattenRoutes(routes);
+
+    // collect all loadComponent fns (top-level and children)
+    const loaders = all
+      .map(r => r?.loadComponent)
+      .filter((fn): fn is () => Promise<unknown> => typeof fn === 'function');
+
+    // Call them all; we don't care about the value here, just execution
+    const results = await Promise.all(loaders.map(fn => fn()));
+
+    // Basic sanity: all resolved to something truthy (component classes)
+    results.forEach(res => expect(res).toBeTruthy());
+  });
+});
+
 });
