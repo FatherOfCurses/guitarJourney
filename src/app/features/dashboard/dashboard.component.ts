@@ -1,47 +1,47 @@
-import { Component, computed, signal } from '@angular/core';
-import { DatePipe, DecimalPipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Component, computed, signal, inject } from '@angular/core';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { RouterLink, ActivatedRoute } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
+import { DashboardData } from './dashboard.resolver';
 
-interface DashboardData {
-  lastSession: { id: string; startedAt: Date; durationMs: number } | null;
-  totals: { minutes: number; sessionCount: number; streakDays: number };
-}
+const EMPTY_DASHBOARD: DashboardData = {
+  lastSession: undefined,
+  totals: { minutes: 0, sessionCount: 0, streakDays: 0 },
+  week: {} as Record<string, number>,         
+};
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   templateUrl: './dashboard.component.html',
-  imports: [DatePipe, DecimalPipe, RouterLink]
+  imports: [DatePipe, DecimalPipe, RouterLink, CommonModule]
 })
 export class DashboardComponent {
-  // rotating inspirational images (just placeholders for now)
+  private route = inject(ActivatedRoute);
+  // Resolve data -> signal
+  readonly data = toSignal(
+    this.route.data.pipe(map(d => (d['dashboard'] as DashboardData) ?? {
+      lastSession: undefined,
+      totals: { minutes: 0, sessionCount: 0, streakDays: 0 },
+      week: {}
+    })),
+    { initialValue: EMPTY_DASHBOARD }
+  );
+
+  weekTotal = computed(() => {
+    const w = this.data().week as Record<string, number> | undefined;
+    if (!w) return 0;
+    const vals = Object.values(w) as number[]; // narrow from unknown[]
+    return vals.reduce((a, b) => a + b, 0);
+  });
+
   private images = [
     'https://placekitten.com/800/300',
     'https://picsum.photos/800/300',
   ];
   private currentIndex = signal(0);
   currentImage = computed(() => this.images[this.currentIndex()]);
-
-  // --- mock dashboard data ---
-  private mockData = signal<DashboardData>({
-    lastSession: {
-      id: 'mock-session-1',
-      startedAt: new Date(Date.now() - 1000 * 60 * 60), // one hour ago
-      durationMs: 45 * 60 * 1000, // 45 minutes
-    },
-    totals: {
-      minutes: 1234,
-      sessionCount: 56,
-      streakDays: 12,
-    },
-  });
-
-  data = this.mockData;
-
-  weekTotal = computed(() => {
-    // Hardcoded mock weekly total
-    return 180; // minutes
-  });
 
   constructor() {
     // Example: rotate image every 5s
@@ -50,3 +50,4 @@ export class DashboardComponent {
     }, 5000);
   }
 }
+

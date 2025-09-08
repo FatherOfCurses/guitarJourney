@@ -13,20 +13,6 @@ import { environment } from "../environments/environment";
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 
-function connectEmulatorsIfNeededFactory() {
-  return () => {
-    if (!environment.production && environment.useEmulators !== false) {
-      const auth = inject(Auth);
-      const fs = inject(Firestore);
-      const storage = inject(Storage);
-
-      connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-      connectFirestoreEmulator(fs, 'localhost', 8080);
-      connectStorageEmulator(storage, 'localhost', 9199);
-    }
-  };
-}
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(
@@ -46,15 +32,20 @@ export const appConfig: ApplicationConfig = {
       }
   }),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    provideAuth(() => {
+      const auth = getAuth();
+      if (!environment.production) {
+        connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+      }
+      return auth;
+    }),
+    provideFirestore(() => {
+      const db = getFirestore();
+      if (!environment.production) {
+        connectFirestoreEmulator(db, '127.0.0.1', 8080);
+      }
+      return db;
+    }),
     provideStorage(() => getStorage()),
-
-    // Ensure emulator connections happen before the app starts using the services
-    {
-      provide: APP_INITIALIZER,
-      useFactory: connectEmulatorsIfNeededFactory,
-      multi: true
-    }
   ],
 };

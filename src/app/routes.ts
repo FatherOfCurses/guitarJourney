@@ -4,6 +4,7 @@ import { PublicShellComponent } from './shells/public-shell.component';
 import { AppShellComponent } from './shells/app-shell.component';
 import { AuthGuard } from "./auth/auth.guard";
 import { AlreadyAuthedGuard } from './auth/already-authed.guard';
+import { DashboardResolver } from './features/dashboard/dashboard.resolver';
 
 export const routes: Routes = [
   // PUBLIC AREA
@@ -38,14 +39,19 @@ export const routes: Routes = [
   {
     path: 'app',
     component: AppShellComponent,     // your existing shell (top nav)
-    canActivate: [AuthGuard],
+    canMatch: [AuthGuard],
     children: [
       {
-        path: 'dashboard',
+        path: '',
         pathMatch: 'full',
+        redirectTo: 'dashboard',
+      },
+      {
+        path: 'dashboard',
         loadComponent: () =>
           import('./features/dashboard/dashboard.component')
             .then(m => m.DashboardComponent),
+        resolve : { dashboard: DashboardResolver }, 
         title: 'Welcome',
       },
       {

@@ -1,41 +1,39 @@
 // src/app/auth/auth.service.ts
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import {
   Auth,
   User,
   GoogleAuthProvider,
-  onAuthStateChanged,
   signInWithPopup,
-  signOut as fbSignOut,
+  signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   updateProfile,
   getIdToken
 } from '@angular/fire/auth';
+import { from } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private auth = inject(Auth);
   private _user = signal<User | null>(null);
   /** Current Firebase user (signal) */
   readonly user = computed(() => this._user());
   /** True if signed in */
   readonly isAuthed = computed(() => this._user() !== null);
+  uid() { return this.auth.currentUser?.uid ?? null; }
 
-  constructor(private auth: Auth) {
-    onAuthStateChanged(this.auth, (u) => this._user.set(u));
-  }
 
   /** Google OAuth sign-in (popup) */
   signInWithGoogle() {
-    return signInWithPopup(this.auth, new GoogleAuthProvider());
+    const provider = new GoogleAuthProvider();
+    return from(signInWithPopup(this.auth, provider));
   }
 
-  /** Email + password sign-in */
   signInWithEmail(email: string, password: string) {
-    return signInWithEmailAndPassword(this.auth, email, password);
+    return from(signInWithEmailAndPassword(this.auth, email, password));
   }
-
   /** Create account with email + password (optional displayName) */
   async registerWithEmail(email: string, password: string, displayName?: string) {
     const cred = await createUserWithEmailAndPassword(this.auth, email, password);
@@ -55,11 +53,11 @@ export class AuthService {
 
   /** Sign out */
   signOut() {
-    return fbSignOut(this.auth);
+    return from(signOut(this.auth));
   }
 
   /** Convenience getters */
-  get uid(): string | null { return this._user()?.uid ?? null; }
+
   get displayName(): string | null { return this._user()?.displayName ?? null; }
   get email(): string | null { return this._user()?.email ?? null; }
 
