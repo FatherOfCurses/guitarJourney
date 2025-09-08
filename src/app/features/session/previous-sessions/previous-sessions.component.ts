@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Session } from '../../../models/session';
-import { SessionService } from '../../../services/session.service';
+import { Session } from '@models/session';
+import { SessionService } from '@services/session.service';
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { TableModule } from 'primeng/table';
