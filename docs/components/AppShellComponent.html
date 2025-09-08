@@ -78,9 +78,6 @@
                                     <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/HomeComponent.html" >HomeComponent</a>
-                                </li>
-                                <li class="link">
                                     <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
@@ -200,6 +197,9 @@
                                     <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                                 <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                </li>
+                                <li class="link">
                                     <a href="interfaces/Session.html" >Session</a>
                                 </li>
                                 <li class="link">
@@ -293,9 +293,6 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
-                                       </li>
-                                       <li class="link">
-                                           <a href="components/HomeComponent.html" >HomeComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/LoginComponent.html" >LoginComponent</a>
@@ -412,6 +409,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                        <li class="link">
                                            <a href="interfaces/DashboardData.html" >DashboardData</a>
@@ -675,17 +675,18 @@ import { Auth, signOut } from &#x27;@angular/fire/auth&#x27;;
 @Component({
   selector: &#x27;app-shell&#x27;,
   standalone: true,
-  imports: [RouterOutlet, MenubarModule, TieredMenuModule, ButtonModule],
+  imports: [RouterOutlet, MenubarModule, TieredMenuModule, ButtonModule ],
   templateUrl: &#x27;./app-shell.component.html&#x27;,
+
 })
 export class AppShellComponent {
   @ViewChild(&#x27;userMenu&#x27;) userMenu!: TieredMenu;
 
   // Top-level nav
   readonly items &#x3D; signal&lt;MenuItem[]&gt;([
-    { label: &#x27;Sessions&#x27;, icon: &#x27;pi pi-clock&#x27;, routerLink: [&#x27;/sessions&#x27;] },
-    { label: &#x27;Songs&#x27;,    icon: &#x27;pi pi-music&#x27;, routerLink: [&#x27;/songs&#x27;] },
-    { label: &#x27;Metrics&#x27;,  icon: &#x27;pi pi-chart-bar&#x27;, routerLink: [&#x27;/metrics&#x27;] },
+    { label: &#x27;Sessions&#x27;, icon: &#x27;pi pi-clock&#x27;, routerLink: [&#x27;sessions&#x27;] },
+    { label: &#x27;Songs&#x27;,    icon: &#x27;pi pi-music&#x27;, routerLink: [&#x27;songs&#x27;] },
+    { label: &#x27;Metrics&#x27;,  icon: &#x27;pi pi-chart-bar&#x27;, routerLink: [&#x27;metrics&#x27;] },
   ]);
 
   // User dropdown items

@@ -78,9 +78,6 @@
                                     <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/HomeComponent.html" >HomeComponent</a>
-                                </li>
-                                <li class="link">
                                     <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
@@ -200,6 +197,9 @@
                                     <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                                 <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                </li>
+                                <li class="link">
                                     <a href="interfaces/Session.html" >Session</a>
                                 </li>
                                 <li class="link">
@@ -293,9 +293,6 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
-                                       </li>
-                                       <li class="link">
-                                           <a href="components/HomeComponent.html" >HomeComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/LoginComponent.html" >LoginComponent</a>
@@ -417,6 +414,9 @@
                                            <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                        <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="interfaces/Session.html" >Session</a>
                                        </li>
                                        <li class="link">
@@ -500,11 +500,11 @@
 
 
 
-            <tr>
-                <td class="col-md-3">template</td>
-                <td class="col-md-9"><code>&lt;!--&nbsp;template&nbsp;omitted;&nbsp;logic-only&nbsp;refactor&nbsp;--&gt;</code></td>
-            </tr>
 
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>session.component.html</code></td>
+            </tr>
 
 
         </tbody>
@@ -516,6 +516,30 @@
 
     <section>
         <h3 id="methods">Methods</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> addResourcesToSession</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+    <code>addResourcesToSession()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
@@ -544,13 +568,13 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b> stop</b>
+                            <b> stopTimer</b>
                         </td>
                     </tr>
     
                     <tr>
                         <td class="col-md-4">
-    <code>stop()</code>
+    <code>stopTimer()</code>
                         </td>
                     </tr>
     
@@ -568,40 +592,40 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier"></span> save</b>
+                            <b> onSubmit</b>
                         </td>
                     </tr>
     
                     <tr>
                         <td class="col-md-4">
-                                <span class="modifier-icon method fa fa-play ">
-                                    <span class="fa fa-"></span>
+    <code>onSubmit()</code>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description">
+                                    <b>Returns: </b>    <code>void</code>
+    
+                                </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> clearTick</b>
+                        </td>
+                    </tr>
+    
+                    <tr>
+                        <td class="col-md-4">
+                                <span class="modifier-icon method fa fa-play lock">
+                                    <span class="fa fa-lock"></span>
                                 </span>
-                            <code>save()</code>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-description">
-                                    <b>Returns: </b>    <code>void</code>
-    
-                                </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b> cancel</b>
-                        </td>
-                    </tr>
-    
-                    <tr>
-                        <td class="col-md-4">
-    <code>cancel()</code>
+                            <code>clearTick()</code>
                         </td>
                     </tr>
     
@@ -623,12 +647,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier"></span> afterForm</b>
+                            <b><span class="modifier">Private</span> _elapsedSeconds</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-"></span><code>afterForm:     <code>any</code>
+                            <span class="modifier-icon fa fa-lock"></span><code>_elapsedSeconds:     <code>WritableSignal&lt;number&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -638,12 +662,102 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier"></span> beforeForm</b>
+                            <b><span class="modifier">Private</span> _loading</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-"></span><code>beforeForm:     <code>any</code>
+                            <span class="modifier-icon fa fa-lock"></span><code>_loading:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> _practiceGoalMinutes</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>_practiceGoalMinutes:     <code>WritableSignal&lt;number&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> _resourcesAdded</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>_resourcesAdded:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> _saving</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>_saving:     <code>WritableSignal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> _status</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>_status:     <code><a href="../classes/Session.html" target="_self" >WritableSignal&lt;SessionPhase&gt;</a></code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> afterForm</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>afterForm:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> beforeForm</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>beforeForm:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -668,27 +782,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier"></span> elapsedMin</b>
+                            <b> elapsedSeconds</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-"></span><code>elapsedMin:     <code>any</code>
-    </bcode>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b><span class="modifier"></span> elapsedMs</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <span class="modifier-icon fa fa-"></span><code>elapsedMs:     <code>WritableSignal&lt;number&gt;</code>
+                            <code>elapsedSeconds:     <code>Signal&lt;number&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -713,6 +812,126 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
+                            <b> goalForNextTimeCtrl</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>goalForNextTimeCtrl:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> goalReached</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>goalReached:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> loading</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>loading:     <code>Signal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> onGoalReachOnce</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>onGoalReachOnce:     <code>EffectRef</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> practiceGoalMinutes</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>practiceGoalMinutes:     <code>Signal&lt;number&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> practiceTimeCtrl</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>practiceTimeCtrl:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> prePracticeForm</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>prePracticeForm:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> resourcesAdded</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>resourcesAdded:     <code>Signal&lt;boolean&gt;</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
                             <b><span class="modifier">Private</span> router</b>
                         </td>
                     </tr>
@@ -728,12 +947,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier">Private</span> sessions</b>
+                            <b> saving</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>sessions:     <code>{}</code>
+                            <code>saving:     <code>Signal&lt;boolean&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -743,12 +962,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier">Private</span> startedAt</b>
+                            <b> sessionIntentCtrl</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>startedAt:     <code>number</code>
+                            <code>sessionIntentCtrl:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -758,12 +977,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier"></span> status</b>
+                            <b> sessionReflectionCtrl</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-"></span><code>status:     <code><a href="../classes/Session.html" target="_self" >WritableSignal&lt;SessionStatus&gt;</a></code>
+                            <code>sessionReflectionCtrl:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -773,12 +992,72 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier">Private</span> timerSub</b>
+                            <b><span class="modifier">Private</span> sessionService</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>timerSub:     <code>any</code>
+                            <span class="modifier-icon fa fa-lock"></span><code>sessionService:     <code>{}</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> status</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>status:     <code><a href="../classes/Session.html" target="_self" >Signal&lt;SessionPhase&gt;</a></code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> tickHandle</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>tickHandle:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> timeDisplay</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>timeDisplay:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b> whatToPracticeCtrl</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>whatToPracticeCtrl:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -787,119 +1066,164 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, DestroyRef, computed, inject, signal } from &#x27;@angular/core&#x27;
-import { CommonModule } from &#x27;@angular/common&#x27;
-import { FormBuilder, ReactiveFormsModule, Validators } from &#x27;@angular/forms&#x27;
-import { Router } from &#x27;@angular/router&#x27;
-import { takeUntilDestroyed } from &#x27;@angular/core/rxjs-interop&#x27;
-import { interval, Subscription } from &#x27;rxjs&#x27;
-import { Timestamp } from &#x27;firebase/firestore&#x27;
-
-import { SessionService } from &#x27;../../services/session.service&#x27;
-import { Session } from &#x27;../../models/session&#x27;
-
-enum SessionStatus {
-  Before &#x3D; &#x27;Before&#x27;,
-  During &#x3D; &#x27;During&#x27;,
-  After &#x3D; &#x27;After&#x27;,
-  Done &#x3D; &#x27;Done&#x27;,
-}
+            <pre><code class="hljs javascript">import { Component, DestroyRef, effect, inject, signal, computed } from &#x27;@angular/core&#x27;;
+import { CommonModule } from &#x27;@angular/common&#x27;;
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from &#x27;@angular/forms&#x27;;
+import { ButtonModule } from &#x27;primeng/button&#x27;;
+import { SessionService } from &#x27;@services/session.service&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+export type SessionPhase &#x3D; &#x27;Before&#x27; | &#x27;During&#x27; | &#x27;After&#x27;;
 
 @Component({
   selector: &#x27;app-session&#x27;,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  template: &#x60;&lt;!-- template omitted; logic-only refactor --&gt;&#x60;,
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
+  templateUrl: &#x27;./session.component.html&#x27;,
 })
 export class SessionComponent {
-  private readonly fb &#x3D; inject(FormBuilder)
-  private readonly router &#x3D; inject(Router)
-  private readonly destroyRef &#x3D; inject(DestroyRef)
-  private readonly sessions &#x3D; inject(SessionService)
+  private fb &#x3D; inject(FormBuilder);
+  private sessionService &#x3D; inject(SessionService);
+  private router &#x3D; inject(Router);
+  private destroyRef &#x3D; inject(DestroyRef);
 
-  // --- Forms ---
-  readonly beforeForm &#x3D; this.fb.nonNullable.group({
-    whatToPractice: [&#x27;&#x27;, [Validators.maxLength(2000)]],
-    sessionIntent: [&#x27;&#x27;, [Validators.maxLength(500)]],
-  })
+  // ---------- STATE ----------
+  // Session phase for the @switch in the template
+  private _status &#x3D; signal&lt;SessionPhase&gt;(&#x27;Before&#x27;);
+  status &#x3D; this._status.asReadonly();
 
-  readonly afterForm &#x3D; this.fb.nonNullable.group({
-    sessionReflection: [&#x27;&#x27;, [Validators.maxLength(2000)]],
-    goalForNextTime: [&#x27;&#x27;, [Validators.maxLength(500)]],
-  })
+  // Track whether user opted to add resources (your HTML checks resourcesAdded())
+  private _resourcesAdded &#x3D; signal(false);
+  resourcesAdded &#x3D; this._resourcesAdded.asReadonly();
 
-  // --- State ---
-  readonly status &#x3D; signal&lt;SessionStatus&gt;(SessionStatus.Before)
-  private timerSub?: Subscription
-  private startedAt: number | null &#x3D; null // epoch ms
+  // Loading/saving flags for the AFTER form buttons
+  private _loading &#x3D; signal(false);
+  loading &#x3D; this._loading.asReadonly();
 
-  // Elapsed milliseconds while status &#x3D;&#x3D;&#x3D; During
-  readonly elapsedMs &#x3D; signal&lt;number&gt;(0)
-  readonly elapsedMin &#x3D; computed(() &#x3D;&gt;
-    Math.max(0, Math.round(this.elapsedMs() / 60000)),
-  )
+  private _saving &#x3D; signal(false);
+  saving &#x3D; this._saving.asReadonly();
 
-  // --- Lifecycle helpers ---
+  // Practice goal (in minutes) set before starting
+  private _practiceGoalMinutes &#x3D; signal&lt;number&gt;(0);
+  practiceGoalMinutes &#x3D; this._practiceGoalMinutes.asReadonly();
+
+  // Timer
+  private tickHandle: any &#x3D; null;
+  private _elapsedSeconds &#x3D; signal(0);
+  elapsedSeconds &#x3D; this._elapsedSeconds.asReadonly();
+
+  // Display the elapsed time as mm:ss in the template
+  timeDisplay &#x3D; computed(() &#x3D;&gt; {
+    const s &#x3D; this._elapsedSeconds();
+    const m &#x3D; Math.floor(s / 60);
+    const ss &#x3D; String(s % 60).padStart(2, &#x27;0&#x27;);
+    return &#x60;${m}:${ss}&#x60;;
+  });
+
+  // True once the goal is met/exceeded (timer keeps running!)
+  goalReached &#x3D; computed(() &#x3D;&gt; {
+    const goal &#x3D; this._practiceGoalMinutes();
+    return goal &gt; 0 &amp;&amp; this._elapsedSeconds() &gt;&#x3D; goal * 60;
+  });
+
+  // Optional: side-effect when user first reaches the goal (toast/log/etc.)
+  private onGoalReachOnce &#x3D; effect(() &#x3D;&gt; {
+    if (this.goalReached()) {
+      // Replace with your toast/snackbar if desired
+      // e.g., this.toast.success(&#x27;Goal time reached! Keep going or end when ready.&#x27;);
+      // console.log(&#x27;🎉 Practice goal reached!&#x27;);
+    }
+  });
+
+  // ---------- FORMS ----------
+  // BEFORE form
+  beforeForm: FormGroup &#x3D; this.fb.group({
+    practiceTime: [0, [Validators.required, Validators.min(0)]],
+    whatToPractice: [&#x27;&#x27;, [Validators.required, Validators.minLength(2)]],
+    sessionIntent: [&#x27;&#x27;, [Validators.required, Validators.minLength(2)]],
+  });
+
+  // AFTER form
+  afterForm: FormGroup &#x3D; this.fb.group({
+    sessionReflection: [&#x27;&#x27;, [Validators.required, Validators.minLength(2)]],
+    goalForNextTime: [&#x27;&#x27;, [Validators.required, Validators.minLength(2)]],
+  });
+
+  // Template expects these getters &amp; names
+  get practiceTimeCtrl() { return this.beforeForm.get(&#x27;practiceTime&#x27;)!; }
+  get whatToPracticeCtrl() { return this.beforeForm.get(&#x27;whatToPractice&#x27;)!; }
+  get sessionIntentCtrl() { return this.beforeForm.get(&#x27;sessionIntent&#x27;)!; }
+
+  get sessionReflectionCtrl() { return this.afterForm.get(&#x27;sessionReflection&#x27;)!; }
+  get goalForNextTimeCtrl() { return this.afterForm.get(&#x27;goalForNextTime&#x27;)!; }
+
+  // Your HTML disables Start with &quot;prePracticeForm.invalid&quot;; keep this alias for compatibility.
+  get prePracticeForm() { return this.beforeForm; }
+
+  // ---------- TEMPLATE CALLED HELPERS ----------
+  addResourcesToSession() {
+    this._resourcesAdded.set(true);
+  }
+
+  // Called by BEFORE form submit
   start() {
-    if (this.status() !&#x3D;&#x3D; SessionStatus.Before) return
-    this.status.set(SessionStatus.During)
-    this.startedAt &#x3D; Date.now()
-    // tick every second
-    this.timerSub?.unsubscribe()
-    this.timerSub &#x3D; interval(1000)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() &#x3D;&gt; {
-        if (this.startedAt !&#x3D; null) {
-          this.elapsedMs.set(Date.now() - this.startedAt)
-        }
-      })
+
+    // Set practice goal in minutes (can be 0 &#x3D; no goal)
+    const goalMinutes &#x3D; Number(this.practiceTimeCtrl.value) || 0;
+    this._practiceGoalMinutes.set(goalMinutes);
+
+    // Reset timer and move to DURING
+    this._elapsedSeconds.set(0);
+    this._status.set(&#x27;During&#x27;);
+
+    // Start ticking every second; keeps going even after reaching the goal
+    this.clearTick();
+    this.tickHandle &#x3D; setInterval(() &#x3D;&gt; {
+      this._elapsedSeconds.update(v &#x3D;&gt; v + 1);
+    }, 1000);
   }
 
-  stop() {
-    if (this.status() !&#x3D;&#x3D; SessionStatus.During) return
-    this.status.set(SessionStatus.After)
-    this.timerSub?.unsubscribe()
-    this.timerSub &#x3D; undefined
+  // Called by DURING End button
+  stopTimer() {
+    this.clearTick();
+    this._status.set(&#x27;After&#x27;);
   }
 
-  async save() {
-    // Build payload for SessionsService.create()
-    // Session model uses Firestore Timestamp for &#x60;date&#x60;
-    const pre &#x3D; this.beforeForm.getRawValue()
-    const post &#x3D; this.afterForm.getRawValue()
+  // Called by AFTER form button(s)
+  onSubmit() {
 
-    const practiceTime &#x3D; this.elapsedMin() // minutes (integer)
+    this._loading.set(true);
+    this._saving.set(true);
 
-    const payload: Omit&lt;Session, &#x27;id&#x27; | &#x27;ownerUid&#x27; | &#x27;date&#x27;&gt; &amp; {
-      date?: Timestamp
-    } &#x3D; {
-      practiceTime,
-      whatToPractice: (pre.whatToPractice ?? &#x27;&#x27;).trim(),
-      sessionIntent: (pre.sessionIntent ?? &#x27;&#x27;).trim(),
-      postPracticeReflection: (post.sessionReflection ?? &#x27;&#x27;).trim(),
-      goalForNextTime: (post.goalForNextTime ?? &#x27;&#x27;).trim(),
-      // date omitted → will default to now() inside the service
+    this.sessionService.create({
+      whatToPractice: this.whatToPracticeCtrl.value,
+      sessionIntent: this.sessionIntentCtrl.value,
+      postPracticeReflection: this.sessionReflectionCtrl.value,
+      goalForNextTime: this.goalForNextTimeCtrl.value,
+      practiceTime: this.elapsedSeconds() / 60,
+    }).then(() &#x3D;&gt; {
+    setTimeout(() &#x3D;&gt; {
+      this._saving.set(false);
+      this._loading.set(false);
+      this.router.navigate([&#x27;/app&#x27;]);
+    }, 800);
+  }).catch((error) &#x3D;&gt; {
+    console.error(&#x27;Error saving session:&#x27;, error);
+    this._saving.set(false);
+    this._loading.set(false);
+  });
+  }
+
+  // ---------- UTIL ----------
+  private clearTick() {
+    if (this.tickHandle) {
+      clearInterval(this.tickHandle);
+      this.tickHandle &#x3D; null;
     }
-
-    try {
-      const id &#x3D; await this.sessions.create(payload)
-      this.status.set(SessionStatus.Done)
-      // Navigate to detail or list as you prefer
-      await this.router.navigate([&#x27;/sessions&#x27;, id])
-    } catch (e) {
-      console.error(&#x27;Failed to save session&#x27;, e)
-      // Optionally surface an error state to the UI
-    }
   }
 
-  cancel() {
-    this.timerSub?.unsubscribe()
-    this.timerSub &#x3D; undefined
-    this.status.set(SessionStatus.Before)
-    this.elapsedMs.set(0)
-    this.startedAt &#x3D; null
-    this.beforeForm.reset({ whatToPractice: &#x27;&#x27;, sessionIntent: &#x27;&#x27; })
-    this.afterForm.reset({ sessionReflection: &#x27;&#x27;, goalForNextTime: &#x27;&#x27; })
+  // Clean up interval on destroy
+  ngOnDestroy() {
+    this.clearTick();
   }
 }
 </code></pre>

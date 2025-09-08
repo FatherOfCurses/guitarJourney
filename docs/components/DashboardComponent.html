@@ -78,9 +78,6 @@
                                     <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/HomeComponent.html" >HomeComponent</a>
-                                </li>
-                                <li class="link">
                                     <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
@@ -200,6 +197,9 @@
                                     <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                                 <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                </li>
+                                <li class="link">
                                     <a href="interfaces/Session.html" >Session</a>
                                 </li>
                                 <li class="link">
@@ -293,9 +293,6 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
-                                       </li>
-                                       <li class="link">
-                                           <a href="components/HomeComponent.html" >HomeComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/LoginComponent.html" >LoginComponent</a>
@@ -417,6 +414,9 @@
                                            <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                        <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="interfaces/Session.html" >Session</a>
                                        </li>
                                        <li class="link">
@@ -493,14 +493,18 @@
 
 
 
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-dashboard</code></td>
+            </tr>
+
 
 
 
             <tr>
-                <td class="col-md-3">template</td>
-                <td class="col-md-9"><code>./dashboard.component.html</code></td>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>dashboard.component.html</code></td>
             </tr>
-
 
 
         </tbody>
@@ -509,40 +513,23 @@
 
 
 
+    <section>
+        <h3 id="constructor">Constructor</h3>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <code>constructor()</code>
+                        </td>
+                    </tr>
+    
+                </tbody>
+            </table>
+    </section>
 
 
     <section>
         <h3 id="inputs">Properties</h3>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b> _rotate</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <code>_rotate:     <code>EffectRef</code>
-    </bcode>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-sm table-bordered">
-                <tbody>
-                    <tr>
-                        <td class="col-md-4">
-                            <b> currentIdx</b>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <code>currentIdx:     <code>WritableSignal&lt;number&gt;</code>
-    </bcode>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
             <table class="table table-sm table-bordered">
                 <tbody>
                     <tr>
@@ -552,7 +539,22 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>currentImage:     <code>WritableSignal&lt;string&gt;</code>
+                            <code>currentImage:     <code>any</code>
+    </bcode>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-sm table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <b><span class="modifier">Private</span> currentIndex</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <span class="modifier-icon fa fa-lock"></span><code>currentIndex:     <code>WritableSignal&lt;number&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -567,7 +569,7 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>data:     <code>WritableSignal&lt;any&gt;</code>
+                            <code>data:     <code>WritableSignal&lt;DashboardData&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -577,12 +579,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b> images</b>
+                            <b><span class="modifier">Private</span> images</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>images:     <code>string[]</code>
+                            <span class="modifier-icon fa fa-lock"></span><code>images:     <code>string[]</code>
     </bcode>
                         </td>
                     </tr>
@@ -592,12 +594,12 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <b><span class="modifier">Private</span> route</b>
+                            <b><span class="modifier">Private</span> mockData</b>
                         </td>
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <span class="modifier-icon fa fa-lock"></span><code>route:     <code>{}</code>
+                            <span class="modifier-icon fa fa-lock"></span><code>mockData:     <code>WritableSignal&lt;DashboardData&gt;</code>
     </bcode>
                         </td>
                     </tr>
@@ -612,7 +614,7 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>weekTotal:     <code>WritableSignal&lt;any&gt;</code>
+                            <code>weekTotal:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -621,37 +623,57 @@
     </section>
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
-            <pre><code class="hljs javascript">import { Component, effect, inject, signal } from &#x27;@angular/core&#x27;;
-import { ActivatedRoute, RouterLink } from &#x27;@angular/router&#x27;;
+            <pre><code class="hljs javascript">import { Component, computed, signal } from &#x27;@angular/core&#x27;;
+import { DatePipe, DecimalPipe } from &#x27;@angular/common&#x27;;
+import { RouterLink } from &#x27;@angular/router&#x27;;
+
+interface DashboardData {
+  lastSession: { id: string; startedAt: Date; durationMs: number } | null;
+  totals: { minutes: number; sessionCount: number; streakDays: number };
+}
 
 @Component({
+  selector: &#x27;app-dashboard&#x27;,
   standalone: true,
-  imports: [],
-  template: &#x27;./dashboard.component.html&#x27;,
+  templateUrl: &#x27;./dashboard.component.html&#x27;,
+  imports: [DatePipe, DecimalPipe, RouterLink]
 })
 export class DashboardComponent {
-  private route &#x3D; inject(ActivatedRoute);
-
-  data &#x3D; signal&lt;any&gt;(this.route.snapshot.data[&#x27;prefetch&#x27;]);
-  weekTotal &#x3D; signal(this.data().recentMinutes.reduce((a:number,b:number)&#x3D;&gt;a+b,0));
-
-  images &#x3D; [
-    &#x27;/assets/inspo/1.jpg&#x27;,
-    &#x27;/assets/inspo/2.jpg&#x27;,
-    &#x27;/assets/inspo/3.jpg&#x27;,
+  // rotating inspirational images (just placeholders for now)
+  private images &#x3D; [
+    &#x27;https://placekitten.com/800/300&#x27;,
+    &#x27;https://picsum.photos/800/300&#x27;,
   ];
-  currentIdx &#x3D; signal(0);
-  currentImage &#x3D; signal(this.images[0]);
+  private currentIndex &#x3D; signal(0);
+  currentImage &#x3D; computed(() &#x3D;&gt; this.images[this.currentIndex()]);
 
-  // simple rotation
-  _rotate &#x3D; effect(onCleanup &#x3D;&gt; {
-    const id &#x3D; setInterval(() &#x3D;&gt; {
-      const next &#x3D; (this.currentIdx() + 1) % this.images.length;
-      this.currentIdx.set(next);
-      this.currentImage.set(this.images[next]);
-    }, 6000);
-    onCleanup(() &#x3D;&gt; clearInterval(id));
+  // --- mock dashboard data ---
+  private mockData &#x3D; signal&lt;DashboardData&gt;({
+    lastSession: {
+      id: &#x27;mock-session-1&#x27;,
+      startedAt: new Date(Date.now() - 1000 * 60 * 60), // one hour ago
+      durationMs: 45 * 60 * 1000, // 45 minutes
+    },
+    totals: {
+      minutes: 1234,
+      sessionCount: 56,
+      streakDays: 12,
+    },
   });
+
+  data &#x3D; this.mockData;
+
+  weekTotal &#x3D; computed(() &#x3D;&gt; {
+    // Hardcoded mock weekly total
+    return 180; // minutes
+  });
+
+  constructor() {
+    // Example: rotate image every 5s
+    setInterval(() &#x3D;&gt; {
+      this.currentIndex.set((this.currentIndex() + 1) % this.images.length);
+    }, 5000);
+  }
 }
 </code></pre>
         </div>

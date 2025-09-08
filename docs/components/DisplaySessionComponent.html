@@ -78,9 +78,6 @@
                                     <a href="components/DisplaySessionComponent.html"  class="active" >DisplaySessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/HomeComponent.html" >HomeComponent</a>
-                                </li>
-                                <li class="link">
                                     <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
@@ -200,6 +197,9 @@
                                     <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                                 <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                </li>
+                                <li class="link">
                                     <a href="interfaces/Session.html" >Session</a>
                                 </li>
                                 <li class="link">
@@ -293,9 +293,6 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html"  class="active" >DisplaySessionComponent</a>
-                                       </li>
-                                       <li class="link">
-                                           <a href="components/HomeComponent.html" >HomeComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/LoginComponent.html" >LoginComponent</a>
@@ -412,6 +409,9 @@
                                        </li>
                                        <li class="link">
                                            <a href="interfaces/ChordLayout.html" >ChordLayout</a>
+                                       </li>
+                                       <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                        <li class="link">
                                            <a href="interfaces/DashboardData.html" >DashboardData</a>
@@ -657,15 +657,15 @@ import { CommonModule } from &#x27;@angular/common&#x27;;
 import { ActivatedRoute, Router } from &#x27;@angular/router&#x27;;
 import { toSignal } from &#x27;@angular/core/rxjs-interop&#x27;;
 import { map, filter, switchMap, catchError, of } from &#x27;rxjs&#x27;;
-import { SessionService } from &#x27;../../../services/session.service&#x27;;
+import { SessionService } from &#x27;@services/session.service&#x27;;
 import { ButtonModule } from &#x27;primeng/button&#x27;;
 import { CardModule } from &#x27;primeng/card&#x27;;
-
+import { TableModule } from &#x27;primeng/table&#x27;;
 
 @Component({
   selector: &#x27;app-display-single-session&#x27;,
   standalone: true,
-  imports: [CommonModule, ButtonModule, CardModule],
+  imports: [CommonModule, ButtonModule, CardModule, TableModule],
   templateUrl: &#x27;./display-session.component.html&#x27;,
 })
 export class DisplaySessionComponent {
@@ -681,13 +681,13 @@ export class DisplaySessionComponent {
     ),
     { initialValue: null }
   );
-
+  
   // session data as a signal (auto-updates when id changes)
   readonly session &#x3D; toSignal(
     this.route.paramMap.pipe(
       map(pm &#x3D;&gt; pm.get(&#x27;id&#x27;)),
       filter((id): id is string &#x3D;&gt; !!id),
-      switchMap(id &#x3D;&gt; this.sessionService.getSession$(id)),
+      switchMap(id &#x3D;&gt; this.sessionService.get$(id)),
       catchError(() &#x3D;&gt; of(null))
     ),
     { initialValue: null }
@@ -697,7 +697,7 @@ export class DisplaySessionComponent {
   readonly hasError &#x3D; computed(() &#x3D;&gt; this.sessionId() !&#x3D;&#x3D; null &amp;&amp; this.session() &#x3D;&#x3D;&#x3D; null);
 
   returnToTable(): void {
-    this.router.navigate([&#x27;/sessions&#x27;]);
+    this.router.navigate([&#x27;/app&#x27;,&#x27;sessions&#x27;]);
   }
 }
 </code></pre>
