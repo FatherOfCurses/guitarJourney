@@ -54,6 +54,11 @@ export const routes: Routes = [
           import('./features/session/previous-sessions/previous-sessions.component').then(m => m.PreviousSessionsComponent),
       },
       {
+        path: 'newSession',
+        loadComponent: () =>
+          import('./features/session/session.component').then(m => m.SessionComponent),
+      },
+      {
         path: 'sessionDetail/:id',
         loadComponent: () =>
           import('./features/session/display-single-session/display-session.component').then(m => m.DisplaySessionComponent),

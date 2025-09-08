@@ -4,13 +4,13 @@ import { SessionService } from '@services/session.service';
 import { Observable } from "rxjs";
 import { Router } from "@angular/router";
 import { TableModule } from 'primeng/table';
-
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-previous-sessions',
     templateUrl: './previous-sessions.component.html',
     standalone: true,
-    imports: [TableModule]
+    imports: [TableModule, DatePipe],
 })
 export class PreviousSessionsComponent implements OnInit {
   sessionData: Session[];

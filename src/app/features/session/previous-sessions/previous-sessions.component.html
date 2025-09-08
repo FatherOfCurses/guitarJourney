@@ -18,7 +18,7 @@
   </ng-template>
     <ng-template pTemplate="body" let-sessionData>
       <tr [pSelectableRow]="sessionData">
-        <td>{{sessionData.date}}</td>
+        <td>{{sessionData.date.toDate() | date:'MMM d, y'}}</td>
         <td>{{sessionData.practiceTime}}</td>
         <td>{{sessionData.whatToPractice}}</td>
         <td>{{sessionData.sessionIntent}}</td>
