@@ -4,7 +4,7 @@ import { PublicShellComponent } from '@shells/public-shell.component';
 import { AppShellComponent } from '@shells/app-shell.component';
 import { RegisterComponent } from '@auth/register.component';
 import { AlreadyAuthedGuard } from '@auth/already-authed.guard';
-import { authGuard } from '@auth/auth.guard';
+import { AuthGuard } from '@auth/auth.guard';
 
 describe('App Routes', () => {
   it('should export a non-empty Routes array', () => {
@@ -54,7 +54,7 @@ describe('App Routes', () => {
     // canActivate can be an array of functions/providers
     const guards = (protectedRoute.canActivate ?? []) as any[];
     // Some build setups wrap the guard; allow either direct equality or name match
-    const hasAuthGuard = guards.some(g => g === authGuard || (typeof g === 'function' && (g.name === 'authGuard' || g.toString().includes('authGuard'))));
+    const hasAuthGuard = guards.some(g => g === AuthGuard || (typeof g === 'function' && (g.name === 'authGuard' || g.toString().includes('authGuard'))));
     expect(hasAuthGuard).toBe(true);
     expect(Array.isArray(protectedRoute.children)).toBe(true);
   });
