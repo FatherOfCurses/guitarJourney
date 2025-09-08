@@ -46,19 +46,19 @@ describe('NotFoundComponent (standalone, no RouterTestingModule)', () => {
     expect(btn.textContent?.trim()).toBe('Return Home');
   });
 
-  it('goHome() navigates to "/" (unit test on class method)', async () => {
+  it('goHome() navigates to "/app" (unit test on class method)', async () => {
     const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
     component.goHome();
-    expect(navigateSpy).toHaveBeenCalledWith(['/']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/app']);
   });
 
-  it('clicking the button triggers navigation to "/" (template interaction)', async () => {
+  it('clicking the button triggers navigation to "/app" (template interaction)', async () => {
     const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
 
     const btnDe = fixture.debugElement.query(By.css('button'));
     (btnDe.nativeElement as HTMLButtonElement).click();
     fixture.detectChanges();
 
-    expect(navigateSpy).toHaveBeenCalledWith(['/']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/app']);
   });
 });

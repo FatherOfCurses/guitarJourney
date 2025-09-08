@@ -78,9 +78,6 @@
                                     <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
                                 </li>
                                 <li class="link">
-                                    <a href="components/HomeComponent.html" >HomeComponent</a>
-                                </li>
-                                <li class="link">
                                     <a href="components/LoginComponent.html" >LoginComponent</a>
                                 </li>
                                 <li class="link">
@@ -200,6 +197,9 @@
                                     <a href="interfaces/DashboardData.html" >DashboardData</a>
                                 </li>
                                 <li class="link">
+                                    <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                </li>
+                                <li class="link">
                                     <a href="interfaces/Session.html" >Session</a>
                                 </li>
                                 <li class="link">
@@ -293,9 +293,6 @@
                                        </li>
                                        <li class="link">
                                            <a href="components/DisplaySessionComponent.html" >DisplaySessionComponent</a>
-                                       </li>
-                                       <li class="link">
-                                           <a href="components/HomeComponent.html" >HomeComponent</a>
                                        </li>
                                        <li class="link">
                                            <a href="components/LoginComponent.html" >LoginComponent</a>
@@ -417,6 +414,9 @@
                                            <a href="interfaces/DashboardData.html" >DashboardData</a>
                                        </li>
                                        <li class="link">
+                                           <a href="interfaces/DashboardData.html" >DashboardData</a>
+                                       </li>
+                                       <li class="link">
                                            <a href="interfaces/Session.html" >Session</a>
                                        </li>
                                        <li class="link">
@@ -519,7 +519,7 @@
                 <tbody>
                     <tr>
                         <td class="col-md-4">
-                            <code>constructor(sessionService: <a href="../injectables/SessionService.html" >SessionService</a>, router: <a href="https://angular.io/docs/ts/latest/api/router/index/Router-class.html" target="_blank" >Router</a>)</code>
+                            <code>constructor(sessionService: any, router: <a href="https://angular.io/docs/ts/latest/api/router/index/Router-class.html" target="_blank" >Router</a>)</code>
                         </td>
                     </tr>
     
@@ -590,7 +590,7 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>selectedSession:     <code><a href="../classes/Session.html" target="_self" >Session</a></code>
+                            <code>selectedSession:     <code>any</code>
     </bcode>
                         </td>
                     </tr>
@@ -605,7 +605,7 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <code>sessionData:     <code><a href="../classes/Session.html" target="_self" >Session[]</a></code>
+                            <code>sessionData:     <code>any[]</code>
     </bcode>
                         </td>
                     </tr>
@@ -615,8 +615,8 @@
 </div>
         <div class="tab-pane fade tab-source-code" id="source">
             <pre><code class="hljs javascript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
-import { Session } from &#x27;../../../models/session&#x27;;
-import { SessionService } from &#x27;../../../services/session.service&#x27;;
+import { Session } from &#x27;@models/session&#x27;;
+import { SessionService } from &#x27;@services/session.service&#x27;;
 import { Observable } from &quot;rxjs&quot;;
 import { Router } from &quot;@angular/router&quot;;
 import { TableModule } from &#x27;primeng/table&#x27;;
@@ -634,15 +634,16 @@ export class PreviousSessionsComponent implements OnInit {
   constructor(private sessionService: SessionService, private router: Router) { }
 
   ngOnInit(): void {
-    this.sessionService.getAllSessions$().subscribe(session &#x3D;&gt; this.sessionData &#x3D; session);
+    this.sessionService.list$().subscribe(session &#x3D;&gt; this.sessionData &#x3D; session);
   }
 
   retrieveSessionById(id: string): Observable&lt;Session&gt; {
-    return this.sessionService.getSession$(id);
+    return this.sessionService.get$(id);
   }
 
   onRowSelect(event) {
-    this.router.navigate([&#x27;sessionDetail&#x27;, event.data.id]);
+    console.log(&#x27;Row selected:&#x27;, event.data);
+    this.router.navigate([&#x27;/app&#x27;,&#x27;sessionDetail&#x27;, event.data.id]);
   }
 }
 </code></pre>

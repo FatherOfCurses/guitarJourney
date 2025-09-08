@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map, filter, switchMap, catchError, of } from 'rxjs';
-import { SessionService } from '../../../services/session.service';
+import { SessionService } from '@services/session.service';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
@@ -41,11 +41,6 @@ export class DisplaySessionComponent {
 
   readonly loading = computed(() => this.session() === null && this.sessionId() !== null);
   readonly hasError = computed(() => this.sessionId() !== null && this.session() === null);
-
-ngOnInit() {
-    console.log('Session ID:', this.sessionId());
-    console.log('Session Data:', this.session());
-}
 
   returnToTable(): void {
     this.router.navigate(['/app','sessions']);

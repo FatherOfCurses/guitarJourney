@@ -1,11 +1,11 @@
 {
-    "scss.lint.unknownAtRules": "ignore",
-    "css.lint.unknownAtRules": "ignore",
-    "jestrunner.jestCommand": "npm run test --",
-"jestrunner.debugOptions": {
-    "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
-    "runtimeArgs": [
-      "test",
+  "scss.lint.unknownAtRules": "ignore",
+  "css.lint.unknownAtRules": "ignore",
+  "jestrunner.jestCommand": "npm run test --",
+  
+  "jestrunner.debugOptions": {
+  "runtimeExecutable": "${workspaceFolder}/node_modules/jest/bin/jest.js",
+  "runtimeArgs": [
       "${fileBasename}",
       "--runInBand",
       "--no-cache",
@@ -13,5 +13,6 @@
       "--color"
     ]
 },
+"jest.jestCommandLine": "npx jest --coverage",
   }
   

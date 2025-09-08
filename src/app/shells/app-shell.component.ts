@@ -9,8 +9,9 @@ import { Auth, signOut } from '@angular/fire/auth';
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, MenubarModule, TieredMenuModule, ButtonModule],
+  imports: [RouterOutlet, MenubarModule, TieredMenuModule, ButtonModule ],
   templateUrl: './app-shell.component.html',
+
 })
 export class AppShellComponent {
   @ViewChild('userMenu') userMenu!: TieredMenu;

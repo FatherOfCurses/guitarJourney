@@ -1,20 +1,11 @@
+// already-authed.guard.ts
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
+import { AuthService } from './auth.service';
 
-export const AlreadyAuthedGuard: CanActivateFn = () => {
-  const auth = inject(Auth);
+export const AlreadyAuthedGuard: CanActivateFn = (_route, _state) => {
+  const auth = inject(AuthService);
   const router = inject(Router);
-
-  return new Promise<boolean>(resolve => {
-    const unsub = auth.onAuthStateChanged(user => {
-      unsub();
-      if (user) {
-        router.navigateByUrl('/app'); // or '/app'
-        resolve(false);
-      } else {
-        resolve(true);
-      }
-    });
-  });
+  // If already signed in, send them to the app; otherwise allow access (true)
+  return auth.isAuthed() ? router.createUrlTree(['/app']) : true;
 };

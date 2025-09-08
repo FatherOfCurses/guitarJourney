@@ -11,6 +11,7 @@ module.exports = {
   roots: ['<rootDir>/src/'],
   testMatch: ['**/+(*.)+(spec).+(ts)'],
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
+  testEnvironment: 'jsdom',
   moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: '<rootDir>' }),
   testPathIgnorePatterns: ['/node_modules'],
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],

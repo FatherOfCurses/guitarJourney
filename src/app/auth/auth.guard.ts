@@ -1,16 +1,10 @@
 // auth.guard.ts
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
+import { AuthService } from './auth.service';
 
-export const authGuard: CanActivateFn = async () => {
-  const auth = inject(Auth);
+export const AuthGuard: CanActivateFn = (_route, _state) => {
+  const auth = inject(AuthService);
   const router = inject(Router);
-  return new Promise<boolean>(resolve => {
-    const unsub = auth.onAuthStateChanged(user => {
-      unsub();
-      if (user) resolve(true);
-      else { router.navigate(['/login']); resolve(false); }
-    });
-  });
+  return auth.isAuthed() ? true : router.createUrlTree(['/login']);
 };
