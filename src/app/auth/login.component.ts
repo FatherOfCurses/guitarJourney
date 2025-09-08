@@ -18,11 +18,11 @@ export class LoginComponent {
 
   async submit() {
     await this.auth.signInWithEmail(this.email, this.password);
-    this.router.navigateByUrl('/app');
+    this.router.navigateByUrl('/app/dashboard');
   }
 
   async signInWithGoogle() {
     await this.auth.signInWithGoogle();
-    this.router.navigateByUrl('/app');
+    this.router.navigateByUrl('/app/dashboard');
   }
 }

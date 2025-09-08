@@ -51,7 +51,7 @@ describe('LoginComponent', () => {
     await cmp.submit();
 
     expect(authMock.signInWithEmail).toHaveBeenCalledWith('user@example.com', 'pw123');
-    expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/app');
+    expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/app/dashboard');
   });
 
   it('submit() does not navigate if sign-in fails (propagates error)', async () => {
@@ -72,7 +72,7 @@ describe('LoginComponent', () => {
     await cmp.signInWithGoogle();
 
     expect(authMock.signInWithGoogle).toHaveBeenCalled();
-    expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/app');
+    expect(routerMock.navigateByUrl).toHaveBeenCalledWith('/app/dashboard');
   });
 
   it('signInWithGoogle() does not navigate if popup fails', async () => {

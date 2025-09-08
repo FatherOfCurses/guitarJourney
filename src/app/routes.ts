@@ -41,7 +41,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: '',
+        path: 'dashboard',
         pathMatch: 'full',
         loadComponent: () =>
           import('./features/dashboard/dashboard.component')

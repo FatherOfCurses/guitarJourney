@@ -49,7 +49,7 @@ describe('NotFoundComponent (standalone, no RouterTestingModule)', () => {
   it('goHome() navigates to "/app" (unit test on class method)', async () => {
     const navigateSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
     component.goHome();
-    expect(navigateSpy).toHaveBeenCalledWith(['/app']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/app/dashboard']);
   });
 
   it('clicking the button triggers navigation to "/app" (template interaction)', async () => {
@@ -59,6 +59,6 @@ describe('NotFoundComponent (standalone, no RouterTestingModule)', () => {
     (btnDe.nativeElement as HTMLButtonElement).click();
     fixture.detectChanges();
 
-    expect(navigateSpy).toHaveBeenCalledWith(['/app']);
+    expect(navigateSpy).toHaveBeenCalledWith(['/app/dashboard']);
   });
 });
