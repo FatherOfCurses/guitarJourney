@@ -2,7 +2,7 @@
 import { Routes } from '@angular/router';
 import { PublicShellComponent } from './shells/public-shell.component';
 import { AppShellComponent } from './shells/app-shell.component';
-import { authGuard } from "./auth/auth.guard";
+import { AuthGuard } from "./auth/auth.guard";
 import { AlreadyAuthedGuard } from './auth/already-authed.guard';
 
 export const routes: Routes = [
@@ -38,7 +38,7 @@ export const routes: Routes = [
   {
     path: 'app',
     component: AppShellComponent,     // your existing shell (top nav)
-    canActivate: [authGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
