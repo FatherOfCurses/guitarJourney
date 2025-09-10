@@ -14,7 +14,7 @@
         <!-- Portrait mode: headings left, data right -->
         <dl class="grid grid-cols-1 md:grid-cols-[240px,1fr] gap-x-6 gap-y-3">
           <dt class="text-sm font-medium text-neutral-500">Date</dt>
-          <dd class="text-neutral-900">{{ session().date }}</dd>
+          <dd class="text-neutral-900">{{ session().date.toDate() | date:'MMM d, y'}}</dd>
 
           <dt class="text-sm font-medium text-neutral-500">Practice Time</dt>
           <dd class="text-neutral-900">{{ session().practiceTime }}</dd>

@@ -1,10 +1,16 @@
 // auth.guard.ts
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { CanMatchFn, Router } from '@angular/router';
+import { Auth, authState } from '@angular/fire/auth';
+import { map, take } from 'rxjs/operators';
 
-export const AuthGuard: CanActivateFn = (_route, _state) => {
-  const auth = inject(AuthService);
+export const AuthGuard: CanMatchFn = (route, segments) => {
+  const auth = inject(Auth);
   const router = inject(Router);
-  return auth.isAuthed() ? true : router.createUrlTree(['/login']);
+  const url = '/' + segments.map(s => s.path).join('/');
+
+  return authState(auth).pipe(
+    take(1),
+    map(user => user ? true : router.createUrlTree(['/login'], { queryParams: { redirect: url } }))
+  );
 };
