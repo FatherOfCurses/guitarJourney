@@ -14,12 +14,3 @@ export const AuthGuard: CanMatchFn = (route, segments) => {
     map(user => user ? true : router.createUrlTree(['/login'], { queryParams: { redirect: url } }))
   );
 };
-
-export const alreadyAuthedGuard: CanMatchFn = () => {
-  const auth = inject(Auth);
-  const router = inject(Router);
-  return authState(auth).pipe(
-    take(1),
-    map(user => user ? router.createUrlTree(['/app']) : true)
-  );
-};
