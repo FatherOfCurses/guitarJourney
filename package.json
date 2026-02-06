@@ -13,7 +13,7 @@
     "web": "ng serve --port 4200",
     "emu": "firebase emulators:start --only auth,firestore,storage",
     "emu:all": "firebase emulators:start",
-    "seed": "cross-env FIRESTORE_EMULATOR_HOST=localhost:8080 FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_STORAGE_EMULATOR_HOST=localhost:9199 node dist-tools/seed.js",
+    "seed": "cross-env FIRESTORE_EMULATOR_HOST=localhost:8080 FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 FIREBASE_STORAGE_EMULATOR_HOST=localhost:9199 node tools/seed.js",
     "dev": "concurrently -s first -n EMU,WEB -c blue,green \"npm run emu\" \"wait-on tcp:8080 tcp:9099 tcp:9199 && npm run seed && npm run web\"",
     "preview": "ng build && firebase emulators:start"
   },
