@@ -2,6 +2,7 @@
 
 # compiled output
 /dist
+/dist-tools
 /tmp
 /out-tsc
 # Only exists if Bazel was run
@@ -14,6 +15,9 @@
 # profiling files
 chrome-profiler-events*.json
 speed-measure-plugin*.json
+
+# Claude Code
+.claude/
 
 # IDEs and editors
 /.idea
@@ -37,9 +41,8 @@ speed-measure-plugin*.json
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
+*.log
+*-debug.log
 /typings
 
 # System Files
@@ -55,9 +58,9 @@ yarn.lock
 firebase-debug.log
 firebase-debug.*.log
 .firebaserc
+/dataconnect-generated
 
 # Firebase Hosting
-/firebase.json
 *.cache
 hosting/.cache
 

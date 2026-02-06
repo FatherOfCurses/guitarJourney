@@ -103,17 +103,13 @@ describe('DashboardResolver', () => {
     expect(getDocs).toHaveBeenCalledTimes(1);
   });
 
-  it('returns an empty dashboard when there is no authed user', async () => {
+  it('throws when there is no authed user (authState emits null)', async () => {
     (authState as jest.Mock).mockReturnValue(of(null)); // no user
 
     const resolver = TestBed.inject(DashboardResolver);
-    const data = await resolver.resolve();
 
-    expect(data.lastSession).toBeUndefined();
-    expect(data.totals.minutes).toBe(0);
-    expect(data.totals.sessionCount).toBe(0);
-    expect(data.totals.streakDays).toBe(0);
-    expect(Object.keys(data.week).length).toBe(0);
+    // filter(Boolean) removes null, take(1) completes empty, firstValueFrom throws EmptyError
+    await expect(resolver.resolve()).rejects.toThrow();
     expect(getDocs).not.toHaveBeenCalled();
   });
 });

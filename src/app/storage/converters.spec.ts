@@ -8,12 +8,13 @@ import {
     type UserDocument,
   } from './converters';
   
-  // We don't need a real Firestore Timestamp for these tests—just a placeholder object.
-  const ts: any = { seconds: 1, nanoseconds: 0 };
+
   
   describe('Firestore converters', () => {
     describe('sessionConverter', () => {
       it('toFirestore maps optional fields to null and preserves Timestamp', () => {
+          // We don't need a real Firestore Timestamp for these tests—just a placeholder object.
+        const ts: any = { seconds: 1, nanoseconds: 0 };
         const s: Session = {
           ownerUid: 'u1',
           date: ts,
@@ -36,6 +37,8 @@ import {
       });
   
       it('toFirestore keeps provided optional fields (not nulling them)', () => {
+          // We don't need a real Firestore Timestamp for these tests—just a placeholder object.
+        const ts: any = { seconds: 1, nanoseconds: 0 };
         const s: Session = {
           ownerUid: 'u2',
           date: ts,
@@ -60,6 +63,8 @@ import {
       });
   
       it('fromFirestore returns {id, ...data}', () => {
+          // We don't need a real Firestore Timestamp for these tests—just a placeholder object.
+        const ts: any = { seconds: 1, nanoseconds: 0 };
         const snap = {
           id: 's123',
           data: () => ({

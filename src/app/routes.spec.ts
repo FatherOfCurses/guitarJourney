@@ -51,10 +51,12 @@ describe('App Routes', () => {
   it('should define a protected App shell guarded by authGuard', () => {
     const protectedRoute = routes.find(r => (r as Route).component === AppShellComponent) as Route;
     expect(protectedRoute).toBeTruthy();
-    // canActivate can be an array of functions/providers
-    const guards = (protectedRoute.canActivate ?? []) as any[];
-    // Some build setups wrap the guard; allow either direct equality or name match
-    const hasAuthGuard = guards.some(g => g === AuthGuard || (typeof g === 'function' && (g.name === 'authGuard' || g.toString().includes('authGuard'))));
+    // Guard may be on canActivate or canMatch depending on the guard type
+    const guards = [
+      ...((protectedRoute as any).canMatch ?? []),
+      ...(protectedRoute.canActivate ?? []),
+    ] as any[];
+    const hasAuthGuard = guards.some(g => g === AuthGuard || (typeof g === 'function' && (g.name === 'AuthGuard' || g.toString().includes('AuthGuard'))));
     expect(hasAuthGuard).toBe(true);
     expect(Array.isArray(protectedRoute.children)).toBe(true);
   });
