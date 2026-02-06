@@ -97,12 +97,12 @@ export class DashboardComponent implements OnDestroy {
     const items = this.carouselItems();
     if (items.length <= 1) return; // No rotation needed for single item
 
-    // Default rotation interval: 6 seconds (6000ms)
+    // Default rotation interval: 12 seconds (12000ms)
     // You could pull this from Firestore carousel config if needed
     this.rotationInterval = window.setInterval(() => {
       const nextIndex = (this.currentIndex() + 1) % items.length;
       this.currentIndex.set(nextIndex);
-    }, 6000);
+    }, 12000);
   }
 
   private stopRotation(): void {
