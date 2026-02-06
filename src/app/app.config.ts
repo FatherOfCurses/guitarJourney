@@ -1,14 +1,14 @@
 // app.config.ts
-import { ApplicationConfig, APP_INITIALIZER, inject } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient } from "@angular/common/http";
 import { routes } from './routes';
 
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth, getAuth, Auth, connectAuthEmulator } from '@angular/fire/auth';
-import { provideFirestore, getFirestore, Firestore, connectFirestoreEmulator } from '@angular/fire/firestore';
-import { provideStorage, getStorage, Storage, connectStorageEmulator } from '@angular/fire/storage';
+import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
+import { provideFirestore, getFirestore, connectFirestoreEmulator } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 import { environment } from "../environments/environment";
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';

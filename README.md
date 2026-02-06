@@ -1,14 +1,28 @@
 # Guitar Journey
 
+Guitar Journey is a modern Angular 20 application for guitar practice management, built with:
 
-A tool to help guide the guitar student's learning journey through the use of intentional practice. A student can plan what they will practice before beginning, have a running timer, and make notes after the session about what went well and what they want to work on for next time.
+## Core Tech Stack
+* **Frontend**: Angular 20 (standalone components), TypeScript, RxJS, Signals
+* **UI**: PrimeNG, Angular Material, Tailwind CSS
+* **Backend**: Firebase (Firestore, Auth, Storage, Functions)
+* **Testing**: Jest with Testing Library
+* **AI Integration**: Google Cloud Genkit (sample implementation)
 
-Future plans are for the user to have a resource library where they can gather practice materials, and methods for a student to communicate with a guitar teacher.
+## Key Features
+1. **Practice Sessions** - Create, track, and reflect on practice sessions
+2. **Songs Catalog** - Music library with Apple Music/Spotify links
+3. **Chord Notation** - SVG chord diagram visualization (svguitar)
+4. **Metrics Dashboard** - Practice statistics and insights
+5. **Carousels** (current work) - Image carousels with responsive variants and attribution
 
-### Current tech stack (2025-08-20)
-- Angular 20
-- Jest 29
-- Google Firebase for hosting and authentication
+## Architecture Highlights
+* Standalone component architecture (no NgModules)
+* Firebase security rules with owner-based access control
+* Strongly-typed Firestore converters
+* Route guards for authentication
+* Path aliases for clean imports
+* Comprehensive test coverage with Jest
 
 [Compodoc Product Documentation](https://fatherofcurses.github.io/guitarJourney/index.html)
 
