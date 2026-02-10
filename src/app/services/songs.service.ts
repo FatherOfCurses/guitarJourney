@@ -12,7 +12,7 @@ import {
   limit,
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
-import { getFirestore, addDoc } from 'firebase/firestore';
+import { addDoc } from '@angular/fire/firestore';
 import { Observable, from } from 'rxjs';
 import { Song } from '../models/song';
 import { songConverter } from '../storage/converters';
@@ -47,9 +47,8 @@ export class SongsService {
 
   /** Create a new song for the current user. */
   create(input: Omit<Song, 'id' | 'ownerUid' | 'sortTitle' | 'sortArtist'>): Promise<string> {
-    const db = getFirestore();
     const uid = this.uid();
-    const col = collection(db, `users/${uid}/songs`).withConverter(songConverter);
+    const col = collection(this.fs, `users/${uid}/songs`).withConverter(songConverter);
     const payload: Song = {
       ownerUid: uid,
       title: input.title,
