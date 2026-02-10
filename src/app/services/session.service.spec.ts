@@ -59,6 +59,9 @@ describe('SessionService (Firestore)', () => {
   };
 
   beforeEach(() => {
+    // Restore auth state (may have been nulled by a previous test)
+    (mockAuth as any).currentUser = { uid: 'u1' } as any;
+
     TestBed.configureTestingModule({
       providers: [
         SessionService,
@@ -239,6 +242,205 @@ it('update patches fields on a session', fakeAsync(() => {
   it('throws if there is no authenticated user', () => {
     const auth = TestBed.inject(Auth) as any;
     auth.currentUser = null;
-    expect(() => service.list$()).toThrow();
+    expect(() => service.list$()).toThrow('No authenticated user');
   });
+
+  // ---------- Auth guard on other methods ----------
+
+  it('get$ throws when not authenticated', () => {
+    const auth = TestBed.inject(Auth) as any;
+    auth.currentUser = null;
+    expect(() => service.get$('abc')).toThrow('No authenticated user');
+  });
+
+  it('create throws when not authenticated', async () => {
+    const auth = TestBed.inject(Auth) as any;
+    auth.currentUser = null;
+    expect(() => service.create({ practiceTime: 10 } as any)).toThrow('No authenticated user');
+  });
+
+  it('update throws when not authenticated', () => {
+    const auth = TestBed.inject(Auth) as any;
+    auth.currentUser = null;
+    expect(() => service.update('abc', { practiceTime: 40 })).toThrow('No authenticated user');
+  });
+
+  it('delete throws when not authenticated', () => {
+    const auth = TestBed.inject(Auth) as any;
+    auth.currentUser = null;
+    expect(() => service.delete('abc')).toThrow('No authenticated user');
+  });
+
+  it('listByDate$ throws when not authenticated', () => {
+    const auth = TestBed.inject(Auth) as any;
+    auth.currentUser = null;
+    expect(() => service.listByDate$(new Date(), new Date())).toThrow('No authenticated user');
+  });
+
+  // ---------- list$ query construction ----------
+
+  it('list$ uses default pageSize of 50', async () => {
+    const collectionDataMock = afs.collectionData as jest.Mock;
+    const queryMock = afs.query as jest.Mock;
+    const limitMock = afs.limit as jest.Mock;
+    const whereMock = afs.where as jest.Mock;
+    const orderByMock = afs.orderBy as jest.Mock;
+
+    queryMock.mockReturnValue({});
+    whereMock.mockReturnValue({});
+    orderByMock.mockReturnValue({});
+    limitMock.mockReturnValue({});
+    collectionDataMock.mockReturnValue(of([]));
+
+    await firstValueFrom(service.list$());
+
+    expect(limitMock).toHaveBeenCalledWith(50);
+    expect(whereMock).toHaveBeenCalledWith('ownerUid', '==', 'u1');
+    expect(orderByMock).toHaveBeenCalledWith('date', 'desc');
+  });
+
+  it('list$ respects a custom pageSize', async () => {
+    const collectionDataMock = afs.collectionData as jest.Mock;
+    const queryMock = afs.query as jest.Mock;
+    const limitMock = afs.limit as jest.Mock;
+    const whereMock = afs.where as jest.Mock;
+    const orderByMock = afs.orderBy as jest.Mock;
+
+    queryMock.mockReturnValue({});
+    whereMock.mockReturnValue({});
+    orderByMock.mockReturnValue({});
+    limitMock.mockReturnValue({});
+    collectionDataMock.mockReturnValue(of([]));
+
+    await firstValueFrom(service.list$(5));
+
+    expect(limitMock).toHaveBeenCalledWith(5);
+  });
+
+  // ---------- listByDate$ query construction ----------
+
+  it('listByDate$ uses default pageSize of 100', async () => {
+    const collectionDataMock = afs.collectionData as jest.Mock;
+    const queryMock = afs.query as jest.Mock;
+    const limitMock = afs.limit as jest.Mock;
+    const whereMock = afs.where as jest.Mock;
+    const orderByMock = afs.orderBy as jest.Mock;
+
+    queryMock.mockReturnValue({});
+    whereMock.mockReturnValue({});
+    orderByMock.mockReturnValue({});
+    limitMock.mockReturnValue({});
+    collectionDataMock.mockReturnValue(of([]));
+
+    const start = new Date('2025-06-01');
+    const end = new Date('2025-06-30');
+    await firstValueFrom(service.listByDate$(start, end));
+
+    expect(limitMock).toHaveBeenCalledWith(100);
+  });
+
+  // ---------- get$ path construction ----------
+
+  it('get$ builds the correct document path', async () => {
+    const docMock = afs.doc as jest.Mock;
+    const docDataMock = afs.docData as jest.Mock;
+    docDataMock.mockReturnValue(of(makeSession()));
+
+    await firstValueFrom(service.get$('sess-42'));
+
+    expect(docMock).toHaveBeenCalledWith(
+      expect.anything(),
+      'users/u1/sessions/sess-42'
+    );
+  });
+
+  // ---------- create payload verification ----------
+
+  it('create builds a full payload with ownerUid and defaults date to Timestamp.now()', async () => {
+    const addDocMock = fbfs.addDoc as jest.Mock;
+    const collectionMock = (fbfs as any).collection as jest.Mock;
+    const getFirestoreMock = fbfs.getFirestore as jest.Mock;
+
+    const fakeDb = {};
+    const fakeCol = {};
+    getFirestoreMock.mockReturnValue(fakeDb);
+    collectionMock.mockReturnValue({ withConverter: () => fakeCol });
+    addDocMock.mockResolvedValue({ id: 'new-1' });
+
+    await service.create({
+      practiceTime: 45,
+      whatToPractice: 'Barre chords',
+      sessionIntent: 'Clean transitions',
+      postPracticeReflection: 'Improved',
+      goalForNextTime: '+5 BPM',
+    });
+
+    const payload = addDocMock.mock.calls[0][1];
+    expect(payload.ownerUid).toBe('u1');
+    expect(payload.practiceTime).toBe(45);
+    expect(payload.whatToPractice).toBe('Barre chords');
+    expect(payload.sessionIntent).toBe('Clean transitions');
+    expect(payload.postPracticeReflection).toBe('Improved');
+    expect(payload.goalForNextTime).toBe('+5 BPM');
+    // date should be set via Timestamp.now() which we mocked
+    expect(payload.date).toBeInstanceOf(fbfs.Timestamp);
+  });
+
+  it('create uses provided date instead of Timestamp.now()', async () => {
+    const addDocMock = fbfs.addDoc as jest.Mock;
+    const collectionMock = (fbfs as any).collection as jest.Mock;
+    const getFirestoreMock = fbfs.getFirestore as jest.Mock;
+
+    getFirestoreMock.mockReturnValue({});
+    collectionMock.mockReturnValue({ withConverter: () => ({}) });
+    addDocMock.mockResolvedValue({ id: 'new-2' });
+
+    const customDate = fbfs.Timestamp.fromDate(new Date('2025-06-15T10:00:00Z'));
+
+    await service.create({
+      practiceTime: 20,
+      date: customDate,
+    } as any);
+
+    const payload = addDocMock.mock.calls[0][1];
+    expect(payload.date).toBe(customDate);
+  });
+
+  // ---------- update path construction ----------
+
+  it('update builds the correct document path', fakeAsync(() => {
+    const updateDocMock = afs.updateDoc as jest.Mock;
+    const docMock = afs.doc as jest.Mock;
+
+    const docRef = { __type: 'DocRef' };
+    docMock.mockReturnValue({ withConverter: jest.fn().mockReturnValue(docRef) });
+    updateDocMock.mockResolvedValue(undefined);
+
+    service.update('sess-99', { practiceTime: 60 }).subscribe();
+    tick();
+
+    expect(docMock).toHaveBeenCalledWith(
+      expect.anything(),
+      'users/u1/sessions/sess-99'
+    );
+  }));
+
+  // ---------- delete path construction ----------
+
+  it('delete builds the correct document path', fakeAsync(() => {
+    const deleteDocMock = afs.deleteDoc as jest.Mock;
+    const docMock = afs.doc as jest.Mock;
+
+    const docRef = { __type: 'DocRef' };
+    docMock.mockReturnValue(docRef);
+    deleteDocMock.mockResolvedValue(undefined);
+
+    service.delete('sess-77').subscribe();
+    tick();
+
+    expect(docMock).toHaveBeenCalledWith(
+      expect.anything(),
+      'users/u1/sessions/sess-77'
+    );
+  }));
 });
