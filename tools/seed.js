@@ -260,6 +260,161 @@ async function seedSessions(uids) {
   }
 }
 
+// ── Popular music lookup data (global, read-only) ──
+
+const POPULAR_ARTISTS = [
+  'The Beatles', 'Jimi Hendrix', 'Led Zeppelin', 'Pink Floyd',
+  'Eric Clapton', 'Stevie Ray Vaughan', 'B.B. King', 'John Mayer',
+  'Eagles', 'Metallica', 'Fleetwood Mac', 'The Rolling Stones',
+  'Nirvana', 'AC/DC', 'Guns N\' Roses', 'Queen', 'David Bowie',
+  'Johnny Cash', 'Bob Dylan', 'Neil Young', 'Joni Mitchell',
+  'Radiohead', 'Coldplay', 'Ed Sheeran', 'Taylor Swift',
+  'John Lennon', 'Paul McCartney', 'George Harrison', 'Jeff Beck',
+  'Carlos Santana', 'Chuck Berry', 'Muddy Waters', 'Robert Johnson',
+  'Django Reinhardt', 'Wes Montgomery', 'Joe Pass', 'Pat Metheny',
+  'Tommy Emmanuel', 'Chet Atkins', 'Mark Knopfler', 'Dire Straits',
+  'The Who', 'Cream', 'Black Sabbath', 'Deep Purple',
+  'Van Halen', 'Joe Satriani', 'Steve Vai', 'Yngwie Malmsteen',
+  'James Taylor', 'Simon & Garfunkel',
+]
+
+const POPULAR_ALBUMS = [
+  { title: 'Abbey Road', artist: 'The Beatles' },
+  { title: 'Led Zeppelin IV', artist: 'Led Zeppelin' },
+  { title: 'Rumours', artist: 'Fleetwood Mac' },
+  { title: 'The Dark Side of the Moon', artist: 'Pink Floyd' },
+  { title: 'Hotel California', artist: 'Eagles' },
+  { title: 'Back in Black', artist: 'AC/DC' },
+  { title: 'Appetite for Destruction', artist: 'Guns N\' Roses' },
+  { title: 'Nevermind', artist: 'Nirvana' },
+  { title: 'OK Computer', artist: 'Radiohead' },
+  { title: 'The Wall', artist: 'Pink Floyd' },
+  { title: 'Wish You Were Here', artist: 'Pink Floyd' },
+  { title: 'Electric Ladyland', artist: 'Jimi Hendrix' },
+  { title: 'Are You Experienced', artist: 'Jimi Hendrix' },
+  { title: 'Unplugged', artist: 'Eric Clapton' },
+  { title: 'Master of Puppets', artist: 'Metallica' },
+  { title: 'A Night at the Opera', artist: 'Queen' },
+  { title: 'Sgt. Pepper\'s Lonely Hearts Club Band', artist: 'The Beatles' },
+  { title: 'Revolver', artist: 'The Beatles' },
+  { title: 'Sticky Fingers', artist: 'The Rolling Stones' },
+  { title: 'Exile on Main St.', artist: 'The Rolling Stones' },
+  { title: 'Brothers in Arms', artist: 'Dire Straits' },
+  { title: 'Paranoid', artist: 'Black Sabbath' },
+  { title: 'Highway to Hell', artist: 'AC/DC' },
+  { title: 'In Utero', artist: 'Nirvana' },
+  { title: 'Continuum', artist: 'John Mayer' },
+  { title: 'Texas Flood', artist: 'Stevie Ray Vaughan' },
+  { title: 'Slowhand', artist: 'Eric Clapton' },
+  { title: 'Harvest', artist: 'Neil Young' },
+  { title: 'Blood on the Tracks', artist: 'Bob Dylan' },
+  { title: 'Blue', artist: 'Joni Mitchell' },
+  { title: 'Supernatural', artist: 'Carlos Santana' },
+  { title: 'The Rise and Fall of Ziggy Stardust', artist: 'David Bowie' },
+  { title: 'Who\'s Next', artist: 'The Who' },
+  { title: 'Live at the Regal', artist: 'B.B. King' },
+  { title: 'Surfing with the Alien', artist: 'Joe Satriani' },
+  { title: 'Sweet Baby James', artist: 'James Taylor' },
+  { title: 'Van Halen', artist: 'Van Halen' },
+  { title: 'The Bends', artist: 'Radiohead' },
+  { title: 'In Rainbows', artist: 'Radiohead' },
+  { title: 'A Rush of Blood to the Head', artist: 'Coldplay' },
+  { title: 'Disraeli Gears', artist: 'Cream' },
+  { title: 'Machine Head', artist: 'Deep Purple' },
+  { title: 'At Folsom Prison', artist: 'Johnny Cash' },
+  { title: 'Blonde on Blonde', artist: 'Bob Dylan' },
+  { title: 'Layla and Other Assorted Love Songs', artist: 'Derek and the Dominos' },
+  { title: '1984', artist: 'Van Halen' },
+  { title: 'Passion and Warfare', artist: 'Steve Vai' },
+  { title: 'Ah Via Musicom', artist: 'Eric Johnson' },
+  { title: 'Bridge over Troubled Water', artist: 'Simon & Garfunkel' },
+  { title: 'Graceland', artist: 'Paul Simon' },
+]
+
+const POPULAR_SONGS_LIST = [
+  { title: 'Stairway to Heaven', artist: 'Led Zeppelin' },
+  { title: 'Hotel California', artist: 'Eagles' },
+  { title: 'Blackbird', artist: 'The Beatles' },
+  { title: 'Yesterday', artist: 'The Beatles' },
+  { title: 'Bohemian Rhapsody', artist: 'Queen' },
+  { title: 'Comfortably Numb', artist: 'Pink Floyd' },
+  { title: 'Wish You Were Here', artist: 'Pink Floyd' },
+  { title: 'Purple Haze', artist: 'Jimi Hendrix' },
+  { title: 'All Along the Watchtower', artist: 'Jimi Hendrix' },
+  { title: 'Layla', artist: 'Eric Clapton' },
+  { title: 'Tears in Heaven', artist: 'Eric Clapton' },
+  { title: 'Wonderful Tonight', artist: 'Eric Clapton' },
+  { title: 'Free Bird', artist: 'Lynyrd Skynyrd' },
+  { title: 'Sweet Child O\' Mine', artist: 'Guns N\' Roses' },
+  { title: 'Nothing Else Matters', artist: 'Metallica' },
+  { title: 'Smells Like Teen Spirit', artist: 'Nirvana' },
+  { title: 'Eruption', artist: 'Van Halen' },
+  { title: 'Sultans of Swing', artist: 'Dire Straits' },
+  { title: 'While My Guitar Gently Weeps', artist: 'The Beatles' },
+  { title: 'Let It Be', artist: 'The Beatles' },
+  { title: 'Hey Joe', artist: 'Jimi Hendrix' },
+  { title: 'Little Wing', artist: 'Jimi Hendrix' },
+  { title: 'Whole Lotta Love', artist: 'Led Zeppelin' },
+  { title: 'Black Dog', artist: 'Led Zeppelin' },
+  { title: 'Thunderstruck', artist: 'AC/DC' },
+  { title: 'Back in Black', artist: 'AC/DC' },
+  { title: 'Smoke on the Water', artist: 'Deep Purple' },
+  { title: 'Iron Man', artist: 'Black Sabbath' },
+  { title: 'Pride and Joy', artist: 'Stevie Ray Vaughan' },
+  { title: 'The Thrill Is Gone', artist: 'B.B. King' },
+  { title: 'Creep', artist: 'Radiohead' },
+  { title: 'Paranoid Android', artist: 'Radiohead' },
+  { title: 'Wonderwall', artist: 'Oasis' },
+  { title: 'Hallelujah', artist: 'Leonard Cohen' },
+  { title: 'Dust in the Wind', artist: 'Kansas' },
+  { title: 'Classical Gas', artist: 'Mason Williams' },
+  { title: 'Gravity', artist: 'John Mayer' },
+  { title: 'Slow Dancing in a Burning Room', artist: 'John Mayer' },
+  { title: 'Blowin\' in the Wind', artist: 'Bob Dylan' },
+  { title: 'Heart of Gold', artist: 'Neil Young' },
+  { title: 'Fire and Rain', artist: 'James Taylor' },
+  { title: 'The Sound of Silence', artist: 'Simon & Garfunkel' },
+  { title: 'Europa', artist: 'Carlos Santana' },
+  { title: 'Samba Pa Ti', artist: 'Carlos Santana' },
+  { title: 'Cliffs of Dover', artist: 'Eric Johnson' },
+  { title: 'Crazy Train', artist: 'Ozzy Osbourne' },
+  { title: 'Fast Car', artist: 'Tracy Chapman' },
+  { title: 'Landslide', artist: 'Fleetwood Mac' },
+  { title: 'More Than Words', artist: 'Extreme' },
+  { title: 'Under the Bridge', artist: 'Red Hot Chili Peppers' },
+]
+
+async function seedPopularMusic() {
+  // Artists
+  const artistBatch = db.batch()
+  for (const name of POPULAR_ARTISTS) {
+    const id = slugify(name)
+    const ref = db.doc(`popularArtists/${id}`)
+    artistBatch.set(ref, { name, sortName: name.toLowerCase() }, { merge: true })
+  }
+  await artistBatch.commit()
+
+  // Albums
+  const albumBatch = db.batch()
+  for (const { title, artist } of POPULAR_ALBUMS) {
+    const id = slugify(`${title}-${artist}`)
+    const ref = db.doc(`popularAlbums/${id}`)
+    albumBatch.set(ref, { title, artist, sortTitle: title.toLowerCase() }, { merge: true })
+  }
+  await albumBatch.commit()
+
+  // Songs
+  const songBatch = db.batch()
+  for (const { title, artist } of POPULAR_SONGS_LIST) {
+    const id = slugify(`${title}-${artist}`)
+    const ref = db.doc(`popularSongs/${id}`)
+    songBatch.set(ref, { title, artist, sortTitle: title.toLowerCase() }, { merge: true })
+  }
+  await songBatch.commit()
+
+  console.log(`[seed] Popular music: ${POPULAR_ARTISTS.length} artists, ${POPULAR_ALBUMS.length} albums, ${POPULAR_SONGS_LIST.length} songs`)
+}
+
 async function verify() {
   const usersSnap = await db.collection('users').get()
   let songsCount = 0
@@ -270,8 +425,14 @@ async function verify() {
     const ss = await db.collection(`users/${u.id}/sessions`).get()
     sessionsCount += ss.size
   }
+  const popArtists = await db.collection('popularArtists').get()
+  const popAlbums = await db.collection('popularAlbums').get()
+  const popSongs = await db.collection('popularSongs').get()
   console.log(
     `[seed] Users: ${usersSnap.size}, Songs: ${songsCount}, Sessions: ${sessionsCount}`,
+  )
+  console.log(
+    `[seed] Popular music: ${popArtists.size} artists, ${popAlbums.size} albums, ${popSongs.size} songs`,
   )
 }
 
@@ -315,6 +476,7 @@ async function main() {
 
   await seedSongs([g1, g2, e1, e2])
   await seedSessions([g1, g2, e1, e2])
+  await seedPopularMusic()
 
   await db.doc('healthcheck/ping').set({ at: Timestamp.now() }, { merge: true })
 

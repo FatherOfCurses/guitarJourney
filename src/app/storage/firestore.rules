@@ -34,6 +34,19 @@ service cloud.firestore {
       allow update, delete: if isOwnerOnExisting();
     }
 
+    // Popular music lookup collections (read-only, seeded via admin SDK)
+    match /popularArtists/{docId} {
+      allow read: if isSignedIn();
+    }
+
+    match /popularAlbums/{docId} {
+      allow read: if isSignedIn();
+    }
+
+    match /popularSongs/{docId} {
+      allow read: if isSignedIn();
+    }
+
     // Optional: user-owned documents metadata if you store file metadata in Firestore
     match /users/{uid}/documents/{docId} {
       allow read: if isOwner(uid);

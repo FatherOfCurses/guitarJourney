@@ -11,15 +11,17 @@
       <!-- Title -->
       <div>
         <label for="title" class="block text-sm font-medium text-neutral-800 mb-1">Title</label>
-        <input
-          type="text"
-          id="title"
+        <p-autoComplete
+          inputId="title"
           formControlName="title"
+          [suggestions]="titleSuggestions"
+          (completeMethod)="searchTitles($event)"
+          [minQueryLength]="5"
+          [forceSelection]="false"
           placeholder="Song or exercise name"
-          pInputText
-          [attr.aria-invalid]="titleCtrl.invalid && (titleCtrl.touched || titleCtrl.dirty)"
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+          inputStyleClass="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          styleClass="w-full"
         />
         @if (titleCtrl.invalid && (titleCtrl.touched || titleCtrl.dirty)) {
           <div class="text-sm text-red-600 mt-1" aria-live="polite">Title is required.</div>
@@ -29,15 +31,17 @@
       <!-- Artist -->
       <div>
         <label for="artist" class="block text-sm font-medium text-neutral-800 mb-1">Artist</label>
-        <input
-          type="text"
-          id="artist"
+        <p-autoComplete
+          inputId="artist"
           formControlName="artist"
+          [suggestions]="artistSuggestions"
+          (completeMethod)="searchArtists($event)"
+          [minQueryLength]="5"
+          [forceSelection]="false"
           placeholder="Artist or composer"
-          pInputText
-          [attr.aria-invalid]="artistCtrl.invalid && (artistCtrl.touched || artistCtrl.dirty)"
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+          inputStyleClass="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          styleClass="w-full"
         />
         @if (artistCtrl.invalid && (artistCtrl.touched || artistCtrl.dirty)) {
           <div class="text-sm text-red-600 mt-1" aria-live="polite">Artist is required.</div>
@@ -47,14 +51,17 @@
       <!-- Album -->
       <div>
         <label for="album" class="block text-sm font-medium text-neutral-800 mb-1">Album</label>
-        <input
-          type="text"
-          id="album"
+        <p-autoComplete
+          inputId="album"
           formControlName="album"
+          [suggestions]="albumSuggestions"
+          (completeMethod)="searchAlbums($event)"
+          [minQueryLength]="5"
+          [forceSelection]="false"
           placeholder="Album name (optional)"
-          pInputText
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+          inputStyleClass="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          styleClass="w-full"
         />
       </div>
 
