@@ -24,11 +24,14 @@ service cloud.firestore {
       allow update, delete: if isOwnerOnExisting();
     }
 
-    // Global songs catalog (read-only for regular users)
-    match /songs/{songId} {
-      allow read: if true;
-      // Limit writes to admins (custom claims) or via server/admin SDK.
-      allow write: if request.auth != null && request.auth.token.admin == true;
+    // User-owned songs library
+    match /users/{uid}/songs/{songId} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.artist is string;
+      allow update, delete: if isOwnerOnExisting();
     }
 
     // Optional: user-owned documents metadata if you store file metadata in Firestore

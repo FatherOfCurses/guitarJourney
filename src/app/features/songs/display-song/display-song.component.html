@@ -1,0 +1,80 @@
+@if (loading()) {
+  <p>Loading…</p>
+} @else if (song()) {
+  <div class="flex flex-col gap-4">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="text-2xl font-bold px-6 pt-6">{{ song()!.title }}</div>
+      </ng-template>
+
+      <ng-template pTemplate="content">
+        <dl class="grid grid-cols-1 md:grid-cols-[240px,1fr] gap-x-6 gap-y-3">
+          <dt class="text-sm font-medium text-neutral-500">Artist</dt>
+          <dd class="text-neutral-900">{{ song()!.artist }}</dd>
+
+          @if (song()!.album) {
+            <dt class="text-sm font-medium text-neutral-500">Album</dt>
+            <dd class="text-neutral-900">{{ song()!.album }}</dd>
+          }
+
+          @if (song()!.genre) {
+            <dt class="text-sm font-medium text-neutral-500">Genre</dt>
+            <dd class="text-neutral-900">{{ song()!.genre }}</dd>
+          }
+
+          @if (song()!.audioLink) {
+            <dt class="text-sm font-medium text-neutral-500">Audio</dt>
+            <dd>
+              <a [href]="song()!.audioLink" target="_blank" rel="noopener noreferrer"
+                 class="text-indigo-600 hover:underline">{{ song()!.audioLink }}</a>
+            </dd>
+          }
+
+          @if (song()!.videoLink) {
+            <dt class="text-sm font-medium text-neutral-500">Video</dt>
+            <dd>
+              <a [href]="song()!.videoLink" target="_blank" rel="noopener noreferrer"
+                 class="text-indigo-600 hover:underline">{{ song()!.videoLink }}</a>
+            </dd>
+          }
+
+          @if (song()!.appleMusicLink) {
+            <dt class="text-sm font-medium text-neutral-500">Apple Music</dt>
+            <dd>
+              <a [href]="song()!.appleMusicLink" target="_blank" rel="noopener noreferrer"
+                 class="text-indigo-600 hover:underline">{{ song()!.appleMusicLink }}</a>
+            </dd>
+          }
+
+          @if (song()!.spotifyLink) {
+            <dt class="text-sm font-medium text-neutral-500">Spotify</dt>
+            <dd>
+              <a [href]="song()!.spotifyLink" target="_blank" rel="noopener noreferrer"
+                 class="text-indigo-600 hover:underline">{{ song()!.spotifyLink }}</a>
+            </dd>
+          }
+
+          @if (song()!.notationLinks && song()!.notationLinks!.length > 0) {
+            <dt class="text-sm font-medium text-neutral-500">Notation</dt>
+            <dd>
+              <ul class="list-disc list-inside">
+                @for (link of song()!.notationLinks; track link) {
+                  <li>
+                    <a [href]="link" target="_blank" rel="noopener noreferrer"
+                       class="text-indigo-600 hover:underline">{{ link }}</a>
+                  </li>
+                }
+              </ul>
+            </dd>
+          }
+        </dl>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <button pButton type="button" (click)="returnToList()" label="Back" icon="pi pi-arrow-left"></button>
+      </ng-template>
+    </p-card>
+  </div>
+} @else {
+  <p class="text-red-600">Could not load the song.</p>
+}

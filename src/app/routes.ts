@@ -75,6 +75,16 @@ export const routes: Routes = [
           import('./features/songs/songs.component').then(m => m.SongsComponent),
       },
       {
+        path: 'newSong',
+        loadComponent: () =>
+          import('./features/songs/new-song/new-song.component').then(m => m.NewSongComponent),
+      },
+      {
+        path: 'songDetail/:id',
+        loadComponent: () =>
+          import('./features/songs/display-song/display-song.component').then(m => m.DisplaySongComponent),
+      },
+      {
         path: 'metrics',
         loadComponent: () =>
           import('./features/metrics/metrics.component').then(m => m.MetricsComponent),

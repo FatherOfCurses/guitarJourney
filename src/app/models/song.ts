@@ -1,12 +1,15 @@
-import { Session } from "./session";
-
-export class Song {
-  id: string;
+export interface Song {
+  id?: string;
+  ownerUid: string;
   title: string;
   artist: string;
+  album?: string;
   genre?: string;
+  audioLink?: string;
+  videoLink?: string;
+  notationLinks?: string[];
   appleMusicLink?: string;
   spotifyLink?: string;
-  sessions: Session[];
-
+  sortTitle?: string;
+  sortArtist?: string;
 }

@@ -95,17 +95,23 @@ import {
     describe('songConverter', () => {
       it('toFirestore lowercases sort fields and defaults from title/artist when missing', () => {
         const song: Song = {
+          ownerUid: 'u1',
           title: 'Blackbird',
           artist: 'The Beatles',
           // no sortTitle/sortArtist provided
         };
-  
+
         const doc = songConverter.toFirestore(song);
-  
+
         expect(doc).toEqual({
+          ownerUid: 'u1',
           title: 'Blackbird',
           artist: 'The Beatles',
+          album: null,
           genre: null,
+          audioLink: null,
+          videoLink: null,
+          notationLinks: [],
           appleMusicLink: null,
           spotifyLink: null,
           sortTitle: 'blackbird',
@@ -113,9 +119,10 @@ import {
         });
         expect('id' in (doc as any)).toBe(false);
       });
-  
+
       it('toFirestore uses provided sort fields, lowercased', () => {
         const song: Song = {
+          ownerUid: 'u2',
           title: 'Stairway To Heaven',
           artist: 'Led Zeppelin',
           sortTitle: 'STAIRWAY to heaven',
@@ -123,9 +130,9 @@ import {
           genre: 'Rock',
           spotifyLink: 'https://open.spotify.com/track/xyz',
         };
-  
+
         const doc = songConverter.toFirestore(song);
-  
+
         expect(doc.sortTitle).toBe('stairway to heaven');
         expect(doc.sortArtist).toBe('led zeppelin');
         expect(doc.genre).toBe('Rock');
