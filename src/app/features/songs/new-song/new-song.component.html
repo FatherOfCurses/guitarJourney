@@ -1,0 +1,195 @@
+<h1 class="text-2xl font-semibold tracking-tight text-neutral-900 mb-4">Add Song</h1>
+
+<div class="px-4 py-6 md:px-6 lg:px-8">
+  <div class="bg-white shadow rounded-2xl p-6">
+    <form
+      [formGroup]="songForm"
+      class="grid gap-6"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+      <!-- Title -->
+      <div>
+        <label for="title" class="block text-sm font-medium text-neutral-800 mb-1">Title</label>
+        <input
+          type="text"
+          id="title"
+          formControlName="title"
+          placeholder="Song or exercise name"
+          pInputText
+          [attr.aria-invalid]="titleCtrl.invalid && (titleCtrl.touched || titleCtrl.dirty)"
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        @if (titleCtrl.invalid && (titleCtrl.touched || titleCtrl.dirty)) {
+          <div class="text-sm text-red-600 mt-1" aria-live="polite">Title is required.</div>
+        }
+      </div>
+
+      <!-- Artist -->
+      <div>
+        <label for="artist" class="block text-sm font-medium text-neutral-800 mb-1">Artist</label>
+        <input
+          type="text"
+          id="artist"
+          formControlName="artist"
+          placeholder="Artist or composer"
+          pInputText
+          [attr.aria-invalid]="artistCtrl.invalid && (artistCtrl.touched || artistCtrl.dirty)"
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+        @if (artistCtrl.invalid && (artistCtrl.touched || artistCtrl.dirty)) {
+          <div class="text-sm text-red-600 mt-1" aria-live="polite">Artist is required.</div>
+        }
+      </div>
+
+      <!-- Album -->
+      <div>
+        <label for="album" class="block text-sm font-medium text-neutral-800 mb-1">Album</label>
+        <input
+          type="text"
+          id="album"
+          formControlName="album"
+          placeholder="Album name (optional)"
+          pInputText
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Genre -->
+      <div>
+        <label for="genre" class="block text-sm font-medium text-neutral-800 mb-1">Genre</label>
+        <input
+          type="text"
+          id="genre"
+          formControlName="genre"
+          placeholder="e.g. Rock, Jazz, Classical (optional)"
+          pInputText
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Audio Link -->
+      <div>
+        <label for="audioLink" class="block text-sm font-medium text-neutral-800 mb-1">Audio Link</label>
+        <input
+          type="url"
+          id="audioLink"
+          formControlName="audioLink"
+          placeholder="https://... (optional)"
+          pInputText
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Video Link -->
+      <div>
+        <label for="videoLink" class="block text-sm font-medium text-neutral-800 mb-1">Video Link</label>
+        <input
+          type="url"
+          id="videoLink"
+          formControlName="videoLink"
+          placeholder="https://... (optional)"
+          pInputText
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Apple Music Link -->
+      <div>
+        <label for="appleMusicLink" class="block text-sm font-medium text-neutral-800 mb-1">Apple Music Link</label>
+        <input
+          type="url"
+          id="appleMusicLink"
+          formControlName="appleMusicLink"
+          placeholder="https://music.apple.com/... (optional)"
+          pInputText
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Spotify Link -->
+      <div>
+        <label for="spotifyLink" class="block text-sm font-medium text-neutral-800 mb-1">Spotify Link</label>
+        <input
+          type="url"
+          id="spotifyLink"
+          formControlName="spotifyLink"
+          placeholder="https://open.spotify.com/... (optional)"
+          pInputText
+          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+        />
+      </div>
+
+      <!-- Notation Links -->
+      <div>
+        <label class="block text-sm font-medium text-neutral-800 mb-1">Notation Links</label>
+        <div formArrayName="notationLinks" class="grid gap-2">
+          @for (ctrl of notationLinksArray.controls; track $index) {
+            <div class="flex items-center gap-2">
+              <input
+                type="url"
+                [formControlName]="$index"
+                placeholder="https://... (optional)"
+                pInputText
+                class="flex-1 rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              />
+              @if (notationLinksArray.length > 1) {
+                <button
+                  pButton
+                  type="button"
+                  icon="pi pi-times"
+                  class="p-button-text p-button-danger"
+                  (click)="removeNotationLink($index)"
+                ></button>
+              }
+            </div>
+          }
+        </div>
+        <button
+          pButton
+          type="button"
+          label="Add another"
+          icon="pi pi-plus"
+          class="p-button-text mt-2"
+          (click)="addNotationLink()"
+        ></button>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button
+          type="submit"
+          [disabled]="songForm.invalid || saving()"
+          class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
+                 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+        >
+          @if (!saving()) { <span>Save Song</span> }
+          @if (saving()) {
+            <svg class="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+              <path class="opacity-75" d="M4 12a8 8 0 018-8v4A4 4 0 004 12z" fill="currentColor"></path>
+            </svg>
+            <span>Saving…</span>
+          }
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center justify-center rounded-xl border border-neutral-300 px-4 py-2 text-neutral-700 font-medium
+                 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

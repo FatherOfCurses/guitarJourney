@@ -147,14 +147,16 @@ const SONGS = [
   ['The A Team', 'Ed Sheeran', 'Pop'],
 ]
 
-async function seedSongs() {
+async function seedSongs(uids) {
   const batch = db.batch()
   for (const [title, artist, genre] of SONGS) {
+    const uid = uids[Math.floor(Math.random() * uids.length)]
     const id = slugify(`${title}-${artist}`)
-    const ref = db.doc(`songs/${id}`)
+    const ref = db.doc(`users/${uid}/songs/${id}`)
     batch.set(
       ref,
       {
+        ownerUid: uid,
         title,
         artist,
         genre,
@@ -260,15 +262,16 @@ async function seedSessions(uids) {
 
 async function verify() {
   const usersSnap = await db.collection('users').get()
-  const songsSnap = await db.collection('songs').get()
-  // Aggregate sessions count across all users
+  let songsCount = 0
   let sessionsCount = 0
   for (const u of usersSnap.docs) {
+    const songs = await db.collection(`users/${u.id}/songs`).get()
+    songsCount += songs.size
     const ss = await db.collection(`users/${u.id}/sessions`).get()
     sessionsCount += ss.size
   }
   console.log(
-    `[seed] Users: ${usersSnap.size}, Songs: ${songsSnap.size}, Sessions: ${sessionsCount}`,
+    `[seed] Users: ${usersSnap.size}, Songs: ${songsCount}, Sessions: ${sessionsCount}`,
   )
 }
 
@@ -310,7 +313,7 @@ async function main() {
     upsertUserDoc(e2, 'Email User Two'),
   ])
 
-  await seedSongs()
+  await seedSongs([g1, g2, e1, e2])
   await seedSessions([g1, g2, e1, e2])
 
   await db.doc('healthcheck/ping').set({ at: Timestamp.now() }, { merge: true })

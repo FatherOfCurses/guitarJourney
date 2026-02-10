@@ -28,21 +28,30 @@ export const sessionConverter: FirestoreDataConverter<Session> = {
 
 export interface Song {
   id?: string;
+  ownerUid: string;
   title: string;
   artist: string;
+  album?: string;
   genre?: string;
+  audioLink?: string;
+  videoLink?: string;
+  notationLinks?: string[];
   appleMusicLink?: string;
   spotifyLink?: string;
-  // Light denormalization for listing
-  sortTitle?: string;   // precomputed lowercase title for case-insensitive sort (optional)
-  sortArtist?: string;  // precomputed lowercase artist
+  sortTitle?: string;
+  sortArtist?: string;
 }
 
 export const songConverter: FirestoreDataConverter<Song> = {
   toFirestore: (s) => ({
+    ownerUid: s.ownerUid,
     title: s.title,
     artist: s.artist,
+    album: s.album ?? null,
     genre: s.genre ?? null,
+    audioLink: s.audioLink ?? null,
+    videoLink: s.videoLink ?? null,
+    notationLinks: s.notationLinks ?? [],
     appleMusicLink: s.appleMusicLink ?? null,
     spotifyLink: s.spotifyLink ?? null,
     sortTitle: (s.sortTitle ?? s.title).toLowerCase(),

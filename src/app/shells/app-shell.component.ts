@@ -20,7 +20,7 @@ export class AppShellComponent {
   readonly items = signal<MenuItem[]>([
     { label: 'Home',     icon: 'pi pi-home', routerLink: ['dashboard'] },
     { label: 'Sessions', icon: 'pi pi-clock', routerLink: ['sessions'] },
-    { label: 'Songs',    icon: 'pi pi-music', routerLink: ['songs'] },
+    { label: 'Songs',    icon: 'pi pi-headphones', routerLink: ['songs'] },
     { label: 'Metrics',  icon: 'pi pi-chart-bar', routerLink: ['metrics'] },
   ]);
 
