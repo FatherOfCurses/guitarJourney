@@ -3,21 +3,28 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { SongsService } from '@services/songs.service';
+import { AutocompleteSuggestionService } from '@services/autocomplete-suggestion.service';
 
 @Component({
   selector: 'app-new-song',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule, AutoComplete],
   templateUrl: './new-song.component.html',
 })
 export class NewSongComponent {
   private fb = inject(FormBuilder);
   private songsService = inject(SongsService);
   private router = inject(Router);
+  private suggestionSvc = inject(AutocompleteSuggestionService);
 
   private _saving = signal(false);
   saving = this._saving.asReadonly();
+
+  titleSuggestions: string[] = [];
+  artistSuggestions: string[] = [];
+  albumSuggestions: string[] = [];
 
   songForm: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(1)]],
@@ -71,6 +78,24 @@ export class NewSongComponent {
       console.error('Error saving song:', error);
       this._saving.set(false);
     });
+  }
+
+  searchTitles(event: AutoCompleteCompleteEvent): void {
+    this.suggestionSvc.suggestTitles(event.query).subscribe(
+      results => this.titleSuggestions = results,
+    );
+  }
+
+  searchArtists(event: AutoCompleteCompleteEvent): void {
+    this.suggestionSvc.suggestArtists(event.query).subscribe(
+      results => this.artistSuggestions = results,
+    );
+  }
+
+  searchAlbums(event: AutoCompleteCompleteEvent): void {
+    this.suggestionSvc.suggestAlbums(event.query).subscribe(
+      results => this.albumSuggestions = results,
+    );
   }
 
   cancel(): void {

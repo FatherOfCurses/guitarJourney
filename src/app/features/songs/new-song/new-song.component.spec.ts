@@ -1,7 +1,9 @@
 import { TestBed, fakeAsync, flushMicrotasks } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 import { NewSongComponent } from './new-song.component';
 import { SongsService } from '@services/songs.service';
+import { AutocompleteSuggestionService } from '@services/autocomplete-suggestion.service';
 import { Router } from '@angular/router';
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
@@ -17,6 +19,12 @@ const routerMock: any = {
   navigate: jest.fn(),
 };
 
+const suggestionSvcMock: any = {
+  suggestTitles: jest.fn(() => of([])),
+  suggestArtists: jest.fn(() => of([])),
+  suggestAlbums: jest.fn(() => of([])),
+};
+
 describe('NewSongComponent', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -25,6 +33,7 @@ describe('NewSongComponent', () => {
       providers: [
         { provide: SongsService, useValue: songsSvcMock },
         { provide: Router, useValue: routerMock },
+        { provide: AutocompleteSuggestionService, useValue: suggestionSvcMock },
       ],
     }).compileComponents();
   });
@@ -84,13 +93,6 @@ describe('NewSongComponent', () => {
 
   it('shows title error when touched and empty', () => {
     const { fixture } = createFixture();
-    const titleInput = fixture.debugElement.query(By.css('#title')).nativeElement as HTMLInputElement;
-
-    // Touch and leave empty
-    titleInput.dispatchEvent(new Event('focus'));
-    titleInput.dispatchEvent(new Event('blur'));
-    type(titleInput, '');
-    fixture.detectChanges();
 
     const titleCtrl = fixture.componentInstance.titleCtrl;
     titleCtrl.markAsTouched();
@@ -314,13 +316,46 @@ describe('NewSongComponent', () => {
     errorSpy.mockRestore();
   }));
 
+  // ---------- Autocomplete handlers ----------
+
+  it('searchTitles() calls suggestion service and updates titleSuggestions', () => {
+    const { cmp } = createFixture();
+    suggestionSvcMock.suggestTitles.mockReturnValue(of(['Blackbird', 'Black Dog']));
+
+    cmp.searchTitles({ query: 'bla' } as any);
+
+    expect(suggestionSvcMock.suggestTitles).toHaveBeenCalledWith('bla');
+    expect(cmp.titleSuggestions).toEqual(['Blackbird', 'Black Dog']);
+  });
+
+  it('searchArtists() calls suggestion service and updates artistSuggestions', () => {
+    const { cmp } = createFixture();
+    suggestionSvcMock.suggestArtists.mockReturnValue(of(['The Beatles', 'The Who']));
+
+    cmp.searchArtists({ query: 'the' } as any);
+
+    expect(suggestionSvcMock.suggestArtists).toHaveBeenCalledWith('the');
+    expect(cmp.artistSuggestions).toEqual(['The Beatles', 'The Who']);
+  });
+
+  it('searchAlbums() calls suggestion service and updates albumSuggestions', () => {
+    const { cmp } = createFixture();
+    suggestionSvcMock.suggestAlbums.mockReturnValue(of(['Abbey Road', 'Appetite for Destruction']));
+
+    cmp.searchAlbums({ query: 'a' } as any);
+
+    expect(suggestionSvcMock.suggestAlbums).toHaveBeenCalledWith('a');
+    expect(cmp.albumSuggestions).toEqual(['Abbey Road', 'Appetite for Destruction']);
+  });
+
   // ---------- Template-driven interactions ----------
 
   it('filling title and artist via DOM and submitting calls create', fakeAsync(() => {
     const { fixture, cmp } = createFixture();
 
-    const titleInput = fixture.debugElement.query(By.css('#title')).nativeElement as HTMLInputElement;
-    const artistInput = fixture.debugElement.query(By.css('#artist')).nativeElement as HTMLInputElement;
+    // PrimeNG AutoComplete renders an inner input with the inputId attribute
+    const titleInput = fixture.nativeElement.querySelector('input#title') as HTMLInputElement;
+    const artistInput = fixture.nativeElement.querySelector('input#artist') as HTMLInputElement;
 
     type(titleInput, 'Wish You Were Here');
     type(artistInput, 'Pink Floyd');
