@@ -82,3 +82,4 @@ yarn-error.log*
 
 # Environment files (local configs)
 /.env.*
+.gstack/
