@@ -258,7 +258,7 @@ async onSubmit() {
 }
 ```
 
-**Important:** `_loading`/`_saving` are set to `true` at the start. The submit button in the After phase template must disable while `saving()` is true to prevent double-submit. Verify the template already binds `[disabled]="saving()"` on the submit button — if not, add it.
+**Important:** `_loading`/`_saving` are set to `true` at the start. The submit button in the After phase template must disable to prevent double-submit. Verify the template already binds `[disabled]="loading()"` on the submit button — it currently does (session.component.html:205) and this is correct. Do NOT change this to `saving()` — the template uses `loading()` for the disabled state and `saving()` separately for the spinner visibility. After the async/await rewrite, ensure both `_loading = signal(false)` and `_saving = signal(false)` are still set to `true` together at the start of `onSubmit()` and both reset on resolve/reject.
 
 ### Incrementing useCount + lastUsedAt
 When a resource is pinned from the library (not newly created), `saveResources()` calls `this.touchResource(resourceId)` internally:
@@ -304,13 +304,13 @@ The `session-resource-picker` component has two sections:
 - InputText for `url`; on blur, if type=youtube, call `fetchYouTubeOEmbed()` — auto-fill label, show thumbnail
 - **oEmbed loading state:** While the oEmbed fetch is in-flight, show a `p-skeleton` block (full width, ~112px height, matching the thumbnail area) in place of the thumbnail. When the fetch resolves, replace the skeleton with the `<img>` thumbnail. If the fetch returns null, collapse the skeleton without showing anything.
 - InputText for `label` (auto-filled from oEmbed; user can override)
-- Chips input (`p-chips`) for `tags` — free-form entry. The component normalizes tag values to lowercase before emitting them (in the component's value-change handler, not in the service or converter). No predefined tag list.
+- Autocomplete input (`p-autocomplete [multiple]="true" [dropdown]="false"`) for `tags` — free-form entry. `p-chips` was removed from PrimeNG prior to v17; the multi-value equivalent in PrimeNG 20 is `p-autocomplete` with `[multiple]="true"`. The component normalizes tag values to lowercase before emitting them (in the component's value-change handler, not in the service or converter). No predefined tag list; pass `[suggestions]="[]"` to disable the suggestion panel.
 - "Add" button — enabled when (a) `new URL(url)` does not throw AND (b) URL scheme is `http:` or `https:` AND (c) if type=youtube, `extractYouTubeEmbedUrl(url)` returns non-null
 - **Post-add form reset:** After the Add button is clicked and `(resourceAdded)` is emitted, reset all form fields to defaults (type=youtube, url='', label='', tags=[]). The thumbnail preview collapses. The user is ready to add another resource.
 
 **Select from library (above the "Add new" form):**  
 - Text `InputText` filters by label substring (case-insensitive)
-- `p-chips` tag filter — multi-select; filters to resources matching ALL selected tags
+- `p-autocomplete [multiple]="true" [dropdown]="false"` tag filter — multi-select; filters to resources matching ALL selected tags. Use the same PrimeNG 20 multi-autocomplete pattern as the add form's tag input.
 - **Library loading state:** While `getResources()` is fetching, show 3 rows of `p-skeleton` (full width, ~40px height each, `border-radius: var(--border-radius)`) in place of the p-listbox. Replace with the real listbox when the Observable emits.
 - Results: `p-listbox` limited to 50 items; clicking an item emits `(resourceAdded)` with the selected `Resource` mapped to `Omit<SessionResource, 'id' | 'pinnedAt'>` — copy `resource.id` → `resourceId` on the emitted object so `saveResources()` can call `touchResource()` instead of creating a duplicate. Do NOT call `touchResource()` in the picker click handler — it is called inside `saveResources()` only (memory-first principle).
 - **Filter "no results" state:** When the text or tag filter matches zero items in a non-empty library, show a `p-message` severity=warn: "No resources match your filters." (This is a filter state, not an empty library — do not show the empty library message.)
@@ -319,7 +319,7 @@ The `session-resource-picker` component has two sections:
 ### Responsive Layout Spec
 
 **Picker (session Before phase):**
-- Mobile (< 640px): All form fields are single-column (already vertical by default). The tag filter `p-chips` wraps to multiple rows naturally — no max-height constraint for v1. The section separator labels ("YOUR LIBRARY" / "ADD NEW") display full-width.
+- Mobile (< 640px): All form fields are single-column (already vertical by default). The tag filter (`p-autocomplete [multiple]="true"`) wraps to multiple rows naturally — no max-height constraint for v1. The section separator labels ("YOUR LIBRARY" / "ADD NEW") display full-width.
 - The oEmbed thumbnail `<img>` uses `class="w-full object-cover rounded-xl"` — scales to viewport width.
 - YouTube iframe: `width="100%" height="200"` — fine at all viewport sizes.
 
@@ -342,7 +342,9 @@ The `session-resource-picker` component has two sections:
 
 ### Duplicate resource handling
 
-No deduplication in v1. Two resources with identical URLs may coexist in the library. Deduplication (by URL) can be a future optimization.
+**Global library (URL dedup — in scope, T6):** Before creating a new global library resource in `saveResources()`, query `users/{uid}/resources` with `where('url', '==', resource.url), limit(1)`. If a match is found, reuse its ID and call `touchResource()` instead of creating a new doc. This prevents two library entries with the same URL.
+
+**Session-level (same resource added twice — guard required):** A user can add the same resource to `_pendingResources` twice within one session (e.g., by clicking it in the library picker twice). Guard against this in `onResourceAdded()`: before pushing to `_pendingResources`, check if a resource with the same URL is already present. If so, ignore the second addition silently. Add this case to the Failure Modes table.
 
 ### Library browser (`/app/resources`) layout and empty state
 
@@ -367,7 +369,7 @@ With a PrimeNG Button: "Start a session" that navigates to `['/app/newSession']`
 
 **Delete:** Each resource card has a delete icon button. Clicking shows a PrimeNG `<p-dialog>` confirm dialog ("Delete this resource? It will be removed from your library. Sessions it was attached to are not affected."). On confirm: `deleteResource(resource.id)` deletes the Firestore doc at `users/{uid}/resources/{id}`. The session subcollection pins are denormalized copies and are NOT deleted — sessions that used the resource still show it historically.
 
-**Edit:** Each resource card has an edit icon button that opens a `<p-dialog>`. Editable fields: `label` (InputText), `tags` (p-chips with lowercase normalization). URL and type are identity fields and NOT editable. On save: `updateResource(resourceId, { label, tags })` → Firestore `updateDoc`. Dialog dismisses on Cancel or backdrop click; focus returns to the edit trigger button.
+**Edit:** Each resource card has an edit icon button that opens a `<p-dialog>`. Editable fields: `label` (InputText), `tags` (`p-autocomplete [multiple]="true" [dropdown]="false"` with lowercase normalization — same component as the add form). URL and type are identity fields and NOT editable. On save: `updateResource(resourceId, { label, tags })` → Firestore `updateDoc`. Dialog dismisses on Cancel or backdrop click; focus returns to the edit trigger button.
 
 **ResourceService additions for T4:**
 ```ts
@@ -376,6 +378,8 @@ updateResource(resourceId: string, changes: Partial<Pick<Resource, 'label' | 'ta
 ```
 
 ### §T6 URL Deduplication
+
+**Import note:** `serverTimestamp`, `addDoc`, `collection`, `query`, `where`, `limit`, `getDocs`, `updateDoc`, `increment`, and `getFirestore` must be imported from `'firebase/firestore'` directly (not `@angular/fire/firestore`). `@angular/fire/firestore` does not re-export `serverTimestamp`. Follow the same mixed-import pattern already used in `session.service.ts:17`. This is pre-existing tech debt — do not change the session service pattern, just follow it.
 
 **Implementation in `saveResources()`:**
 ```ts
@@ -778,7 +782,8 @@ Synthesized from this review's findings. Each task derives from a specific findi
   - Surfaced by: Architecture — picker UX spec; oEmbed auto-fill; tag normalization
   - Files: `src/app/features/session/session-resource-picker/session-resource-picker.component.ts`, `.html`, `src/app/features/session/session-resource-picker/session-resource-picker.component.spec.ts`
   - Details: add `_oEmbedLoading = signal(false)` — set `true` before `fetchYouTubeOEmbed()`, `false` after. Disable "Add" button while `_oEmbedLoading()` is true. Show `p-skeleton` in thumbnail area while loading.
-  - Verify: oEmbed auto-fills label for YouTube; Add button disabled for invalid URL AND disabled while oEmbed fetch is in-flight; spec covers: Add-disabled-during-oEmbed-fetch, skeleton shown during fetch, resourceAdded emits correct shape
+  - **oEmbed stale-response guard:** The URL input blur triggers oEmbed fetch. If the user changes the URL and blurs again before the first fetch resolves, the first fetch may resolve after the second and overwrite the label/thumbnail for the current URL. Guard: capture the URL value at fetch-start time, and in the resolution handler discard the result if the stored URL no longer matches the current input value. Example: `const urlAtFetchStart = this._urlInput; await fetchYouTubeOEmbed(url); if (this._urlInput !== urlAtFetchStart) return;`
+  - Verify: oEmbed auto-fills label for YouTube; Add button disabled for invalid URL AND disabled while oEmbed fetch is in-flight; spec covers: Add-disabled-during-oEmbed-fetch, skeleton shown during fetch, resourceAdded emits correct shape; stale oEmbed response (URL changed before fetch resolves) does not overwrite label
 
 - [ ] **T9 (P1, human: ~1h / CC: ~8min)** — session.component.ts — `_pendingResources` signal, `onResourceAdded`, `onResourceRemoved`, convert `onSubmit()` to async/await with `saveResources()` call
   - Surfaced by: Architecture — memory-first pattern; `onSubmit()` async conversion spec
@@ -794,6 +799,7 @@ Synthesized from this review's findings. Each task derives from a specific findi
 - [ ] **T10 (P1, human: ~1h / CC: ~8min)** — session.component.html — picker in Before, read-only list in During + After, remove `_resourcesAdded` gate
   - Surfaced by: Section 11 D6 decision; Architecture — gating UI removal
   - Files: `src/app/features/session/session.component.html`
+  - **Commented stub:** `session.component.html:129` has `<!--  <app-session-resource></app-session-resource> -->`. Do NOT uncomment this stub — it has no resource binding and no `@for` loop. DELETE the comment and replace with the proper `@for` loop: `@for (r of _pendingResources(); track r.resourceId ?? r.url) { <app-session-resource [resource]="r" [showRemove]="false" /> }`
   - Verify: Picker visible in Before phase; resource list read-only in During; same list in After; no gate button
 
 - [ ] **T11 (P1, human: ~2h / CC: ~15min)** — ResourceLibraryComponent — library browser, filter bar, resource cards, delete + edit (T4), empty state
@@ -842,6 +848,9 @@ Synthesized from this review's findings. Each task derives from a specific findi
 - [ ] **NE6 (P1, human: ~30min / CC: ~5min)** — session-resource.component.spec.ts — add YouTube iframe, PDF link, showRemove input test coverage → incorporated into T7
 - [ ] **NE7 (P1, human: ~30min / CC: ~5min)** — session-resource-picker.component.spec.ts — add oEmbed-loading + resourceAdded shape test coverage → incorporated into T8
 - [ ] **NE8 (P1, human: ~30min / CC: ~5min)** — youtube.spec.ts — all 4 URL formats + null for invalid + oEmbed success/fail/malformed → incorporated into T2
+- [ ] **NE9 (P1, human: ~10min / CC: ~3min)** — index.html — swap Roboto for Cabinet Grotesk + DM Sans → incorporate into T13
+
+  `DESIGN.md` and `CLAUDE.md` prohibit Roboto as primary font, but `src/index.html` currently loads Roboto via Google Fonts and has no Cabinet Grotesk or DM Sans link. T13 already modifies `src/index.html` for the CSP tag — combine the font swap in the same task. Steps: (1) Remove the existing `<link>` that loads Roboto. (2) Add `<link>` for Cabinet Grotesk from Fontshare (`api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800&display=swap`) or install `@fontsource-variable/cabinet-grotesk` and import in `styles.scss`. (3) Add `<link>` for DM Sans from Google Fonts (weights 400, 500, `display=swap`) or install `@fontsource/dm-sans`. (4) Wire the CSS custom properties in `styles.scss`: `--gj-font-display: 'Cabinet Grotesk', sans-serif` and `--gj-font-body: 'DM Sans', sans-serif`. Verify: app renders with Cabinet Grotesk on page titles and DM Sans on body text; no Roboto requests in Network tab.
 
 ---
 
