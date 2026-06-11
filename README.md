@@ -14,7 +14,8 @@ Guitar Journey is a modern Angular 20 application for guitar practice management
 2. **Songs Catalog** - Music library with Apple Music/Spotify links
 3. **Chord Notation** - SVG chord diagram visualization (svguitar)
 4. **Metrics Dashboard** - Practice statistics and insights
-5. **Carousels** (current work) - Image carousels with responsive variants and attribution
+5. **Carousels** - Image carousels with responsive variants and attribution
+6. **Resource Library** (planned) - Attach YouTube tutorials, PDFs, chord sheets, and links to sessions; browse all resources at `/app/resources`
 
 ## Architecture Highlights
 * Standalone component architecture (no NgModules)
@@ -24,7 +25,14 @@ Guitar Journey is a modern Angular 20 application for guitar practice management
 * Path aliases for clean imports
 * Comprehensive test coverage with Jest
 
-[Compodoc Product Documentation](https://fatherofcurses.github.io/guitarJourney/index.html)
+## Documentation
+
+- [Design System](DESIGN.md) — fonts, colors, spacing, motion, and `--gj-*` CSS custom properties
+- [Project Instructions](CLAUDE.md) — AI-assisted development rules and skill routing
+- [Resource Library Plan](docs/designs/resource-library.md) — full implementation spec for T1–T16 + NE1–NE9
+- [Open Tasks](TODOS.md) — prioritized backlog
+- [Changelog](CHANGELOG.md) — version history
+- [Compodoc Product Documentation](https://fatherofcurses.github.io/guitarJourney/index.html)
 
 ### Packages used
 - PrimeNG - https://www.primefaces.org/primeng/
