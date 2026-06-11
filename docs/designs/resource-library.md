@@ -39,8 +39,6 @@ The 10x version is a guitarist's permanent practice binder: every useful video, 
 
 - **Last-used quick-select UI** — show top-3 most recently used resources at the top of the picker for one-click re-add. Data model (`useCount`, `lastUsedAt`) is already in scope. UI deferred.
 - **Post-session save prompt** — after finishing a session, offer to save any ad-hoc resources to the permanent library (ensure ad-hoc links get a permanent home)
-- **Library resource delete/edit** — MOVED TO SCOPE (T4): delete + label/tags edit implemented in this PR (see §T4 Library Delete/Edit below)
-- **Resource URL deduplication** — MOVED TO SCOPE (T6): URL dedup query in `saveResources()` implemented in this PR (see §T6 URL Deduplication below)
 - **Session resource retry on tab-close** — if the user closes the tab between session save success and subcollection write success, resources are lost with no recovery path; mitigation deferred
 - **`display-session.component.ts` resource display** — the session detail page does not yet call `getSessionResources()` or render attached resources; deferred to a follow-on PR
 - **Retry-creates-duplicate on failed save** — if `saveResources()` fails after writing some global library docs and the user retries, new resources may be created twice in the global library; acceptable in v1 (duplicates are harmless) but worth tracking
@@ -314,7 +312,7 @@ The `session-resource-picker` component has two sections:
 - Text `InputText` filters by label substring (case-insensitive)
 - `p-chips` tag filter — multi-select; filters to resources matching ALL selected tags
 - **Library loading state:** While `getResources()` is fetching, show 3 rows of `p-skeleton` (full width, ~40px height each, `border-radius: var(--border-radius)`) in place of the p-listbox. Replace with the real listbox when the Observable emits.
-- Results: `p-listbox` limited to 50 items; clicking an item adds it to `_pendingResources` and calls `touchResource()`
+- Results: `p-listbox` limited to 50 items; clicking an item emits `(resourceAdded)` with the selected `Resource` mapped to `Omit<SessionResource, 'id' | 'pinnedAt'>` — copy `resource.id` → `resourceId` on the emitted object so `saveResources()` can call `touchResource()` instead of creating a duplicate. Do NOT call `touchResource()` in the picker click handler — it is called inside `saveResources()` only (memory-first principle).
 - **Filter "no results" state:** When the text or tag filter matches zero items in a non-empty library, show a `p-message` severity=warn: "No resources match your filters." (This is a filter state, not an empty library — do not show the empty library message.)
 - If library is empty, show: "No saved resources yet — add a YouTube tutorial, tab, or PDF below and it'll be waiting here next time."
 
@@ -790,7 +788,8 @@ Synthesized from this review's findings. Each task derives from a specific findi
     - Add `ResourceService` mock to providers (empty mock with `saveResources: jest.fn().mockResolvedValue(undefined)`)
     - Add test: when `_pendingResources` is non-empty, `saveResources()` is called with the correct session ID after `create()` resolves
     - Add test: when `saveResources()` rejects, `MessageService.add()` is called with `severity: 'error'` and no navigation occurs
-  - Verify: All existing tests pass; new tests pass with `fakeAsync`/`tick()`
+    - Remove `tick(800)` from the existing "resolves" test at `session.component.spec.ts:239` — the async/await rewrite removes the `setTimeout(800)` delay; navigation now happens synchronously after the awaited promises resolve. Update the test description from "after 800ms" accordingly.
+  - Verify: All existing tests pass; new tests pass with `fakeAsync`/`flushMicrotasks()`
 
 - [ ] **T10 (P1, human: ~1h / CC: ~8min)** — session.component.html — picker in Before, read-only list in During + After, remove `_resourcesAdded` gate
   - Surfaced by: Section 11 D6 decision; Architecture — gating UI removal
@@ -806,6 +805,7 @@ Synthesized from this review's findings. Each task derives from a specific findi
 - [ ] **T12 (P1, human: ~15min / CC: ~2min)** — routes.ts — add `path: 'resources'` child route
   - Surfaced by: Architecture — route spec (lowercase deviation documented)
   - Files: `src/app/routes.ts`
+  - **IMPORTANT:** Insert the new route BEFORE the `path: '**'` wildcard at `routes.ts:93`. Appending after the wildcard causes `/app/resources` to 404.
   - Verify: `/app/resources` navigates to library browser
 
 - [ ] **T13 (P1, human: ~5min / CC: ~1min)** — index.html — add CSP meta tag for YouTube iframes
