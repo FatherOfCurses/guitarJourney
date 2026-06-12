@@ -1,6 +1,6 @@
 <div class="space-y-8">
   <!-- Hero Section with Rotating Carousel -->
-  <section class="relative overflow-hidden rounded-2xl border bg-white">
+  <section class="relative overflow-hidden rounded-lg border bg-[var(--gj-surface)]">
     <!-- Carousel Image with Attribution Overlay -->
     <div 
       class="relative h-[22rem] md:h-[28-rem] w-full bg-cover bg-center"
@@ -89,7 +89,7 @@
   <!-- Stats Cards Section -->
   <section class="grid gap-6 md:grid-cols-3">
     <!-- Last Session Card -->
-    <div class="rounded-2xl border p-5 bg-white">
+    <div class="rounded-lg border p-5 bg-[var(--gj-surface)]">
       <h3 class="font-semibold mb-2">Last session</h3>
       @if (data().lastSession) {
         <p class="text-sm text-neutral-600">
@@ -98,7 +98,7 @@
         </p>
         <a 
           [routerLink]="['/app/sessions', data().lastSession!.id]" 
-          class="inline-block mt-3 text-indigo-600 hover:underline"
+          class="inline-block mt-3 text-[var(--gj-accent)] hover:underline"
         >
           View details
         </a>
@@ -108,7 +108,7 @@
     </div>
 
     <!-- Totals Card -->
-    <div class="rounded-2xl border p-5 bg-white">
+    <div class="rounded-lg border p-5 bg-[var(--gj-surface)]">
       <h3 class="font-semibold mb-2">Totals</h3>
       <ul class="text-sm text-neutral-700 space-y-1">
         <li>Total minutes: <strong>{{ data().totals.minutes }}</strong></li>
@@ -118,7 +118,7 @@
     </div>
 
     <!-- This Week Card -->
-    <div class="rounded-2xl border p-5 bg-white">
+    <div class="rounded-lg border p-5 bg-[var(--gj-surface)]">
       <h3 class="font-semibold mb-2">This week</h3>
       <p class="text-sm text-neutral-600">
         {{ weekTotal() }} minutes so far.

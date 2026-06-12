@@ -1,6 +1,8 @@
 // Strongly typed Firestore converters based on your models
 
 import { FirestoreDataConverter, Timestamp } from 'firebase/firestore';
+import { Resource } from '../models/resource';
+import { SessionResource } from '../models/session-resource';
 
 export interface Session {
   id?: string;
@@ -77,4 +79,29 @@ export const userDocumentConverter: FirestoreDataConverter<UserDocument> = {
     storagePath: d.storagePath
   }),
   fromFirestore: (snap) => ({ id: snap.id, ...snap.data() } as UserDocument),
+};
+
+export const resourceConverter: FirestoreDataConverter<Resource> = {
+  toFirestore: (r) => ({
+    type: r.type,
+    url: r.url,
+    label: r.label,
+    tags: r.tags ?? [],
+    useCount: r.useCount ?? 0,
+    lastUsedAt: r.lastUsedAt ?? null,
+    createdAt: r.createdAt,
+  }),
+  fromFirestore: (snap) => ({ id: snap.id, ...snap.data() } as Resource),
+};
+
+export const sessionResourceConverter: FirestoreDataConverter<SessionResource> = {
+  toFirestore: (r) => ({
+    resourceId: r.resourceId ?? null,
+    type: r.type,
+    url: r.url,
+    label: r.label,
+    tags: r.tags ?? [],
+    pinnedAt: r.pinnedAt,
+  }),
+  fromFirestore: (snap) => ({ id: snap.id, ...snap.data() } as SessionResource),
 };

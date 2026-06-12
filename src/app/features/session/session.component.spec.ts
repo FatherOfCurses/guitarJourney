@@ -1,12 +1,14 @@
 // session.component.spec.ts
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { SessionComponent } from './session.component';
 import { of, Subject } from 'rxjs';
 import { convertToParamMap } from '@angular/router';
 import { Session } from '@models/session';
 import { SessionService } from '@services/session.service'
 import { fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
+import { ResourceService } from '../../services/resource.service';
 
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
@@ -38,6 +40,11 @@ const makeSession = (over: Partial<Session> = {}): Session => ({
     create:          jest.fn((session: Partial<Session>) => Promise.resolve('new-id')),
   };
 
+  const resourceSvcMock: any = {
+    getResources:     jest.fn(() => of([])),
+    saveResources:    jest.fn(() => Promise.resolve(undefined)),
+  };
+
   async function setup() {
     paramMap$ = new Subject();
     get$ = new Subject<Session>();
@@ -49,7 +56,9 @@ describe('SessionComponent (template-driven behaviors)', () => {
       imports: [SessionComponent],
       // Ignore unknown PrimeNG elements/directives used in the template (pInputText, pInputTextarea, p-button)
       providers: [
+        provideNoopAnimations(),
         { provide: SessionService, useValue: sessionSvcMock },
+        { provide: ResourceService, useValue: resourceSvcMock },
       ],
     }).compileComponents();
   });
@@ -111,14 +120,18 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.status()).toBe('During');
     });
 
-    /* TODO: Enable this test once the addResourcesToSession() method is implemented
-    it('clicking "Yes" to add resources calls addResourcesToSession()', () => {
-      const { fixture, cmp } = createFixtureWithStatus('Before');
-      const addBtn = fixture.debugElement.query(By.css('#addResources'))?.nativeElement as HTMLButtonElement;
-      addBtn.click();
-      fixture.detectChanges();
+    it('renders app-session-resource-picker in the Before phase', () => {
+      const { fixture } = createFixtureWithStatus('Before');
+      expect(fixture.debugElement.query(By.css('app-session-resource-picker'))).toBeTruthy();
     });
-    */
+
+    it('shows app-session-resource with remove button for each pending resource', () => {
+      const { fixture, cmp } = createFixtureWithStatus('Before');
+      cmp.onResourceAdded({ type: 'pdf', url: 'https://example.com/tab.pdf', label: 'Tab' });
+      fixture.detectChanges();
+      const resourceEls = fixture.debugElement.queryAll(By.css('app-session-resource'));
+      expect(resourceEls.length).toBe(1);
+    });
   });
 
   describe('DURING state', () => {
@@ -135,17 +148,18 @@ describe('SessionComponent (template-driven behaviors)', () => {
 
       expect(cmp.status()).toBe('After');});
 
-    /* TODO: Enable this test once the resourcesAdded() signal and addResourcesToSession() method are implemented
-    it('renders the resources section when resourcesAdded() is true', () => {
-      const { fixture, cmp } = createFixtureWithStatus('During');
-      // Flip the signal and re-render
-      //cmp.resourcesAdded = jest.fn(() => true);
+    it('shows #resourcesSection in During phase when there are pending resources', () => {
+      const { fixture, cmp } = createFixtureWithStatus('Before');
+      cmp.onResourceAdded({ type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'Lesson' });
+      cmp.start();
       fixture.detectChanges();
-
-      const resources = fixture.debugElement.query(By.css('#resourcesSection'))?.nativeElement as HTMLElement;
-      expect(resources).toBeTruthy();
+      expect(fixture.debugElement.query(By.css('#resourcesSection'))).toBeTruthy();
     });
-    */
+
+    it('hides #resourcesSection in During phase when no pending resources', () => {
+      const { fixture } = createFixtureWithStatus('During');
+      expect(fixture.debugElement.query(By.css('#resourcesSection'))).toBeNull();
+    });
   });
 
   describe('AFTER state', () => {
@@ -210,84 +224,104 @@ describe('SessionComponent (template-driven behaviors)', () => {
       jest.spyOn(cmp as any, 'elapsedSeconds').mockReturnValue(1200); // 20 minutes
     }
   
-    it('resolves: turns off saving/loading after 800ms and navigates to /app', fakeAsync(() => {
+    it('resolves: turns off saving/loading and navigates to /app', async () => {
       const fixture = TestBed.createComponent(SessionComponent);
       const cmp = fixture.componentInstance;
-  
-      // Stub router directly on the component to avoid TestBed changes
+
       const navigate = jest.fn();
       (cmp as any).router = { navigate };
-  
-      // Mock create() -> resolved promise
-      // If your spec already has sessionSvcMock, reuse it; otherwise adapt as needed.
+
       const svc = TestBed.inject(SessionService) as any;
-      createSpy = jest.spyOn(svc, 'create').mockResolvedValue(undefined);
-  
+      createSpy = jest.spyOn(svc, 'create').mockResolvedValue('new-id');
+
       primeValidForm(cmp);
-  
-      // Call
-      cmp.onSubmit();
-  
+
+      const submitPromise = cmp.onSubmit();
+
       // Immediately after calling, flags should be true
       expect(cmp.saving()).toBe(true);
       expect(cmp.loading()).toBe(true);
-  
-      // Let the promise resolve
-      flushMicrotasks();
-  
-      // The success branch sets a setTimeout(800) before flipping flags + navigate
-      tick(800);
+
+      await submitPromise;
       fixture.detectChanges();
-  
+
       expect(createSpy).toHaveBeenCalledWith({
         whatToPractice: 'Chord changes: C ↔︎ F',
         sessionIntent: 'Improve clean transitions',
         postPracticeReflection: 'Barre chords improving',
         goalForNextTime: 'Metronome @ 70 BPM, 10 mins',
-        practiceTime: 1200 / 60, // 20
+        practiceTime: 1200 / 60,
       });
       expect(cmp.saving()).toBe(false);
       expect(cmp.loading()).toBe(false);
       expect(navigate).toHaveBeenCalledWith(['/app']);
-    }));
-  
-    it('rejects: logs error and turns off saving/loading; does not navigate', fakeAsync(() => {
+    });
+
+    it('rejects: logs error and turns off saving/loading; does not navigate', async () => {
       const fixture = TestBed.createComponent(SessionComponent);
       const cmp = fixture.componentInstance;
-  
-      // Stub router again
+
       const navigate = jest.fn();
       (cmp as any).router = { navigate };
-  
-      // Mock create() -> rejected promise
+
       const svc = TestBed.inject(SessionService) as any;
       const err = new Error('create failed');
       createSpy = jest.spyOn(svc, 'create').mockRejectedValue(err);
-  
-      // Spy on console.error to assert it’s called (optional but nice)
+
       const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-  
+
       primeValidForm(cmp);
-  
-      // Call
-      cmp.onSubmit();
-  
-      // Immediately after calling, flags should be true
+
+      const submitPromise = cmp.onSubmit();
+
       expect(cmp.saving()).toBe(true);
       expect(cmp.loading()).toBe(true);
-  
-      // Let the promise reject
-      flushMicrotasks();
+
+      await submitPromise;
       fixture.detectChanges();
-  
-      // No 800ms delay on the error path — flags flip immediately
+
       expect(errorSpy).toHaveBeenCalledWith('Error saving session:', err);
       expect(cmp.saving()).toBe(false);
       expect(cmp.loading()).toBe(false);
       expect(navigate).not.toHaveBeenCalled();
-  
+
       errorSpy.mockRestore();
-    }));
+    });
   });
-  
+
+  describe('pendingResources management', () => {
+    it('onResourceAdded appends a resource to pendingResources', () => {
+      const { cmp } = createFixtureWithStatus('Before');
+      const resource = { type: 'youtube' as const, url: 'https://www.youtube.com/watch?v=abc', label: 'Test' };
+      cmp.onResourceAdded(resource);
+      expect(cmp.pendingResources()).toHaveLength(1);
+      expect(cmp.pendingResources()[0].url).toBe(resource.url);
+    });
+
+    it('onResourceAdded deduplicates by URL', () => {
+      const { cmp } = createFixtureWithStatus('Before');
+      const resource = { type: 'youtube' as const, url: 'https://www.youtube.com/watch?v=abc', label: 'Test' };
+      cmp.onResourceAdded(resource);
+      cmp.onResourceAdded({ ...resource, label: 'Duplicate' });
+      expect(cmp.pendingResources()).toHaveLength(1);
+    });
+
+    it('onResourceRemoved removes a resource by URL', () => {
+      const { cmp } = createFixtureWithStatus('Before');
+      const r1 = { type: 'youtube' as const, url: 'https://www.youtube.com/watch?v=aaa', label: 'A' };
+      const r2 = { type: 'pdf' as const, url: 'https://example.com/tab.pdf', label: 'B' };
+      cmp.onResourceAdded(r1);
+      cmp.onResourceAdded(r2);
+      cmp.onResourceRemoved(r1.url);
+      expect(cmp.pendingResources()).toHaveLength(1);
+      expect(cmp.pendingResources()[0].url).toBe(r2.url);
+    });
+
+    it('onResourceRemoved is a no-op when URL is not present', () => {
+      const { cmp } = createFixtureWithStatus('Before');
+      expect(() => cmp.onResourceRemoved('https://not-in-list.com')).not.toThrow();
+      expect(cmp.pendingResources()).toHaveLength(0);
+    });
+  });
+
 });

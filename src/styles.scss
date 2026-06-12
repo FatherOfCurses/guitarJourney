@@ -5,3 +5,24 @@
 @import "primeicons/primeicons.css";
 
 @tailwind utilities;
+
+/* Guitar Journey Design Tokens */
+:root {
+  --gj-background:    #F5F0E8;
+  --gj-surface:       #FDFAF4;
+  --gj-sidebar:       #4E2A14;
+  --gj-text:          #1C1A16;
+  --gj-muted:         #7A7060;
+  --gj-accent:        #C4622D;
+  --gj-accent-hover:  #A34E22;
+  --gj-accent-text:   #FFFFFF;
+  --gj-border:        #E8E0D0;
+  --gj-sidebar-text:  #F5F0E8;
+  --gj-sidebar-muted: #C4A882;
+}
+
+body {
+  background-color: var(--gj-background);
+  color: var(--gj-text);
+  font-family: 'DM Sans', sans-serif;
+}

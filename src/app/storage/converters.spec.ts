@@ -3,10 +3,14 @@ import {
     sessionConverter,
     songConverter,
     userDocumentConverter,
+    resourceConverter,
+    sessionResourceConverter,
     type Session,
     type Song,
     type UserDocument,
   } from './converters';
+import type { Resource } from '../models/resource';
+import type { SessionResource } from '../models/session-resource';
   
 
   
@@ -208,5 +212,128 @@ import {
         });
       });
     });
+
+    describe('resourceConverter', () => {
+      const ts: any = { seconds: 1000, nanoseconds: 0 };
+
+      it('toFirestore maps optional fields to defaults and never includes id', () => {
+        const r: Resource = {
+          type: 'youtube',
+          url: 'https://www.youtube.com/watch?v=abc',
+          label: 'Intro to barre chords',
+          createdAt: ts,
+        };
+
+        const doc = resourceConverter.toFirestore(r);
+
+        expect(doc).toEqual({
+          type: 'youtube',
+          url: 'https://www.youtube.com/watch?v=abc',
+          label: 'Intro to barre chords',
+          tags: [],
+          useCount: 0,
+          lastUsedAt: null,
+          createdAt: ts,
+        });
+        expect('id' in (doc as any)).toBe(false);
+      });
+
+      it('toFirestore preserves provided tags, useCount, and lastUsedAt', () => {
+        const ts2: any = { seconds: 2000, nanoseconds: 0 };
+        const r: Resource = {
+          type: 'pdf',
+          url: 'https://example.com/tab.pdf',
+          label: 'Tab sheet',
+          tags: ['blues', 'scale'],
+          useCount: 5,
+          lastUsedAt: ts2,
+          createdAt: ts,
+        };
+
+        const doc = resourceConverter.toFirestore(r);
+
+        expect(doc.tags).toEqual(['blues', 'scale']);
+        expect(doc.useCount).toBe(5);
+        expect(doc.lastUsedAt).toBe(ts2);
+      });
+
+      it('fromFirestore returns { id, ...data }', () => {
+        const snap = {
+          id: 'res1',
+          data: () => ({
+            type: 'youtube',
+            url: 'https://www.youtube.com/watch?v=abc',
+            label: 'Barre chords',
+            tags: ['chords'],
+            useCount: 2,
+            lastUsedAt: null,
+            createdAt: ts,
+          }),
+        } as any;
+
+        const result = resourceConverter.fromFirestore(snap);
+        expect(result.id).toBe('res1');
+        expect(result.type).toBe('youtube');
+        expect(result.label).toBe('Barre chords');
+      });
+    });
+
+    describe('sessionResourceConverter', () => {
+      const ts: any = { seconds: 3000, nanoseconds: 0 };
+
+      it('toFirestore maps resourceId to null when omitted and never includes id', () => {
+        const r: SessionResource = {
+          type: 'custom',
+          url: 'https://example.com',
+          label: 'Reference',
+          pinnedAt: ts,
+        };
+
+        const doc = sessionResourceConverter.toFirestore(r);
+
+        expect(doc).toEqual({
+          resourceId: null,
+          type: 'custom',
+          url: 'https://example.com',
+          label: 'Reference',
+          tags: [],
+          pinnedAt: ts,
+        });
+        expect('id' in (doc as any)).toBe(false);
+      });
+
+      it('toFirestore preserves resourceId and tags when provided', () => {
+        const r: SessionResource = {
+          resourceId: 'res42',
+          type: 'pdf',
+          url: 'https://example.com/tab.pdf',
+          label: 'Tab',
+          tags: ['blues'],
+          pinnedAt: ts,
+        };
+
+        const doc = sessionResourceConverter.toFirestore(r);
+
+        expect(doc.resourceId).toBe('res42');
+        expect(doc.tags).toEqual(['blues']);
+      });
+
+      it('fromFirestore returns { id, ...data }', () => {
+        const snap = {
+          id: 'pin1',
+          data: () => ({
+            resourceId: 'res99',
+            type: 'youtube',
+            url: 'https://www.youtube.com/watch?v=xyz',
+            label: 'Justin Guitar',
+            tags: [],
+            pinnedAt: ts,
+          }),
+        } as any;
+
+        const result = sessionResourceConverter.fromFirestore(snap);
+        expect(result.id).toBe('pin1');
+        expect(result.resourceId).toBe('res99');
+      });
+    });
   });
-  
