@@ -26,7 +26,7 @@
             <dt class="text-sm font-medium text-neutral-500">Audio</dt>
             <dd>
               <a [href]="song()!.audioLink" target="_blank" rel="noopener noreferrer"
-                 class="text-indigo-600 hover:underline">{{ song()!.audioLink }}</a>
+                 class="text-[var(--gj-accent)] hover:underline">{{ song()!.audioLink }}</a>
             </dd>
           }
 
@@ -34,7 +34,7 @@
             <dt class="text-sm font-medium text-neutral-500">Video</dt>
             <dd>
               <a [href]="song()!.videoLink" target="_blank" rel="noopener noreferrer"
-                 class="text-indigo-600 hover:underline">{{ song()!.videoLink }}</a>
+                 class="text-[var(--gj-accent)] hover:underline">{{ song()!.videoLink }}</a>
             </dd>
           }
 
@@ -42,7 +42,7 @@
             <dt class="text-sm font-medium text-neutral-500">Apple Music</dt>
             <dd>
               <a [href]="song()!.appleMusicLink" target="_blank" rel="noopener noreferrer"
-                 class="text-indigo-600 hover:underline">{{ song()!.appleMusicLink }}</a>
+                 class="text-[var(--gj-accent)] hover:underline">{{ song()!.appleMusicLink }}</a>
             </dd>
           }
 
@@ -50,7 +50,7 @@
             <dt class="text-sm font-medium text-neutral-500">Spotify</dt>
             <dd>
               <a [href]="song()!.spotifyLink" target="_blank" rel="noopener noreferrer"
-                 class="text-indigo-600 hover:underline">{{ song()!.spotifyLink }}</a>
+                 class="text-[var(--gj-accent)] hover:underline">{{ song()!.spotifyLink }}</a>
             </dd>
           }
 
@@ -61,7 +61,7 @@
                 @for (link of song()!.notationLinks; track link) {
                   <li>
                     <a [href]="link" target="_blank" rel="noopener noreferrer"
-                       class="text-indigo-600 hover:underline">{{ link }}</a>
+                       class="text-[var(--gj-accent)] hover:underline">{{ link }}</a>
                   </li>
                 }
               </ul>

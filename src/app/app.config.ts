@@ -12,6 +12,25 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
 import { environment } from "../environments/environment";
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
+import { definePreset } from '@primeuix/themes';
+
+const GuitarJourneyPreset = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50:  '#FDF4EF',
+      100: '#FAE4D5',
+      200: '#F5C9AB',
+      300: '#EEA980',
+      400: '#E58757',
+      500: '#C4622D',
+      600: '#A34E22',
+      700: '#7D3A18',
+      800: '#5A290F',
+      900: '#3A1A09',
+      950: '#1E0D04',
+    }
+  }
+});
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +44,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     providePrimeNG({
       theme: {
-          preset: Aura,
+          preset: GuitarJourneyPreset,
           options: {
             darkModeSelector: false || 'none'
         }

@@ -4,7 +4,7 @@
 
   @switch (status()) {
     @case ('Before') {
-      <div class="bg-white shadow rounded-2xl p-6">
+      <div class="bg-[var(--gj-surface)] shadow rounded-lg p-6">
         <form
           [formGroup]="beforeForm"
           id="sessionForm"
@@ -28,8 +28,8 @@
               min="0"
               aria-describedby="practiceTimeHelp practiceTimeError"
               [attr.aria-invalid]="practiceTimeCtrl.invalid && (practiceTimeCtrl.touched || practiceTimeCtrl.dirty)"
-              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
             />
             <small id="practiceTimeHelp" class="text-sm text-neutral-500">Numbers only, in minutes.</small>
 
@@ -52,8 +52,8 @@
               pInputTextarea
               rows="4"
               [attr.aria-invalid]="whatToPracticeCtrl.invalid && (whatToPracticeCtrl.touched || whatToPracticeCtrl.dirty)"
-              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
             ></textarea>
 
             @if (whatToPracticeCtrl.invalid && (whatToPracticeCtrl.touched || whatToPracticeCtrl.dirty)) {
@@ -75,8 +75,8 @@
               placeholder="Directed practice requires intent. Set yours…"
               pInputText
               [attr.aria-invalid]="sessionIntentCtrl.invalid && (sessionIntentCtrl.touched || sessionIntentCtrl.dirty)"
-              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
             />
             @if (sessionIntentCtrl.invalid && (sessionIntentCtrl.touched || sessionIntentCtrl.dirty)) {
               <div class="text-sm text-red-600 mt-1" aria-live="polite">
@@ -111,8 +111,8 @@
             <button
               id="startButton"
               type="submit"
-              class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
-                         hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+              class="inline-flex items-center justify-center rounded-md bg-[var(--gj-accent)] px-4 py-2 text-white font-medium
+                         hover:bg-[var(--gj-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] disabled:opacity-50"
               [disabled]="prePracticeForm.invalid"
             >
               Start
@@ -123,7 +123,7 @@
     }
 
     @case ('During') {
-      <div class="bg-white shadow rounded-2xl p-6 space-y-6">
+      <div class="bg-[var(--gj-surface)] shadow rounded-lg p-6 space-y-6">
         <div id="timerSection">
           <p class="font-semibold text-3xl tracking-tight text-neutral-900">{{ timeDisplay() }}</p>
           <h2 class="text-lg text-neutral-700 mt-1">Keep going! Make it a good session!</h2>
@@ -133,7 +133,7 @@
           <button
             id="endButton"
             type="button"
-            class="mt-4 inline-flex items-center justify-center rounded-xl bg-rose-600 px-4 py-2 text-white font-medium
+            class="mt-4 inline-flex items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-white font-medium
                        hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500"
             (click)="stopTimer()"
           >
@@ -157,7 +157,7 @@
     }
 
     @case ('After') {
-      <div class="bg-white shadow rounded-2xl p-6">
+      <div class="bg-[var(--gj-surface)] shadow rounded-lg p-6">
         <div class="mb-6 flex flex-col items-center">
           <h2 class="text-xl font-semibold text-neutral-900 mb-2">You did it!</h2>
           <img
@@ -165,7 +165,7 @@
             [height]="400"
             src="assets/images/cherry-592.png"
             alt="Man playing guitar"
-            class="rounded-xl shadow"
+            class="rounded-md shadow"
           />
         </div>
 
@@ -188,8 +188,8 @@
               pInputTextarea
               rows="6"
               [attr.aria-invalid]="sessionReflectionCtrl.invalid && (sessionReflectionCtrl.touched || sessionReflectionCtrl.dirty)"
-              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
             ></textarea>
 
             @if (sessionReflectionCtrl.invalid && (sessionReflectionCtrl.touched || sessionReflectionCtrl.dirty)) {
@@ -211,8 +211,8 @@
               pInputTextarea
               rows="4"
               [attr.aria-invalid]="goalForNextTimeCtrl.invalid && (goalForNextTimeCtrl.touched || goalForNextTimeCtrl.dirty)"
-              class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                         focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
             ></textarea>
 
             @if (goalForNextTimeCtrl.invalid && (goalForNextTimeCtrl.touched || goalForNextTimeCtrl.dirty)) {
@@ -227,8 +227,8 @@
               type="button"
               (click)="onSubmit()"
               [disabled]="loading()"
-              class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
-                         hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+              class="inline-flex items-center justify-center rounded-md bg-[var(--gj-accent)] px-4 py-2 text-white font-medium
+                         hover:bg-[var(--gj-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] disabled:opacity-50"
             >
               @if (!saving()) { <span>Finish</span> }
               @if (saving()) {

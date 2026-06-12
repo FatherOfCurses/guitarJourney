@@ -1,7 +1,7 @@
 <h1 class="text-2xl font-semibold tracking-tight text-neutral-900 mb-4">Add Song</h1>
 
 <div class="px-4 py-6 md:px-6 lg:px-8">
-  <div class="bg-white shadow rounded-2xl p-6">
+  <div class="bg-[var(--gj-surface)] shadow rounded-lg p-6">
     <form
       [formGroup]="songForm"
       class="grid gap-6"
@@ -19,8 +19,8 @@
           [minQueryLength]="5"
           [forceSelection]="false"
           placeholder="Song or exercise name"
-          inputStyleClass="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
           styleClass="w-full"
         />
         @if (titleCtrl.invalid && (titleCtrl.touched || titleCtrl.dirty)) {
@@ -39,8 +39,8 @@
           [minQueryLength]="5"
           [forceSelection]="false"
           placeholder="Artist or composer"
-          inputStyleClass="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
           styleClass="w-full"
         />
         @if (artistCtrl.invalid && (artistCtrl.touched || artistCtrl.dirty)) {
@@ -59,8 +59,8 @@
           [minQueryLength]="5"
           [forceSelection]="false"
           placeholder="Album name (optional)"
-          inputStyleClass="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
           styleClass="w-full"
         />
       </div>
@@ -74,8 +74,8 @@
           formControlName="genre"
           placeholder="e.g. Rock, Jazz, Classical (optional)"
           pInputText
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
         />
       </div>
 
@@ -88,8 +88,8 @@
           formControlName="audioLink"
           placeholder="https://... (optional)"
           pInputText
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
         />
       </div>
 
@@ -102,8 +102,8 @@
           formControlName="videoLink"
           placeholder="https://... (optional)"
           pInputText
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
         />
       </div>
 
@@ -116,8 +116,8 @@
           formControlName="appleMusicLink"
           placeholder="https://music.apple.com/... (optional)"
           pInputText
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
         />
       </div>
 
@@ -130,8 +130,8 @@
           formControlName="spotifyLink"
           placeholder="https://open.spotify.com/... (optional)"
           pInputText
-          class="w-full rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+          class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
         />
       </div>
 
@@ -146,8 +146,8 @@
                 [formControlName]="$index"
                 placeholder="https://... (optional)"
                 pInputText
-                class="flex-1 rounded-xl border border-neutral-300 bg-white text-neutral-900 placeholder:text-neutral-400 px-3 py-2
-                       focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                class="flex-1 rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                       focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
               />
               @if (notationLinksArray.length > 1) {
                 <button
@@ -176,8 +176,8 @@
         <button
           type="submit"
           [disabled]="songForm.invalid || saving()"
-          class="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-4 py-2 text-white font-medium
-                 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+          class="inline-flex items-center justify-center rounded-md bg-[var(--gj-accent)] px-4 py-2 text-white font-medium
+                 hover:bg-[var(--gj-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] disabled:opacity-50"
         >
           @if (!saving()) { <span>Save Song</span> }
           @if (saving()) {
@@ -190,7 +190,7 @@
         </button>
         <button
           type="button"
-          class="inline-flex items-center justify-center rounded-xl border border-neutral-300 px-4 py-2 text-neutral-700 font-medium
+          class="inline-flex items-center justify-center rounded-md border border-[var(--gj-border)] px-4 py-2 text-neutral-700 font-medium
                  hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-400"
           (click)="cancel()"
         >
