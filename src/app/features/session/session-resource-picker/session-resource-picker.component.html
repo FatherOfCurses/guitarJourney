@@ -1,1 +1,110 @@
-<p>session-resource-picker works!</p>
+<div class="space-y-4">
+
+  <!-- ── YOUR LIBRARY ─────────────────────────────────────── -->
+  <div>
+    <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">Your Library</p>
+
+    @if (libraryLoading()) {
+      <div class="space-y-2">
+        @for (_ of [1, 2, 3]; track $index) {
+          <p-skeleton height="40px" />
+        }
+      </div>
+    } @else if (allResources().length === 0) {
+      <p-message severity="info">No saved resources yet — add a YouTube tutorial, tab, or PDF below and it'll be waiting here next time.</p-message>
+    } @else {
+      <!-- Filters -->
+      <div class="space-y-2 mb-2">
+        <input
+          type="text"
+          pInputText
+          placeholder="Search by name…"
+          [(ngModel)]="labelFilter"
+          class="w-full"
+        />
+        <p-autocomplete
+          [(ngModel)]="tagFilter"
+          [multiple]="true"
+          [dropdown]="false"
+          [suggestions]="[]"
+          placeholder="Filter by tag…"
+          class="w-full"
+        />
+      </div>
+
+      @if (filteredResources.length === 0) {
+        <p-message severity="warn">No resources match your filters.</p-message>
+      } @else {
+        <p-listbox
+          [options]="filteredResources"
+          optionLabel="label"
+          [style]="{ 'width': '100%' }"
+          (onChange)="onLibrarySelect($event.value)"
+        />
+      }
+    }
+  </div>
+
+  <hr class="border-t border-neutral-200">
+
+  <!-- ── ADD NEW ───────────────────────────────────────────── -->
+  <div>
+    <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">Add New</p>
+    <div class="space-y-3">
+
+      <p-select
+        [(ngModel)]="newType"
+        [options]="typeOptions"
+        optionLabel="label"
+        optionValue="value"
+        class="w-full"
+        (onChange)="onTypeChange()"
+      />
+
+      <input
+        type="text"
+        pInputText
+        placeholder="URL"
+        [(ngModel)]="newUrl"
+        class="w-full"
+        (blur)="onUrlBlur()"
+      />
+
+      @if (oEmbedLoading()) {
+        <p-skeleton height="112px" />
+      } @else if (oEmbedThumbnail()) {
+        <img
+          [src]="oEmbedThumbnail()"
+          alt="Video thumbnail"
+          class="w-full object-cover rounded-xl"
+        />
+      }
+
+      <input
+        type="text"
+        pInputText
+        placeholder="Label"
+        [(ngModel)]="newLabel"
+        class="w-full"
+      />
+
+      <p-autocomplete
+        [ngModel]="newTags"
+        (ngModelChange)="newTags = $event"
+        [multiple]="true"
+        [dropdown]="false"
+        [suggestions]="tagSuggestions"
+        placeholder="Tags (press Enter to add)"
+        class="w-full"
+      />
+
+      <p-button
+        label="Add"
+        type="button"
+        [disabled]="!canAdd"
+        (click)="onAdd()"
+      />
+    </div>
+  </div>
+
+</div>

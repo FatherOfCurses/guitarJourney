@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ButtonModule } from 'primeng/button';
 import { SessionService } from '@services/session.service';
 import { Router } from '@angular/router';
+import { ResourceService } from '../../services/resource.service';
+import { SessionResource } from '../../models/session-resource';
 export type SessionPhase = 'Before' | 'During' | 'After';
 
 @Component({
@@ -15,6 +17,7 @@ export type SessionPhase = 'Before' | 'During' | 'After';
 export class SessionComponent {
   private fb = inject(FormBuilder);
   private sessionService = inject(SessionService);
+  private resourceService = inject(ResourceService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
 
@@ -26,6 +29,10 @@ export class SessionComponent {
   // Track whether user opted to add resources (your HTML checks resourcesAdded())
   private _resourcesAdded = signal(false);
   resourcesAdded = this._resourcesAdded.asReadonly();
+
+  // Pending resources staged before session save
+  private _pendingResources = signal<Omit<SessionResource, 'id' | 'pinnedAt'>[]>([]);
+  readonly pendingResources = this._pendingResources.asReadonly();
 
   // Loading/saving flags for the AFTER form buttons
   private _loading = signal(false);
@@ -96,6 +103,15 @@ export class SessionComponent {
     this._resourcesAdded.set(true);
   }
 
+  onResourceAdded(resource: Omit<SessionResource, 'id' | 'pinnedAt'>): void {
+    if (this._pendingResources().some(r => r.url === resource.url)) return;
+    this._pendingResources.update(arr => [...arr, resource]);
+  }
+
+  onResourceRemoved(url: string): void {
+    this._pendingResources.update(arr => arr.filter(r => r.url !== url));
+  }
+
   // Called by BEFORE form submit
   start() {
 
@@ -121,28 +137,28 @@ export class SessionComponent {
   }
 
   // Called by AFTER form button(s)
-  onSubmit() {
-
+  async onSubmit(): Promise<void> {
     this._loading.set(true);
     this._saving.set(true);
-
-    this.sessionService.create({
-      whatToPractice: this.whatToPracticeCtrl.value,
-      sessionIntent: this.sessionIntentCtrl.value,
-      postPracticeReflection: this.sessionReflectionCtrl.value,
-      goalForNextTime: this.goalForNextTimeCtrl.value,
-      practiceTime: this.elapsedSeconds() / 60,
-    }).then(() => {
-    setTimeout(() => {
+    try {
+      const sessionId = await this.sessionService.create({
+        whatToPractice: this.whatToPracticeCtrl.value,
+        sessionIntent: this.sessionIntentCtrl.value,
+        postPracticeReflection: this.sessionReflectionCtrl.value,
+        goalForNextTime: this.goalForNextTimeCtrl.value,
+        practiceTime: this.elapsedSeconds() / 60,
+      });
+      if (this._pendingResources().length > 0) {
+        await this.resourceService.saveResources(sessionId, this._pendingResources());
+      }
       this._saving.set(false);
       this._loading.set(false);
       this.router.navigate(['/app']);
-    }, 800);
-  }).catch((error) => {
-    console.error('Error saving session:', error);
-    this._saving.set(false);
-    this._loading.set(false);
-  });
+    } catch (error) {
+      console.error('Error saving session:', error);
+      this._saving.set(false);
+      this._loading.set(false);
+    }
   }
 
   // ---------- UTIL ----------

@@ -1,16 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ButtonModule } from 'primeng/button';
+import { SessionResource } from '../../../models/session-resource';
+import { extractYouTubeEmbedUrl } from '../../../utils/youtube';
 
 @Component({
-    selector: 'app-session-resource',
-    templateUrl: './session-resource.component.html',
-    styleUrls: ['./session-resource.component.scss'],
-    standalone: false
+  selector: 'app-session-resource',
+  standalone: true,
+  imports: [ButtonModule],
+  templateUrl: './session-resource.component.html',
 })
-export class SessionResourceComponent implements OnInit {
+export class SessionResourceComponent {
+  private sanitizer = inject(DomSanitizer);
 
-  constructor() { }
+  @Input({ required: true }) resource!: SessionResource;
+  @Input() showRemove = false;
+  @Output() remove = new EventEmitter<void>();
 
-  ngOnInit(): void {
+  get safeEmbedUrl(): SafeResourceUrl {
+    // Only call inside @if (resource.type === 'youtube') — the ! is safe there
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      extractYouTubeEmbedUrl(this.resource.url)!
+    );
   }
-
 }
