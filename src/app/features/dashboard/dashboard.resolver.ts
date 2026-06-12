@@ -1,5 +1,5 @@
 // dashboard.resolver.ts
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, EnvironmentInjector, runInInjectionContext } from '@angular/core';
 import { Resolve } from '@angular/router';
 import { collection, Firestore, getDocs, limit, orderBy, query } from '@angular/fire/firestore';
 import { Session } from '@models/session';
@@ -27,14 +27,17 @@ export interface DashboardData {
 export class DashboardResolver implements Resolve<DashboardData> {
   private fs = inject(Firestore);
   private auth = inject(Auth);
+  private injector = inject(EnvironmentInjector);
+  // authState() must be called in injection context — do it at class-init time
+  private readonly authState$ = authState(this.auth).pipe(filter(Boolean));
 
   async resolve(): Promise<DashboardData> {
-    const user = await firstValueFrom(authState(this.auth).pipe(filter(Boolean), take(1)));
+    const user = await firstValueFrom(this.authState$.pipe(take(1)));
     const uid = user!.uid;
 
     const ref = collection(this.fs, `users/${uid}/sessions`).withConverter(sessionConverter);
     const q = query(ref, orderBy('date', 'desc'), limit(365));
-    const snap = await getDocs(q);
+    const snap = await runInInjectionContext(this.injector, () => getDocs(q));
 
     const sessions: ViewSession[] = snap.docs.map(d => {
       const s = d.data() as Session;
@@ -89,7 +92,7 @@ export class DashboardResolver implements Resolve<DashboardData> {
 
     // Songs learned
     const songsRef = collection(this.fs, `users/${uid}/songs`);
-    const songsSnap = await getDocs(songsRef);
+    const songsSnap = await runInInjectionContext(this.injector, () => getDocs(songsRef));
     const songsLearned = songsSnap.size;
 
     return {

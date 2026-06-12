@@ -14,15 +14,15 @@
 
 ## Typography
 
-- **Display/Hero:** Cabinet Grotesk (variable, 700–800 weight) — quirky grotesque with real character at large sizes; feels like a personal tool, not enterprise software; playful without being cute. Use for: page titles, dashboard stats, the sidebar wordmark.
+- **Display/Hero:** Wix Madefor Text (600–800 weight) — clean grotesque with slightly wider spacing and strong legibility at all sizes. Use for: page titles, dashboard stats, the sidebar wordmark.
 - **Body:** DM Sans (400, 500) — clean, humanist, high legibility at small sizes; warm without being soft. Use for: all body copy, form labels, session notes.
 - **UI/Labels:** DM Sans 500, `text-transform: uppercase; letter-spacing: 0.05em` for section headers (e.g. "RECENT SESSIONS", "YOUR LIBRARY")
 - **Data/Tables:** DM Sans with `font-variant-numeric: tabular-nums` for session durations, stats, time values
 - **Code:** JetBrains Mono (if code display ever needed)
 - **Loading:**
-  - Cabinet Grotesk: available via Fontshare (`api.fontshare.com`) or self-hosted via Fontsource (`@fontsource-variable/cabinet-grotesk`)
-  - DM Sans: Google Fonts or Fontsource (`@fontsource/dm-sans`)
-  - Load: `font-display: swap` on both; subset to Latin
+  - Wix Madefor Text: Google Fonts (`fonts.googleapis.com`) — weights 600, 700, 800
+  - DM Sans: Google Fonts (`fonts.googleapis.com`) — weights 400, 500
+  - Load: `font-display: swap` via Google Fonts stylesheet in `index.html`
 
 - **Scale (8px base, 1.25 modular):**
   ```
@@ -114,6 +114,8 @@
 | 2026-06-11 | Initial design system created via /design-consultation | Based on user brief: "easy to use, encouraging, a little playful without being overly cute; future personalization from serious to whimsical" |
 | 2026-06-11 | Accent: burnt sienna #C4622D (not indigo) | Indigo was a codebase default, not a decision. Burnt sienna is rosewood — guitar-adjacent, warm, distinctive. |
 | 2026-06-11 | Display font: Cabinet Grotesk (not Fraunces serif, not Inter/Roboto) | User chose sans-serif display. Cabinet Grotesk has variable weight and character at large sizes without tipping into cute. |
+| 2026-06-12 | Display font revised: Plus Jakarta Sans (replacing Cabinet Grotesk) | remix-v1.png was rendered with Plus Jakarta Sans (double-story 'a', geometric grotesque). Cabinet Grotesk was correctly implemented but visually differed from the approved mockup. Plus Jakarta Sans matches the approved aesthetic and is not AI-slop (not Inter/Roboto). |
+| 2026-06-12 | Display font revised: Wix Madefor Text (replacing Plus Jakarta Sans) | User preferred Wix Madefor Text's wider spacing over Plus Jakarta Sans. |
 | 2026-06-11 | Body font: DM Sans | Humanist, warm, legible — never fights the content. Replaces Roboto (AI slop default). |
 | 2026-06-11 | Sidebar: leather dark brown #4E2A14 | Approved in remix mockup. Stacked GUITAR/JOURNEY wordmark on leather sidebar gives personal/craftsman identity. |
 | 2026-06-11 | Border radius: hierarchical (cards 8px, buttons 6px, pills full) | Not uniform bubble-radius. Hierarchy signals container vs. action vs. label. |

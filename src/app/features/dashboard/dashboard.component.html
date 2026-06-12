@@ -11,9 +11,9 @@
     <a
       routerLink="/app/newSession"
       class="shrink-0 inline-flex items-center gap-2 rounded-md bg-gj-accent text-gj-accent-text
-             px-4 py-2 text-sm font-medium hover:bg-gj-accent-hover transition-colors duration-150"
+             px-4 py-2.5 text-sm font-medium hover:bg-gj-accent-hover transition-colors duration-150"
     >
-      <i class="pi pi-play text-xs"></i>
+      <i class="pi pi-play text-sm"></i>
       Start Session
     </a>
   </div>
@@ -21,38 +21,46 @@
   <!-- ── STAT CARDS ──────────────────────────────────── -->
   <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
 
-    <div class="rounded-lg bg-gj-surface border border-gj-border p-4">
-      <div class="flex items-start justify-between mb-3">
-        <p class="text-xs font-medium uppercase tracking-[0.05em] text-gj-muted">Total Practice Time</p>
-        <i class="pi pi-clock text-gj-muted text-sm"></i>
+    <div class="rounded-lg bg-gj-surface border border-gj-border p-5">
+      <div class="w-10 h-10 rounded-full bg-gj-accent/10 flex items-center justify-center mb-3">
+        <i class="pi pi-clock text-gj-accent text-base"></i>
       </div>
+      <p class="text-xs font-medium text-gj-muted mb-1">Total Practice Time</p>
       <p class="font-display font-extrabold text-2xl text-gj-text">{{ hoursMinutes() }}</p>
-      <p class="text-xs text-gj-muted mt-1">{{ weekTotal() }}m this week</p>
+      @if (weekTotal() > 0) {
+        <p class="text-xs text-gj-muted mt-1">
+          +{{ weekTotal() }}m this week <i class="pi pi-arrow-up text-gj-accent" style="font-size:0.6rem"></i>
+        </p>
+      }
     </div>
 
-    <div class="rounded-lg bg-gj-surface border border-gj-border p-4">
-      <div class="flex items-start justify-between mb-3">
-        <p class="text-xs font-medium uppercase tracking-[0.05em] text-gj-muted">Sessions Completed</p>
-        <i class="pi pi-check-circle text-gj-muted text-sm"></i>
+    <div class="rounded-lg bg-gj-surface border border-gj-border p-5">
+      <div class="w-10 h-10 rounded-full bg-gj-accent/10 flex items-center justify-center mb-3">
+        <i class="pi pi-calendar text-gj-accent text-base"></i>
       </div>
+      <p class="text-xs font-medium text-gj-muted mb-1">Sessions Completed</p>
       <p class="font-display font-extrabold text-2xl text-gj-text">{{ data().totals.sessionCount }}</p>
-      <p class="text-xs text-gj-muted mt-1">{{ data().totals.weekSessionCount }} this week</p>
+      @if (data().totals.weekSessionCount > 0) {
+        <p class="text-xs text-gj-muted mt-1">
+          +{{ data().totals.weekSessionCount }} this week <i class="pi pi-arrow-up text-gj-accent" style="font-size:0.6rem"></i>
+        </p>
+      }
     </div>
 
-    <div class="rounded-lg bg-gj-surface border border-gj-border p-4">
-      <div class="flex items-start justify-between mb-3">
-        <p class="text-xs font-medium uppercase tracking-[0.05em] text-gj-muted">Current Streak</p>
-        <i class="pi pi-bolt text-gj-muted text-sm"></i>
+    <div class="rounded-lg bg-gj-surface border border-gj-border p-5">
+      <div class="w-10 h-10 rounded-full bg-gj-accent/10 flex items-center justify-center mb-3">
+        <i class="pi pi-bolt text-gj-accent text-base"></i>
       </div>
+      <p class="text-xs font-medium text-gj-muted mb-1">Current Streak</p>
       <p class="font-display font-extrabold text-2xl text-gj-text">{{ data().totals.streakDays }}</p>
       <p class="text-xs text-gj-muted mt-1">days in a row</p>
     </div>
 
-    <div class="rounded-lg bg-gj-surface border border-gj-border p-4">
-      <div class="flex items-start justify-between mb-3">
-        <p class="text-xs font-medium uppercase tracking-[0.05em] text-gj-muted">Songs Learned</p>
-        <i class="pi pi-headphones text-gj-muted text-sm"></i>
+    <div class="rounded-lg bg-gj-surface border border-gj-border p-5">
+      <div class="w-10 h-10 rounded-full bg-gj-accent/10 flex items-center justify-center mb-3">
+        <i class="pi pi-star text-gj-accent text-base"></i>
       </div>
+      <p class="text-xs font-medium text-gj-muted mb-1">Songs Learned</p>
       <p class="font-display font-extrabold text-2xl text-gj-text">{{ data().songsLearned }}</p>
       <p class="text-xs text-gj-muted mt-1">in your library</p>
     </div>
@@ -63,9 +71,10 @@
   <section class="rounded-lg bg-gj-surface border border-gj-border overflow-hidden">
 
     <div class="flex items-center justify-between px-5 py-4 border-b border-gj-border">
-      <h2 class="text-xs font-medium uppercase tracking-[0.05em] text-gj-muted">Recent Sessions</h2>
-      <a routerLink="/app/sessions" class="text-xs text-gj-accent hover:underline">
-        View all sessions →
+      <h2 class="text-sm font-semibold text-gj-text">Recent Sessions</h2>
+      <a routerLink="/app/sessions"
+         class="flex items-center gap-1 text-xs text-gj-accent hover:underline">
+        View all sessions <i class="pi pi-chevron-right text-xs"></i>
       </a>
     </div>
 
@@ -82,17 +91,17 @@
           <li [class.border-b]="!last" class="border-gj-border">
             <a
               [routerLink]="['/app/sessions', session.id]"
-              class="flex items-center gap-4 px-5 py-3 hover:bg-gj-background transition-colors duration-150"
+              class="flex items-center gap-4 px-5 py-3.5 hover:bg-gj-background transition-colors duration-150"
             >
               <!-- Icon -->
-              <span class="w-8 h-8 rounded-md bg-gj-background border border-gj-border
+              <span class="w-9 h-9 rounded-full bg-gj-accent/10 border border-gj-accent/20
                            flex items-center justify-center shrink-0">
-                <i class="pi pi-music text-gj-muted text-xs"></i>
+                <i class="pi pi-music text-gj-accent text-sm"></i>
               </span>
 
               <!-- Name + intent -->
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gj-text truncate">{{ session.whatToPractice }}</p>
+                <p class="text-sm font-semibold text-gj-text truncate">{{ session.whatToPractice }}</p>
                 <p class="text-xs text-gj-muted truncate">{{ session.sessionIntent }}</p>
               </div>
 
@@ -101,8 +110,8 @@
                 <span class="text-xs text-gj-muted hidden sm:block">
                   {{ session.startedAt | date:'MMM d, y' }}
                 </span>
-                <span class="inline-flex items-center rounded-full bg-gj-accent/10 text-gj-accent
-                             text-xs font-medium px-2.5 py-0.5 tabular-nums">
+                <span class="inline-flex items-center rounded-full bg-gj-accent text-white
+                             text-xs font-semibold px-2.5 py-0.5 tabular-nums">
                   {{ session.durationMs / 60000 | number:'1.0-0' }}m
                 </span>
               </div>
