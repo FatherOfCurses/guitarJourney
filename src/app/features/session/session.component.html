@@ -84,10 +84,27 @@
               </div>
             }
 
-            <div id="sessionModeChoice" class="mt-4">
-              <p class="text-sm text-neutral-700 mb-2">Do you want to add practice resources?</p>
-              <p-button id="addResources" type="button" (click)="addResourcesToSession()">Yes</p-button>
-            </div>
+          </div>
+
+          <!-- Practice Resources -->
+          <div class="border-t border-[var(--gj-border)] pt-4">
+            <p class="text-xs font-medium text-[var(--gj-muted)] uppercase tracking-[0.05em] mb-3">
+              Practice Resources
+            </p>
+
+            @if (pendingResources().length > 0) {
+              <div class="space-y-2 mb-4">
+                @for (resource of pendingResources(); track resource.url) {
+                  <app-session-resource
+                    [resource]="$any(resource)"
+                    [showRemove]="true"
+                    (remove)="onResourceRemoved(resource.url)"
+                  />
+                }
+              </div>
+            }
+
+            <app-session-resource-picker (resourceAdded)="onResourceAdded($event)" />
           </div>
 
           <div class="flex items-center gap-3">
@@ -124,9 +141,16 @@
           </button>
         </div>
 
-        @if (resourcesAdded()) {
-          <div id="resourcesSection" class="pt-4 border-t border-neutral-200">
-            <!--  <app-session-resource></app-session-resource> -->
+        @if (pendingResources().length > 0) {
+          <div id="resourcesSection" class="pt-4 border-t border-[var(--gj-border)]">
+            <p class="text-xs font-medium text-[var(--gj-muted)] uppercase tracking-[0.05em] mb-3">
+              Your Resources
+            </p>
+            <div class="space-y-3">
+              @for (resource of pendingResources(); track resource.url) {
+                <app-session-resource [resource]="$any(resource)" [showRemove]="false" />
+              }
+            </div>
           </div>
         }
       </div>

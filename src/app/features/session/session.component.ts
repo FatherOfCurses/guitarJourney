@@ -6,12 +6,14 @@ import { SessionService } from '@services/session.service';
 import { Router } from '@angular/router';
 import { ResourceService } from '../../services/resource.service';
 import { SessionResource } from '../../models/session-resource';
+import { SessionResourcePickerComponent } from './session-resource-picker/session-resource-picker.component';
+import { SessionResourceComponent } from './session-resource/session-resource.component';
 export type SessionPhase = 'Before' | 'During' | 'After';
 
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule, SessionResourcePickerComponent, SessionResourceComponent],
   templateUrl: './session.component.html',
 })
 export class SessionComponent {
@@ -25,10 +27,6 @@ export class SessionComponent {
   // Session phase for the @switch in the template
   private _status = signal<SessionPhase>('Before');
   status = this._status.asReadonly();
-
-  // Track whether user opted to add resources (your HTML checks resourcesAdded())
-  private _resourcesAdded = signal(false);
-  resourcesAdded = this._resourcesAdded.asReadonly();
 
   // Pending resources staged before session save
   private _pendingResources = signal<Omit<SessionResource, 'id' | 'pinnedAt'>[]>([]);
@@ -99,10 +97,6 @@ export class SessionComponent {
   get prePracticeForm() { return this.beforeForm; }
 
   // ---------- TEMPLATE CALLED HELPERS ----------
-  addResourcesToSession() {
-    this._resourcesAdded.set(true);
-  }
-
   onResourceAdded(resource: Omit<SessionResource, 'id' | 'pinnedAt'>): void {
     if (this._pendingResources().some(r => r.url === resource.url)) return;
     this._pendingResources.update(arr => [...arr, resource]);

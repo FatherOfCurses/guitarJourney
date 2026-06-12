@@ -1,6 +1,7 @@
 // session.component.spec.ts
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { SessionComponent } from './session.component';
 import { of, Subject } from 'rxjs';
 import { convertToParamMap } from '@angular/router';
@@ -55,6 +56,7 @@ describe('SessionComponent (template-driven behaviors)', () => {
       imports: [SessionComponent],
       // Ignore unknown PrimeNG elements/directives used in the template (pInputText, pInputTextarea, p-button)
       providers: [
+        provideNoopAnimations(),
         { provide: SessionService, useValue: sessionSvcMock },
         { provide: ResourceService, useValue: resourceSvcMock },
       ],
@@ -118,14 +120,18 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.status()).toBe('During');
     });
 
-    /* TODO: Enable this test once the addResourcesToSession() method is implemented
-    it('clicking "Yes" to add resources calls addResourcesToSession()', () => {
-      const { fixture, cmp } = createFixtureWithStatus('Before');
-      const addBtn = fixture.debugElement.query(By.css('#addResources'))?.nativeElement as HTMLButtonElement;
-      addBtn.click();
-      fixture.detectChanges();
+    it('renders app-session-resource-picker in the Before phase', () => {
+      const { fixture } = createFixtureWithStatus('Before');
+      expect(fixture.debugElement.query(By.css('app-session-resource-picker'))).toBeTruthy();
     });
-    */
+
+    it('shows app-session-resource with remove button for each pending resource', () => {
+      const { fixture, cmp } = createFixtureWithStatus('Before');
+      cmp.onResourceAdded({ type: 'pdf', url: 'https://example.com/tab.pdf', label: 'Tab' });
+      fixture.detectChanges();
+      const resourceEls = fixture.debugElement.queryAll(By.css('app-session-resource'));
+      expect(resourceEls.length).toBe(1);
+    });
   });
 
   describe('DURING state', () => {
@@ -142,17 +148,18 @@ describe('SessionComponent (template-driven behaviors)', () => {
 
       expect(cmp.status()).toBe('After');});
 
-    /* TODO: Enable this test once the resourcesAdded() signal and addResourcesToSession() method are implemented
-    it('renders the resources section when resourcesAdded() is true', () => {
-      const { fixture, cmp } = createFixtureWithStatus('During');
-      // Flip the signal and re-render
-      //cmp.resourcesAdded = jest.fn(() => true);
+    it('shows #resourcesSection in During phase when there are pending resources', () => {
+      const { fixture, cmp } = createFixtureWithStatus('Before');
+      cmp.onResourceAdded({ type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'Lesson' });
+      cmp.start();
       fixture.detectChanges();
-
-      const resources = fixture.debugElement.query(By.css('#resourcesSection'))?.nativeElement as HTMLElement;
-      expect(resources).toBeTruthy();
+      expect(fixture.debugElement.query(By.css('#resourcesSection'))).toBeTruthy();
     });
-    */
+
+    it('hides #resourcesSection in During phase when no pending resources', () => {
+      const { fixture } = createFixtureWithStatus('During');
+      expect(fixture.debugElement.query(By.css('#resourcesSection'))).toBeNull();
+    });
   });
 
   describe('AFTER state', () => {
