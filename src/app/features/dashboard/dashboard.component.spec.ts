@@ -50,12 +50,16 @@ describe('DashboardComponent', () => {
       id: 'last-1',
       startedAt: new Date('2025-09-08T14:00:00-04:00'),
       durationMs: 45 * 60_000,
+      whatToPractice: 'Chord changes',
+      sessionIntent: 'Clean transitions',
     },
-    totals: { minutes: 120, sessionCount: 3, streakDays: 2 },
+    recentSessions: [],
+    totals: { minutes: 120, sessionCount: 3, streakDays: 2, weekSessionCount: 1 },
     week: {
       '2025-09-08': 15,
       '2025-09-09': 45,
     },
+    songsLearned: 0,
   };
 
   let mockCarouselService: { getCarouselItems: jest.Mock };
@@ -89,8 +93,10 @@ describe('DashboardComponent', () => {
               dashboard: fixtureData
                 ? ({
                     lastSession: fixtureData.lastSession ?? DASHBOARD.lastSession,
+                    recentSessions: fixtureData.recentSessions ?? DASHBOARD.recentSessions,
                     totals: fixtureData.totals ?? DASHBOARD.totals,
                     week: fixtureData.week ?? DASHBOARD.week,
+                    songsLearned: fixtureData.songsLearned ?? DASHBOARD.songsLearned,
                   } as DashboardData)
                 : (DASHBOARD as DashboardData),
             }),
@@ -124,6 +130,16 @@ describe('DashboardComponent', () => {
   it('computes weekTotal from week record', () => {
     const { cmp } = create();
     expect(cmp.weekTotal()).toBe(15 + 45);
+  });
+
+  it('formats hoursMinutes as Xh Ym when total >= 60 minutes', () => {
+    const { cmp } = create({ fixtureData: { totals: { minutes: 90, sessionCount: 3, streakDays: 2, weekSessionCount: 1 } } });
+    expect(cmp.hoursMinutes()).toBe('1h 30m');
+  });
+
+  it('formats hoursMinutes as Ym when total < 60 minutes', () => {
+    const { cmp } = create({ fixtureData: { totals: { minutes: 45, sessionCount: 3, streakDays: 2, weekSessionCount: 1 } } });
+    expect(cmp.hoursMinutes()).toBe('45m');
   });
 
   it('returns 0 weekTotal when week is empty/undefined', () => {
@@ -164,17 +180,12 @@ describe('DashboardComponent', () => {
       expect(cmp.carouselItems()).toHaveLength(2);
     });
 
-    it('logs error and keeps items empty when load fails', async () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+    it('keeps items empty when load fails (carousel is optional — fails silently)', async () => {
       const { fixture, cmp } = create({ carouselError: new Error('network') });
 
       await flushPromises();
       fixture.detectChanges();
 
-      expect(consoleSpy).toHaveBeenCalledWith(
-        'Failed to load carousel items:',
-        expect.any(Error),
-      );
       expect(cmp.carouselItems()).toHaveLength(0);
     });
   });
