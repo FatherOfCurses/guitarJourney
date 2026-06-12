@@ -1,33 +1,95 @@
-<!-- Sticky top bar -->
-<header class="sticky top-0 z-50 bg-[var(--gj-surface)]/90 backdrop-blur border-b border-[var(--gj-border)]">
-    <div class="mx-auto max-w-6xl px-4">
-      <p-menubar [model]="items()">
-        <ng-template pTemplate="start">
-          <a routerLink="/" class="font-semibold text-neutral-900 hover:opacity-80">Guitar Journey</a>
-        </ng-template>
-  
-        <ng-template pTemplate="end">
-          <p-button
-            label="Account"
-            icon="pi pi-user"
-            styleClass="p-button-text"
-            (onClick)="toggleUserMenu($event)"
-          ></p-button>
-  
-          <!-- Popup TieredMenu for user actions -->
-          <p-tieredMenu
-            #userMenu
-            [model]="userItems()"
-            [popup]="true"
-            appendTo="body"
-          ></p-tieredMenu>
-        </ng-template>
-      </p-menubar>
+<div class="flex h-screen overflow-hidden">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────── -->
+  <aside
+    class="relative flex flex-col flex-shrink-0 bg-gj-sidebar overflow-hidden transition-[width] duration-300 ease-in-out"
+    [style.width.px]="collapsed() ? 56 : 220"
+    style="box-shadow: inset 0 0 0 6px rgba(255,255,255,0.06), inset 0 0 0 8px rgba(0,0,0,0.18);"
+  >
+
+    <!-- Leather grain texture -->
+    <svg class="absolute inset-0 w-full h-full pointer-events-none" aria-hidden="true"
+         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <filter id="gj-grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65 0.65" numOctaves="3" stitchTiles="stitch"/>
+        <feColorMatrix type="saturate" values="0"/>
+      </filter>
+      <rect width="100%" height="100%" filter="url(#gj-grain)" opacity="0.07"/>
+    </svg>
+
+    <!-- Wordmark -->
+    <div class="relative flex items-center justify-center min-h-[25vh] px-3 select-none shrink-0
+                border-b border-white/10">
+      @if (!collapsed()) {
+        <div class="text-center leading-tight">
+          <div class="font-display font-extrabold text-2xl tracking-[0.25em] uppercase text-gj-sidebar-text">
+            Guitar
+          </div>
+          <div class="text-gj-sidebar-muted text-sm my-2">♦</div>
+          <div class="font-display font-extrabold text-2xl tracking-[0.25em] uppercase text-gj-sidebar-text">
+            Journey
+          </div>
+        </div>
+      } @else {
+        <div class="font-display font-extrabold text-base tracking-widest text-gj-sidebar-text">GJ</div>
+      }
     </div>
-  </header>
-  
-  <!-- Page content -->
-  <main class="mx-auto max-w-6xl px-4 py-6">
+
+    <!-- Nav -->
+    <nav class="relative flex-1 flex flex-col gap-1 px-2 pt-2">
+      @for (item of navItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive
+          #rla="routerLinkActive"
+          [routerLinkActiveOptions]="{ exact: false }"
+          [ngClass]="rla.isActive
+            ? 'bg-gj-accent text-gj-accent-text'
+            : 'text-gj-sidebar-text hover:bg-white/10'"
+          class="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150"
+          [attr.title]="collapsed() ? item.label : null"
+        >
+          <i [class]="item.icon + ' text-base shrink-0'"></i>
+          @if (!collapsed()) {
+            <span>{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <!-- Footer -->
+    <div class="relative shrink-0 px-2 pb-4 pt-3 border-t border-white/10">
+      <button
+        type="button"
+        (click)="toggleSidebar()"
+        class="flex items-center gap-3 w-full px-3 py-2 rounded-md text-sm font-medium
+               text-gj-sidebar-muted hover:bg-white/10 transition-colors duration-150 mb-1"
+        [attr.title]="collapsed() ? 'Expand sidebar' : null"
+      >
+        <i [class]="(collapsed() ? 'pi pi-chevron-right' : 'pi pi-chevron-left') + ' text-base shrink-0'"></i>
+        @if (!collapsed()) {
+          <span>Collapse</span>
+        }
+      </button>
+
+      <button
+        type="button"
+        (click)="onSignOut()"
+        class="flex items-center gap-3 w-full px-3 py-2 rounded-md text-sm font-medium
+               text-gj-sidebar-muted hover:bg-white/10 transition-colors duration-150"
+        [attr.title]="collapsed() ? 'Sign out' : null"
+      >
+        <i class="pi pi-sign-out text-base shrink-0"></i>
+        @if (!collapsed()) {
+          <span>Sign out</span>
+        }
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ───────────────────────────────────────── -->
+  <main class="flex-1 min-w-0 overflow-y-auto p-6 bg-gj-background">
     <router-outlet />
   </main>
-  
+
+</div>

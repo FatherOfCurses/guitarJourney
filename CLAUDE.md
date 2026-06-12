@@ -5,7 +5,7 @@ Do not deviate without explicit user approval.
 In QA mode, flag any code that doesn't match DESIGN.md.
 
 Key rules derived from DESIGN.md:
-- Fonts: Cabinet Grotesk (display/hero), DM Sans (body/UI) — never Inter, Roboto, or system-ui as primary
+- Fonts: Wix Madefor Text (display/hero), DM Sans (body/UI) — never Inter, Roboto, or system-ui as primary
 - Accent: #C4622D burnt sienna — not indigo, not purple, no gradient CTAs
 - Background: #F5F0E8 cream — not pure white (#FFFFFF) for app surfaces
 - Sidebar: #4E2A14 leather brown — the Guitar Journey identity

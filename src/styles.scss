@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+
 @tailwind base;
 @tailwind components;
 
@@ -6,7 +7,7 @@
 
 @tailwind utilities;
 
-/* Guitar Journey Design Tokens */
+/* ── Guitar Journey Design Tokens ───────────────────────────── */
 :root {
   --gj-background:    #F5F0E8;
   --gj-surface:       #FDFAF4;
@@ -19,10 +20,17 @@
   --gj-border:        #E8E0D0;
   --gj-sidebar-text:  #F5F0E8;
   --gj-sidebar-muted: #C4A882;
+
+  --p-font-family: 'DM Sans', sans-serif;
 }
 
+/* ── Base typography ─────────────────────────────────────────── */
 body {
   background-color: var(--gj-background);
   color: var(--gj-text);
   font-family: 'DM Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Wix Madefor Text', sans-serif;
 }

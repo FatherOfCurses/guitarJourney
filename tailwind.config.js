@@ -15,9 +15,11 @@ module.exports = {
         'gj-accent-hover': 'var(--gj-accent-hover)',
         'gj-accent-text':  'var(--gj-accent-text)',
         'gj-border':       'var(--gj-border)',
+        'gj-sidebar-text': 'var(--gj-sidebar-text)',
+        'gj-sidebar-muted':'var(--gj-sidebar-muted)',
       },
       fontFamily: {
-        display: ['"Cabinet Grotesk"', 'sans-serif'],
+        display: ['"Wix Madefor Text"', 'sans-serif'],
         sans:    ['"DM Sans"', 'sans-serif'],
       },
     },

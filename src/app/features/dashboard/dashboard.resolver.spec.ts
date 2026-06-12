@@ -69,13 +69,16 @@ describe('DashboardResolver', () => {
     (authState as jest.Mock).mockReturnValue(of({ uid: 'u1' }));
 
     // Three sessions: Mon(9/08)=30m (today), Sun(9/07)=20m, Sat(9/06)=10m
-    (getDocs as jest.Mock).mockResolvedValue({
-      docs: [
-        mkDoc('a', '2025-09-08', 30), // latest
-        mkDoc('b', '2025-09-07', 20),
-        mkDoc('c', '2025-09-06', 10),
-      ],
-    });
+    // Second getDocs call is for the songs collection (returns size)
+    (getDocs as jest.Mock)
+      .mockResolvedValueOnce({
+        docs: [
+          mkDoc('a', '2025-09-08', 30), // latest
+          mkDoc('b', '2025-09-07', 20),
+          mkDoc('c', '2025-09-06', 10),
+        ],
+      })
+      .mockResolvedValueOnce({ size: 5 });
 
     const resolver = TestBed.inject(DashboardResolver);
     const data = await resolver.resolve();
@@ -96,11 +99,14 @@ describe('DashboardResolver', () => {
     expect(weekSum).toBe(30);
 
     // Ensure we actually used the query helpers (coverage of those call sites)
-    expect(collection).toHaveBeenCalledTimes(1);
+    // collection is called twice: once for sessions, once for songs
+    expect(collection).toHaveBeenCalledTimes(2);
     expect(orderBy).toHaveBeenCalledWith('date', 'desc');
     expect(limit).toHaveBeenCalledWith(365);
     expect(query).toHaveBeenCalledTimes(1);
-    expect(getDocs).toHaveBeenCalledTimes(1);
+    // getDocs is called twice: sessions query + songs collection
+    expect(getDocs).toHaveBeenCalledTimes(2);
+    expect(data.songsLearned).toBe(5);
   });
 
   it('throws when there is no authed user (authState emits null)', async () => {

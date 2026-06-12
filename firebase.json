@@ -86,7 +86,7 @@
     ]
   },
   "hosting": {
-    "public": "public",
+    "public": "dist/guitar-practice-journal",
     "ignore": [
       "firebase.json",
       "**/.*",
