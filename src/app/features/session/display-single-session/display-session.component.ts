@@ -45,4 +45,8 @@ export class DisplaySessionComponent {
   returnToTable(): void {
     this.router.navigate(['/app','sessions']);
   }
+
+  goToDashboard(): void {
+    this.router.navigate(['/app', 'dashboard']);
+  }
 }

@@ -1,57 +1,78 @@
 <div class="space-y-4">
 
-  <!-- ── YOUR LIBRARY ─────────────────────────────────────── -->
+  <!-- ── SEARCH EXISTING ──────────────────────────────────── -->
   <div>
-    <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">Your Library</p>
+    <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">Search Existing</p>
 
     @if (libraryLoading()) {
-      <div class="space-y-2">
-        @for (_ of [1, 2, 3]; track $index) {
-          <p-skeleton height="40px" />
-        }
-      </div>
-    } @else if (allResources().length === 0) {
-      <p-message severity="info">No saved resources yet — add a YouTube tutorial, tab, or PDF below and it'll be waiting here next time.</p-message>
+      <p-skeleton height="40px" />
     } @else {
-      <!-- Filters -->
-      <div class="space-y-2 mb-2">
-        <input
-          type="text"
-          pInputText
-          placeholder="Search by name…"
-          [(ngModel)]="labelFilter"
-          class="w-full"
-        />
-        <p-autocomplete
-          [(ngModel)]="tagFilter"
-          [multiple]="true"
-          [dropdown]="false"
-          [suggestions]="[]"
-          placeholder="Filter by tag…"
-          class="w-full"
-        />
-      </div>
+      <input
+        type="text"
+        pInputText
+        placeholder="Search by name, URL or tag…"
+        [(ngModel)]="searchQuery"
+        class="w-full"
+      />
 
-      @if (filteredResources.length === 0) {
-        <p-message severity="warn">No resources match your filters.</p-message>
-      } @else {
-        <p-listbox
-          [options]="filteredResources"
-          optionLabel="label"
-          [style]="{ 'width': '100%' }"
-          (onChange)="onLibrarySelect($event.value)"
-        />
+      @if (searchQuery.length >= 3) {
+        @if (searchResults.length === 0) {
+          <p-message severity="info" class="mt-2 block">No matching resources found.</p-message>
+        } @else {
+          <p-table [value]="searchResults" class="mt-2" [tableStyle]="{ 'min-width': '100%' }">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Label</th>
+                <th>Type</th>
+                <th></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-resource>
+              <tr>
+                <td class="text-sm">{{ resource.label }}</td>
+                <td class="text-sm text-neutral-500">{{ resource.type }}</td>
+                <td class="text-right">
+                  <p-button
+                    label="Add"
+                    type="button"
+                    [text]="true"
+                    size="small"
+                    (click)="onLibrarySelect(resource)"
+                  />
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        }
       }
     }
   </div>
 
-  <hr class="border-t border-neutral-200">
-
   <!-- ── ADD NEW ───────────────────────────────────────────── -->
   <div>
-    <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">Add New</p>
-    <div class="space-y-3">
+    <p-button
+      label="Add New Resource"
+      icon="pi pi-plus"
+      type="button"
+      (click)="showAddDialog = true"
+    />
+  </div>
 
+</div>
+
+<!-- ── ADD NEW DIALOG ────────────────────────────────────── -->
+<p-dialog
+  header="Add New Resource"
+  [(visible)]="showAddDialog"
+  [modal]="true"
+  [style]="{ width: '480px' }"
+  [breakpoints]="{ '640px': '95vw' }"
+  [draggable]="false"
+>
+  <div class="space-y-4 py-2">
+
+    <div>
+      <label class="block text-sm font-medium text-neutral-800 mb-1">Type</label>
       <p-select
         [(ngModel)]="newType"
         [options]="typeOptions"
@@ -60,51 +81,68 @@
         class="w-full"
         (onChange)="onTypeChange()"
       />
+    </div>
 
+    <div>
+      <label class="block text-sm font-medium text-neutral-800 mb-1">URL</label>
       <input
         type="text"
         pInputText
-        placeholder="URL"
+        placeholder="https://..."
         [(ngModel)]="newUrl"
         class="w-full"
         (blur)="onUrlBlur()"
       />
+    </div>
 
-      @if (oEmbedLoading()) {
-        <p-skeleton height="112px" />
-      } @else if (oEmbedThumbnail()) {
-        <img
-          [src]="oEmbedThumbnail()"
-          alt="Video thumbnail"
-          class="w-full object-cover rounded-xl"
-        />
-      }
+    @if (oEmbedLoading()) {
+      <p-skeleton height="112px" />
+    } @else if (oEmbedThumbnail()) {
+      <img
+        [src]="oEmbedThumbnail()"
+        alt="Video thumbnail"
+        class="w-full object-cover rounded-xl"
+      />
+    }
 
+    <div>
+      <label class="block text-sm font-medium text-neutral-800 mb-1">Label</label>
       <input
         type="text"
         pInputText
-        placeholder="Label"
+        placeholder="Descriptive name"
         [(ngModel)]="newLabel"
         class="w-full"
       />
+    </div>
 
+    <div>
+      <label class="block text-sm font-medium text-neutral-800 mb-1">Tags</label>
       <p-autocomplete
         [ngModel]="newTags"
         (ngModelChange)="newTags = $event"
         [multiple]="true"
         [dropdown]="false"
         [suggestions]="tagSuggestions"
-        placeholder="Tags (press Enter to add)"
+        placeholder="Press Enter to add"
         class="w-full"
       />
-
-      <p-button
-        label="Add"
-        type="button"
-        [disabled]="!canAdd"
-        (click)="onAdd()"
-      />
     </div>
+
   </div>
 
-</div>
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Cancel"
+      type="button"
+      [text]="true"
+      (click)="showAddDialog = false"
+    />
+    <p-button
+      label="Add Resource"
+      type="button"
+      [disabled]="!canAdd"
+      (click)="onAdd()"
+    />
+  </ng-template>
+</p-dialog>

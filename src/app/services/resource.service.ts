@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collectionData } from '@angular/fire/firestore';
-import { Auth } from '@angular/fire/auth';
 import {
-  getFirestore,
+  Firestore,
+  collectionData,
   collection,
   doc,
   query,
@@ -15,7 +14,8 @@ import {
   deleteDoc,
   serverTimestamp,
   increment,
-} from 'firebase/firestore';
+} from '@angular/fire/firestore';
+import { Auth } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { Resource } from '../models/resource';
 import { SessionResource } from '../models/session-resource';
@@ -33,7 +33,7 @@ export class ResourceService {
 
   getResources(): Observable<Resource[]> {
     const uid = this.uid();
-    const db = getFirestore();
+    const db = this.fs;
     const col = collection(db, `users/${uid}/resources`).withConverter(resourceConverter);
     const q = query(col, orderBy('createdAt', 'desc'), limit(200));
     return collectionData(q, { idField: 'id' }) as unknown as Observable<Resource[]>;
@@ -41,7 +41,7 @@ export class ResourceService {
 
   getSessionResources(sessionId: string): Observable<SessionResource[]> {
     const uid = this.uid();
-    const db = getFirestore();
+    const db = this.fs;
     const col = collection(db, `users/${uid}/sessions/${sessionId}/resources`).withConverter(
       sessionResourceConverter
     );
@@ -54,7 +54,7 @@ export class ResourceService {
     resources: Omit<SessionResource, 'id' | 'pinnedAt'>[]
   ): Promise<void> {
     const uid = this.uid();
-    const db = getFirestore();
+    const db = this.fs;
 
     for (const resource of resources) {
       let globalResourceId: string;
@@ -107,7 +107,7 @@ export class ResourceService {
 
   async deleteResource(resourceId: string): Promise<void> {
     const uid = this.uid();
-    const db = getFirestore();
+    const db = this.fs;
     await deleteDoc(doc(db, `users/${uid}/resources/${resourceId}`));
   }
 
@@ -116,13 +116,13 @@ export class ResourceService {
     changes: Partial<Pick<Resource, 'label' | 'tags'>>
   ): Promise<void> {
     const uid = this.uid();
-    const db = getFirestore();
+    const db = this.fs;
     await updateDoc(doc(db, `users/${uid}/resources/${resourceId}`), changes);
   }
 
   async touchResource(resourceId: string): Promise<void> {
     const uid = this.uid();
-    const db = getFirestore();
+    const db = this.fs;
     await updateDoc(doc(db, `users/${uid}/resources/${resourceId}`), {
       useCount: increment(1),
       lastUsedAt: serverTimestamp(),

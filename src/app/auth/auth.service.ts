@@ -1,5 +1,5 @@
 // src/app/auth/auth.service.ts
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal, EnvironmentInjector, runInInjectionContext } from '@angular/core';
 import {
   Auth,
   User,
@@ -17,6 +17,7 @@ import { from } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private auth = inject(Auth);
+  private injector = inject(EnvironmentInjector);
   private _user = signal<User | null>(null);
   /** Current Firebase user (signal) */
   readonly user = computed(() => this._user());
@@ -28,19 +29,18 @@ export class AuthService {
   /** Google OAuth sign-in (popup) */
   signInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    return from(signInWithPopup(this.auth, provider));
+    return from(runInInjectionContext(this.injector, () => signInWithPopup(this.auth, provider)));
   }
 
   signInWithEmail(email: string, password: string) {
-    return from(signInWithEmailAndPassword(this.auth, email, password));
+    return from(runInInjectionContext(this.injector, () => signInWithEmailAndPassword(this.auth, email, password)));
   }
+
   /** Create account with email + password (optional displayName) */
   async registerWithEmail(email: string, password: string, displayName?: string) {
-    const cred = await createUserWithEmailAndPassword(this.auth, email, password);
+    const cred = await runInInjectionContext(this.injector, () => createUserWithEmailAndPassword(this.auth, email, password));
     if (displayName) {
       await updateProfile(cred.user, { displayName });
-      // onAuthStateChanged will update the signal automatically,
-      // but we can also set it to reflect the displayName immediately:
       this._user.set({ ...cred.user } as User);
     }
     return cred;
@@ -48,12 +48,12 @@ export class AuthService {
 
   /** Send password reset email */
   sendPasswordReset(email: string) {
-    return sendPasswordResetEmail(this.auth, email);
+    return runInInjectionContext(this.injector, () => sendPasswordResetEmail(this.auth, email));
   }
 
   /** Sign out */
   signOut() {
-    return from(signOut(this.auth));
+    return from(runInInjectionContext(this.injector, () => signOut(this.auth)));
   }
 
   /** Convenience getters */

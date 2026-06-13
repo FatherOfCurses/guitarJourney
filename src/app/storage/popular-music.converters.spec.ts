@@ -14,6 +14,12 @@ describe('Popular music converters', () => {
       expect('id' in (doc as any)).toBe(false);
     });
 
+    it('toFirestore falls back to name.toLowerCase() when sortName is undefined', () => {
+      const artist = { name: 'The Beatles' } as PopularArtist;
+      const doc = popularArtistConverter.toFirestore(artist);
+      expect(doc).toEqual({ name: 'The Beatles', sortName: 'the beatles' });
+    });
+
     it('fromFirestore returns { id, ...data }', () => {
       const snap = { id: 'the-beatles', data: () => ({ name: 'The Beatles', sortName: 'the beatles' }) } as any;
       const result = popularArtistConverter.fromFirestore(snap);
@@ -29,6 +35,12 @@ describe('Popular music converters', () => {
       expect('id' in (doc as any)).toBe(false);
     });
 
+    it('toFirestore falls back to title.toLowerCase() when sortTitle is undefined', () => {
+      const album = { title: 'Abbey Road', artist: 'The Beatles' } as PopularAlbum;
+      const doc = popularAlbumConverter.toFirestore(album);
+      expect(doc).toEqual({ title: 'Abbey Road', artist: 'The Beatles', sortTitle: 'abbey road' });
+    });
+
     it('fromFirestore returns { id, ...data }', () => {
       const snap = { id: 'abbey-road', data: () => ({ title: 'Abbey Road', artist: 'The Beatles', sortTitle: 'abbey road' }) } as any;
       const result = popularAlbumConverter.fromFirestore(snap);
@@ -42,6 +54,12 @@ describe('Popular music converters', () => {
       const doc = popularSongConverter.toFirestore(song);
       expect(doc).toEqual({ title: 'Blackbird', artist: 'The Beatles', sortTitle: 'blackbird' });
       expect('id' in (doc as any)).toBe(false);
+    });
+
+    it('toFirestore falls back to title.toLowerCase() when sortTitle is undefined', () => {
+      const song = { title: 'Blackbird', artist: 'The Beatles' } as PopularSong;
+      const doc = popularSongConverter.toFirestore(song);
+      expect(doc).toEqual({ title: 'Blackbird', artist: 'The Beatles', sortTitle: 'blackbird' });
     });
 
     it('fromFirestore returns { id, ...data }', () => {
