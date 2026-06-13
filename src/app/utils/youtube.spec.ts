@@ -32,6 +32,14 @@ describe('extractYouTubeEmbedUrl', () => {
   it('returns null for a YouTube URL with no video ID', () => {
     expect(extractYouTubeEmbedUrl('https://www.youtube.com/watch')).toBeNull();
   });
+
+  it('returns null for a /shorts/ URL with no video ID', () => {
+    expect(extractYouTubeEmbedUrl('https://www.youtube.com/shorts/')).toBeNull();
+  });
+
+  it('returns null for a youtu.be URL with empty path', () => {
+    expect(extractYouTubeEmbedUrl('https://youtu.be/')).toBeNull();
+  });
 });
 
 describe('fetchYouTubeOEmbed', () => {

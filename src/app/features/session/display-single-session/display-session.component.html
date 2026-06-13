@@ -1,9 +1,10 @@
 <!-- display-session.component.html -->
+@let s = session();
 @if (loading()) {
   <p>Loading…</p>
 } @else if (hasError()) {
   <p class="text-red-600">Could not load the session.</p>
-} @else if (session()) {
+} @else if (s) {
   <div class="flex flex-col gap-4">
     <p-card>
       <ng-template pTemplate="header">
@@ -14,27 +15,30 @@
         <!-- Portrait mode: headings left, data right -->
         <dl class="grid grid-cols-1 md:grid-cols-[240px,1fr] gap-x-6 gap-y-3">
           <dt class="text-sm font-medium text-neutral-500">Date</dt>
-          <dd class="text-neutral-900">{{ session().date.toDate() | date:'MMM d, y'}}</dd>
+          <dd class="text-neutral-900">{{ s.date.toDate() | date:'MMM d, y'}}</dd>
 
           <dt class="text-sm font-medium text-neutral-500">Practice Time</dt>
-          <dd class="text-neutral-900">{{ session().practiceTime }}</dd>
+          <dd class="text-neutral-900">{{ s.practiceTime }}</dd>
 
           <dt class="text-sm font-medium text-neutral-500">What You Practiced</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ session().whatToPractice }}</dd>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ s.whatToPractice }}</dd>
 
           <dt class="text-sm font-medium text-neutral-500">Session Intent</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ session().sessionIntent }}</dd>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ s.sessionIntent }}</dd>
 
           <dt class="text-sm font-medium text-neutral-500">Reflection</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ session().postPracticeReflection }}</dd>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ s.postPracticeReflection }}</dd>
 
           <dt class="text-sm font-medium text-neutral-500">Goal for next time</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ session().goalForNextTime }}</dd>
+          <dd class="text-neutral-900 whitespace-pre-line">{{ s.goalForNextTime }}</dd>
         </dl>
       </ng-template>
 
       <ng-template pTemplate="footer">
-        <button pButton type="button" data-testid="back" (click)="returnToTable()" label="Back" name="back"></button>
+        <div class="flex gap-2">
+          <button pButton type="button" data-testid="back" (click)="returnToTable()" label="Back" name="back"></button>
+          <button pButton type="button" data-testid="dashboard" (click)="goToDashboard()" label="Dashboard" name="dashboard"></button>
+        </div>
       </ng-template>
     </p-card>
   </div>

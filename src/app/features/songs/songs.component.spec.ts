@@ -38,4 +38,14 @@ describe('SongsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('onRowSelect navigates to /app/songDetail/{id}', () => {
+    component.onRowSelect({ data: { id: 'song-42' } });
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/app', 'songDetail', 'song-42']);
+  });
+
+  it('addSong navigates to /app/newSong', () => {
+    component.addSong();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/app', 'newSong']);
+  });
 });

@@ -108,4 +108,13 @@ describe('AppShellComponent', () => {
     expect(signOut).toHaveBeenCalledWith(auth);
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
+
+  it('toggleSidebar flips collapsed signal each call', () => {
+    const cmp = fixture.componentInstance;
+    expect(cmp.collapsed()).toBe(false);
+    cmp.toggleSidebar();
+    expect(cmp.collapsed()).toBe(true);
+    cmp.toggleSidebar();
+    expect(cmp.collapsed()).toBe(false);
+  });
 });

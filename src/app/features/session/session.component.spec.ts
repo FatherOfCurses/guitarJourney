@@ -160,6 +160,16 @@ describe('SessionComponent (template-driven behaviors)', () => {
       const { fixture } = createFixtureWithStatus('During');
       expect(fixture.debugElement.query(By.css('#resourcesSection'))).toBeNull();
     });
+
+    it('timer increments elapsedSeconds every second', fakeAsync(() => {
+      const { cmp } = createFixtureWithStatus('During');
+      expect(cmp.elapsedSeconds()).toBe(0);
+      tick(1000);
+      expect(cmp.elapsedSeconds()).toBe(1);
+      tick(2000);
+      expect(cmp.elapsedSeconds()).toBe(3);
+      cmp.stopTimer();
+    }));
   });
 
   describe('AFTER state', () => {
@@ -254,6 +264,30 @@ describe('SessionComponent (template-driven behaviors)', () => {
       });
       expect(cmp.saving()).toBe(false);
       expect(cmp.loading()).toBe(false);
+      expect(navigate).toHaveBeenCalledWith(['/app']);
+    });
+
+    it('calls saveResources when there are pending resources', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+
+      const navigate = jest.fn();
+      (cmp as any).router = { navigate };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('sess-with-resources');
+
+      const resSvc = TestBed.inject(ResourceService) as any;
+      const saveSpy = jest.spyOn(resSvc, 'saveResources').mockResolvedValue(undefined);
+
+      primeValidForm(cmp);
+      cmp.onResourceAdded({ type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'Lesson' });
+
+      await cmp.onSubmit();
+
+      expect(saveSpy).toHaveBeenCalledWith('sess-with-resources', expect.arrayContaining([
+        expect.objectContaining({ url: 'https://www.youtube.com/watch?v=abc' }),
+      ]));
       expect(navigate).toHaveBeenCalledWith(['/app']);
     });
 

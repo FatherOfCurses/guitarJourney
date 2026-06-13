@@ -90,7 +90,7 @@
         @for (session of data().recentSessions; track session.id; let last = $last) {
           <li [class.border-b]="!last" class="border-gj-border">
             <a
-              [routerLink]="['/app/sessions', session.id]"
+              [routerLink]="['/app/sessionDetail', session.id]"
               class="flex items-center gap-4 px-5 py-3.5 hover:bg-gj-background transition-colors duration-150"
             >
               <!-- Icon -->

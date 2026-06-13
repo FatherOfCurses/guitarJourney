@@ -1,13 +1,14 @@
-import { Component, DestroyRef, EventEmitter, Output, inject, signal, computed } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Output, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { AutoComplete } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
+import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { Listbox } from 'primeng/listbox';
 import { Message } from 'primeng/message';
 import { Select } from 'primeng/select';
 import { Skeleton } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
 import { ResourceService } from '../../../services/resource.service';
 import { Resource } from '../../../models/resource';
 import { SessionResource } from '../../../models/session-resource';
@@ -18,7 +19,7 @@ type ResourceType = 'youtube' | 'pdf' | 'chord-sheet' | 'custom';
 @Component({
   selector: 'app-session-resource-picker',
   standalone: true,
-  imports: [FormsModule, AutoComplete, ButtonModule, InputTextModule, Listbox, Message, Select, Skeleton],
+  imports: [FormsModule, AutoComplete, ButtonModule, Dialog, InputTextModule, Message, Select, Skeleton, TableModule],
   templateUrl: './session-resource-picker.component.html',
 })
 export class SessionResourcePickerComponent {
@@ -27,34 +28,34 @@ export class SessionResourcePickerComponent {
 
   @Output() resourceAdded = new EventEmitter<Omit<SessionResource, 'id' | 'pinnedAt'>>();
 
-  // Library state
   private _allResources = signal<Resource[]>([]);
   private _libraryLoading = signal(true);
 
   readonly libraryLoading = this._libraryLoading.asReadonly();
-  readonly allResources = this._allResources.asReadonly();
 
-  // Filter state (plain properties — template ngModel binds directly)
-  labelFilter = '';
-  tagFilter: string[] = [];
+  // Search
+  searchQuery = '';
 
-  get filteredResources(): Resource[] {
-    const label = this.labelFilter.toLowerCase();
-    const tags = this.tagFilter;
+  get searchResults(): Resource[] {
+    const q = this.searchQuery.toLowerCase().trim();
+    if (q.length < 3) return [];
     return this._allResources()
-      .filter(r => (label ? r.label.toLowerCase().includes(label) : true))
-      .filter(r => (tags.length ? tags.every(t => r.tags?.includes(t)) : true))
-      .slice(0, 50);
+      .filter(r =>
+        r.label.toLowerCase().includes(q) ||
+        r.url.toLowerCase().includes(q) ||
+        (r.tags ?? []).some(t => t.toLowerCase().includes(q))
+      )
+      .slice(0, 20);
   }
 
-  // Add-new form state
+  // Add-new dialog
+  showAddDialog = false;
   newType: ResourceType = 'youtube';
   newUrl = '';
   newLabel = '';
   newTags: string[] = [];
   tagSuggestions: string[] = [];
 
-  // oEmbed state
   private _oEmbedLoading = signal(false);
   private _oEmbedThumbnail = signal<string | null>(null);
 
@@ -103,7 +104,7 @@ export class SessionResourcePickerComponent {
 
     const oembed = await fetchYouTubeOEmbed(url);
 
-    if (this.newUrl !== urlAtFetchStart) return; // stale response guard
+    if (this.newUrl !== urlAtFetchStart) return;
 
     this._oEmbedLoading.set(false);
     if (oembed) {
@@ -131,6 +132,7 @@ export class SessionResourcePickerComponent {
     this.newLabel = '';
     this.newTags = [];
     this._oEmbedThumbnail.set(null);
+    this.showAddDialog = false;
   }
 
   onLibrarySelect(resource: Resource): void {

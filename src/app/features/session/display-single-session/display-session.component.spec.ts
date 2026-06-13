@@ -16,7 +16,7 @@ describe('DisplaySessionComponent (standalone)', () => {
   // Session service mock with multiple possible method names to be robust
   const makeSession = (over: Partial<Session> = {}): Session => ({
     id: '123',
-    date: '2025-08-01',
+    date: { toDate: () => new Date('2025-08-01'), seconds: 0, nanoseconds: 0 } as any,
     practiceTime: 35,
     whatToPractice: 'Pentatonics',
     sessionIntent: 'Speed & accuracy',
@@ -31,6 +31,7 @@ describe('DisplaySessionComponent (standalone)', () => {
     getSessionById: jest.fn((id: string) => get$ ?? of(makeSession())),
     getById:         jest.fn((id: string) => get$ ?? of(makeSession())),
     findOne:         jest.fn((id: string) => get$ ?? of(makeSession())),
+    get$:            jest.fn((id: string) => get$ ?? of(makeSession())),
   };
 
   async function setup() {
@@ -107,6 +108,42 @@ describe('DisplaySessionComponent (standalone)', () => {
     expect(modes).toBeTruthy;
     const time = screen.findAllByDisplayValue('50 min');
     expect(time).toBeTruthy;
+  });
+
+  it('hasError is false before an id is emitted (sessionId is null)', async () => {
+    await setup();
+    // No id emitted yet — sessionId() is null, so hasError short-circuits to false
+    fixture.detectChanges();
+    expect(fixture.componentInstance.hasError()).toBe(false);
+  });
+
+  it('hasError is false when session loads successfully', async () => {
+    await setup();
+    emitId('abc');
+    get$.next(makeSession({ id: 'abc' }));
+    get$.complete();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.hasError()).toBe(false);
+  });
+
+  it('hasError is true when the service errors after an id is emitted', async () => {
+    await setup();
+    emitId('999');
+    get$.error(new Error('boom'));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.hasError()).toBe(true);
+  });
+
+  it('goToDashboard navigates to /app/dashboard', () => {
+    const navSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
+    fixture.componentInstance.goToDashboard();
+    expect(navSpy).toHaveBeenCalledWith(['/app', 'dashboard']);
+  });
+
+  it('returnToTable navigates to /app/sessions', () => {
+    const navSpy = jest.spyOn(router, 'navigate').mockResolvedValue(true as any);
+    fixture.componentInstance.returnToTable();
+    expect(navSpy).toHaveBeenCalledWith(['/app', 'sessions']);
   });
 
   //TODO: fix this test
