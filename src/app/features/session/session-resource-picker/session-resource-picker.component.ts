@@ -82,21 +82,21 @@ export class SessionResourcePickerComponent {
   }
 
   searchTitles(event: AutoCompleteCompleteEvent): void {
-    this.suggestionSvc.suggestTitles(event.query).subscribe(
-      results => this.titleSuggestions = results,
-    );
+    this.suggestionSvc.suggestTitles(event.query)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(results => (this.titleSuggestions = results));
   }
 
   searchArtists(event: AutoCompleteCompleteEvent): void {
-    this.suggestionSvc.suggestArtists(event.query).subscribe(
-      results => this.artistSuggestions = results,
-    );
+    this.suggestionSvc.suggestArtists(event.query)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(results => (this.artistSuggestions = results));
   }
 
   searchAlbums(event: AutoCompleteCompleteEvent): void {
-    this.suggestionSvc.suggestAlbums(event.query).subscribe(
-      results => this.albumSuggestions = results,
-    );
+    this.suggestionSvc.suggestAlbums(event.query)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(results => (this.albumSuggestions = results));
   }
 
   addNotationLink(): void {

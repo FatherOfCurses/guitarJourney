@@ -94,11 +94,11 @@
 
             @if (pendingResources().length > 0) {
               <div class="space-y-2 mb-4">
-                @for (resource of pendingResources(); track resource.url) {
+                @for (resource of pendingResources(); track resource.label) {
                   <app-session-resource
                     [resource]="$any(resource)"
                     [showRemove]="true"
-                    (remove)="onResourceRemoved(resource.url)"
+                    (remove)="onResourceRemoved(resource.label)"
                   />
                 }
               </div>
@@ -148,7 +148,7 @@
               Your Resources
             </p>
             <div class="space-y-3">
-              @for (resource of pendingResources(); track resource.url) {
+              @for (resource of pendingResources(); track resource.label) {
                 <app-session-resource [resource]="$any(resource)" [showRemove]="false" />
               }
             </div>

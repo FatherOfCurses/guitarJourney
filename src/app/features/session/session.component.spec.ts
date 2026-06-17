@@ -363,7 +363,7 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.pendingResources()[0].url).toBe(resource.url);
     });
 
-    it('onResourceAdded deduplicates by URL', () => {
+    it('onResourceAdded deduplicates by URL (or label when url is absent)', () => {
       const { cmp } = createFixtureWithStatus('Before');
       const resource = { type: 'youtube' as const, url: 'https://www.youtube.com/watch?v=abc', label: 'Test' };
       cmp.onResourceAdded(resource);
@@ -371,20 +371,20 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.pendingResources()).toHaveLength(1);
     });
 
-    it('onResourceRemoved removes a resource by URL', () => {
+    it('onResourceRemoved removes a resource by label', () => {
       const { cmp } = createFixtureWithStatus('Before');
       const r1 = { type: 'youtube' as const, url: 'https://www.youtube.com/watch?v=aaa', label: 'A' };
       const r2 = { type: 'pdf' as const, url: 'https://example.com/tab.pdf', label: 'B' };
       cmp.onResourceAdded(r1);
       cmp.onResourceAdded(r2);
-      cmp.onResourceRemoved(r1.url);
+      cmp.onResourceRemoved(r1.label);
       expect(cmp.pendingResources()).toHaveLength(1);
       expect(cmp.pendingResources()[0].url).toBe(r2.url);
     });
 
-    it('onResourceRemoved is a no-op when URL is not present', () => {
+    it('onResourceRemoved is a no-op when label is not present', () => {
       const { cmp } = createFixtureWithStatus('Before');
-      expect(() => cmp.onResourceRemoved('https://not-in-list.com')).not.toThrow();
+      expect(() => cmp.onResourceRemoved('not-in-list')).not.toThrow();
       expect(cmp.pendingResources()).toHaveLength(0);
     });
   });

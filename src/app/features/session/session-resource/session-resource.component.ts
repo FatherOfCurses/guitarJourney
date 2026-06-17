@@ -19,7 +19,7 @@ export class SessionResourceComponent {
 
   get safeEmbedUrl(): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
-      extractYouTubeEmbedUrl(this.resource.url ?? '')!
+      extractYouTubeEmbedUrl(this.resource.url ?? '') ?? ''
     );
   }
 }
