@@ -9,21 +9,21 @@
 
       <ng-template pTemplate="content">
         <dl class="grid grid-cols-1 md:grid-cols-[240px,1fr] gap-x-6 gap-y-3">
-          <dt class="text-sm font-medium text-neutral-500">Artist</dt>
-          <dd class="text-neutral-900">{{ song()!.artist }}</dd>
+          <dt class="text-sm font-medium text-[var(--gj-muted)]">Artist</dt>
+          <dd class="text-[var(--gj-text)]">{{ song()!.artist }}</dd>
 
           @if (song()!.album) {
-            <dt class="text-sm font-medium text-neutral-500">Album</dt>
-            <dd class="text-neutral-900">{{ song()!.album }}</dd>
+            <dt class="text-sm font-medium text-[var(--gj-muted)]">Album</dt>
+            <dd class="text-[var(--gj-text)]">{{ song()!.album }}</dd>
           }
 
           @if (song()!.genre) {
-            <dt class="text-sm font-medium text-neutral-500">Genre</dt>
-            <dd class="text-neutral-900">{{ song()!.genre }}</dd>
+            <dt class="text-sm font-medium text-[var(--gj-muted)]">Genre</dt>
+            <dd class="text-[var(--gj-text)]">{{ song()!.genre }}</dd>
           }
 
           @if (song()!.audioLink) {
-            <dt class="text-sm font-medium text-neutral-500">Audio</dt>
+            <dt class="text-sm font-medium text-[var(--gj-muted)]">Audio</dt>
             <dd>
               <a [href]="song()!.audioLink" target="_blank" rel="noopener noreferrer"
                  class="text-[var(--gj-accent)] hover:underline">{{ song()!.audioLink }}</a>
@@ -31,7 +31,7 @@
           }
 
           @if (song()!.videoLink) {
-            <dt class="text-sm font-medium text-neutral-500">Video</dt>
+            <dt class="text-sm font-medium text-[var(--gj-muted)]">Video</dt>
             <dd>
               <a [href]="song()!.videoLink" target="_blank" rel="noopener noreferrer"
                  class="text-[var(--gj-accent)] hover:underline">{{ song()!.videoLink }}</a>
@@ -39,7 +39,7 @@
           }
 
           @if (song()!.appleMusicLink) {
-            <dt class="text-sm font-medium text-neutral-500">Apple Music</dt>
+            <dt class="text-sm font-medium text-[var(--gj-muted)]">Apple Music</dt>
             <dd>
               <a [href]="song()!.appleMusicLink" target="_blank" rel="noopener noreferrer"
                  class="text-[var(--gj-accent)] hover:underline">{{ song()!.appleMusicLink }}</a>
@@ -47,7 +47,7 @@
           }
 
           @if (song()!.spotifyLink) {
-            <dt class="text-sm font-medium text-neutral-500">Spotify</dt>
+            <dt class="text-sm font-medium text-[var(--gj-muted)]">Spotify</dt>
             <dd>
               <a [href]="song()!.spotifyLink" target="_blank" rel="noopener noreferrer"
                  class="text-[var(--gj-accent)] hover:underline">{{ song()!.spotifyLink }}</a>
@@ -55,7 +55,7 @@
           }
 
           @if (song()!.notationLinks && song()!.notationLinks!.length > 0) {
-            <dt class="text-sm font-medium text-neutral-500">Notation</dt>
+            <dt class="text-sm font-medium text-[var(--gj-muted)]">Notation</dt>
             <dd>
               <ul class="list-disc list-inside">
                 @for (link of song()!.notationLinks; track link) {

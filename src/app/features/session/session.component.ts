@@ -56,6 +56,10 @@ export class SessionComponent {
     return `${m}:${ss}`;
   });
 
+  // True once the timer has been running for 90s without being stopped —
+  // triggers the idle breath-pulse animation on the timer display.
+  timerIdlePulse = computed(() => this._elapsedSeconds() >= 90);
+
   // True once the goal is met/exceeded (timer keeps running!)
   goalReached = computed(() => {
     const goal = this._practiceGoalMinutes();
@@ -98,12 +102,13 @@ export class SessionComponent {
 
   // ---------- TEMPLATE CALLED HELPERS ----------
   onResourceAdded(resource: Omit<SessionResource, 'id' | 'pinnedAt'>): void {
-    if (this._pendingResources().some(r => r.url === resource.url)) return;
+    const key = resource.url ?? resource.label;
+    if (this._pendingResources().some(r => (r.url ?? r.label) === key)) return;
     this._pendingResources.update(arr => [...arr, resource]);
   }
 
-  onResourceRemoved(url: string): void {
-    this._pendingResources.update(arr => arr.filter(r => r.url !== url));
+  onResourceRemoved(label: string): void {
+    this._pendingResources.update(arr => arr.filter(r => r.label !== label));
   }
 
   // Called by BEFORE form submit

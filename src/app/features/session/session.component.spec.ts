@@ -9,6 +9,7 @@ import { Session } from '@models/session';
 import { SessionService } from '@services/session.service'
 import { fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 import { ResourceService } from '../../services/resource.service';
+import { AutocompleteSuggestionService } from '../../services/autocomplete-suggestion.service';
 
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
@@ -45,6 +46,12 @@ const makeSession = (over: Partial<Session> = {}): Session => ({
     saveResources:    jest.fn(() => Promise.resolve(undefined)),
   };
 
+  const suggestionSvcMock: any = {
+    suggestTitles:  jest.fn(() => of([])),
+    suggestArtists: jest.fn(() => of([])),
+    suggestAlbums:  jest.fn(() => of([])),
+  };
+
   async function setup() {
     paramMap$ = new Subject();
     get$ = new Subject<Session>();
@@ -59,6 +66,7 @@ describe('SessionComponent (template-driven behaviors)', () => {
         provideNoopAnimations(),
         { provide: SessionService, useValue: sessionSvcMock },
         { provide: ResourceService, useValue: resourceSvcMock },
+        { provide: AutocompleteSuggestionService, useValue: suggestionSvcMock },
       ],
     }).compileComponents();
   });
@@ -168,6 +176,29 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.elapsedSeconds()).toBe(1);
       tick(2000);
       expect(cmp.elapsedSeconds()).toBe(3);
+      cmp.stopTimer();
+    }));
+
+    it('timerIdlePulse is false before 90s', fakeAsync(() => {
+      const { cmp } = createFixtureWithStatus('During');
+      tick(89000);
+      expect(cmp.timerIdlePulse()).toBe(false);
+      cmp.stopTimer();
+    }));
+
+    it('timerIdlePulse becomes true at 90s', fakeAsync(() => {
+      const { cmp } = createFixtureWithStatus('During');
+      tick(90000);
+      expect(cmp.timerIdlePulse()).toBe(true);
+      cmp.stopTimer();
+    }));
+
+    it('adds gj-timer-pulse class to timer display after 90s', fakeAsync(() => {
+      const { fixture, cmp } = createFixtureWithStatus('During');
+      tick(90000);
+      fixture.detectChanges();
+      const timerEl = fixture.nativeElement.querySelector('#timerSection p');
+      expect(timerEl.classList).toContain('gj-timer-pulse');
       cmp.stopTimer();
     }));
   });
@@ -332,7 +363,7 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.pendingResources()[0].url).toBe(resource.url);
     });
 
-    it('onResourceAdded deduplicates by URL', () => {
+    it('onResourceAdded deduplicates by URL (or label when url is absent)', () => {
       const { cmp } = createFixtureWithStatus('Before');
       const resource = { type: 'youtube' as const, url: 'https://www.youtube.com/watch?v=abc', label: 'Test' };
       cmp.onResourceAdded(resource);
@@ -340,20 +371,20 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.pendingResources()).toHaveLength(1);
     });
 
-    it('onResourceRemoved removes a resource by URL', () => {
+    it('onResourceRemoved removes a resource by label', () => {
       const { cmp } = createFixtureWithStatus('Before');
       const r1 = { type: 'youtube' as const, url: 'https://www.youtube.com/watch?v=aaa', label: 'A' };
       const r2 = { type: 'pdf' as const, url: 'https://example.com/tab.pdf', label: 'B' };
       cmp.onResourceAdded(r1);
       cmp.onResourceAdded(r2);
-      cmp.onResourceRemoved(r1.url);
+      cmp.onResourceRemoved(r1.label);
       expect(cmp.pendingResources()).toHaveLength(1);
       expect(cmp.pendingResources()[0].url).toBe(r2.url);
     });
 
-    it('onResourceRemoved is a no-op when URL is not present', () => {
+    it('onResourceRemoved is a no-op when label is not present', () => {
       const { cmp } = createFixtureWithStatus('Before');
-      expect(() => cmp.onResourceRemoved('https://not-in-list.com')).not.toThrow();
+      expect(() => cmp.onResourceRemoved('not-in-list')).not.toThrow();
       expect(cmp.pendingResources()).toHaveLength(0);
     });
   });

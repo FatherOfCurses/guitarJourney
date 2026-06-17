@@ -18,9 +18,8 @@ export class SessionResourceComponent {
   @Output() remove = new EventEmitter<void>();
 
   get safeEmbedUrl(): SafeResourceUrl {
-    // Only call inside @if (resource.type === 'youtube') — the ! is safe there
     return this.sanitizer.bypassSecurityTrustResourceUrl(
-      extractYouTubeEmbedUrl(this.resource.url)!
+      extractYouTubeEmbedUrl(this.resource.url ?? '') ?? ''
     );
   }
 }

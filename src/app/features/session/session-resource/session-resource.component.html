@@ -1,4 +1,4 @@
-@if (resource.type === 'youtube') {
+@if (resource.type === 'youtube' && resource.url) {
   <div class="rounded-lg overflow-hidden">
     <iframe
       [src]="safeEmbedUrl"
@@ -8,12 +8,44 @@
       allowfullscreen
     ></iframe>
   </div>
-} @else {
+} @else if (resource.type === 'song') {
+  <div class="text-sm space-y-1">
+    <p class="font-medium text-[var(--gj-text)]">
+      {{ resource.title }}
+      <span class="text-[var(--gj-muted)] font-normal">— {{ resource.artist }}</span>
+    </p>
+    @if (resource.album) {
+      <p class="text-xs text-[var(--gj-muted)]">{{ resource.album }}</p>
+    }
+    <div class="flex flex-wrap gap-3 mt-1">
+      @if (resource.videoLink) {
+        <a [href]="resource.videoLink" target="_blank" rel="noopener noreferrer"
+           class="text-xs text-[var(--gj-accent)] hover:underline">Video</a>
+      }
+      @if (resource.audioLink) {
+        <a [href]="resource.audioLink" target="_blank" rel="noopener noreferrer"
+           class="text-xs text-[var(--gj-accent)] hover:underline">Audio</a>
+      }
+      @if (resource.spotifyLink) {
+        <a [href]="resource.spotifyLink" target="_blank" rel="noopener noreferrer"
+           class="text-xs text-[var(--gj-accent)] hover:underline">Spotify</a>
+      }
+      @if (resource.appleMusicLink) {
+        <a [href]="resource.appleMusicLink" target="_blank" rel="noopener noreferrer"
+           class="text-xs text-[var(--gj-accent)] hover:underline">Apple Music</a>
+      }
+      @for (link of resource.notationLinks; track link) {
+        <a [href]="link" target="_blank" rel="noopener noreferrer"
+           class="text-xs text-[var(--gj-accent)] hover:underline">Notation</a>
+      }
+    </div>
+  </div>
+} @else if (resource.url) {
   <a
     [href]="resource.url"
     target="_blank"
     rel="noopener noreferrer"
-    class="flex items-center gap-2 text-sm text-neutral-700 hover:text-neutral-900"
+    class="flex items-center gap-2 text-sm text-[var(--gj-text)] hover:text-[var(--gj-accent)]"
   >
     @if (resource.type === 'pdf') {
       <i class="pi pi-file-pdf flex-shrink-0"></i>

@@ -1,4 +1,4 @@
-<h1 class="text-2xl font-semibold tracking-tight text-neutral-900 mb-4">Add Song</h1>
+<h1 class="text-2xl font-semibold tracking-tight text-[var(--gj-text)] mb-4">Add Song</h1>
 
 <div class="px-4 py-6 md:px-6 lg:px-8">
   <div class="bg-[var(--gj-surface)] shadow rounded-lg p-6">
@@ -10,7 +10,7 @@
     >
       <!-- Title -->
       <div>
-        <label for="title" class="block text-sm font-medium text-neutral-800 mb-1">Title</label>
+        <label for="title" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Title</label>
         <p-autoComplete
           inputId="title"
           formControlName="title"
@@ -30,7 +30,7 @@
 
       <!-- Artist -->
       <div>
-        <label for="artist" class="block text-sm font-medium text-neutral-800 mb-1">Artist</label>
+        <label for="artist" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Artist</label>
         <p-autoComplete
           inputId="artist"
           formControlName="artist"
@@ -50,7 +50,7 @@
 
       <!-- Album -->
       <div>
-        <label for="album" class="block text-sm font-medium text-neutral-800 mb-1">Album</label>
+        <label for="album" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Album</label>
         <p-autoComplete
           inputId="album"
           formControlName="album"
@@ -67,7 +67,7 @@
 
       <!-- Genre -->
       <div>
-        <label for="genre" class="block text-sm font-medium text-neutral-800 mb-1">Genre</label>
+        <label for="genre" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Genre</label>
         <input
           type="text"
           id="genre"
@@ -81,7 +81,7 @@
 
       <!-- Audio Link -->
       <div>
-        <label for="audioLink" class="block text-sm font-medium text-neutral-800 mb-1">Audio Link</label>
+        <label for="audioLink" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Audio Link</label>
         <input
           type="url"
           id="audioLink"
@@ -95,7 +95,7 @@
 
       <!-- Video Link -->
       <div>
-        <label for="videoLink" class="block text-sm font-medium text-neutral-800 mb-1">Video Link</label>
+        <label for="videoLink" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Video Link</label>
         <input
           type="url"
           id="videoLink"
@@ -109,7 +109,7 @@
 
       <!-- Apple Music Link -->
       <div>
-        <label for="appleMusicLink" class="block text-sm font-medium text-neutral-800 mb-1">Apple Music Link</label>
+        <label for="appleMusicLink" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Apple Music Link</label>
         <input
           type="url"
           id="appleMusicLink"
@@ -123,7 +123,7 @@
 
       <!-- Spotify Link -->
       <div>
-        <label for="spotifyLink" class="block text-sm font-medium text-neutral-800 mb-1">Spotify Link</label>
+        <label for="spotifyLink" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Spotify Link</label>
         <input
           type="url"
           id="spotifyLink"
@@ -137,7 +137,7 @@
 
       <!-- Notation Links -->
       <div>
-        <label class="block text-sm font-medium text-neutral-800 mb-1">Notation Links</label>
+        <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Notation Links</label>
         <div formArrayName="notationLinks" class="grid gap-2">
           @for (ctrl of notationLinksArray.controls; track $index) {
             <div class="flex items-center gap-2">
@@ -190,8 +190,8 @@
         </button>
         <button
           type="button"
-          class="inline-flex items-center justify-center rounded-md border border-[var(--gj-border)] px-4 py-2 text-neutral-700 font-medium
-                 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-400"
+          class="inline-flex items-center justify-center rounded-md border border-[var(--gj-border)] px-4 py-2 text-[var(--gj-text)] font-medium
+                 hover:bg-[var(--gj-border)] focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)]"
           (click)="cancel()"
         >
           Cancel

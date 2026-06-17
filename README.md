@@ -15,7 +15,7 @@ Guitar Journey is a modern Angular 20 application for guitar practice management
 3. **Chord Notation** - SVG chord diagram visualization (svguitar)
 4. **Metrics Dashboard** - Practice statistics and insights
 5. **Carousels** - Image carousels with responsive variants and attribution
-6. **Resource Library** (planned) - Attach YouTube tutorials, PDFs, chord sheets, and links to sessions; browse all resources at `/app/resources`
+6. **Resource Library** (partial) - Attach songs to practice sessions with metadata (title, artist, album, streaming links); full resource browser at `/app/resources` coming in a future release
 
 ## Architecture Highlights
 * Standalone component architecture (no NgModules)

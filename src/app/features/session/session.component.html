@@ -1,4 +1,4 @@
-<h1 class="text-2xl font-semibold tracking-tight text-neutral-900 mb-4">Session</h1>
+<h1 class="text-2xl font-semibold tracking-tight text-[var(--gj-text)] mb-4">Session</h1>
 
 <div id="formBucket" class="px-4 py-6 md:px-6 lg:px-8">
 
@@ -15,7 +15,7 @@
         >
           <!-- Practice Time -->
           <div>
-            <label for="practiceTime" class="block text-sm font-medium text-neutral-800 mb-1">
+            <label for="practiceTime" class="block text-sm font-medium text-[var(--gj-text)] mb-1">
               Practice Time Amount
             </label>
             <input
@@ -31,7 +31,7 @@
               class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
                          focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
             />
-            <small id="practiceTimeHelp" class="text-sm text-neutral-500">Numbers only, in minutes.</small>
+            <small id="practiceTimeHelp" class="text-sm text-[var(--gj-muted)]">Numbers only, in minutes.</small>
 
             @if (practiceTimeCtrl.invalid && (practiceTimeCtrl.touched || practiceTimeCtrl.dirty)) {
               <div id="practiceTimeError" class="text-sm text-red-600 mt-1" aria-live="polite">
@@ -42,7 +42,7 @@
 
           <!-- What to Practice -->
           <div>
-            <label for="whatToPractice" class="block text-sm font-medium text-neutral-800 mb-1">
+            <label for="whatToPractice" class="block text-sm font-medium text-[var(--gj-text)] mb-1">
               What to Practice
             </label>
             <textarea
@@ -65,7 +65,7 @@
 
           <!-- Session Intent -->
           <div>
-            <label for="sessionIntent" class="block text-sm font-medium text-neutral-800 mb-1">
+            <label for="sessionIntent" class="block text-sm font-medium text-[var(--gj-text)] mb-1">
               Session Intent
             </label>
             <input
@@ -94,11 +94,11 @@
 
             @if (pendingResources().length > 0) {
               <div class="space-y-2 mb-4">
-                @for (resource of pendingResources(); track resource.url) {
+                @for (resource of pendingResources(); track resource.label) {
                   <app-session-resource
                     [resource]="$any(resource)"
                     [showRemove]="true"
-                    (remove)="onResourceRemoved(resource.url)"
+                    (remove)="onResourceRemoved(resource.label)"
                   />
                 }
               </div>
@@ -125,16 +125,17 @@
     @case ('During') {
       <div class="bg-[var(--gj-surface)] shadow rounded-lg p-6 space-y-6">
         <div id="timerSection">
-          <p class="font-semibold text-3xl tracking-tight text-neutral-900">{{ timeDisplay() }}</p>
-          <h2 class="text-lg text-neutral-700 mt-1">Keep going! Make it a good session!</h2>
-          <p class="text-neutral-600 mt-2">
-            Target Practice Time: <span class="font-medium">{{ practiceTimeCtrl.value || 0 }}</span> minutes
+          <p class="font-semibold text-3xl tracking-tight tabular-nums text-[var(--gj-text)] inline-block px-3 py-1"
+             [class.gj-timer-pulse]="timerIdlePulse()">{{ timeDisplay() }}</p>
+          <h2 class="text-lg text-[var(--gj-muted)] mt-1">Keep going! Make it a good session!</h2>
+          <p class="text-[var(--gj-muted)] mt-2">
+            Target Practice Time: <span class="font-medium tabular-nums">{{ practiceTimeCtrl.value || 0 }}</span> minutes
           </p>
           <button
             id="endButton"
             type="button"
-            class="mt-4 inline-flex items-center justify-center rounded-md bg-rose-600 px-4 py-2 text-white font-medium
-                       hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-500"
+            class="mt-4 inline-flex items-center justify-center rounded-md bg-[var(--gj-error)] px-4 py-2 text-white font-medium
+                       hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[var(--gj-error)]"
             (click)="stopTimer()"
           >
             End
@@ -147,7 +148,7 @@
               Your Resources
             </p>
             <div class="space-y-3">
-              @for (resource of pendingResources(); track resource.url) {
+              @for (resource of pendingResources(); track resource.label) {
                 <app-session-resource [resource]="$any(resource)" [showRemove]="false" />
               }
             </div>
@@ -159,7 +160,7 @@
     @case ('After') {
       <div class="bg-[var(--gj-surface)] shadow rounded-lg p-6">
         <div class="mb-6 flex flex-col items-center">
-          <h2 class="text-xl font-semibold text-neutral-900 mb-2">You did it!</h2>
+          <h2 class="text-xl font-semibold text-[var(--gj-text)] mb-2">You did it!</h2>
           <img
             [width]="400"
             [height]="400"
@@ -178,7 +179,7 @@
         >
           <!-- Reflection -->
           <div>
-            <label for="sessionReflection" class="block text-sm font-medium text-neutral-800 mb-1">
+            <label for="sessionReflection" class="block text-sm font-medium text-[var(--gj-text)] mb-1">
               Reflect on your session
             </label>
             <textarea
@@ -201,7 +202,7 @@
 
           <!-- Goal for next time -->
           <div>
-            <label for="goalForNextTime" class="block text-sm font-medium text-neutral-800 mb-1">
+            <label for="goalForNextTime" class="block text-sm font-medium text-[var(--gj-text)] mb-1">
               What do you want to remember next time?
             </label>
             <textarea
