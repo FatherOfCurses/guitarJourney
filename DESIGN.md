@@ -52,11 +52,13 @@
   --gj-sidebar-text:#F5F0E8;  /* cream — text/icons on leather sidebar */
   --gj-sidebar-muted:#C4A882; /* warm tan — inactive nav labels on sidebar */
   ```
-- **Semantic:**
-  - success: `#3D7A5C` (warm forest green)
-  - warning: `#B8860B` (dark goldenrod)
-  - error: `#C0392B` (warm red)
-  - info: `#2C6E8A` (steel blue)
+- **Semantic CSS custom properties:**
+  ```css
+  --gj-success: #3D7A5C;  /* warm forest green */
+  --gj-warning: #B8860B;  /* dark goldenrod */
+  --gj-error:   #C0392B;  /* warm red */
+  --gj-info:    #2C6E8A;  /* steel blue */
+  ```
 - **PrimeNG badge severity mapping (resource-library):**
   - youtube → `info` | pdf → `danger` | chord-sheet → `success` | custom → `secondary`
 - **Dark mode strategy:** Redesign surfaces — swap `--gj-background` to `#1C1A16`, `--gj-surface` to `#2A2520`, keep accent at 90% saturation, sidebar stays dark leather. Reduce all neutral colors 10–15% lightness.
@@ -104,7 +106,7 @@
   medium: 250–400ms — route transitions, sidebar expand
   long:   400–700ms — skeleton → content fade
   ```
-- **Timer idle pulse (session screen):** At ~90s without interaction, the session timer ring exhales a subtle sine-wave breath — pulse in `--gj-accent` at 30% opacity. Delight without distraction. Communicates "still running, everything's fine."
+- **Timer idle pulse (session screen):** At ≥90s elapsed, the session timer container exhales a subtle sine-wave breath — box-shadow pulse in `--gj-accent` at 30% opacity, 14px spread, 3s ease-in-out infinite. Implemented as `.gj-timer-pulse` in `src/styles.scss`. Delight without distraction. Communicates "still running, everything's fine."
 - **No motion for:** delete confirmations, error states, validation — those need to be immediate.
 
 ## Decisions Log

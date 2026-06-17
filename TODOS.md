@@ -18,7 +18,7 @@ See `docs/designs/resource-library.md` for full task specs.
 - [x] **T10** — `session.component.html`: wire picker (Before), read-only list (During + After), remove gate **Completed:** v0.5.1.0 (2026-06-17)
 - [ ] **T11** — `ResourceLibraryComponent`: browser, filter, cards, delete/edit, 200-item cap notice, spec
 - [ ] **T12** — `routes.ts`: add `resources` route BEFORE `path: '**'` wildcard at line 93
-- [ ] **T13** — `index.html`: CSP meta tag for YouTube + swap Roboto → Cabinet Grotesk + DM Sans (NE9)
+- [ ] **T13** — `index.html`: CSP meta tag for YouTube + swap Roboto → Wix Madefor Text + DM Sans (NE9)
 - [ ] **T14** — `app-shell.component.ts`: add Library nav item
 - [ ] **T15** — `DESIGN.md`: document 5 new design patterns from resource library *(ships with docs branch)*
 - [ ] **T16** — `session.component`: wire `MessageService` toast for save errors + add to `app.config.ts`
@@ -32,7 +32,7 @@ See `docs/designs/resource-library.md` for full task specs.
 - [ ] **NE6** — session-resource.component.spec.ts: coverage → incorporated into T7
 - [x] **NE7** — session-resource-picker.component.spec.ts: coverage — 41-test suite written **Completed:** v0.5.1.0 (2026-06-17)
 - [ ] **NE8** — youtube.spec.ts: 4 URL formats + oEmbed coverage → incorporated into T2
-- [ ] **NE9** — `index.html`: swap Roboto → Cabinet Grotesk + DM Sans → incorporated into T13
+- [ ] **NE9** — `index.html`: swap Roboto → Wix Madefor Text + DM Sans → incorporated into T13
 
 ## Design System
 
