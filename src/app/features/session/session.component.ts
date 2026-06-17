@@ -56,6 +56,10 @@ export class SessionComponent {
     return `${m}:${ss}`;
   });
 
+  // True once the timer has been running for 90s without being stopped —
+  // triggers the idle breath-pulse animation on the timer display.
+  timerIdlePulse = computed(() => this._elapsedSeconds() >= 90);
+
   // True once the goal is met/exceeded (timer keeps running!)
   goalReached = computed(() => {
     const goal = this._practiceGoalMinutes();

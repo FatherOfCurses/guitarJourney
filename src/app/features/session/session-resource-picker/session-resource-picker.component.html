@@ -2,7 +2,7 @@
 
   <!-- ── SEARCH EXISTING ──────────────────────────────────── -->
   <div>
-    <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">Search Existing</p>
+    <p class="text-xs font-medium text-[var(--gj-muted)] uppercase tracking-wide mb-2">Search Existing</p>
 
     @if (libraryLoading()) {
       <p-skeleton height="40px" />
@@ -30,7 +30,7 @@
             <ng-template pTemplate="body" let-resource>
               <tr>
                 <td class="text-sm">{{ resource.label }}</td>
-                <td class="text-sm text-neutral-500">{{ resource.type }}</td>
+                <td class="text-sm text-[var(--gj-muted)]">{{ resource.type }}</td>
                 <td class="text-right">
                   <p-button
                     label="Add"
@@ -72,7 +72,7 @@
   <div class="space-y-4 py-2">
 
     <div>
-      <label class="block text-sm font-medium text-neutral-800 mb-1">Type</label>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Type</label>
       <p-select
         [(ngModel)]="newType"
         [options]="typeOptions"
@@ -84,7 +84,7 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-neutral-800 mb-1">URL</label>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">URL</label>
       <input
         type="text"
         pInputText
@@ -101,12 +101,12 @@
       <img
         [src]="oEmbedThumbnail()"
         alt="Video thumbnail"
-        class="w-full object-cover rounded-xl"
+        class="w-full object-cover rounded-lg"
       />
     }
 
     <div>
-      <label class="block text-sm font-medium text-neutral-800 mb-1">Label</label>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Label</label>
       <input
         type="text"
         pInputText
@@ -117,7 +117,7 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-neutral-800 mb-1">Tags</label>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Tags</label>
       <p-autocomplete
         [ngModel]="newTags"
         (ngModelChange)="newTags = $event"

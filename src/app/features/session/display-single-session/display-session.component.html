@@ -14,23 +14,23 @@
       <ng-template pTemplate="content">
         <!-- Portrait mode: headings left, data right -->
         <dl class="grid grid-cols-1 md:grid-cols-[240px,1fr] gap-x-6 gap-y-3">
-          <dt class="text-sm font-medium text-neutral-500">Date</dt>
-          <dd class="text-neutral-900">{{ s.date.toDate() | date:'MMM d, y'}}</dd>
+          <dt class="text-sm font-medium text-[var(--gj-muted)]">Date</dt>
+          <dd class="text-[var(--gj-text)]">{{ s.date.toDate() | date:'MMM d, y'}}</dd>
 
-          <dt class="text-sm font-medium text-neutral-500">Practice Time</dt>
-          <dd class="text-neutral-900">{{ s.practiceTime }}</dd>
+          <dt class="text-sm font-medium text-[var(--gj-muted)]">Practice Time</dt>
+          <dd class="text-[var(--gj-text)] tabular-nums">{{ s.practiceTime }}</dd>
 
-          <dt class="text-sm font-medium text-neutral-500">What You Practiced</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ s.whatToPractice }}</dd>
+          <dt class="text-sm font-medium text-[var(--gj-muted)]">What You Practiced</dt>
+          <dd class="text-[var(--gj-text)] whitespace-pre-line">{{ s.whatToPractice }}</dd>
 
-          <dt class="text-sm font-medium text-neutral-500">Session Intent</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ s.sessionIntent }}</dd>
+          <dt class="text-sm font-medium text-[var(--gj-muted)]">Session Intent</dt>
+          <dd class="text-[var(--gj-text)] whitespace-pre-line">{{ s.sessionIntent }}</dd>
 
-          <dt class="text-sm font-medium text-neutral-500">Reflection</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ s.postPracticeReflection }}</dd>
+          <dt class="text-sm font-medium text-[var(--gj-muted)]">Reflection</dt>
+          <dd class="text-[var(--gj-text)] whitespace-pre-line">{{ s.postPracticeReflection }}</dd>
 
-          <dt class="text-sm font-medium text-neutral-500">Goal for next time</dt>
-          <dd class="text-neutral-900 whitespace-pre-line">{{ s.goalForNextTime }}</dd>
+          <dt class="text-sm font-medium text-[var(--gj-muted)]">Goal for next time</dt>
+          <dd class="text-[var(--gj-text)] whitespace-pre-line">{{ s.goalForNextTime }}</dd>
         </dl>
       </ng-template>
 

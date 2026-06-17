@@ -170,6 +170,29 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(cmp.elapsedSeconds()).toBe(3);
       cmp.stopTimer();
     }));
+
+    it('timerIdlePulse is false before 90s', fakeAsync(() => {
+      const { cmp } = createFixtureWithStatus('During');
+      tick(89000);
+      expect(cmp.timerIdlePulse()).toBe(false);
+      cmp.stopTimer();
+    }));
+
+    it('timerIdlePulse becomes true at 90s', fakeAsync(() => {
+      const { cmp } = createFixtureWithStatus('During');
+      tick(90000);
+      expect(cmp.timerIdlePulse()).toBe(true);
+      cmp.stopTimer();
+    }));
+
+    it('adds gj-timer-pulse class to timer display after 90s', fakeAsync(() => {
+      const { fixture, cmp } = createFixtureWithStatus('During');
+      tick(90000);
+      fixture.detectChanges();
+      const timerEl = fixture.nativeElement.querySelector('#timerSection p');
+      expect(timerEl.classList).toContain('gj-timer-pulse');
+      cmp.stopTimer();
+    }));
   });
 
   describe('AFTER state', () => {
