@@ -9,6 +9,7 @@ import { Session } from '@models/session';
 import { SessionService } from '@services/session.service'
 import { fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 import { ResourceService } from '../../services/resource.service';
+import { AutocompleteSuggestionService } from '../../services/autocomplete-suggestion.service';
 
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
@@ -45,6 +46,12 @@ const makeSession = (over: Partial<Session> = {}): Session => ({
     saveResources:    jest.fn(() => Promise.resolve(undefined)),
   };
 
+  const suggestionSvcMock: any = {
+    suggestTitles:  jest.fn(() => of([])),
+    suggestArtists: jest.fn(() => of([])),
+    suggestAlbums:  jest.fn(() => of([])),
+  };
+
   async function setup() {
     paramMap$ = new Subject();
     get$ = new Subject<Session>();
@@ -59,6 +66,7 @@ describe('SessionComponent (template-driven behaviors)', () => {
         provideNoopAnimations(),
         { provide: SessionService, useValue: sessionSvcMock },
         { provide: ResourceService, useValue: resourceSvcMock },
+        { provide: AutocompleteSuggestionService, useValue: suggestionSvcMock },
       ],
     }).compileComponents();
   });

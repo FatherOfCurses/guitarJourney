@@ -2,7 +2,7 @@
 
   <!-- ── SEARCH EXISTING ──────────────────────────────────── -->
   <div>
-    <p class="text-xs font-medium text-[var(--gj-muted)] uppercase tracking-wide mb-2">Search Existing</p>
+    <p class="text-xs font-medium text-[var(--gj-muted)] uppercase tracking-wide mb-2">Search Existing Song</p>
 
     @if (libraryLoading()) {
       <p-skeleton height="40px" />
@@ -51,7 +51,7 @@
   <!-- ── ADD NEW ───────────────────────────────────────────── -->
   <div>
     <p-button
-      label="Add New Resource"
+      label="Add New Song"
       icon="pi pi-plus"
       type="button"
       (click)="showAddDialog = true"
@@ -62,70 +62,165 @@
 
 <!-- ── ADD NEW DIALOG ────────────────────────────────────── -->
 <p-dialog
-  header="Add New Resource"
+  header="Add New Song"
   [(visible)]="showAddDialog"
   [modal]="true"
-  [style]="{ width: '480px' }"
+  [style]="{ width: '560px' }"
   [breakpoints]="{ '640px': '95vw' }"
   [draggable]="false"
 >
   <div class="space-y-4 py-2">
 
+    <!-- Title -->
     <div>
-      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Type</label>
-      <p-select
-        [(ngModel)]="newType"
-        [options]="typeOptions"
-        optionLabel="label"
-        optionValue="value"
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">
+        Title <span class="text-[var(--gj-error)]">*</span>
+      </label>
+      <p-autoComplete
+        [(ngModel)]="newTitle"
+        [suggestions]="titleSuggestions"
+        (completeMethod)="searchTitles($event)"
+        [minQueryLength]="5"
+        [forceSelection]="false"
+        placeholder="Song or exercise name"
         class="w-full"
-        (onChange)="onTypeChange()"
+        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
 
+    <!-- Artist -->
     <div>
-      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">URL</label>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">
+        Artist <span class="text-[var(--gj-error)]">*</span>
+      </label>
+      <p-autoComplete
+        [(ngModel)]="newArtist"
+        [suggestions]="artistSuggestions"
+        (completeMethod)="searchArtists($event)"
+        [minQueryLength]="5"
+        [forceSelection]="false"
+        placeholder="Artist or composer"
+        class="w-full"
+        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+      />
+    </div>
+
+    <!-- Album -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Album</label>
+      <p-autoComplete
+        [(ngModel)]="newAlbum"
+        [suggestions]="albumSuggestions"
+        (completeMethod)="searchAlbums($event)"
+        [minQueryLength]="5"
+        [forceSelection]="false"
+        placeholder="Album name (optional)"
+        class="w-full"
+        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                 focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+      />
+    </div>
+
+    <!-- Genre -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Genre</label>
       <input
         type="text"
         pInputText
-        placeholder="https://..."
-        [(ngModel)]="newUrl"
-        class="w-full"
-        (blur)="onUrlBlur()"
+        placeholder="e.g. Rock, Jazz, Classical (optional)"
+        [(ngModel)]="newGenre"
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+               focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
 
-    @if (oEmbedLoading()) {
-      <p-skeleton height="112px" />
-    } @else if (oEmbedThumbnail()) {
-      <img
-        [src]="oEmbedThumbnail()"
-        alt="Video thumbnail"
-        class="w-full object-cover rounded-lg"
-      />
-    }
-
+    <!-- Audio Link -->
     <div>
-      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Label</label>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Audio Link</label>
       <input
-        type="text"
+        type="url"
         pInputText
-        placeholder="Descriptive name"
-        [(ngModel)]="newLabel"
-        class="w-full"
+        placeholder="https://... (optional)"
+        [(ngModel)]="newAudioLink"
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+               focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
 
+    <!-- Video Link -->
     <div>
-      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Tags</label>
-      <p-autocomplete
-        [ngModel]="newTags"
-        (ngModelChange)="newTags = $event"
-        [multiple]="true"
-        [dropdown]="false"
-        [suggestions]="tagSuggestions"
-        placeholder="Press Enter to add"
-        class="w-full"
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Video Link</label>
+      <input
+        type="url"
+        pInputText
+        placeholder="https://... (optional)"
+        [(ngModel)]="newVideoLink"
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+               focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+      />
+    </div>
+
+    <!-- Apple Music Link -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Apple Music Link</label>
+      <input
+        type="url"
+        pInputText
+        placeholder="https://music.apple.com/... (optional)"
+        [(ngModel)]="newAppleMusicLink"
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+               focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+      />
+    </div>
+
+    <!-- Spotify Link -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Spotify Link</label>
+      <input
+        type="url"
+        pInputText
+        placeholder="https://open.spotify.com/... (optional)"
+        [(ngModel)]="newSpotifyLink"
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+               focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+      />
+    </div>
+
+    <!-- Notation Links -->
+    <div>
+      <label class="block text-sm font-medium text-[var(--gj-text)] mb-1">Notation Links</label>
+      <div class="grid gap-2">
+        @for (link of newNotationLinks; track $index) {
+          <div class="flex items-center gap-2">
+            <input
+              type="url"
+              pInputText
+              placeholder="https://... (optional)"
+              [(ngModel)]="newNotationLinks[$index]"
+              class="flex-1 rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+                     focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+            />
+            @if (newNotationLinks.length > 1) {
+              <p-button
+                type="button"
+                icon="pi pi-times"
+                [text]="true"
+                severity="danger"
+                (click)="removeNotationLink($index)"
+              />
+            }
+          </div>
+        }
+      </div>
+      <p-button
+        label="Add another"
+        icon="pi pi-plus"
+        type="button"
+        [text]="true"
+        styleClass="mt-2"
+        (click)="addNotationLink()"
       />
     </div>
 
