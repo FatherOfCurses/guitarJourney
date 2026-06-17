@@ -31,8 +31,8 @@
   base:  16px / 1.6  — default body
   lg:    20px / 1.4  — subheadings, card titles
   xl:    24px / 1.3  — section headings
-  2xl:   32px / 1.2  — page titles (Cabinet Grotesk)
-  3xl:   48px / 1.1  — dashboard hero stats (Cabinet Grotesk 800)
+  2xl:   32px / 1.2  — page titles (Wix Madefor Text)
+  3xl:   48px / 1.1  — dashboard hero stats (Wix Madefor Text 800)
   ```
 
 ## Color
@@ -80,7 +80,7 @@
 ## Layout
 
 - **Approach:** Grid-disciplined — strict columns, predictable alignment
-- **Sidebar:** Fixed left, 56px collapsed / 220px expanded. Background: `--gj-sidebar`. Wordmark: stacked "GUITAR / JOURNEY" in Cabinet Grotesk 800, with a diamond separator, in `--gj-sidebar-text`.
+- **Sidebar:** Fixed left, 56px collapsed / 220px expanded. Background: `--gj-sidebar`. Wordmark: stacked "GUITAR / JOURNEY" in Wix Madefor Text 800, with a diamond separator, in `--gj-sidebar-text`.
 - **Grid:** 12 columns in main content area
 - **Max content width:** 1200px
 - **Breakpoints:** sm 640px | md 768px | lg 1024px | xl 1280px
