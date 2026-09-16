@@ -90,6 +90,12 @@ export const routes: Routes = [
           import('./features/metrics/metrics.component').then(m => m.MetricsComponent),
       },
       {
+        path: 'resources',
+        loadComponent: () =>
+          import('./features/resources/resource-library.component').then(m => m.ResourceLibraryComponent),
+        title: 'My Resource Library',
+      },
+      {
         path: '**', 
         loadComponent:()  =>
           import('./core/not-found/not-found.component')

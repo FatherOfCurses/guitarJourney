@@ -24,7 +24,8 @@ export class AppShellComponent {
   readonly navItems: NavItem[] = [
     { label: 'Dashboard', icon: 'pi pi-home',        route: '/app/dashboard' },
     { label: 'Sessions',  icon: 'pi pi-calendar',    route: '/app/sessions'  },
-    { label: 'Library',   icon: 'pi pi-book',        route: '/app/songs'     },
+    { label: 'Songs',     icon: 'pi pi-book',        route: '/app/songs'     },
+    { label: 'Resources', icon: 'pi pi-bookmark',    route: '/app/resources' },
   ];
 
   toggleSidebar() {

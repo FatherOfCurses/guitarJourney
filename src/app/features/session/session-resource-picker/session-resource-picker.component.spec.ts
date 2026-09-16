@@ -3,16 +3,15 @@ import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { Subject, of } from 'rxjs';
 import { SessionResourcePickerComponent } from './session-resource-picker.component';
 import { ResourceService } from '../../../services/resource.service';
+import { AutocompleteSuggestionService } from '../../../services/autocomplete-suggestion.service';
 import { Resource } from '../../../models/resource';
-import * as youtube from '../../../utils/youtube';
 
-jest.mock('../../../utils/youtube', () => {
-  const actual = jest.requireActual('../../../utils/youtube');
-  return {
-    ...actual,
-    fetchYouTubeOEmbed: jest.fn(),
-  };
-});
+jest.mock('../../../utils/youtube', () => ({
+  ...jest.requireActual('../../../utils/youtube'),
+  fetchYouTubeOEmbed: jest.fn(),
+}));
+import { fetchYouTubeOEmbed } from '../../../utils/youtube';
+const mockFetchOEmbed = fetchYouTubeOEmbed as jest.MockedFunction<typeof fetchYouTubeOEmbed>;
 
 const mockResource = (over: Partial<Resource> = {}): Resource => ({
   id: 'res-1',
@@ -29,6 +28,12 @@ const mockResourceService = {
   getResources: jest.fn().mockReturnValue(of([])),
 };
 
+const mockSuggestionSvc = {
+  suggestTitles: jest.fn().mockReturnValue(of([])),
+  suggestArtists: jest.fn().mockReturnValue(of([])),
+  suggestAlbums: jest.fn().mockReturnValue(of([])),
+};
+
 describe('SessionResourcePickerComponent', () => {
   let component: SessionResourcePickerComponent;
   let fixture: ComponentFixture<SessionResourcePickerComponent>;
@@ -42,6 +47,7 @@ describe('SessionResourcePickerComponent', () => {
       providers: [
         provideNoopAnimations(),
         { provide: ResourceService, useValue: mockResourceService },
+        { provide: AutocompleteSuggestionService, useValue: mockSuggestionSvc },
       ],
     }).compileComponents();
 
@@ -62,102 +68,197 @@ describe('SessionResourcePickerComponent', () => {
 
   // ── canAdd ──────────────────────────────────────────────────
 
-  it('canAdd is false when url is empty', () => {
-    component.newUrl = '';
-    component.newLabel = 'Some label';
+  it('canAdd is false when title is empty', () => {
+    component.newTitle = '';
+    component.newArtist = 'The Beatles';
     expect(component.canAdd).toBe(false);
   });
 
-  it('canAdd is false when label is empty', () => {
-    component.newUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    component.newLabel = '';
+  it('canAdd is false when artist is empty', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = '';
     expect(component.canAdd).toBe(false);
   });
 
-  it('canAdd is false when URL has non-http protocol', () => {
-    component.newType = 'pdf';
-    component.newUrl = 'ftp://example.com/tab.pdf';
-    component.newLabel = 'My PDF';
+  it('canAdd is false when both title and artist are empty', () => {
+    component.newTitle = '';
+    component.newArtist = '';
     expect(component.canAdd).toBe(false);
   });
 
-  it('canAdd is false when youtube type but URL is not a valid youtube URL', () => {
-    component.newType = 'youtube';
-    component.newUrl = 'https://example.com/video';
-    component.newLabel = 'My Video';
-    expect(component.canAdd).toBe(false);
-  });
-
-  it('canAdd is true for a valid youtube URL with a label', () => {
-    component.newType = 'youtube';
-    component.newUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-    component.newLabel = 'My Video';
+  it('canAdd is true when title and artist are both provided', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
     expect(component.canAdd).toBe(true);
   });
 
-  it('canAdd is true for a non-youtube type with any valid https URL', () => {
-    component.newType = 'pdf';
-    component.newUrl = 'https://example.com/tab.pdf';
-    component.newLabel = 'Tab PDF';
-    expect(component.canAdd).toBe(true);
+  it('canAdd trims whitespace before checking', () => {
+    component.newTitle = '   ';
+    component.newArtist = 'Artist';
+    expect(component.canAdd).toBe(false);
   });
 
   // ── onAdd ───────────────────────────────────────────────────
 
   it('onAdd does nothing when canAdd is false', () => {
-    component.newUrl = '';
-    component.newLabel = '';
+    component.newTitle = '';
+    component.newArtist = '';
     const emitted: any[] = [];
     component.resourceAdded.subscribe(v => emitted.push(v));
     component.onAdd();
     expect(emitted).toHaveLength(0);
   });
 
-  it('emits resourceAdded with correct shape when onAdd is called', () => {
-    component.newType = 'pdf';
-    component.newUrl = 'https://example.com/tab.pdf';
-    component.newLabel = 'My Tab';
-    component.newTags = ['Blues', 'Beginner'];
+  it('emits a song-shaped resource with type "song" when onAdd is called', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+    component.newAlbum = 'Help!';
+    component.newGenre = 'Pop';
+    component.newVideoLink = 'https://www.youtube.com/watch?v=NJ-lgS6oVSY';
 
     const emitted: any[] = [];
     component.resourceAdded.subscribe(v => emitted.push(v));
-
     component.onAdd();
 
     expect(emitted).toHaveLength(1);
-    expect(emitted[0]).toEqual({
-      type: 'pdf',
-      url: 'https://example.com/tab.pdf',
-      label: 'My Tab',
-      tags: ['blues', 'beginner'],
-    });
+    expect(emitted[0].type).toBe('song');
+    expect(emitted[0].title).toBe('Yesterday');
+    expect(emitted[0].artist).toBe('The Beatles');
+    expect(emitted[0].album).toBe('Help!');
+    expect(emitted[0].genre).toBe('Pop');
+    expect(emitted[0].label).toBe('Yesterday — The Beatles');
   });
 
-  it('resets form fields after onAdd', () => {
-    component.newType = 'pdf';
-    component.newUrl = 'https://example.com/tab.pdf';
-    component.newLabel = 'My Tab';
-    component.newTags = ['blues'];
+  it('sets url to videoLink when videoLink is provided', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+    component.newVideoLink = 'https://www.youtube.com/watch?v=NJ-lgS6oVSY';
+
+    const emitted: any[] = [];
+    component.resourceAdded.subscribe(v => emitted.push(v));
+    component.onAdd();
+
+    expect(emitted[0].url).toBe('https://www.youtube.com/watch?v=NJ-lgS6oVSY');
+  });
+
+  it('falls back to audioLink for url when videoLink is absent', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+    component.newAudioLink = 'https://example.com/audio.mp3';
+
+    const emitted: any[] = [];
+    component.resourceAdded.subscribe(v => emitted.push(v));
+    component.onAdd();
+
+    expect(emitted[0].url).toBe('https://example.com/audio.mp3');
+  });
+
+  it('sets url to undefined when no links are provided', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+
+    const emitted: any[] = [];
+    component.resourceAdded.subscribe(v => emitted.push(v));
+    component.onAdd();
+
+    expect(emitted[0].url).toBeUndefined();
+  });
+
+  it('omits optional fields that are empty', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+    component.newAlbum = '';
+    component.newGenre = '';
+
+    const emitted: any[] = [];
+    component.resourceAdded.subscribe(v => emitted.push(v));
+    component.onAdd();
+
+    expect(emitted[0].album).toBeUndefined();
+    expect(emitted[0].genre).toBeUndefined();
+  });
+
+  it('includes only filled notation links in the emitted resource', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+    component.newNotationLinks = ['https://example.com/tab.pdf', '', 'https://example.com/sheet.pdf'];
+
+    const emitted: any[] = [];
+    component.resourceAdded.subscribe(v => emitted.push(v));
+    component.onAdd();
+
+    expect(emitted[0].notationLinks).toEqual([
+      'https://example.com/tab.pdf',
+      'https://example.com/sheet.pdf',
+    ]);
+  });
+
+  it('sets notationLinks to undefined when all notation link inputs are empty', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+    component.newNotationLinks = ['', ''];
+
+    const emitted: any[] = [];
+    component.resourceAdded.subscribe(v => emitted.push(v));
+    component.onAdd();
+
+    expect(emitted[0].notationLinks).toBeUndefined();
+  });
+
+  it('resets all form fields after onAdd', () => {
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
+    component.newAlbum = 'Help!';
+    component.newGenre = 'Pop';
+    component.newAudioLink = 'https://example.com/audio.mp3';
+    component.newVideoLink = 'https://www.youtube.com/watch?v=abc';
+    component.newAppleMusicLink = 'https://music.apple.com/abc';
+    component.newSpotifyLink = 'https://open.spotify.com/abc';
+    component.newNotationLinks = ['https://example.com/tab.pdf'];
 
     component.resourceAdded.subscribe(() => {});
     component.onAdd();
 
-    expect(component.newType).toBe('youtube');
-    expect(component.newUrl).toBe('');
-    expect(component.newLabel).toBe('');
-    expect(component.newTags).toEqual([]);
+    expect(component.newTitle).toBe('');
+    expect(component.newArtist).toBe('');
+    expect(component.newAlbum).toBe('');
+    expect(component.newGenre).toBe('');
+    expect(component.newAudioLink).toBe('');
+    expect(component.newVideoLink).toBe('');
+    expect(component.newAppleMusicLink).toBe('');
+    expect(component.newSpotifyLink).toBe('');
+    expect(component.newNotationLinks).toEqual(['']);
   });
 
   it('closes the Add New dialog after onAdd', () => {
     component.showAddDialog = true;
-    component.newType = 'pdf';
-    component.newUrl = 'https://example.com/tab.pdf';
-    component.newLabel = 'My Tab';
+    component.newTitle = 'Yesterday';
+    component.newArtist = 'The Beatles';
 
     component.resourceAdded.subscribe(() => {});
     component.onAdd();
 
     expect(component.showAddDialog).toBe(false);
+  });
+
+  // ── notation link management ─────────────────────────────────
+
+  it('addNotationLink appends an empty string', () => {
+    component.newNotationLinks = ['https://example.com/tab.pdf'];
+    component.addNotationLink();
+    expect(component.newNotationLinks).toEqual(['https://example.com/tab.pdf', '']);
+  });
+
+  it('removeNotationLink removes the entry at the given index', () => {
+    component.newNotationLinks = ['https://a.com', 'https://b.com', 'https://c.com'];
+    component.removeNotationLink(1);
+    expect(component.newNotationLinks).toEqual(['https://a.com', 'https://c.com']);
+  });
+
+  it('removeNotationLink does nothing when only one entry remains', () => {
+    component.newNotationLinks = ['https://only.com'];
+    component.removeNotationLink(0);
+    expect(component.newNotationLinks).toEqual(['https://only.com']);
   });
 
   // ── onLibrarySelect ─────────────────────────────────────────
@@ -238,8 +339,8 @@ describe('SessionResourcePickerComponent', () => {
       expect(ids).toEqual(['2']);
     });
 
-    it('returns at most 20 results', () => {
-      const manyResources = Array.from({ length: 25 }, (_, i) =>
+    it('returns at most 50 results (T8 listbox cap)', () => {
+      const manyResources = Array.from({ length: 60 }, (_, i) =>
         mockResource({ id: `r${i}`, label: `searchable item ${i}` })
       );
       mockResourceService.getResources.mockReturnValue(of(manyResources));
@@ -249,7 +350,7 @@ describe('SessionResourcePickerComponent', () => {
       fixture.detectChanges();
 
       component.searchQuery = 'searchable';
-      expect(component.searchResults.length).toBeLessThanOrEqual(20);
+      expect(component.searchResults.length).toBe(50);
     });
 
     it('returns empty array when no resources match', () => {
@@ -266,12 +367,9 @@ describe('SessionResourcePickerComponent', () => {
       component = fixture.componentInstance;
       fixture.detectChanges();
 
-      // 'xyzunique' matches label so resource is found; tags check is not reached here
       component.searchQuery = 'xyzunique';
       expect(component.searchResults).toHaveLength(1);
 
-      // Now search something that doesn't match label or URL but tags would (if defined)
-      // Since tags is undefined, ?? [] kicks in and returns [] — resource not found, no crash
       component.searchQuery = 'nosuchtag';
       expect(component.searchResults).toHaveLength(0);
     });
@@ -281,14 +379,6 @@ describe('SessionResourcePickerComponent', () => {
 
   it('showAddDialog is false initially', () => {
     expect(component.showAddDialog).toBe(false);
-  });
-
-  // ── onTypeChange ─────────────────────────────────────────────
-
-  it('onTypeChange clears the oEmbed thumbnail', () => {
-    (component as any)._oEmbedThumbnail.set('https://img.youtube.com/vi/test/0.jpg');
-    component.onTypeChange();
-    expect(component.oEmbedThumbnail()).toBeNull();
   });
 
   // ── libraryLoading error path ────────────────────────────────
@@ -310,92 +400,307 @@ describe('SessionResourcePickerComponent', () => {
     expect(component.libraryLoading()).toBe(false);
   });
 
-  // ── onUrlBlur ────────────────────────────────────────────────
+  // ── T8: link-resource types ─────────────────────────────────
 
-  it('onUrlBlur returns early when newType is not youtube', async () => {
-    const fetchSpy = jest.spyOn(youtube, 'fetchYouTubeOEmbed');
-    component.newType = 'pdf';
-    component.newUrl = 'https://example.com/tab.pdf';
-    await component.onUrlBlur();
-    expect(fetchSpy).not.toHaveBeenCalled();
-  });
+  describe('link resource types (T8)', () => {
+    const YT = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
-  it('onUrlBlur returns early when url is empty', async () => {
-    const fetchSpy = jest.spyOn(youtube, 'fetchYouTubeOEmbed');
-    component.newType = 'youtube';
-    component.newUrl = '';
-    await component.onUrlBlur();
-    expect(fetchSpy).not.toHaveBeenCalled();
-  });
-
-  it('onUrlBlur returns early when url changes during fetch', async () => {
-    const ytUrl = 'https://www.youtube.com/watch?v=abc';
-    (youtube.fetchYouTubeOEmbed as jest.Mock).mockImplementation(async () => {
-      component.newUrl = 'https://www.youtube.com/watch?v=changed';
-      return { title: 'Rick', thumbnailUrl: 'https://img' };
+    beforeEach(() => {
+      mockFetchOEmbed.mockReset();
+      component.newType = 'youtube';
     });
 
-    component.newType = 'youtube';
-    component.newUrl = ytUrl;
-    component.newLabel = '';
-    await component.onUrlBlur();
-
-    expect(component.newLabel).toBe('');
-    expect(component.oEmbedThumbnail()).toBeNull();
-  });
-
-  it('onUrlBlur sets label from oembed.title when label is empty', async () => {
-    (youtube.fetchYouTubeOEmbed as jest.Mock).mockResolvedValue({
-      title: 'Rick Astley',
-      thumbnailUrl: 'https://img.youtube.com/vi/abc/0.jpg',
+    it('defaults to the song type so the existing flow is the primary path', () => {
+      const fresh = TestBed.createComponent(SessionResourcePickerComponent).componentInstance;
+      expect(fresh.newType).toBe('song');
+      expect(fresh.isSongType).toBe(true);
     });
 
-    component.newType = 'youtube';
-    component.newUrl = 'https://www.youtube.com/watch?v=abc';
-    component.newLabel = '';
-    await component.onUrlBlur();
-
-    expect(component.newLabel).toBe('Rick Astley');
-    expect(component.oEmbedThumbnail()).toBe('https://img.youtube.com/vi/abc/0.jpg');
-  });
-
-  it('onUrlBlur does not overwrite existing label', async () => {
-    (youtube.fetchYouTubeOEmbed as jest.Mock).mockResolvedValue({
-      title: 'Rick Astley',
-      thumbnailUrl: 'https://img.youtube.com/vi/abc/0.jpg',
+    it('offers all five types', () => {
+      expect(component.typeOptions.map(o => o.value)).toEqual([
+        'song', 'youtube', 'pdf', 'chord-sheet', 'custom',
+      ]);
     });
 
-    component.newType = 'youtube';
-    component.newUrl = 'https://www.youtube.com/watch?v=abc';
-    component.newLabel = 'My custom label';
-    await component.onUrlBlur();
+    // canAdd
 
-    expect(component.newLabel).toBe('My custom label');
-  });
-
-  it('onUrlBlur sets thumbnail to null when oembed.thumbnailUrl is empty', async () => {
-    (youtube.fetchYouTubeOEmbed as jest.Mock).mockResolvedValue({
-      title: 'Some video',
-      thumbnailUrl: '',
+    it('canAdd is false for an unparseable URL', () => {
+      component.newUrl = 'not a url';
+      expect(component.canAdd).toBe(false);
     });
 
-    component.newType = 'youtube';
-    component.newUrl = 'https://www.youtube.com/watch?v=abc';
-    component.newLabel = 'Existing';
-    await component.onUrlBlur();
+    it('canAdd is false for a non-http(s) scheme', () => {
+      component.newType = 'custom';
+      component.newUrl = 'javascript:alert(1)';
+      expect(component.canAdd).toBe(false);
+    });
 
-    expect(component.oEmbedThumbnail()).toBeNull();
+    it('canAdd is false for an http(s) URL that is not a YouTube video when type is youtube', () => {
+      component.newUrl = 'https://example.com/not-a-video';
+      expect(component.canAdd).toBe(false);
+    });
+
+    it('canAdd is true for a valid YouTube URL', () => {
+      component.newUrl = YT;
+      expect(component.canAdd).toBe(true);
+    });
+
+    it('canAdd is true for any https URL when type is not youtube', () => {
+      component.newType = 'pdf';
+      component.newUrl = 'https://example.com/tab.pdf';
+      expect(component.canAdd).toBe(true);
+    });
+
+    it('canAdd is false while an oEmbed fetch is in flight (NE2)', async () => {
+      let resolve!: (v: any) => void;
+      mockFetchOEmbed.mockReturnValue(new Promise(r => (resolve = r)));
+
+      component.newUrl = YT;
+      const pending = component.onUrlBlur();
+
+      expect(component.oEmbedLoading()).toBe(true);
+      expect(component.canAdd).toBe(false);
+
+      resolve({ title: 'Never Gonna Give You Up', thumbnailUrl: 'https://img/1.jpg' });
+      await pending;
+
+      expect(component.oEmbedLoading()).toBe(false);
+      expect(component.canAdd).toBe(true);
+    });
+
+    // oEmbed
+
+    it('auto-fills the label and thumbnail from oEmbed', async () => {
+      mockFetchOEmbed.mockResolvedValue({ title: 'Barre Chords', thumbnailUrl: 'https://img/t.jpg' });
+
+      component.newUrl = YT;
+      await component.onUrlBlur();
+
+      expect(component.newLabel).toBe('Barre Chords');
+      expect(component.thumbnailUrl()).toBe('https://img/t.jpg');
+    });
+
+    it('does not overwrite a label the user already edited', async () => {
+      mockFetchOEmbed.mockResolvedValue({ title: 'From oEmbed', thumbnailUrl: '' });
+
+      component.newLabel = 'My own label';
+      component.onLabelInput();
+      component.newUrl = YT;
+      await component.onUrlBlur();
+
+      expect(component.newLabel).toBe('My own label');
+    });
+
+    it('collapses the preview when oEmbed returns null', async () => {
+      mockFetchOEmbed.mockResolvedValue(null);
+
+      component.newUrl = YT;
+      await component.onUrlBlur();
+
+      expect(component.thumbnailUrl()).toBeNull();
+      expect(component.oEmbedLoading()).toBe(false);
+    });
+
+    it('does not fetch oEmbed for non-youtube types', async () => {
+      component.newType = 'pdf';
+      component.newUrl = 'https://example.com/tab.pdf';
+      await component.onUrlBlur();
+
+      expect(mockFetchOEmbed).not.toHaveBeenCalled();
+    });
+
+    it('discards a stale oEmbed response when the URL changed mid-flight', async () => {
+      let resolveFirst!: (v: any) => void;
+      mockFetchOEmbed.mockReturnValueOnce(new Promise(r => (resolveFirst = r)));
+
+      component.newUrl = YT;
+      const first = component.onUrlBlur();
+
+      // User retypes before the first request settles.
+      component.newUrl = 'https://youtu.be/abcdefghijk';
+
+      resolveFirst({ title: 'STALE TITLE', thumbnailUrl: 'https://img/stale.jpg' });
+      await first;
+
+      expect(component.newLabel).toBe('');
+      expect(component.thumbnailUrl()).toBeNull();
+    });
+
+    // emit + reset
+
+    it('emits a link-shaped resource with normalized tags', () => {
+      component.newUrl = YT;
+      component.newLabel = 'Barre Chords';
+      component.onTagsChange([' Barre ', 'BARRE', 'Chords']);
+
+      const emitted: any[] = [];
+      component.resourceAdded.subscribe(v => emitted.push(v));
+      component.onAdd();
+
+      expect(emitted).toHaveLength(1);
+      expect(emitted[0]).toEqual({
+        type: 'youtube',
+        url: YT,
+        label: 'Barre Chords',
+        tags: ['barre', 'chords'],
+      });
+      expect(emitted[0].title).toBeUndefined();
+    });
+
+    it('falls back to the URL when no label is given', () => {
+      component.newType = 'custom';
+      component.newUrl = 'https://example.com/thing';
+
+      const emitted: any[] = [];
+      component.resourceAdded.subscribe(v => emitted.push(v));
+      component.onAdd();
+
+      expect(emitted[0].label).toBe('https://example.com/thing');
+    });
+
+    it('resets the link form after adding', async () => {
+      mockFetchOEmbed.mockResolvedValue({ title: 'T', thumbnailUrl: 'https://img/t.jpg' });
+      component.newUrl = YT;
+      await component.onUrlBlur();
+      component.onTagsChange(['barre']);
+
+      component.resourceAdded.subscribe(() => {});
+      component.onAdd();
+
+      expect(component.newUrl).toBe('');
+      expect(component.newLabel).toBe('');
+      expect(component.newTags).toEqual([]);
+      expect(component.thumbnailUrl()).toBeNull();
+      expect(component.showAddDialog).toBe(false);
+    });
+
+    it('clears the preview when the type changes', async () => {
+      mockFetchOEmbed.mockResolvedValue({ title: 'T', thumbnailUrl: 'https://img/t.jpg' });
+      component.newUrl = YT;
+      await component.onUrlBlur();
+
+      component.newType = 'pdf';
+      component.onTypeChange();
+
+      expect(component.thumbnailUrl()).toBeNull();
+    });
+
+    it('does not emit a link resource when canAdd is false', () => {
+      component.newUrl = 'nonsense';
+      const emitted: any[] = [];
+      component.resourceAdded.subscribe(v => emitted.push(v));
+      component.onAdd();
+      expect(emitted).toHaveLength(0);
+    });
   });
 
-  it('onUrlBlur does nothing when oembed is null', async () => {
-    (youtube.fetchYouTubeOEmbed as jest.Mock).mockResolvedValue(null);
+  // ── T8: tag filtering ───────────────────────────────────────
 
-    component.newType = 'youtube';
-    component.newUrl = 'https://www.youtube.com/watch?v=abc';
-    component.newLabel = 'Existing';
-    await component.onUrlBlur();
+  describe('library tag filter (T8)', () => {
+    beforeEach(() => {
+      mockResourceService.getResources.mockReturnValue(of([
+        mockResource({ id: 'a', label: 'Alpha', tags: ['barre', 'chords'] }),
+        mockResource({ id: 'b', label: 'Beta', url: 'https://example.com/b', tags: ['barre'] }),
+        mockResource({ id: 'c', label: 'Gamma', url: 'https://example.com/c', tags: [] }),
+      ]));
+      fixture = TestBed.createComponent(SessionResourcePickerComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
-    expect(component.newLabel).toBe('Existing');
-    expect(component.oEmbedThumbnail()).toBeNull();
+    it('collects distinct library tags, sorted', () => {
+      expect(component.libraryTags()).toEqual(['barre', 'chords']);
+    });
+
+    it('shows results from a tag filter alone, with no text query', () => {
+      component.onTagFiltersChange(['barre']);
+      expect(component.isFiltering).toBe(true);
+      expect(component.searchResults.map(r => r.id)).toEqual(['a', 'b']);
+    });
+
+    it('requires ALL selected tags to match', () => {
+      component.onTagFiltersChange(['barre', 'chords']);
+      expect(component.searchResults.map(r => r.id)).toEqual(['a']);
+    });
+
+    it('normalizes tag filters to lowercase', () => {
+      component.onTagFiltersChange([' BARRE ']);
+      expect(component.selectedTagFilters).toEqual(['barre']);
+    });
+
+    it('combines the text query and the tag filter', () => {
+      component.searchQuery = 'alpha';
+      component.onTagFiltersChange(['barre']);
+      expect(component.searchResults.map(r => r.id)).toEqual(['a']);
+    });
+
+    it('is not filtering when the query is short and no tag is selected', () => {
+      component.searchQuery = 'al';
+      expect(component.isFiltering).toBe(false);
+      expect(component.searchResults).toEqual([]);
+    });
+
+    it('maps type badges to the DESIGN.md severities', () => {
+      expect(component.typeSeverity('youtube')).toBe('info');
+      expect(component.typeSeverity('pdf')).toBe('danger');
+      expect(component.typeSeverity('chord-sheet')).toBe('success');
+      expect(component.typeSeverity('song')).toBe('secondary');
+    });
   });
+
+
+  // ── T8: DOM rendering ───────────────────────────────────────
+
+  describe('renders the spec\'d picker chrome (T8)', () => {
+    beforeEach(() => {
+      mockResourceService.getResources.mockReturnValue(of([
+        mockResource({ id: 'a', label: 'Barre Chords', tags: ['barre'] }),
+      ]));
+      fixture = TestBed.createComponent(SessionResourcePickerComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+
+    it('renders both section labels', () => {
+      const text = fixture.nativeElement.textContent as string;
+      expect(text).toContain('Your Library');
+      expect(text).toContain('Add New');
+    });
+
+    it('applies the DESIGN.md section separator to the Add New block', () => {
+      const sep = fixture.nativeElement.querySelector('.border-t');
+      expect(sep).toBeTruthy();
+      expect(sep.className).toContain('border-[var(--gj-border)]');
+      // 0.05em per DESIGN.md > Typography, not Tailwind's tracking-wide (0.025em).
+      const label = sep.querySelector('p');
+      expect(label.className).toContain('tracking-[0.05em]');
+    });
+
+    it('renders a p-listbox of results once filtering', () => {
+      component.searchQuery = 'barre';
+      fixture.detectChanges();
+
+      const listbox = fixture.nativeElement.querySelector('p-listbox');
+      expect(listbox).toBeTruthy();
+      expect(listbox.textContent).toContain('Barre Chords');
+    });
+
+    it('renders a type badge next to each library result', () => {
+      component.searchQuery = 'barre';
+      fixture.detectChanges();
+
+      const tag = fixture.nativeElement.querySelector('p-listbox p-tag');
+      expect(tag).toBeTruthy();
+      expect(tag.textContent).toContain('youtube');
+    });
+
+    it('shows a warn message when filters match nothing', () => {
+      component.searchQuery = 'zzzznomatch';
+      fixture.detectChanges();
+
+      const text = fixture.nativeElement.textContent as string;
+      expect(text).toContain('No resources match your filters.');
+    });
+  });
+
 });

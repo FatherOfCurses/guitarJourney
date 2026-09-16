@@ -1,4 +1,4 @@
-<h1 class="text-2xl font-semibold tracking-tight text-neutral-900 mb-4">My Songs</h1>
+<h1 class="text-2xl font-semibold tracking-tight text-[var(--gj-text)] mb-4">My Songs</h1>
 
 <div class="mb-4">
   <button
@@ -6,7 +6,7 @@
     type="button"
     label="Add Song"
     icon="pi pi-plus"
-    class="inline-flex items-center justify-center rounded-xl bg-[var(--gj-accent)] px-4 py-2 text-white font-medium
+    class="inline-flex items-center justify-center rounded-md bg-[var(--gj-accent)] px-4 py-2 text-white font-medium
            hover:bg-[var(--gj-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)]"
     (click)="addSong()"
   ></button>
@@ -39,7 +39,7 @@
   </ng-template>
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="4" class="text-center text-neutral-500 py-8">
+      <td colspan="4" class="text-center text-[var(--gj-muted)] py-8">
         No songs yet. Click "Add Song" to get started.
       </td>
     </tr>

@@ -1,0 +1,200 @@
+<h1 class="text-2xl font-semibold tracking-tight text-[var(--gj-text)] mb-4">My Resources</h1>
+
+<div class="mb-4">
+  <button
+    pButton
+    type="button"
+    label="Add Resource"
+    icon="pi pi-plus"
+    class="inline-flex items-center justify-center rounded-md bg-[var(--gj-accent)] px-4 py-2 text-white font-medium
+           hover:bg-[var(--gj-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)]"
+    (click)="addResource()"
+  ></button>
+</div>
+
+@if (atLibraryLimit()) {
+  <p-message severity="warn" class="mb-4 block">
+    Showing 200 resources (library limit). Older resources may not appear.
+  </p-message>
+}
+
+<!-- ── FILTER BAR ─────────────────────────────────────────── -->
+<div class="flex flex-col md:flex-row gap-2 mb-4">
+  <input
+    type="text"
+    pInputText
+    placeholder="Filter by name…"
+    aria-label="Filter resources by name"
+    class="w-full md:flex-1"
+    [ngModel]="labelFilter()"
+    (ngModelChange)="labelFilter.set($event)"
+  />
+  <p-multiSelect
+    [options]="allTags()"
+    [ngModel]="selectedTags()"
+    (ngModelChange)="selectedTags.set($event)"
+    placeholder="Filter by tag"
+    display="chip"
+    styleClass="w-full md:w-48"
+    ariaLabel="Filter resources by tag"
+  />
+</div>
+
+@if (loading()) {
+  <!-- Skeletons rather than an empty table, so the empty message doesn't flash on load. -->
+  <div class="space-y-4">
+    @for (row of [1, 2, 3]; track row) {
+      <p-skeleton height="80px" borderRadius="var(--gj-radius-card)" />
+    }
+  </div>
+} @else {
+  <p-table
+    [value]="filteredResources()"
+    styleClass="p-datatable-gridlines"
+    [tableStyle]="{'min-width': '50rem'}"
+    dataKey="id"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="label">Name <p-sortIcon field="label"></p-sortIcon></th>
+        <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
+        <th>Tags</th>
+        <th pSortableColumn="useCount">Used <p-sortIcon field="useCount"></p-sortIcon></th>
+        <th class="w-28"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-resource>
+      <tr>
+        <td>
+          @if (resource.url) {
+            <a
+              [href]="resource.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--gj-text)] hover:text-[var(--gj-accent)] hover:underline"
+            >{{ resource.label }}</a>
+          } @else {
+            {{ resource.label }}
+          }
+        </td>
+        <td><p-tag [value]="resource.type" [severity]="typeSeverity(resource.type)" /></td>
+        <td>
+          @if (resource.tags?.length) {
+            <div class="flex flex-wrap gap-1">
+              @for (tag of resource.tags; track tag) {
+                <span
+                  class="rounded-full bg-[var(--gj-border)] px-2 py-0.5 text-xs font-medium text-[var(--gj-muted)]"
+                >{{ tag }}</span>
+              }
+            </div>
+          }
+        </td>
+        <td class="tabular-nums">{{ resource.useCount || 0 }}</td>
+        <td>
+          <div class="flex items-center justify-end">
+            <p-button
+              type="button"
+              icon="pi pi-pencil"
+              severity="secondary"
+              variant="text"
+              styleClass="!w-11 !h-11 flex items-center justify-center"
+              [attr.aria-label]="'Edit ' + resource.label"
+              [disabled]="deletingId() === resource.id"
+              (click)="openEdit(resource)"
+            />
+            <p-button
+              type="button"
+              icon="pi pi-trash"
+              severity="danger"
+              variant="text"
+              styleClass="!w-11 !h-11 flex items-center justify-center"
+              [attr.aria-label]="'Delete ' + resource.label"
+              [disabled]="deletingId() === resource.id"
+              (click)="confirmDelete(resource)"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center text-[var(--gj-muted)] py-8">
+          @if (hasFilters()) {
+            No resources match your filters.
+          } @else {
+            No resources yet. Click "Add Resource" to get started.
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  @if (noFilterResults()) {
+    <div class="mt-2 text-center">
+      <p-button label="Clear filters" type="button" severity="secondary" [link]="true" (click)="clearFilters()" />
+    </div>
+  }
+}
+
+<!-- ── DELETE CONFIRM ─────────────────────────────────────── -->
+<p-dialog
+  header="Delete resource"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '28rem' }"
+  [visible]="deleteTarget() !== null"
+  (visibleChange)="$event ? null : cancelDelete()"
+>
+  <p class="text-sm text-[var(--gj-text)]">
+    Delete this resource? It will be removed from your library. Sessions it was attached to are not
+    affected.
+  </p>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" type="button" severity="secondary" [text]="true" (click)="cancelDelete()" />
+    <p-button label="Delete" type="button" severity="danger" (click)="onDeleteConfirmed()" />
+  </ng-template>
+</p-dialog>
+
+<!-- ── EDIT ───────────────────────────────────────────────── -->
+<p-dialog
+  header="Edit resource"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '28rem' }"
+  [visible]="editTarget() !== null"
+  (visibleChange)="$event ? null : cancelEdit()"
+>
+  <div class="space-y-4">
+    <div>
+      <label for="editLabel" class="mb-1 block text-xs font-medium uppercase tracking-[0.05em] text-[var(--gj-muted)]">
+        Label
+      </label>
+      <input id="editLabel" type="text" pInputText class="w-full" [(ngModel)]="editLabel" />
+    </div>
+    <div>
+      <label for="editTags" class="mb-1 block text-xs font-medium uppercase tracking-[0.05em] text-[var(--gj-muted)]">
+        Tags
+      </label>
+      <p-autocomplete
+        inputId="editTags"
+        [multiple]="true"
+        [dropdown]="false"
+        [suggestions]="[]"
+        [ngModel]="editTags"
+        (ngModelChange)="onEditTagsChange($event)"
+        styleClass="w-full"
+      />
+    </div>
+  </div>
+  <ng-template pTemplate="footer">
+    <p-button label="Cancel" type="button" severity="secondary" [text]="true" (click)="cancelEdit()" />
+    <p-button
+      label="Save"
+      type="button"
+      [disabled]="savingEdit() || editLabel.trim().length === 0"
+      (click)="saveEdit()"
+    />
+  </ng-template>
+</p-dialog>
