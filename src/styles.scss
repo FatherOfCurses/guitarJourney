@@ -27,18 +27,28 @@
   --gj-error:         #C0392B;
   --gj-info:          #2C6E8A;
 
-  --p-font-family: 'DM Sans', sans-serif;
+  /* Radius — hierarchical, not uniform. See DESIGN.md > Layout. */
+  --gj-radius-card:   8px;    /* cards, panels, skeletons standing in for them */
+  --gj-radius-button: 6px;    /* buttons, inputs */
+  --gj-radius-badge:  4px;    /* small badges */
+  --gj-radius-pill:   9999px; /* pill tags */
+
+  /* Typography — see DESIGN.md. Tokenized so the planned theming dial can swap them. */
+  --gj-font-display: 'Wix Madefor Text', sans-serif;
+  --gj-font-body:    'DM Sans', sans-serif;
+
+  --p-font-family: var(--gj-font-body);
 }
 
 /* ── Base typography ─────────────────────────────────────────── */
 body {
   background-color: var(--gj-background);
   color: var(--gj-text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--gj-font-body);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Wix Madefor Text', sans-serif;
+  font-family: var(--gj-font-display);
 }
 
 /* ── Timer idle pulse ────────────────────────────────────────── */
@@ -48,6 +58,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .gj-timer-pulse {
-  border-radius: 8px;
+  border-radius: var(--gj-radius-card);
   animation: gj-timer-pulse 3s ease-in-out infinite;
 }

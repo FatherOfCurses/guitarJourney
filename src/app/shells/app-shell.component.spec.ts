@@ -109,6 +109,31 @@ describe('AppShellComponent', () => {
     expect(navigateSpy).toHaveBeenCalledWith(['/']);
   });
 
+  it('exposes a Resources nav item pointing at the resource library', () => {
+    const cmp = fixture.componentInstance;
+    const resources = cmp.navItems.find(i => i.route === '/app/resources');
+
+    expect(resources).toBeTruthy();
+    expect(resources!.label).toBe('Resources');
+  });
+
+  it('labels the songs nav item "Songs", not "Library"', () => {
+    // "Library" now belongs to the resource library; the songs page heading is "My Songs".
+    const cmp = fixture.componentInstance;
+    const songs = cmp.navItems.find(i => i.route === '/app/songs');
+
+    expect(songs!.label).toBe('Songs');
+  });
+
+  it('has no duplicate nav labels or routes', () => {
+    const cmp = fixture.componentInstance;
+    const labels = cmp.navItems.map(i => i.label);
+    const routes = cmp.navItems.map(i => i.route);
+
+    expect(new Set(labels).size).toBe(labels.length);
+    expect(new Set(routes).size).toBe(routes.length);
+  });
+
   it('toggleSidebar flips collapsed signal each call', () => {
     const cmp = fixture.componentInstance;
     expect(cmp.collapsed()).toBe(false);

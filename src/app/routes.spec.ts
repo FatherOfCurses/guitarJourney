@@ -5,6 +5,7 @@ import { AppShellComponent } from '@shells/app-shell.component';
 import { RegisterComponent } from '@auth/register.component';
 import { AlreadyAuthedGuard } from '@auth/already-authed.guard';
 import { AuthGuard } from '@auth/auth.guard';
+import { ResourceLibraryComponent } from '@features/resources/resource-library.component';
 
 describe('App Routes', () => {
   it('should export a non-empty Routes array', () => {
@@ -61,13 +62,33 @@ describe('App Routes', () => {
     expect(Array.isArray(protectedRoute.children)).toBe(true);
   });
 
-  it.each(['sessions', 'songs', 'metrics'])('protected child "%s" should exist and lazy-load', (segment) => {
+  it.each(['sessions', 'songs', 'metrics', 'resources'])('protected child "%s" should exist and lazy-load', (segment) => {
     const protectedRoute = routes.find(r => (r as Route).component === AppShellComponent) as Route;
     expect(protectedRoute).toBeTruthy();
     const child = (protectedRoute.children ?? []).find(c => c.path === segment) as Route | undefined;
     expect(child).toBeTruthy();
     // These should be lazy components
     expect(typeof (child as any).loadComponent).toBe('function');
+  });
+
+  it('should declare the resources route BEFORE the protected wildcard', () => {
+    // A route appended after `path: '**'` is unreachable — /app/resources would 404.
+    const protectedRoute = routes.find(r => (r as Route).component === AppShellComponent) as Route;
+    const children = protectedRoute.children ?? [];
+    const resourcesIdx = children.findIndex(c => c.path === 'resources');
+    const wildcardIdx = children.findIndex(c => c.path === '**');
+
+    expect(resourcesIdx).toBeGreaterThan(-1);
+    expect(wildcardIdx).toBeGreaterThan(-1);
+    expect(resourcesIdx).toBeLessThan(wildcardIdx);
+  });
+
+  it('should lazy-load ResourceLibraryComponent for the resources route', async () => {
+    const protectedRoute = routes.find(r => (r as Route).component === AppShellComponent) as Route;
+    const child = (protectedRoute.children ?? []).find(c => c.path === 'resources') as Route;
+
+    const loaded = await (child as any).loadComponent();
+    expect(loaded).toBe(ResourceLibraryComponent);
   });
 
   it('should have a register route protected by AlreadyAuthedGuard', () => {
