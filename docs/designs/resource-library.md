@@ -743,49 +743,50 @@ No existing ASCII diagrams found in the files this plan touches (`session.compon
 
 Synthesized from this review's findings. Each task derives from a specific finding above. Run with Claude Code; checkbox as you ship.
 
-- [ ] **T1 (P1, human: ~30min / CC: ~3min)** — Models — Create `Resource` and `SessionResource` interfaces
+- [x] **T1 (P1, human: ~30min / CC: ~3min)** — Models — Create `Resource` and `SessionResource` interfaces
   - Surfaced by: Architecture — data model spec
   - Files: `src/app/models/resource.ts`, `src/app/models/session-resource.ts`
   - Verify: `ng build` compiles without errors
 
-- [ ] **T2 (P1, human: ~1h / CC: ~5min)** — YouTube utilities — `extractYouTubeEmbedUrl()` + `fetchYouTubeOEmbed()` + `YouTubeOEmbed` interface
+- [x] **T2 (P1, human: ~1h / CC: ~5min)** — YouTube utilities — `extractYouTubeEmbedUrl()` + `fetchYouTubeOEmbed()` + `YouTubeOEmbed` interface
   - Surfaced by: Architecture — YouTube spec (4 URL formats, oEmbed with title+thumbnail)
   - Files: `src/app/utils/youtube.ts`, `src/app/utils/youtube.spec.ts`
   - Verify: spec covers all 4 URL format extractions, null return for invalid URLs, oEmbed success/failure/malformed-JSON paths
 
-- [ ] **T3 (P1, human: ~30min / CC: ~3min)** — Converters — `resourceConverter`, `sessionResourceConverter`
+- [x] **T3 (P1, human: ~30min / CC: ~3min)** — Converters — `resourceConverter`, `sessionResourceConverter`
   - Surfaced by: Architecture — converter pattern (import from model files, don't redeclare inline)
   - Files: `src/app/storage/converters.ts`
   - Verify: `ng build` compiles without errors
 
-- [ ] **T4 (P1, human: ~2h / CC: ~15min)** — ResourceService — `saveResources` (with T6 dedup), `getResources`, `getSessionResources`, `deleteResource`, `updateResource`, `touchResource`
+- [x] **T4 (P1, human: ~2h / CC: ~15min)** — ResourceService — `saveResources` (with T6 dedup), `getResources`, `getSessionResources`, `deleteResource`, `updateResource`, `touchResource`
   - Surfaced by: Architecture — internal uid pattern + Reviewer Concern #1/#2; T6 dedup query
   - Files: `src/app/services/resource.service.ts`, `src/app/services/resource.service.spec.ts`
   - Verify: spec covers `saveResources()` happy path (new resource + existing resource via dedup), error path (catch block fires), `getResources()` Observable emission, `deleteResource()` / `updateResource()` / `touchResource()` Firestore calls. Follow `session.service.spec.ts` Jest mock pattern.
 
-- [ ] **T5 (P1, human: ~30min / CC: ~3min)** — session-resource stub migration — standalone: true, remove styleUrls, update spec
+- [x] **T5 (P1, human: ~30min / CC: ~3min)** — session-resource stub migration — standalone: true, remove styleUrls, update spec
   - Surfaced by: Architecture — stub migration spec
   - Files: `src/app/features/session/session-resource/session-resource.component.ts`, `.spec.ts`
   - Verify: `ng build` compiles (no styleUrls compile error)
 
-- [ ] **T6 (P1, human: ~30min / CC: ~3min)** — session-resource-picker stub migration — standalone: true, remove styleUrls, update spec
+- [x] **T6 (P1, human: ~30min / CC: ~3min)** — session-resource-picker stub migration — standalone: true, remove styleUrls, update spec
   - Surfaced by: Architecture — stub migration spec
   - Files: `src/app/features/session/session-resource-picker/session-resource-picker.component.ts`, `.spec.ts`
   - Verify: `ng build` compiles
 
-- [ ] **T7 (P1, human: ~2h / CC: ~10min)** — session-resource component — display by type (YouTube iframe / link), remove button, showRemove input
+- [x] **T7 (P1, human: ~2h / CC: ~10min)** — session-resource component — display by type (YouTube iframe / link), remove button, showRemove input
   - Surfaced by: Architecture — `@Input() showRemove`, `DomSanitizer`, type-based display spec
   - Files: `src/app/features/session/session-resource/session-resource.component.ts`, `.html`, `src/app/features/session/session-resource/session-resource.component.spec.ts`
   - Verify: spec covers YouTube type renders `<iframe>` with safeEmbedUrl; PDF type renders `<a>` with `pi-file-pdf` icon; `showRemove=true` shows remove button; `showRemove=false` (default) hides it; remove `@Output()` emits on click
 
-- [ ] **T8 (P1, human: ~3h / CC: ~20min)** — session-resource-picker component — library search (p-listbox + text filter + tag filter), add new form (type dropdown + URL + label + tags + oEmbed preview), (resourceAdded) output
+- [x] **T8 (P1, human: ~3h / CC: ~20min)** — session-resource-picker component — library search (p-listbox + text filter + tag filter), add new form (type dropdown + URL + label + tags + oEmbed preview), (resourceAdded) output
   - Surfaced by: Architecture — picker UX spec; oEmbed auto-fill; tag normalization
   - Files: `src/app/features/session/session-resource-picker/session-resource-picker.component.ts`, `.html`, `src/app/features/session/session-resource-picker/session-resource-picker.component.spec.ts`
   - Details: add `_oEmbedLoading = signal(false)` — set `true` before `fetchYouTubeOEmbed()`, `false` after. Disable "Add" button while `_oEmbedLoading()` is true. Show `p-skeleton` in thumbnail area while loading.
   - **oEmbed stale-response guard:** The URL input blur triggers oEmbed fetch. If the user changes the URL and blurs again before the first fetch resolves, the first fetch may resolve after the second and overwrite the label/thumbnail for the current URL. Guard: capture the URL value at fetch-start time, and in the resolution handler discard the result if the stored URL no longer matches the current input value. Example: `const urlAtFetchStart = this._urlInput; await fetchYouTubeOEmbed(url); if (this._urlInput !== urlAtFetchStart) return;`
+  - **Scope decision (approved):** built as a *superset*, not a replacement. The shipped MusicBrainz song flow is preserved as one option in a 5-way type selector (song / youtube / pdf / chord-sheet / custom); `song` remains the default since it is the app's primary flow. Library results use `p-listbox` capped at 50 (was a 20-item `p-table`).
   - Verify: oEmbed auto-fills label for YouTube; Add button disabled for invalid URL AND disabled while oEmbed fetch is in-flight; spec covers: Add-disabled-during-oEmbed-fetch, skeleton shown during fetch, resourceAdded emits correct shape; stale oEmbed response (URL changed before fetch resolves) does not overwrite label
 
-- [ ] **T9 (P1, human: ~1h / CC: ~8min)** — session.component.ts — `_pendingResources` signal, `onResourceAdded`, `onResourceRemoved`, convert `onSubmit()` to async/await with `saveResources()` call
+- [x] **T9 (P1, human: ~1h / CC: ~8min)** — session.component.ts — `_pendingResources` signal, `onResourceAdded`, `onResourceRemoved`, convert `onSubmit()` to async/await with `saveResources()` call
   - Surfaced by: Architecture — memory-first pattern; `onSubmit()` async conversion spec
   - Files: `src/app/features/session/session.component.ts`, `src/app/features/session/session.component.spec.ts`
   - Spec changes required:
@@ -796,41 +797,43 @@ Synthesized from this review's findings. Each task derives from a specific findi
     - Remove `tick(800)` from the existing "resolves" test at `session.component.spec.ts:239` — the async/await rewrite removes the `setTimeout(800)` delay; navigation now happens synchronously after the awaited promises resolve. Update the test description from "after 800ms" accordingly.
   - Verify: All existing tests pass; new tests pass with `fakeAsync`/`flushMicrotasks()`
 
-- [ ] **T10 (P1, human: ~1h / CC: ~8min)** — session.component.html — picker in Before, read-only list in During + After, remove `_resourcesAdded` gate
+- [x] **T10 (P1, human: ~1h / CC: ~8min)** — session.component.html — picker in Before, read-only list in During + After, remove `_resourcesAdded` gate
   - Surfaced by: Section 11 D6 decision; Architecture — gating UI removal
   - Files: `src/app/features/session/session.component.html`
   - **Commented stub:** `session.component.html:129` has `<!--  <app-session-resource></app-session-resource> -->`. Do NOT uncomment this stub — it has no resource binding and no `@for` loop. DELETE the comment and replace with the proper `@for` loop: `@for (r of _pendingResources(); track r.resourceId ?? r.url) { <app-session-resource [resource]="r" [showRemove]="false" /> }`
   - Verify: Picker visible in Before phase; resource list read-only in During; same list in After; no gate button
 
-- [ ] **T11 (P1, human: ~2h / CC: ~15min)** — ResourceLibraryComponent — library browser, filter bar, resource cards, delete + edit (T4), empty state
+- [x] **T11 (P1, human: ~2h / CC: ~15min)** — ResourceLibraryComponent — library browser, filter bar, resource cards, delete + edit (T4), empty state
   - Surfaced by: Architecture — library browser layout spec; §T4 delete/edit
   - Files: `src/app/features/resources/resource-library.component.ts`, `.html`, `.spec.ts`
   - Details: when `resources.length === 200`, show a `p-message` severity=warn at the top of the list: "Showing 200 resources (library limit). Older resources may not appear."
   - Verify: Empty state shows p-message + "Start a session"; filter works; delete with confirm; edit saves label/tags changes; 200-item cap notice renders when exactly 200 resources are returned
 
-- [ ] **T12 (P1, human: ~15min / CC: ~2min)** — routes.ts — add `path: 'resources'` child route
+- [x] **T12 (P1, human: ~15min / CC: ~2min)** — routes.ts — add `path: 'resources'` child route
   - Surfaced by: Architecture — route spec (lowercase deviation documented)
   - Files: `src/app/routes.ts`
   - **IMPORTANT:** Insert the new route BEFORE the `path: '**'` wildcard at `routes.ts:93`. Appending after the wildcard causes `/app/resources` to 404.
   - Verify: `/app/resources` navigates to library browser
 
-- [ ] **T13 (P1, human: ~5min / CC: ~1min)** — index.html — add CSP meta tag for YouTube iframes
+- [x] **T13 (P1, human: ~5min / CC: ~1min)** — index.html — add CSP meta tag for YouTube iframes
   - Surfaced by: Architecture — CSP spec; cross-model tension resolved: meta tag is correct approach
   - Files: `src/index.html`
   - Verify: YouTube iframe renders without browser CSP console error
 
-- [ ] **T14 (P1, human: ~15min / CC: ~2min)** — app-shell.component.ts — add Library nav item
+- [x] **T14 (P1, human: ~15min / CC: ~2min)** — app-shell.component.ts — add Library nav item
   - Surfaced by: Architecture — nav spec; Reviewer Concern #6 RESOLVED (path verified)
   - Files: `src/app/shells/app-shell.component.ts`
-  - Verify: "Library" nav item appears in app nav, routes to `/app/resources`
+  - **Label deviation (approved):** "Library" was already in use for `/app/songs`. That item was renamed to "Songs" (matching its own page heading) and the new item is labelled "Resources", so both labels match their page headings.
+  - Verify: "Resources" nav item appears in app nav, routes to `/app/resources`
 
-- [ ] **T15 (P2, human: ~15min / CC: ~3min)** — DESIGN.md — document the design system tokens introduced by this PR
+- [x] **T15 (P2, human: ~15min / CC: ~3min)** — DESIGN.md — document the design system tokens introduced by this PR
   - Surfaced by: design-review Pass 5 — no DESIGN.md exists; resource library introduces new uncodified patterns
   - Files: `DESIGN.md` (new file at repo root)
   - Content: type badge severity mapping (youtube/pdf/chord-sheet/custom → info/danger/success/secondary), skeleton loading pattern (p-skeleton, width/height/border-radius specs), resource card anatomy (label + type badge + tags + URL + useCount + icon buttons), empty state pattern (p-message severity=info + action button), picker section separator (border-t border-neutral-200 + uppercase label)
+  - **Deviation (documented as-built):** patterns describe shipped markup, not this plan's draft wording — separator uses `--gj-border` not `neutral-200`; tags are neutral pills not `p-tag`; labels use `tracking-[0.05em]` per DESIGN.md, not `tracking-wide`. Also fixed: `var(--border-radius)` was undefined (only in the unloaded `src/assets/theme.css`), now `--gj-radius-*` tokens in `styles.scss`.
   - Verify: `DESIGN.md` exists at repo root with all 5 patterns documented
 
-- [ ] **T16 (P1, human: ~10min / CC: ~2min)** — session.component.ts/html — wire PrimeNG MessageService for save error toast
+- [x] **T16 (P1, human: ~10min / CC: ~2min)** — session.component.ts/html — wire PrimeNG MessageService for save error toast
   - Surfaced by: design-review Pass 7 D7 — error display via sticky p-toast instead of inline message; eng-review NE1 — MessageService not in app.config.ts providers
   - Files: `src/app/features/session/session.component.ts`, `src/app/features/session/session.component.html`, `src/app/app.config.ts`
   - Details: (1) Add `MessageService` from `primeng/api` to the `providers` array in `app.config.ts` so it is globally available. (2) Inject `MessageService` in `session.component.ts`. (3) Add `<p-toast>` to template. (4) Replace the inline-error comment in `onSubmit()` catch block with `this.messageService.add({ severity: 'error', summary: 'Save failed', detail: 'Could not save session. Please try again.', sticky: true })`
@@ -840,15 +843,15 @@ Synthesized from this review's findings. Each task derives from a specific findi
 
 *(All items below are incorporated into the T task updates above. Listed separately for explicit tracking.)*
 
-- [ ] **NE1 (P1, ~2min)** — app.config.ts — add `MessageService` to providers array → incorporated into T16
-- [ ] **NE2 (P1, ~5min)** — session-resource-picker — `_oEmbedLoading` signal + disable Add button during oEmbed fetch → incorporated into T8
-- [ ] **NE3 (P2, ~10min)** — ResourceLibraryComponent — 200-item cap `p-message` severity=warn → incorporated into T11
-- [ ] **NE4 (P1, ~5min)** — session.component.spec.ts — fix `createSpy` mock to return `'test-session-id'` string → incorporated into T9
-- [ ] **NE5 (P1, human: ~1h / CC: ~10min)** — resource.service.spec.ts — create spec file following `session.service.spec.ts` Jest mock pattern → incorporated into T4
-- [ ] **NE6 (P1, human: ~30min / CC: ~5min)** — session-resource.component.spec.ts — add YouTube iframe, PDF link, showRemove input test coverage → incorporated into T7
-- [ ] **NE7 (P1, human: ~30min / CC: ~5min)** — session-resource-picker.component.spec.ts — add oEmbed-loading + resourceAdded shape test coverage → incorporated into T8
-- [ ] **NE8 (P1, human: ~30min / CC: ~5min)** — youtube.spec.ts — all 4 URL formats + null for invalid + oEmbed success/fail/malformed → incorporated into T2
-- [ ] **NE9 (P1, human: ~10min / CC: ~3min)** — index.html — swap Roboto for Cabinet Grotesk + DM Sans → incorporate into T13
+- [x] **NE1 (P1, ~2min)** — app.config.ts — add `MessageService` to providers array → incorporated into T16
+- [x] **NE2 (P1, ~5min)** — session-resource-picker — `_oEmbedLoading` signal + disable Add button during oEmbed fetch → incorporated into T8
+- [x] **NE3 (P2, ~10min)** — ResourceLibraryComponent — 200-item cap `p-message` severity=warn → incorporated into T11
+- [x] **NE4 (P1, ~5min)** — session.component.spec.ts — fix `createSpy` mock to return `'test-session-id'` string → incorporated into T9
+- [x] **NE5 (P1, human: ~1h / CC: ~10min)** — resource.service.spec.ts — create spec file following `session.service.spec.ts` Jest mock pattern → incorporated into T4
+- [x] **NE6 (P1, human: ~30min / CC: ~5min)** — session-resource.component.spec.ts — add YouTube iframe, PDF link, showRemove input test coverage → incorporated into T7
+- [x] **NE7 (P1, human: ~30min / CC: ~5min)** — session-resource-picker.component.spec.ts — add oEmbed-loading + resourceAdded shape test coverage → incorporated into T8
+- [x] **NE8 (P1, human: ~30min / CC: ~5min)** — youtube.spec.ts — all 4 URL formats + null for invalid + oEmbed success/fail/malformed → incorporated into T2
+- [x] **NE9 (P1, human: ~10min / CC: ~3min)** — index.html — swap Roboto for Cabinet Grotesk + DM Sans → incorporate into T13
 
   `DESIGN.md` and `CLAUDE.md` prohibit Roboto as primary font, but `src/index.html` currently loads Roboto via Google Fonts and has no Cabinet Grotesk or DM Sans link. T13 already modifies `src/index.html` for the CSP tag — combine the font swap in the same task. Steps: (1) Remove the existing `<link>` that loads Roboto. (2) Add `<link>` for Cabinet Grotesk from Fontshare (`api.fontshare.com/v2/css?f[]=cabinet-grotesk@700,800&display=swap`) or install `@fontsource-variable/cabinet-grotesk` and import in `styles.scss`. (3) Add `<link>` for DM Sans from Google Fonts (weights 400, 500, `display=swap`) or install `@fontsource/dm-sans`. (4) Wire the CSS custom properties in `styles.scss`: `--gj-font-display: 'Cabinet Grotesk', sans-serif` and `--gj-font-body: 'DM Sans', sans-serif`. Verify: app renders with Cabinet Grotesk on page titles and DM Sans on body text; no Roboto requests in Network tab.
 
