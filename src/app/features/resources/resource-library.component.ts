@@ -10,6 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Message } from 'primeng/message';
 import { MultiSelect } from 'primeng/multiselect';
 import { Skeleton } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
 import { ResourceService } from '../../services/resource.service';
 import { Resource } from '../../models/resource';
@@ -41,6 +42,7 @@ const TYPE_SEVERITY: Record<string, TagSeverity> = {
     Message,
     MultiSelect,
     Skeleton,
+    TableModule,
     Tag,
   ],
   templateUrl: './resource-library.component.html',
@@ -88,7 +90,10 @@ export class ResourceLibraryComponent {
     () => this.labelFilter().trim().length > 0 || this.selectedTags().length > 0
   );
 
-  /** No items at all — distinct from "filters matched nothing". */
+  /**
+   * No items at all — distinct from "filters matched nothing". Both render through the
+   * table's emptymessage template, which picks between them on hasFilters().
+   */
   readonly isEmptyLibrary = computed(() => !this._loading() && this._resources().length === 0);
 
   readonly noFilterResults = computed(
@@ -134,8 +139,9 @@ export class ResourceLibraryComponent {
     this.selectedTags.set([]);
   }
 
-  startSession(): void {
-    this.router.navigate(['/app/newSession']);
+  /** Resources are added through the song form for now; a dedicated form is follow-on work. */
+  addResource(): void {
+    this.router.navigate(['/app/newSong']);
   }
 
   // ---------- DELETE FLOW ----------

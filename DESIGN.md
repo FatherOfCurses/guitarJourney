@@ -139,33 +139,37 @@ spinner. The skeleton stands in for the shape that is coming, so the layout does
 - Three is deliberate — enough to read as "a list is coming", not so many it looks like content.
 - Fade skeleton → content over 400–700ms (Motion > long).
 
-### Resource card anatomy
+### Collection page layout
 
-One `p-card` per resource. Content left, actions right, both aligned to the top so a long
-label does not drag the buttons down the card.
+Every "my things" page — Songs, Resources — uses the same shape, so moving between them
+costs nothing:
 
 ```
-┌────────────────────────────────────────────────────────────┐
-│ Barre Chord Basics  [youtube]                  [✎]  [🗑]   │
-│ ⟨barre⟩ ⟨chords⟩                                           │
-│ https://youtube.com/watch?v=…                              │
-│ Used in 3 sessions                                         │
-└────────────────────────────────────────────────────────────┘
+My Resources                          ← h1, text-2xl font-semibold, --gj-text, mb-4
+[+ Add Resource]                      ← accent button, directly under the title
+[ filter… ] [ tags ▾ ]                ← optional, only where the list can grow large
+┌──────────┬────────┬───────┬──────┬─────────┐
+│ Name     │ Type   │ Tags  │ Used │         │
+├──────────┼────────┼───────┼──────┼─────────┤
+│ Barre…   │[youtube]│⟨barre⟩│  3   │ [✎] [🗑] │
+└──────────┴────────┴───────┴──────┴─────────┘
 ```
 
-Top to bottom:
-1. **Label** — `font-medium`, `--gj-text`. Wraps; never truncated (it is the identifier).
+`p-table` with `styleClass="p-datatable-gridlines"`. The primary action sits directly under
+the heading, before the data, so it is reachable without scrolling a long list.
+
+Row contents:
+1. **Name** — the identifier. Links to `resource.url` when there is one, always with
+   `target="_blank" rel="noopener noreferrer"`. Sortable.
 2. **Type badge** — `p-tag`, severity per the mapping in Color.
 3. **Tags** — pill spans, not `p-tag`: `rounded-full` (= `--gj-radius-pill`), `--gj-border`
    background, `--gj-muted` text, `text-xs font-medium`. `p-tag` severities are reserved for
    *type*, so tags use a flat neutral pill and the two never compete.
-4. **URL** — `text-xs`, `--gj-accent`, underline on hover, `truncate`. Truncation is fine here:
-   it is a destination, not an identifier. Always `target="_blank" rel="noopener noreferrer"`.
-5. **useCount** — `text-xs`, `--gj-muted`, only when > 0. Singular/plural ("1 session" / "3 sessions").
-6. **Icon buttons** — edit then delete, `p-button` `variant="text"`, 44×44 minimum
-   (`!w-11 !h-11`). Never bare `<button>`. Each needs an `aria-label` naming the resource
-   ("Edit Barre Chord Basics") since there is no visible text. Both disable together while
-   that row's delete is in flight.
+4. **Counts** — `tabular-nums`, so digits do not shift column width between rows.
+5. **Icon buttons** — edit then delete, right-aligned in a trailing column, `p-button`
+   `variant="text"`, 44×44 minimum (`!w-11 !h-11`). Never bare `<button>`. Each needs an
+   `aria-label` naming the row ("Edit Barre Chord Basics") since there is no visible text.
+   Both disable together while that row's delete is in flight.
 
 ### Empty and near-empty states
 
@@ -173,13 +177,17 @@ Three distinct states — do not collapse them into one message.
 
 | State | Treatment |
 |---|---|
-| **Empty collection** | `p-message severity="info"` + a `p-button` that takes the user to the action that fills it |
-| **Filters match nothing** | `text-sm`, `--gj-muted`, centred, `py-8`, + a link-severity "Clear filters" button. Not a `p-message` — a filter miss is not news |
-| **At the query cap** | `p-message severity="warn"` at the top of the list, stating the cap |
+| **Empty collection** | The table's `emptymessage` row: `text-center`, `--gj-muted`, `py-8`. Names the button that fixes it |
+| **Filters match nothing** | Same `emptymessage` row, different copy, plus a link-severity "Clear filters" button below the table |
+| **At the query cap** | `p-message severity="warn"` above the list, stating the cap |
 
-Empty-collection copy points forward, never states the obvious: *"Your resource library is
-empty. Resources you attach to practice sessions will appear here."* paired with
-**Start a session**. The user learns how the thing fills up, from the place they noticed it was empty.
+Empty-collection copy names the control that fills it, so the fix is one glance away:
+*"No resources yet. Click \"Add Resource\" to get started."* — matching the Songs page
+verbatim in form.
+
+The empty and filtered-empty states share one row but must never share copy. "No resources
+yet" in front of someone whose filter simply missed is a lie about their data; the table
+picks between them on whether any filter is active.
 
 ### Section separator
 
@@ -216,6 +224,7 @@ Never numbered headers — "1. Choose a resource" reads as documentation, not as
 | 2026-06-11 | Body font: DM Sans | Humanist, warm, legible — never fights the content. Replaces Roboto (AI slop default). |
 | 2026-06-11 | Sidebar: leather dark brown #4E2A14 | Approved in remix mockup. Stacked GUITAR/JOURNEY wordmark on leather sidebar gives personal/craftsman identity. |
 | 2026-06-11 | Border radius: hierarchical (cards 8px, buttons 6px, pills full) | Not uniform bubble-radius. Hierarchy signals container vs. action vs. label. |
+| 2026-09-16 | Collection pages standardized on the Songs layout (title, action button, table) | The Resources page had shipped as a `p-card` list while Songs used a table, so two pages doing the same job looked unrelated. Table is the shared shape; the card pattern is retired. |
 | 2026-09-16 | Radius values tokenized as `--gj-radius-*` | Values were specified since 2026-06-11 but never bound to variables, so components hardcoded them. `var(--border-radius)` had been used in one place and silently resolved to nothing — it is defined only in the unloaded `src/assets/theme.css`. |
 | 2026-09-16 | Tags render as neutral pills, not `p-tag` | `p-tag` severities encode resource *type*. Giving free-form tags their own severities would make two unrelated colour systems compete in one card. |
 | 2026-09-16 | `song` badge severity: `secondary` (shares with `custom`) | The `song` type postdates the original mapping. Badge text already distinguishes it; a fifth colour would spend the restrained palette on a distinction nobody scans for. |

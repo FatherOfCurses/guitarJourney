@@ -1,4 +1,16 @@
-<h1 class="text-2xl font-semibold tracking-tight text-[var(--gj-text)] mb-4">My Resource Library</h1>
+<h1 class="text-2xl font-semibold tracking-tight text-[var(--gj-text)] mb-4">My Resources</h1>
+
+<div class="mb-4">
+  <button
+    pButton
+    type="button"
+    label="Add Resource"
+    icon="pi pi-plus"
+    class="inline-flex items-center justify-center rounded-md bg-[var(--gj-accent)] px-4 py-2 text-white font-medium
+           hover:bg-[var(--gj-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)]"
+    (click)="addResource()"
+  ></button>
+</div>
 
 @if (atLibraryLimit()) {
   <p-message severity="warn" class="mb-4 block">
@@ -28,61 +40,59 @@
   />
 </div>
 
-<!-- ── LIST ───────────────────────────────────────────────── -->
 @if (loading()) {
+  <!-- Skeletons rather than an empty table, so the empty message doesn't flash on load. -->
   <div class="space-y-4">
     @for (row of [1, 2, 3]; track row) {
       <p-skeleton height="80px" borderRadius="var(--gj-radius-card)" />
     }
   </div>
-} @else if (isEmptyLibrary()) {
-  <p-message severity="info" class="block mb-4">
-    Your resource library is empty. Resources you attach to practice sessions will appear here.
-  </p-message>
-  <p-button label="Start a session" icon="pi pi-play" type="button" (click)="startSession()" />
-} @else if (noFilterResults()) {
-  <p class="text-sm text-[var(--gj-muted)] py-8 text-center">No resources match your filters.</p>
-  <div class="text-center">
-    <p-button label="Clear filters" type="button" severity="secondary" [link]="true" (click)="clearFilters()" />
-  </div>
 } @else {
-  <div class="space-y-4">
-    @for (resource of filteredResources(); track resource.id ?? resource.url) {
-      <p-card>
-        <div class="flex items-start justify-between gap-4">
-          <div class="min-w-0 space-y-2">
-            <div class="flex items-center gap-2 flex-wrap">
-              <span class="font-medium text-[var(--gj-text)] break-words">{{ resource.label }}</span>
-              <p-tag [value]="resource.type" [severity]="typeSeverity(resource.type)" />
+  <p-table
+    [value]="filteredResources()"
+    styleClass="p-datatable-gridlines"
+    [tableStyle]="{'min-width': '50rem'}"
+    dataKey="id"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="label">Name <p-sortIcon field="label"></p-sortIcon></th>
+        <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
+        <th>Tags</th>
+        <th pSortableColumn="useCount">Used <p-sortIcon field="useCount"></p-sortIcon></th>
+        <th class="w-28"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-resource>
+      <tr>
+        <td>
+          @if (resource.url) {
+            <a
+              [href]="resource.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[var(--gj-text)] hover:text-[var(--gj-accent)] hover:underline"
+            >{{ resource.label }}</a>
+          } @else {
+            {{ resource.label }}
+          }
+        </td>
+        <td><p-tag [value]="resource.type" [severity]="typeSeverity(resource.type)" /></td>
+        <td>
+          @if (resource.tags?.length) {
+            <div class="flex flex-wrap gap-1">
+              @for (tag of resource.tags; track tag) {
+                <span
+                  class="rounded-full bg-[var(--gj-border)] px-2 py-0.5 text-xs font-medium text-[var(--gj-muted)]"
+                >{{ tag }}</span>
+              }
             </div>
-
-            @if (resource.tags?.length) {
-              <div class="flex flex-wrap gap-1">
-                @for (tag of resource.tags; track tag) {
-                  <span
-                    class="rounded-full bg-[var(--gj-border)] px-2 py-0.5 text-xs font-medium text-[var(--gj-muted)]"
-                  >{{ tag }}</span>
-                }
-              </div>
-            }
-
-            @if (resource.url) {
-              <a
-                [href]="resource.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="block truncate text-xs text-[var(--gj-accent)] hover:underline"
-              >{{ resource.url }}</a>
-            }
-
-            @if (resource.useCount && resource.useCount > 0) {
-              <p class="text-xs text-[var(--gj-muted)]">
-                Used in {{ resource.useCount }} {{ resource.useCount === 1 ? 'session' : 'sessions' }}
-              </p>
-            }
-          </div>
-
-          <div class="flex flex-shrink-0 items-center">
+          }
+        </td>
+        <td class="tabular-nums">{{ resource.useCount || 0 }}</td>
+        <td>
+          <div class="flex items-center justify-end">
             <p-button
               type="button"
               icon="pi pi-pencil"
@@ -104,10 +114,28 @@
               (click)="confirmDelete(resource)"
             />
           </div>
-        </div>
-      </p-card>
-    }
-  </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center text-[var(--gj-muted)] py-8">
+          @if (hasFilters()) {
+            No resources match your filters.
+          } @else {
+            No resources yet. Click "Add Resource" to get started.
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  @if (noFilterResults()) {
+    <div class="mt-2 text-center">
+      <p-button label="Clear filters" type="button" severity="secondary" [link]="true" (click)="clearFilters()" />
+    </div>
+  }
 }
 
 <!-- ── DELETE CONFIRM ─────────────────────────────────────── -->

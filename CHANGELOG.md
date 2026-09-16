@@ -6,10 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- **Resource library** — A new Library page at `/app/resources` collects every resource
-  you've attached to a session in one place. Filter by name or tag, rename a resource,
-  retag it, or delete it. Deleting removes it from the library only — the copy saved with
-  each session is left untouched, so your practice history isn't rewritten.
+- **Resource library** — A new Resources page at `/app/resources` collects every resource
+  you've attached to a session in one place, laid out like the Songs page. Filter by name
+  or tag, rename a resource, retag it, or delete it. Deleting removes it from the library
+  only — the copy saved with each session is left untouched, so your practice history isn't
+  rewritten. "Add Resource" goes to the song form for now.
 - **More than songs** — The session picker now takes YouTube videos, PDFs, chord sheets
   and plain links alongside songs. Pick a type, paste a URL, and add optional tags.
   Songs work exactly as before and remain the default.

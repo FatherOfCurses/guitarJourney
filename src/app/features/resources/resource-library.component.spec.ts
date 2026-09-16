@@ -91,17 +91,48 @@ describe('ResourceLibraryComponent', () => {
     expect(component.noFilterResults()).toBe(false);
   });
 
-  it('renders the empty-state message and a "Start a session" button', async () => {
+  it('renders the songs-style empty message in the table', async () => {
     await build([]);
     const text = fixture.nativeElement.textContent as string;
-    expect(text).toContain('Your resource library is empty');
-    expect(text).toContain('Start a session');
+    expect(text).toContain('No resources yet. Click "Add Resource" to get started.');
   });
 
-  it('navigates to the new session route from the empty state', async () => {
+  it('shows the filter no-results message instead when filters are active', async () => {
+    await build([mockResource()]);
+    component.labelFilter.set('zzznomatch');
+    fixture.detectChanges();
+
+    const text = fixture.nativeElement.textContent as string;
+    expect(text).toContain('No resources match your filters.');
+    expect(text).not.toContain('No resources yet.');
+  });
+
+  it('routes the Add Resource button to the song form for now', async () => {
     await build([]);
-    component.startSession();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/app/newSession']);
+    component.addResource();
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/app/newSong']);
+  });
+
+  it('renders the page title and Add Resource button', async () => {
+    await build([]);
+    const h1 = fixture.nativeElement.querySelector('h1');
+    expect(h1.textContent.trim()).toBe('My Resources');
+
+    const button = fixture.nativeElement.querySelector('button[icon="pi pi-plus"]')
+      ?? fixture.nativeElement.querySelector('button');
+    expect(button.textContent).toContain('Add Resource');
+  });
+
+  it('lists resources as table rows', async () => {
+    await build([
+      mockResource({ id: 'a', label: 'Barre Chords' }),
+      mockResource({ id: 'b', label: 'Blues Scale', url: 'https://example.com/b' }),
+    ]);
+
+    const table = fixture.nativeElement.querySelector('p-table');
+    expect(table).toBeTruthy();
+    expect(table.textContent).toContain('Barre Chords');
+    expect(table.textContent).toContain('Blues Scale');
   });
 
   // ── Filtering ───────────────────────────────────────────────
@@ -141,6 +172,14 @@ describe('ResourceLibraryComponent', () => {
 
     expect(component.noFilterResults()).toBe(true);
     expect(component.isEmptyLibrary()).toBe(false);
+  });
+
+  it('offers a Clear filters action when filters match nothing', async () => {
+    await build([mockResource()]);
+    component.labelFilter.set('zzznomatch');
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Clear filters');
   });
 
   it('clearFilters() resets both filters', async () => {
