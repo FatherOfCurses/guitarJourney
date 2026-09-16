@@ -78,9 +78,9 @@ describe('DisplaySessionComponent (standalone)', () => {
     fixture.detectChanges();
 
     const deets = screen.findAllByDisplayValue('Session Details');
-    expect(deets).toBeTruthy;
+    expect(deets).toBeTruthy();
     const sessionDate = screen.findAllByText('2025-08-01');
-    expect(sessionDate).toBeTruthy;
+    expect(sessionDate).toBeTruthy();
 
   });
 
@@ -92,7 +92,7 @@ describe('DisplaySessionComponent (standalone)', () => {
     fixture.detectChanges();
 
     const text = screen.findAllByText('Could not load the session');
-    expect(text).toBeTruthy;
+    expect(text).toBeTruthy();
   });
 
   it('renders session fields on success', async () => {
@@ -103,11 +103,11 @@ describe('DisplaySessionComponent (standalone)', () => {
     fixture.detectChanges();
 
     const deets = screen.findAllByDisplayValue('Session Details');
-    expect(deets).toBeTruthy;
+    expect(deets).toBeTruthy();
     const modes = screen.findAllByDisplayValue('Modes');
-    expect(modes).toBeTruthy;
+    expect(modes).toBeTruthy();
     const time = screen.findAllByDisplayValue('50 min');
-    expect(time).toBeTruthy;
+    expect(time).toBeTruthy();
   });
 
   it('hasError is false before an id is emitted (sessionId is null)', async () => {

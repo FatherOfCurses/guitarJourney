@@ -8,7 +8,7 @@
     "test": "npx jest --coverage",
     "e2e": "ng e2e",
     "deploy": "cd dist && zip -r -X guitar-practice.zip ./*",
-    "lint": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix",
+    "lint": "tsc --noEmit && eslint . --quiet",
     "compodoc": "npx compodoc -p tsconfig.doc.json -d docs",
     "web": "ng serve --port 4200",
     "emu": "firebase emulators:start --only auth,firestore,storage",

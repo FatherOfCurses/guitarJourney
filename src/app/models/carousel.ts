@@ -8,7 +8,7 @@ export class Attribution {
   title!: string;            // Work title if available
   creatorName!: string;      // Required for CC BY
   creatorUrl?: string;       // Link to creator's profile/page
-  sourceName: 'Openverse' = 'Openverse';
+  sourceName = 'Openverse' as const;
   sourceUrl!: string;        // Openverse detail page
   license!: string;          // e.g., "CC BY 4.0" or "CC BY-SA 4.0"
   licenseUrl!: string;       // Link to license text

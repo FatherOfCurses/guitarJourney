@@ -1,9 +1,11 @@
 import { of } from "rxjs";
+import { Timestamp } from 'firebase/firestore';
 import { Session } from '../../app/models/session';
 
-const session = {
+const session: Session = {
   id: 'id12345',
-  date: '10/01/2021',
+  ownerUid: 'uid12345',
+  date: Timestamp.fromDate(new Date('2021-10-01T00:00:00Z')),
   practiceTime: 45,
   whatToPractice: 'Stairway to Heaven',
   sessionIntent: 'Get acoustic fingerpicking down',
@@ -11,10 +13,11 @@ const session = {
   goalForNextTime: 'Fingerpicking at 100%'
 };
 
-const sessions =[
+const sessions: Session[] = [
   {
     id: 'id12345',
-    date: '10/01/2021',
+    ownerUid: 'uid12345',
+    date: Timestamp.fromDate(new Date('2021-10-01T00:00:00Z')),
     practiceTime: 45,
     whatToPractice: 'Stairway to Heaven',
     sessionIntent: 'Get acoustic fingerpicking down',
@@ -23,7 +26,8 @@ const sessions =[
   },
   {
     id: 'id98764',
-    date: '10/31/2021',
+    ownerUid: 'uid12345',
+    date: Timestamp.fromDate(new Date('2021-10-31T00:00:00Z')),
     practiceTime: 20,
     whatToPractice: 'Paradise City',
     sessionIntent: 'Try playing solo all the way through',
@@ -33,10 +37,9 @@ const sessions =[
 ];
 
 const SessionServiceMock = {
-  // BASE_URL: 'https://some.url',
-  getSession$: jest.fn(() => of(session as Session)),
-  getAllSessions$: jest.fn(() => of(sessions as Array<Session>)),
-  putSession$: jest.fn(() => of('success' as String))
+  getSession$: jest.fn(() => of(session)),
+  getAllSessions$: jest.fn(() => of(sessions)),
+  putSession$: jest.fn(() => of('success'))
 }
 
 export default SessionServiceMock;
