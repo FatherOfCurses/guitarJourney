@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.2.0] - 2026-09-16
+
+### Added
+
+- **Resource library** — A new Library page at `/app/resources` collects every resource
+  you've attached to a session in one place. Filter by name or tag, rename a resource,
+  retag it, or delete it. Deleting removes it from the library only — the copy saved with
+  each session is left untouched, so your practice history isn't rewritten.
+- **More than songs** — The session picker now takes YouTube videos, PDFs, chord sheets
+  and plain links alongside songs. Pick a type, paste a URL, and add optional tags.
+  Songs work exactly as before and remain the default.
+- **YouTube titles fill themselves in** — Paste a watch, share, shorts or embed link and
+  the title and thumbnail load automatically. Type your own label and it won't be
+  overwritten.
+- **Tag filtering in the picker** — Filter your library by tag as well as by text. Select
+  several tags to narrow to resources carrying all of them.
+- **You'll know when a save fails** — A failed session save now raises an error notice
+  that stays on screen until dismissed. Previously it only reached the browser console,
+  so a lost session looked like nothing had happened.
+
+### Changed
+
+- **Navigation** — The "Library" item, which went to Songs, is now labelled "Songs", and
+  "Resources" opens the new library. Both labels now match the page they open.
+- **Picker library results** — Results are a scrollable list showing each resource's type
+  badge, and show up to 50 matches instead of 20.
+- **Fonts and corner radii are themeable** — Both now use `--gj-*` custom properties like
+  the colours already did, ahead of the planned personalization settings.
+
+### Fixed
+
+- **Square loading placeholders** — Loading placeholders in the library referenced a
+  stylesheet variable that isn't loaded by the app, so they rendered with square corners.
+- **Session detail assertions** — Six tests on the session detail page were missing their
+  call parentheses and silently asserted nothing.
+
+### Internal
+
+- **`npm run lint` works again** — It had been failing on two counts: type errors in a test
+  fixture, and ESLint 9 no longer reading the old `.eslintrc.json` (which also named a
+  plugin that was never installed). Migrated to `eslint.config.js`. Prettier enforcement
+  is deliberately still off — with no `.prettierrc` it would rewrite every quote in the
+  codebase.
+- **Design system documentation** — `DESIGN.md` now documents the skeleton, card, empty
+  state and section separator patterns, recorded as built rather than as originally
+  drafted.
+- **Task tracking** — `TODOS.md` no longer duplicates the resource library task list, and
+  now carries five follow-on items that had been deferred into a gap and tracked nowhere.
+
 ## [0.5.1.0] - 2026-06-17
 
 ### Added
