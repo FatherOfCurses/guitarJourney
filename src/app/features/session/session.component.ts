@@ -2,6 +2,8 @@ import { Component, DestroyRef, effect, inject, signal, computed } from '@angula
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { MessageService } from 'primeng/api';
+import { Toast } from 'primeng/toast';
 import { SessionService } from '@services/session.service';
 import { Router } from '@angular/router';
 import { ResourceService } from '../../services/resource.service';
@@ -13,7 +15,7 @@ export type SessionPhase = 'Before' | 'During' | 'After';
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule, SessionResourcePickerComponent, SessionResourceComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule, Toast, SessionResourcePickerComponent, SessionResourceComponent],
   templateUrl: './session.component.html',
 })
 export class SessionComponent {
@@ -21,6 +23,7 @@ export class SessionComponent {
   private sessionService = inject(SessionService);
   private resourceService = inject(ResourceService);
   private router = inject(Router);
+  private messageService = inject(MessageService);
   private destroyRef = inject(DestroyRef);
 
   // ---------- STATE ----------
@@ -157,6 +160,13 @@ export class SessionComponent {
       console.error('Error saving session:', error);
       this._saving.set(false);
       this._loading.set(false);
+      // Sticky: a failed save loses the whole session, so it must not auto-dismiss.
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Save failed',
+        detail: 'Could not save session. Please try again.',
+        sticky: true,
+      });
     }
   }
 

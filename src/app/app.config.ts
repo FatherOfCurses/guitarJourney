@@ -11,6 +11,7 @@ import { provideFirestore, getFirestore, connectFirestoreEmulator } from '@angul
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { environment } from "../environments/environment";
 import { providePrimeNG } from 'primeng/config';
+import { MessageService } from 'primeng/api';
 import Aura from '@primeuix/themes/aura';
 import { definePreset } from '@primeuix/themes';
 
@@ -46,7 +47,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
           preset: GuitarJourneyPreset,
           options: {
-            darkModeSelector: false || 'none'
+            darkModeSelector: 'none'
         }
       }
   }),
@@ -66,5 +67,7 @@ export const appConfig: ApplicationConfig = {
       return db;
     }),
     provideStorage(() => getStorage()),
+    // Global so any component can raise a p-toast without providing it locally.
+    MessageService,
   ],
 };

@@ -10,6 +10,7 @@ import { SessionService } from '@services/session.service'
 import { fakeAsync, flushMicrotasks, tick } from '@angular/core/testing';
 import { ResourceService } from '../../services/resource.service';
 import { AutocompleteSuggestionService } from '../../services/autocomplete-suggestion.service';
+import { MessageService } from 'primeng/api';
 
 
 function type(el: HTMLInputElement | HTMLTextAreaElement, value: string) {
@@ -67,6 +68,8 @@ describe('SessionComponent (template-driven behaviors)', () => {
         { provide: SessionService, useValue: sessionSvcMock },
         { provide: ResourceService, useValue: resourceSvcMock },
         { provide: AutocompleteSuggestionService, useValue: suggestionSvcMock },
+        // Real service (p-toast subscribes to its observables); assertions spy on add().
+        MessageService,
       ],
     }).compileComponents();
   });
@@ -348,6 +351,79 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(errorSpy).toHaveBeenCalledWith('Error saving session:', err);
       expect(cmp.saving()).toBe(false);
       expect(cmp.loading()).toBe(false);
+      expect(navigate).not.toHaveBeenCalled();
+
+      errorSpy.mockRestore();
+    });
+
+    it('rejects: raises a sticky error toast and does not navigate', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+
+      const navigate = jest.fn();
+      (cmp as any).router = { navigate };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockRejectedValue(new Error('create failed'));
+
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const addSpy = jest.spyOn(TestBed.inject(MessageService), 'add');
+
+      primeValidForm(cmp);
+      await cmp.onSubmit();
+
+      expect(addSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ severity: 'error', summary: 'Save failed', sticky: true })
+      );
+      expect(navigate).not.toHaveBeenCalled();
+
+      errorSpy.mockRestore();
+    });
+
+    it('does not raise an error toast on a successful save', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      (cmp as any).router = { navigate: jest.fn() };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('ok-id');
+
+      const addSpy = jest.spyOn(TestBed.inject(MessageService), 'add');
+
+      primeValidForm(cmp);
+      await cmp.onSubmit();
+
+      expect(addSpy).not.toHaveBeenCalled();
+    });
+
+    it('raises the error toast when saveResources() rejects after create() succeeds', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+
+      const navigate = jest.fn();
+      (cmp as any).router = { navigate };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('sess-1');
+
+      const resourceSvc = TestBed.inject(ResourceService) as any;
+      jest.spyOn(resourceSvc, 'saveResources').mockRejectedValue(new Error('offline'));
+
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const addSpy = jest.spyOn(TestBed.inject(MessageService), 'add');
+
+      cmp.onResourceAdded({
+        type: 'custom',
+        url: 'https://example.com/tab',
+        label: 'Tab',
+      } as any);
+
+      primeValidForm(cmp);
+      await cmp.onSubmit();
+
+      expect(addSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ severity: 'error', sticky: true })
+      );
       expect(navigate).not.toHaveBeenCalled();
 
       errorSpy.mockRestore();
