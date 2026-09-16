@@ -2,13 +2,23 @@
 
 ## Resource Library — follow-on work
 
-Deferred out of the resource library plan and never transferred here. Rationale for each
-is in [`docs/designs/resource-library.md`](docs/designs/resource-library.md) under
+Items the resource library plan deferred here but never transferred, plus gaps raised in
+review after it shipped. Rationale for the plan-deferred ones is in
+[`docs/designs/resource-library.md`](docs/designs/resource-library.md) under
 "Deferred to TODOS.md".
 
 - [ ] **P2** — `display-session.component`: the session detail page never calls
   `getSessionResources()`, so resources pinned to a session are not shown when you open it.
   The most visible of these gaps — resources are saved but invisible after the fact.
+- [ ] **P2** — Dedicated Add Resource form at `/app/newResource`: the "Add Resource" button on
+  `/app/resources` routes to `/app/newSong` as an interim measure, so adding a PDF or chord
+  sheet asks for Title and Artist — fields that do not apply. Reuse the type selector and
+  URL/label/tags form already built in `session-resource-picker`, then repoint the button
+  (`ResourceLibraryComponent.addResource()`).
+- [ ] **P2** — Browser QA of the resource flows: the picker, YouTube oEmbed auto-fill and the
+  sticky save-error toast have unit and DOM coverage but have never been exercised in a real
+  browser or against live YouTube, because the session and library pages sit behind
+  `AuthGuard`. Worth one manual pass before this merges.
 - [ ] **P2** — Last-used quick-select: surface the top 3 most recently used resources at the
   top of the picker for one-click re-add. `useCount` and `lastUsedAt` are already written by
   `touchResource()`; only the UI is missing.
