@@ -1,5 +1,25 @@
 # TODOS
 
+## Accessibility & Design Tokens
+
+- [ ] **P2** — Replace `placeholder:text-neutral-400` with `placeholder:text-[var(--gj-muted)]`
+  (25 occurrences, one identical string, no other hardcoded `neutral-*` remains):
+  - `src/app/features/session/session-resource-picker/session-resource-picker.component.html` — 11
+  - `src/app/features/songs/new-song/new-song.component.html` — 9
+  - `src/app/features/session/session.component.html` — 5
+
+  Two problems in one string. It is a hardcoded Tailwind neutral, which `CLAUDE.md` and
+  `DESIGN.md` prohibit for colour; and it is a cool grey (`#A3A3A3`) on the warm cream input
+  surface (`#FDFAF4`), which measures **2.42:1 — below the WCAG AA minimum of 4.5:1**.
+  `--gj-muted` (`#7A7060`) measures **4.67:1** and passes, so the token fix resolves the
+  contrast failure at the same time.
+
+  Context: PR #22's original v0.5.1.0 description claimed all hardcoded neutrals had been
+  migrated to `--gj-*`, and its review flagged 3 instances as a known P4. The real count was
+  23 across three files — the sweep missed placeholders entirely. Two more arrived later in
+  the same PR, copied in with an existing input class string when the picker gained its URL
+  and Label fields.
+
 ## Resource Library — follow-on work
 
 Items the resource library plan deferred here but never transferred, plus gaps raised in
