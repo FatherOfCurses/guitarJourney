@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.3.0] - 2026-09-17
+
+### Added
+
+- **Resources on the session detail page** — a resource you attached to a session now shows
+  up when you reopen that session. It was saving correctly all along; it just vanished from
+  view the moment you left.
+- **A real Add Resource form** — "Add Resource" on the library page previously opened the
+  song form, so adding a PDF or a tab asked for Title and Artist. It now opens a form built
+  for links: type, URL, label and tags, with the same YouTube title/thumbnail auto-fill the
+  session picker already had.
+- **Recently used, one click away** — the session picker now shows your three most recently
+  used resources as quick-add buttons above the search, so re-attaching something from last
+  session doesn't need a search.
+- **A confirmation when resources are saved** — finishing a session that had resources
+  attached now tells you how many were added to your library, instead of doing it silently.
+
+### Fixed
+
+- **Google sign-in** — `signInWithPopup()` failed everywhere with "No matching frame,"
+  including the deployed app. This was a regression from 0.5.2.0's Content-Security-Policy
+  (added to allow YouTube video embeds): as a strict allowlist, it silently blocked every
+  *other* iframe too, including the hidden relay iframe Firebase's own popup sign-in depends
+  on. Fixed for local development first; the identical defect against the app's real
+  `authDomain`, missed at the time, is fixed here too.
+- **Local sample data** — `npm run dev` had only ever been seeding carousel photos. A script
+  pasted onto the end of the seed file called `process.exit()` before the real seed step
+  (test users, songs, practice sessions) got a chance to run — broken since before this
+  project's git history goes back cleanly.
+- **A session with no resource links could fail to save entirely** — a song added with no
+  links produced a URL of `undefined`, and Firestore rejects that outright.
+- **Tags couldn't be typed** — every tag field in the picker and resource forms silently
+  ignored Enter; nothing typed ever became a tag.
+- **Edit, delete and remove buttons had no label for screen readers** — present in the
+  markup, but bound to an element PrimeNG's button never reads.
+
+### Internal
+
+- Removed 116 unused files — a stale PrimeNG theme directory that was shipping into every
+  production build, a dead notation feature, a checked-in coverage report — and 16 unused
+  npm dependencies (34 → 18), one of which was a broken `file:` dependency actively failing
+  `npm ls`.
+- Placeholder text across every form now meets WCAG AA contrast.
+- Documented the `feature → develop → main` branching flow this and future releases follow.
+
 ## [0.5.2.0] - 2026-09-16
 
 ### Added
