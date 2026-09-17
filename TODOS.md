@@ -31,9 +31,14 @@ review after it shipped. Rationale for the plan-deferred ones is in
   `saveResources()` completing, pinned resources are lost with no recovery path. The sticky
   error toast (T16) covers the in-page failure; this covers the case where nobody is left to
   see it.
-- [ ] **P3** — Retry creates duplicates: if `saveResources()` fails partway and the user
-  retries, global library docs written by the first attempt can be created again. T6's URL
-  dedup mitigates most of this; duplicates are harmless in v1.
+- [x] **P3** — Retry creates duplicates: resolved by the URL dedup in
+  `findOrCreateGlobalResource()` — a retry finds the first attempt's doc by URL and touches
+  it instead of creating a second. Investigating this surfaced a worse bug, now fixed: a song
+  with no links has `url: undefined`, which made the dedup query and the write both throw, so
+  saving that session failed outright. **Completed:** 2026-09-17
+
+  Residual, not worth tracking separately: a partial failure can leave duplicate *session
+  pins* for the same resource, which is cosmetic within one session's list.
 
 ## Design System
 

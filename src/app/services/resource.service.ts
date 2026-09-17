@@ -73,7 +73,7 @@ export class ResourceService {
         {
           resourceId: globalResourceId,
           type: resource.type,
-          url: resource.url,
+          url: resource.url ?? null,
           label: resource.label,
           tags: resource.tags ?? [],
           pinnedAt: serverTimestamp(),
@@ -93,24 +93,29 @@ export class ResourceService {
   ): Promise<string> {
     const db = this.fs;
 
-    const dupQ = query(
-      collection(db, `users/${uid}/resources`),
-      where('url', '==', resource.url),
-      limit(1)
-    );
-    const existing = await getDocs(dupQ);
+    // Dedup is by URL, so a resource without one cannot be deduped — songs may have no
+    // links at all. Skipping the query also avoids where('url','==',undefined), which
+    // the Firestore SDK rejects outright.
+    if (resource.url) {
+      const dupQ = query(
+        collection(db, `users/${uid}/resources`),
+        where('url', '==', resource.url),
+        limit(1)
+      );
+      const existing = await getDocs(dupQ);
 
-    if (!existing.empty) {
-      const id = existing.docs[0].id;
-      await this.touchResource(id);
-      return id;
+      if (!existing.empty) {
+        const id = existing.docs[0].id;
+        await this.touchResource(id);
+        return id;
+      }
     }
 
     const ref = await addDoc(
       collection(db, `users/${uid}/resources`).withConverter(resourceConverter),
       {
         type: resource.type,
-        url: resource.url,
+        url: resource.url ?? null,
         label: resource.label,
         tags: resource.tags ?? [],
         createdAt: serverTimestamp(),

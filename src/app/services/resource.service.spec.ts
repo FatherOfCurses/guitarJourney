@@ -212,4 +212,44 @@ describe('ResourceService', () => {
     });
   });
 
+
+  describe('resources without a URL (songs with no links)', () => {
+    it('skips the dedup query entirely — where(url,==,undefined) is rejected by Firestore', async () => {
+      (afs.addDoc as jest.Mock).mockResolvedValue({ id: 'song-1' });
+
+      await service.saveResources('sess-1', [
+        { type: 'song', label: 'Yesterday — The Beatles', tags: [] } as any,
+      ]);
+
+      // No dedup read attempted for a URL-less resource.
+      expect(afs.getDocs).not.toHaveBeenCalled();
+      // Library doc + session pin still written.
+      expect(afs.addDoc).toHaveBeenCalledTimes(2);
+    });
+
+    it('writes null rather than undefined for a missing url', async () => {
+      (afs.addDoc as jest.Mock).mockResolvedValue({ id: 'song-1' });
+
+      await service.saveResources('sess-1', [
+        { type: 'song', label: 'Yesterday — The Beatles', tags: [] } as any,
+      ]);
+
+      for (const call of (afs.addDoc as jest.Mock).mock.calls) {
+        expect(call[1].url).toBeNull();
+        expect(call[1].url).not.toBeUndefined();
+      }
+    });
+
+    it('still dedups when a url IS present', async () => {
+      (afs.getDocs as jest.Mock).mockResolvedValue({ empty: false, docs: [{ id: 'existing' }] });
+
+      await service.saveResources('sess-1', [
+        { type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'V', tags: [] } as any,
+      ]);
+
+      expect(afs.getDocs).toHaveBeenCalled();
+      expect(afs.updateDoc).toHaveBeenCalled();
+    });
+  });
+
 });
