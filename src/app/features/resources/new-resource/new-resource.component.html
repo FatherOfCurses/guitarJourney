@@ -72,6 +72,7 @@
       inputId="resTags"
       [multiple]="true"
       [dropdown]="false"
+      [typeahead]="false"
       [suggestions]="tagSuggestions"
       (completeMethod)="searchTagSuggestions($event)"
       [ngModel]="tags"
