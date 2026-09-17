@@ -396,6 +396,100 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(addSpy).not.toHaveBeenCalled();
     });
 
+    it('does not raise any toast on a successful save with no pending resources', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      (cmp as any).router = { navigate: jest.fn() };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('ok-id-2');
+
+      const addSpy = jest.spyOn(TestBed.inject(MessageService), 'add');
+
+      primeValidForm(cmp);
+      expect(cmp.pendingResources().length).toBe(0);
+      await cmp.onSubmit();
+
+      expect(addSpy).not.toHaveBeenCalled();
+    });
+
+    it('confirms resources were saved to the library when the save succeeds', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      const navigate = jest.fn();
+      (cmp as any).router = { navigate };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('sess-confirm');
+
+      const resSvc = TestBed.inject(ResourceService) as any;
+      jest.spyOn(resSvc, 'saveResources').mockResolvedValue(undefined);
+
+      const addSpy = jest.spyOn(TestBed.inject(MessageService), 'add');
+
+      primeValidForm(cmp);
+      cmp.onResourceAdded({ type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'Lesson' });
+      cmp.onResourceAdded({ type: 'pdf', url: 'https://example.com/tab.pdf', label: 'Tab' });
+
+      await cmp.onSubmit();
+
+      expect(addSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          severity: 'success',
+          summary: 'Resources saved',
+          detail: '2 resources added to your library.',
+        })
+      );
+      // Fires before the redirect, not sticky — the shell's global toast survives navigation.
+      expect(addSpy.mock.invocationCallOrder[0]).toBeLessThan(navigate.mock.invocationCallOrder[0]);
+    });
+
+    it('uses singular wording for exactly one saved resource', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      (cmp as any).router = { navigate: jest.fn() };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('sess-singular');
+
+      const resSvc = TestBed.inject(ResourceService) as any;
+      jest.spyOn(resSvc, 'saveResources').mockResolvedValue(undefined);
+
+      const addSpy = jest.spyOn(TestBed.inject(MessageService), 'add');
+
+      primeValidForm(cmp);
+      cmp.onResourceAdded({ type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'Lesson' });
+
+      await cmp.onSubmit();
+
+      expect(addSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: '1 resource added to your library.' })
+      );
+    });
+
+    it('does not confirm resources saved when saveResources() itself fails', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      (cmp as any).router = { navigate: jest.fn() };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('sess-fail');
+
+      const resSvc = TestBed.inject(ResourceService) as any;
+      jest.spyOn(resSvc, 'saveResources').mockRejectedValue(new Error('offline'));
+
+      jest.spyOn(console, 'error').mockImplementation(() => {});
+      const addSpy = jest.spyOn(TestBed.inject(MessageService), 'add');
+
+      primeValidForm(cmp);
+      cmp.onResourceAdded({ type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'Lesson' });
+
+      await cmp.onSubmit();
+
+      expect(addSpy).toHaveBeenCalledTimes(1);
+      expect(addSpy).toHaveBeenCalledWith(expect.objectContaining({ severity: 'error' }));
+    });
+
     it('raises the error toast when saveResources() rejects after create() succeeds', async () => {
       const fixture = TestBed.createComponent(SessionComponent);
       const cmp = fixture.componentInstance;
@@ -427,6 +521,109 @@ describe('SessionComponent (template-driven behaviors)', () => {
       expect(navigate).not.toHaveBeenCalled();
 
       errorSpy.mockRestore();
+    });
+  });
+
+  describe('beforeunload guard', () => {
+    function makeEvent(): BeforeUnloadEvent {
+      return {
+        preventDefault: jest.fn(),
+        returnValue: '',
+      } as unknown as BeforeUnloadEvent;
+    }
+
+    it('does nothing while no save is in flight', () => {
+      const { cmp } = createFixtureWithStatus('Before');
+      const event = makeEvent();
+
+      cmp.onBeforeUnload(event);
+
+      expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+
+    it('warns while onSubmit() is awaiting create()', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      (cmp as any).router = { navigate: jest.fn() };
+
+      const svc = TestBed.inject(SessionService) as any;
+      let resolveCreate!: (id: string) => void;
+      jest.spyOn(svc, 'create').mockReturnValue(new Promise(r => (resolveCreate = r)));
+
+      cmp.whatToPracticeCtrl.setValue('Chord changes');
+      cmp.sessionIntentCtrl.setValue('Clean transitions');
+      cmp.sessionReflectionCtrl.setValue('Went well');
+      cmp.goalForNextTimeCtrl.setValue('Faster');
+
+      const submitPromise = cmp.onSubmit();
+      expect(cmp.saving()).toBe(true);
+
+      const event = makeEvent();
+      cmp.onBeforeUnload(event);
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.returnValue).toBe('');
+
+      resolveCreate('sess-mid-save');
+      await submitPromise;
+
+      // Guard is inert again once the save has settled.
+      const eventAfter = makeEvent();
+      cmp.onBeforeUnload(eventAfter);
+      expect(eventAfter.preventDefault).not.toHaveBeenCalled();
+    });
+
+    it('warns while saveResources() is still in flight, after create() has already resolved', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      (cmp as any).router = { navigate: jest.fn() };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockResolvedValue('sess-resource-window');
+
+      const resSvc = TestBed.inject(ResourceService) as any;
+      let resolveSave!: () => void;
+      jest.spyOn(resSvc, 'saveResources').mockReturnValue(new Promise<void>(r => (resolveSave = r)));
+
+      cmp.whatToPracticeCtrl.setValue('Chord changes');
+      cmp.sessionIntentCtrl.setValue('Clean transitions');
+      cmp.sessionReflectionCtrl.setValue('Went well');
+      cmp.goalForNextTimeCtrl.setValue('Faster');
+      cmp.onResourceAdded({ type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'Lesson' });
+
+      const submitPromise = cmp.onSubmit();
+      // Let create() resolve and saveResources() start — this is the exact window T-item
+      // "Resource loss on tab-close" describes: the session already exists, the resource
+      // does not yet.
+      await Promise.resolve();
+      await Promise.resolve();
+
+      const event = makeEvent();
+      cmp.onBeforeUnload(event);
+      expect(event.preventDefault).toHaveBeenCalled();
+
+      resolveSave();
+      await submitPromise;
+    });
+
+    it('clears the guard even when the save fails', async () => {
+      const fixture = TestBed.createComponent(SessionComponent);
+      const cmp = fixture.componentInstance;
+      (cmp as any).router = { navigate: jest.fn() };
+
+      const svc = TestBed.inject(SessionService) as any;
+      jest.spyOn(svc, 'create').mockRejectedValue(new Error('offline'));
+      jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      cmp.whatToPracticeCtrl.setValue('Chord changes');
+      cmp.sessionIntentCtrl.setValue('Clean transitions');
+      cmp.sessionReflectionCtrl.setValue('Went well');
+      cmp.goalForNextTimeCtrl.setValue('Faster');
+
+      await cmp.onSubmit();
+
+      const event = makeEvent();
+      cmp.onBeforeUnload(event);
+      expect(event.preventDefault).not.toHaveBeenCalled();
     });
   });
 

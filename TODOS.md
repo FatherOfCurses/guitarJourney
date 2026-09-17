@@ -51,12 +51,28 @@ review after it shipped. Rationale for the plan-deferred ones is in
   resources as one-click add buttons above the library search. Sorted client-side from the
   already-loaded library, so no second query or Firestore index is needed. Resources never
   pinned to a session are excluded. **Completed:** 2026-09-17
-- [ ] **P3** — Post-session save prompt: after finishing a session, offer to save ad-hoc
-  resources to the permanent library so they get a home beyond that session.
-- [ ] **P3** — Resource loss on tab-close: if the tab closes between `create()` succeeding and
-  `saveResources()` completing, pinned resources are lost with no recovery path. The sticky
-  error toast (T16) covers the in-page failure; this covers the case where nobody is left to
-  see it.
+- [x] **P3** — Post-session save prompt: every resource was already saved to the library
+  automatically before this item (the memory-first architecture never had a distinct
+  "ad-hoc" resource concept to prompt about), but the save was invisible — a URL typed
+  fresh during a session became a permanent library entry with zero confirmation. Added a
+  non-sticky success toast on finish ("N resource(s) added to your library"), only shown
+  when there were pending resources. Required moving `<p-toast/>` out of per-page templates
+  (`session.component.html`, `new-resource.component.html`) and into the app shell as a
+  single global instance — a toast fired right before `router.navigate(['/app'])` was
+  otherwise destroyed along with the page before it could ever render. Verified live: the
+  toast survives the redirect and reads correctly on the dashboard.
+  **Completed:** 2026-09-17
+- [x] **P3** — Resource loss on tab-close: added a `@HostListener('window:beforeunload')`
+  guard on `SessionComponent`, active only while `saving()` is true — exactly the window
+  between `sessionService.create()` resolving and `saveResources()` finishing, where the
+  session already exists but a pending resource only lives in memory. This doesn't recover
+  anything after the fact (no mitigation could, short of an offline write queue, which is
+  out of scope for a P3 on a personal practice app) — it warns the user not to close the tab
+  while it matters. Verified against the real browser, not just unit tests: dispatched a
+  genuine `beforeunload` event on `window` against the live component and confirmed it's
+  un-prevented while idle, prevented while `saving()` is true, and clears again once the
+  save settles.
+  **Completed:** 2026-09-17
 - [x] **P3** — Retry creates duplicates: resolved by the URL dedup in
   `findOrCreateGlobalResource()` — a retry finds the first attempt's doc by URL and touches
   it instead of creating a second. Investigating this surfaced a worse bug, now fixed: a song
