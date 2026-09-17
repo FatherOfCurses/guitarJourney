@@ -6,6 +6,7 @@ import { RegisterComponent } from '@auth/register.component';
 import { AlreadyAuthedGuard } from '@auth/already-authed.guard';
 import { AuthGuard } from '@auth/auth.guard';
 import { ResourceLibraryComponent } from '@features/resources/resource-library.component';
+import { NewResourceComponent } from '@features/resources/new-resource/new-resource.component';
 
 describe('App Routes', () => {
   it('should export a non-empty Routes array', () => {
@@ -62,7 +63,7 @@ describe('App Routes', () => {
     expect(Array.isArray(protectedRoute.children)).toBe(true);
   });
 
-  it.each(['sessions', 'songs', 'metrics', 'resources'])('protected child "%s" should exist and lazy-load', (segment) => {
+  it.each(['sessions', 'songs', 'metrics', 'resources', 'newResource'])('protected child "%s" should exist and lazy-load', (segment) => {
     const protectedRoute = routes.find(r => (r as Route).component === AppShellComponent) as Route;
     expect(protectedRoute).toBeTruthy();
     const child = (protectedRoute.children ?? []).find(c => c.path === segment) as Route | undefined;
@@ -81,6 +82,24 @@ describe('App Routes', () => {
     expect(resourcesIdx).toBeGreaterThan(-1);
     expect(wildcardIdx).toBeGreaterThan(-1);
     expect(resourcesIdx).toBeLessThan(wildcardIdx);
+  });
+
+  it('should declare newResource BEFORE the protected wildcard', () => {
+    const protectedRoute = routes.find(r => (r as Route).component === AppShellComponent) as Route;
+    const children = protectedRoute.children ?? [];
+    const idx = children.findIndex(c => c.path === 'newResource');
+    const wildcardIdx = children.findIndex(c => c.path === '**');
+
+    expect(idx).toBeGreaterThan(-1);
+    expect(idx).toBeLessThan(wildcardIdx);
+  });
+
+  it('should lazy-load NewResourceComponent for the newResource route', async () => {
+    const protectedRoute = routes.find(r => (r as Route).component === AppShellComponent) as Route;
+    const child = (protectedRoute.children ?? []).find(c => c.path === 'newResource') as Route;
+
+    const loaded = await (child as any).loadComponent();
+    expect(loaded).toBe(NewResourceComponent);
   });
 
   it('should lazy-load ResourceLibraryComponent for the resources route', async () => {

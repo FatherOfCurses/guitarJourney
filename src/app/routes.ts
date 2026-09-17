@@ -96,6 +96,13 @@ export const routes: Routes = [
         title: 'My Resource Library',
       },
       {
+        path: 'newResource',
+        loadComponent: () =>
+          import('./features/resources/new-resource/new-resource.component')
+            .then(m => m.NewResourceComponent),
+        title: 'Add Resource',
+      },
+      {
         path: '**', 
         loadComponent:()  =>
           import('./core/not-found/not-found.component')

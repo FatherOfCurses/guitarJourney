@@ -178,4 +178,78 @@ describe('ResourceService', () => {
       expect(() => service.getResources()).toThrow('No authenticated user');
     });
   });
+
+  describe('createResource', () => {
+    it('creates a library doc and returns its id when the URL is new', async () => {
+      (afs.getDocs as jest.Mock).mockResolvedValue({ empty: true, docs: [] });
+      (afs.addDoc as jest.Mock).mockResolvedValue({ id: 'new-res' });
+
+      const id = await service.createResource({
+        type: 'youtube',
+        url: 'https://www.youtube.com/watch?v=abc',
+        label: 'Barre',
+        tags: ['barre'],
+      });
+
+      expect(id).toBe('new-res');
+      expect(afs.addDoc).toHaveBeenCalledTimes(1);
+      expect(afs.updateDoc).not.toHaveBeenCalled();
+    });
+
+    it('reuses and touches the existing doc when the URL is already in the library', async () => {
+      (afs.getDocs as jest.Mock).mockResolvedValue({ empty: false, docs: [{ id: 'existing' }] });
+
+      const id = await service.createResource({
+        type: 'youtube',
+        url: 'https://www.youtube.com/watch?v=abc',
+        label: 'Barre',
+        tags: [],
+      });
+
+      expect(id).toBe('existing');
+      expect(afs.addDoc).not.toHaveBeenCalled();
+      expect(afs.updateDoc).toHaveBeenCalled();
+    });
+  });
+
+
+  describe('resources without a URL (songs with no links)', () => {
+    it('skips the dedup query entirely — where(url,==,undefined) is rejected by Firestore', async () => {
+      (afs.addDoc as jest.Mock).mockResolvedValue({ id: 'song-1' });
+
+      await service.saveResources('sess-1', [
+        { type: 'song', label: 'Yesterday — The Beatles', tags: [] } as any,
+      ]);
+
+      // No dedup read attempted for a URL-less resource.
+      expect(afs.getDocs).not.toHaveBeenCalled();
+      // Library doc + session pin still written.
+      expect(afs.addDoc).toHaveBeenCalledTimes(2);
+    });
+
+    it('writes null rather than undefined for a missing url', async () => {
+      (afs.addDoc as jest.Mock).mockResolvedValue({ id: 'song-1' });
+
+      await service.saveResources('sess-1', [
+        { type: 'song', label: 'Yesterday — The Beatles', tags: [] } as any,
+      ]);
+
+      for (const call of (afs.addDoc as jest.Mock).mock.calls) {
+        expect(call[1].url).toBeNull();
+        expect(call[1].url).not.toBeUndefined();
+      }
+    });
+
+    it('still dedups when a url IS present', async () => {
+      (afs.getDocs as jest.Mock).mockResolvedValue({ empty: false, docs: [{ id: 'existing' }] });
+
+      await service.saveResources('sess-1', [
+        { type: 'youtube', url: 'https://www.youtube.com/watch?v=abc', label: 'V', tags: [] } as any,
+      ]);
+
+      expect(afs.getDocs).toHaveBeenCalled();
+      expect(afs.updateDoc).toHaveBeenCalled();
+    });
+  });
+
 });

@@ -18,6 +18,26 @@
         here next time.
       </p-message>
     } @else {
+      @if (recentResources().length > 0) {
+        <div class="mb-3">
+          <p class="text-xs text-[var(--gj-muted)] mb-2">Recently used</p>
+          <div class="flex flex-wrap gap-2">
+            @for (resource of recentResources(); track resource.id) {
+              <p-button
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                size="small"
+                icon="pi pi-plus"
+                [label]="resource.label"
+                [ariaLabel]="'Add ' + resource.label"
+                (click)="onLibrarySelect(resource)"
+              />
+            }
+          </div>
+        </div>
+      }
+
       <div class="flex flex-col md:flex-row gap-2">
         <input
           type="text"
@@ -30,6 +50,7 @@
         <p-autocomplete
           [multiple]="true"
           [dropdown]="false"
+          [typeahead]="false"
           [suggestions]="tagFilterSuggestions"
           (completeMethod)="searchTagFilterSuggestions($event)"
           [ngModel]="selectedTagFilters"
@@ -240,6 +261,7 @@
                 icon="pi pi-times"
                 [text]="true"
                 severity="danger"
+                [ariaLabel]="'Remove notation link ' + ($index + 1)"
                 (click)="removeNotationLink($index)"
               />
             }
@@ -312,6 +334,7 @@
         inputId="resTags"
         [multiple]="true"
         [dropdown]="false"
+        [typeahead]="false"
         [suggestions]="tagSuggestions"
         (completeMethod)="searchTagSuggestions($event)"
         [ngModel]="newTags"

@@ -703,4 +703,82 @@ describe('SessionResourcePickerComponent', () => {
     });
   });
 
+
+  // ── Recently used quick-select ──────────────────────────────
+
+  describe('recently used quick-select', () => {
+    const ts = (seconds: number) => ({ seconds, nanoseconds: 0 }) as any;
+
+    const withRecent = async (resources: Resource[]) => {
+      mockResourceService.getResources.mockReturnValue(of(resources));
+      fixture = TestBed.createComponent(SessionResourcePickerComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    };
+
+    it('is empty when nothing has ever been used', async () => {
+      await withRecent([mockResource({ id: 'a', lastUsedAt: undefined })]);
+      expect(component.recentResources()).toEqual([]);
+    });
+
+    it('excludes resources that were never pinned to a session', async () => {
+      await withRecent([
+        mockResource({ id: 'used', lastUsedAt: ts(100) }),
+        mockResource({ id: 'never', url: 'https://example.com/n', lastUsedAt: undefined }),
+      ]);
+      expect(component.recentResources().map(r => r.id)).toEqual(['used']);
+    });
+
+    it('orders by lastUsedAt, most recent first', async () => {
+      await withRecent([
+        mockResource({ id: 'old', url: 'https://example.com/1', lastUsedAt: ts(100) }),
+        mockResource({ id: 'newest', url: 'https://example.com/2', lastUsedAt: ts(300) }),
+        mockResource({ id: 'mid', url: 'https://example.com/3', lastUsedAt: ts(200) }),
+      ]);
+      expect(component.recentResources().map(r => r.id)).toEqual(['newest', 'mid', 'old']);
+    });
+
+    it('caps at three', async () => {
+      await withRecent(
+        Array.from({ length: 6 }, (_, i) =>
+          mockResource({ id: `r${i}`, url: `https://example.com/${i}`, lastUsedAt: ts(i) })
+        )
+      );
+      expect(component.recentResources().length).toBe(3);
+    });
+
+    it('supports a real Timestamp exposing toMillis()', async () => {
+      await withRecent([
+        mockResource({ id: 'a', url: 'https://example.com/a', lastUsedAt: { toMillis: () => 100 } as any }),
+        mockResource({ id: 'b', url: 'https://example.com/b', lastUsedAt: { toMillis: () => 900 } as any }),
+      ]);
+      expect(component.recentResources().map(r => r.id)).toEqual(['b', 'a']);
+    });
+
+    it('renders a quick-add button per recent resource', async () => {
+      await withRecent([mockResource({ id: 'a', label: 'Barre Basics', lastUsedAt: ts(10) })]);
+
+      const text = fixture.nativeElement.textContent as string;
+      expect(text).toContain('Recently used');
+      expect(text).toContain('Barre Basics');
+    });
+
+    it('hides the section entirely when there is nothing recent', async () => {
+      await withRecent([mockResource({ id: 'a', lastUsedAt: undefined })]);
+      expect(fixture.nativeElement.textContent).not.toContain('Recently used');
+    });
+
+    it('emits the same payload as a listbox pick, carrying resourceId', async () => {
+      await withRecent([mockResource({ id: 'res-9', label: 'Quick', lastUsedAt: ts(10), tags: ['x'] })]);
+
+      const emitted: any[] = [];
+      component.resourceAdded.subscribe(v => emitted.push(v));
+      component.onLibrarySelect(component.recentResources()[0]);
+
+      expect(emitted[0]).toEqual(
+        expect.objectContaining({ resourceId: 'res-9', label: 'Quick', tags: ['x'] })
+      );
+    });
+  });
+
 });

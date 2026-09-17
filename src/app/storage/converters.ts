@@ -84,7 +84,7 @@ export const userDocumentConverter: FirestoreDataConverter<UserDocument> = {
 export const resourceConverter: FirestoreDataConverter<Resource> = {
   toFirestore: (r) => ({
     type: r.type,
-    url: r.url,
+    url: r.url ?? null,
     label: r.label,
     tags: r.tags ?? [],
     useCount: r.useCount ?? 0,
@@ -98,7 +98,7 @@ export const sessionResourceConverter: FirestoreDataConverter<SessionResource> =
   toFirestore: (r) => ({
     resourceId: r.resourceId ?? null,
     type: r.type,
-    url: r.url,
+    url: r.url ?? null,
     label: r.label,
     tags: r.tags ?? [],
     pinnedAt: r.pinnedAt,
