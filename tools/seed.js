@@ -10,7 +10,7 @@
 //   node ./seed-with-retry.js
 //
 const { initializeApp } = require('firebase-admin/app')
-const { getFirestore, Timestamp } = require('firebase-admin/firestore')
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore')
 const { getAuth } = require('firebase-admin/auth')
 
 const projectId =
@@ -428,12 +428,14 @@ async function verify() {
   const popArtists = await db.collection('popularArtists').get()
   const popAlbums = await db.collection('popularAlbums').get()
   const popSongs = await db.collection('popularSongs').get()
+  const carouselItems = await db.collection('carousels/dashboard-hero/items').get()
   console.log(
     `[seed] Users: ${usersSnap.size}, Songs: ${songsCount}, Sessions: ${sessionsCount}`,
   )
   console.log(
     `[seed] Popular music: ${popArtists.size} artists, ${popAlbums.size} albums, ${popSongs.size} songs`,
   )
+  console.log(`[seed] Carousel items: ${carouselItems.size}`)
 }
 
 async function main() {
@@ -476,6 +478,7 @@ async function main() {
 
   await seedSongs([g1, g2, e1, e2])
   await seedSessions([g1, g2, e1, e2])
+  await seedCarousel()
   await seedPopularMusic()
 
   await db.doc('healthcheck/ping').set({ at: Timestamp.now() }, { merge: true })
@@ -490,10 +493,6 @@ async function main() {
  * Date: 2026-02-06T15:12:43.514Z
  * Total items: 13
  */
-
-const admin = require('firebase-admin');
-
-process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080';
 
 const carouselItems = [
   {
@@ -747,8 +746,8 @@ const carouselItems = [
 
 // Add Firestore timestamps
 carouselItems.forEach(item => {
-  item.createdAt = admin.firestore.FieldValue.serverTimestamp();
-  item.updatedAt = admin.firestore.FieldValue.serverTimestamp();
+  item.createdAt = FieldValue.serverTimestamp();
+  item.updatedAt = FieldValue.serverTimestamp();
 });
 
 async function seedCarousel() {
@@ -765,8 +764,8 @@ async function seedCarousel() {
       rotateMs: 6000,
       aspectRatio: '16/9',
       isActive: true,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     });
     
     console.log('✅ Created carousel parent document');
@@ -775,7 +774,10 @@ async function seedCarousel() {
     const itemsRef = db.collection('carousels').doc(carouselSlug).collection('items');
     
     for (const item of carouselItems) {
-      const docRef = await itemsRef.add(item);
+      // Deterministic ID (position is unique per item) so re-running this script
+      // updates existing items instead of duplicating them.
+      const docRef = itemsRef.doc(String(item.position));
+      await docRef.set(item, { merge: true });
       console.log(`✅ Item ${item.position}: "${item.attribution.title}"`);
       console.log(`   ID: ${docRef.id}`);
       console.log(`   File: ${item.image.url}\n`);
@@ -790,20 +792,6 @@ async function seedCarousel() {
     throw error;
   }
 }
-
-// Run the seed function
-seedCarousel()
-  .then(() => {
-    console.log('✅ Done!');
-    console.log('   Start your app: npm start');
-    console.log('   Navigate to: /app/dashboard\n');
-    process.exit(0);
-  })
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
-
 
 main().catch((err) => {
   console.error(err)
