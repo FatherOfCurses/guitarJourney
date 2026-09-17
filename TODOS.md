@@ -7,9 +7,10 @@ review after it shipped. Rationale for the plan-deferred ones is in
 [`docs/designs/resource-library.md`](docs/designs/resource-library.md) under
 "Deferred to TODOS.md".
 
-- [ ] **P2** — `display-session.component`: the session detail page never calls
-  `getSessionResources()`, so resources pinned to a session are not shown when you open it.
-  The most visible of these gaps — resources are saved but invisible after the fact.
+- [x] **P2** — `display-session.component`: the session detail page never called
+  `getSessionResources()`, so resources pinned to a session were not shown when you opened it.
+  Now reads the session's denormalized resource subcollection and renders each through the
+  existing `app-session-resource` component, read-only. **Completed:** 2026-09-17
 - [ ] **P2** — Dedicated Add Resource form at `/app/newResource`: the "Add Resource" button on
   `/app/resources` routes to `/app/newSong` as an interim measure, so adding a PDF or chord
   sheet asks for Title and Artist — fields that do not apply. Reuse the type selector and

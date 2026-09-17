@@ -32,6 +32,32 @@
           <dt class="text-sm font-medium text-[var(--gj-muted)]">Goal for next time</dt>
           <dd class="text-[var(--gj-text)] whitespace-pre-line">{{ s.goalForNextTime }}</dd>
         </dl>
+
+        <!-- Resources pinned to this session. Same read-only treatment as the After phase
+             of the session screen, so a resource looks the same wherever it is shown. -->
+        @if (resourcesLoading()) {
+          <div id="resourcesSection" class="mt-6 pt-4 border-t border-[var(--gj-border)]">
+            <p class="text-xs font-medium text-[var(--gj-muted)] uppercase tracking-[0.05em] mb-3">
+              Resources
+            </p>
+            <div class="space-y-2">
+              @for (row of [1, 2]; track row) {
+                <p-skeleton height="40px" borderRadius="var(--gj-radius-button)" />
+              }
+            </div>
+          </div>
+        } @else if (hasResources()) {
+          <div id="resourcesSection" class="mt-6 pt-4 border-t border-[var(--gj-border)]">
+            <p class="text-xs font-medium text-[var(--gj-muted)] uppercase tracking-[0.05em] mb-3">
+              Resources
+            </p>
+            <div class="space-y-3">
+              @for (resource of resources(); track resource.id ?? resource.label) {
+                <app-session-resource [resource]="$any(resource)" [showRemove]="false" />
+              }
+            </div>
+          </div>
+        }
       </ng-template>
 
       <ng-template pTemplate="footer">
