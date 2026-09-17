@@ -17,10 +17,36 @@ review after it shipped. Rationale for the plan-deferred ones is in
   `ResourceService.createResource()`. URL validation and tag normalization were extracted to
   `utils/resource-url.ts` and are shared with the session picker so the rules cannot drift.
   **Completed:** 2026-09-17
-- [ ] **P2** — Browser QA of the resource flows: the picker, YouTube oEmbed auto-fill and the
-  sticky save-error toast have unit and DOM coverage but have never been exercised in a real
-  browser or against live YouTube, because the session and library pages sit behind
-  `AuthGuard`. Worth one manual pass before this merges.
+- [x] **P2** — Browser QA of the resource flows: done against a real dev server with seeded
+  email/password users (the `AuthGuard` blocker cleared once the CSP fix restored Google
+  sign-in, and the seed fix produced working credentials). Full loop verified: library
+  search → add via listbox → YouTube oEmbed against the live API → start/end/finish a
+  session → session detail page shows the pinned resource → recently-used quick-select
+  picks it up on the next session. Found and fixed three real bugs along the way:
+  - Tag inputs across the app (picker, new-resource form, library edit dialog — 4 instances)
+    never committed a typed tag. PrimeNG `AutoComplete` defaults `typeahead: true`, which
+    disables the free-text Enter-to-commit path regardless of `[dropdown]="false"`. Unit
+    tests never caught it — they call `onTagsChange()` directly, bypassing the widget's real
+    keydown handling. Fixed with `[typeahead]="false"` on all four.
+  - Icon-only buttons (Edit/Delete/Remove, 5 instances) had no accessible name in the real
+    DOM. `[attr.aria-label]` was bound to the `<p-button>` host element; PrimeNG's Button
+    only forwards its own `[ariaLabel]` input to the real inner `<button>`, never reads a
+    raw host attribute. One of the five predates the resource library (the song picker's
+    notation-link remove button) — fixed alongside the rest since it's the same defect.
+  - **`SessionService.create()` could not save a session at all** in the real dev server —
+    unrelated to resources, but only surfaced by actually submitting one. It called a bare
+    `getFirestore()` instead of the injected `this.fs`; under Vite's dev-server dependency
+    pre-bundling that resolves a second, uninitialized copy of the Firestore SDK, throwing
+    "No Firebase App '[DEFAULT]' has been created". Fixing that surfaced a second error —
+    "different Firestore SDK" — because `addDoc`/`Timestamp` were still bare-imported from
+    `firebase/firestore` while `collection()` came through `@angular/fire/firestore`, and
+    Firestore's internal `instanceof` checks reject refs built from different SDK copies.
+    Moved everything to import from `@angular/fire/firestore` (which re-exports the full
+    `firebase/firestore` surface), eliminating the mixed-import pattern the resource-library
+    plan had already flagged as tech debt in T6 — this is the real-world consequence of that
+    debt. Jest never caught it: the spec mocked `getFirestore()`'s return value and asserted
+    it was used, validating the buggy pattern as correct rather than testing real behavior.
+  **Completed:** 2026-09-17
 - [x] **P2** — Last-used quick-select: the picker now shows the three most recently used
   resources as one-click add buttons above the library search. Sorted client-side from the
   already-loaded library, so no second query or Firestore index is needed. Resources never
