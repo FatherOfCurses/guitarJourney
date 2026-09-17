@@ -8,7 +8,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { Select } from 'primeng/select';
 import { Skeleton } from 'primeng/skeleton';
-import { Toast } from 'primeng/toast';
 import { ResourceService } from '../../../services/resource.service';
 import { fetchYouTubeOEmbed } from '../../../utils/youtube';
 import { isValidResourceUrl, normalizeTags, LinkResourceType } from '../../../utils/resource-url';
@@ -16,7 +15,7 @@ import { isValidResourceUrl, normalizeTags, LinkResourceType } from '../../../ut
 @Component({
   selector: 'app-new-resource',
   standalone: true,
-  imports: [FormsModule, AutoComplete, ButtonModule, InputTextModule, Select, Skeleton, Toast],
+  imports: [FormsModule, AutoComplete, ButtonModule, InputTextModule, Select, Skeleton],
   templateUrl: './new-resource.component.html',
 })
 export class NewResourceComponent {

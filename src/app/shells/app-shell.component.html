@@ -1,3 +1,10 @@
+<!-- Single global toast host: MessageService is a root-level singleton (app.config.ts), so
+     one <p-toast> here, rendered for the lifetime of the authenticated shell, serves every
+     page. A toast declared inside a routed page instead is destroyed the instant that page's
+     component is, which breaks a toast meant to survive the navigation that follows it (e.g.
+     a save-confirmation shown right before redirecting to the dashboard). -->
+<p-toast />
+
 <div class="flex h-screen overflow-hidden">
 
   <!-- ── SIDEBAR ─────────────────────────────────────── -->

@@ -2,6 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { Auth, signOut } from '@angular/fire/auth';
+import { Toast } from 'primeng/toast';
 
 interface NavItem {
   label: string;
@@ -12,7 +13,7 @@ interface NavItem {
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [NgClass, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [NgClass, RouterOutlet, RouterLink, RouterLinkActive, Toast],
   templateUrl: './app-shell.component.html',
 })
 export class AppShellComponent {
