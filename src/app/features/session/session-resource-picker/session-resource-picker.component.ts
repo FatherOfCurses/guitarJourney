@@ -78,6 +78,28 @@ export class SessionResourcePickerComponent {
 
   tagFilterSuggestions: string[] = [];
 
+  /**
+   * The three most recently used resources, for one-click re-add.
+   *
+   * Sorted client-side from the already-loaded library rather than by a Firestore
+   * `orderBy('lastUsedAt')`, which would need a second query and an index for a list of
+   * three. Resources never pinned to a session have no `lastUsedAt` and are excluded —
+   * "recent" should mean recently used, not recently created.
+   */
+  readonly recentResources = computed(() => {
+    const millis = (r: Resource): number => {
+      const ts = r.lastUsedAt as unknown as { toMillis?: () => number; seconds?: number } | undefined;
+      if (!ts) return 0;
+      if (typeof ts.toMillis === 'function') return ts.toMillis();
+      return (ts.seconds ?? 0) * 1000;
+    };
+
+    return this._allResources()
+      .filter(r => !!r.lastUsedAt && !!r.id)
+      .sort((a, b) => millis(b) - millis(a))
+      .slice(0, 3);
+  });
+
   /** Results appear once the text query is specific enough, or any tag is selected. */
   get isFiltering(): boolean {
     return this.searchQuery.trim().length >= 3 || this.selectedTagFilters.length > 0;

@@ -21,9 +21,10 @@ review after it shipped. Rationale for the plan-deferred ones is in
   sticky save-error toast have unit and DOM coverage but have never been exercised in a real
   browser or against live YouTube, because the session and library pages sit behind
   `AuthGuard`. Worth one manual pass before this merges.
-- [ ] **P2** — Last-used quick-select: surface the top 3 most recently used resources at the
-  top of the picker for one-click re-add. `useCount` and `lastUsedAt` are already written by
-  `touchResource()`; only the UI is missing.
+- [x] **P2** — Last-used quick-select: the picker now shows the three most recently used
+  resources as one-click add buttons above the library search. Sorted client-side from the
+  already-loaded library, so no second query or Firestore index is needed. Resources never
+  pinned to a session are excluded. **Completed:** 2026-09-17
 - [ ] **P3** — Post-session save prompt: after finishing a session, offer to save ad-hoc
   resources to the permanent library so they get a home beyond that session.
 - [ ] **P3** — Resource loss on tab-close: if the tab closes between `create()` succeeding and
