@@ -3,21 +3,35 @@
  * IMPORTANT: We mock AngularFire/Firebase modules BEFORE importing the service under test,
  * to avoid "Cannot redefine property: collection" errors.
  */
-jest.mock('@angular/fire/firestore', () => ({
-  // DI token so TestBed can inject something for Firestore
-  Firestore: class {},
-  // Query building + data functions we call from the service
-  collection: jest.fn(),
-  collectionData: jest.fn(),
-  doc: jest.fn(),
-  docData: jest.fn(),
-  query: jest.fn(),
-  where: jest.fn(),
-  orderBy: jest.fn(),
-  limit: jest.fn(),
-  updateDoc: jest.fn(),
-  deleteDoc: jest.fn(),
-}));
+jest.mock('@angular/fire/firestore', () => {
+  // Real Timestamp class, shared with the firebase/firestore mock below so
+  // `instanceof`/toBeInstanceOf checks agree regardless of which mocked module a given
+  // piece of test/service code touches — this file's whole point (session.service.ts
+  // now sources Timestamp and addDoc from here, not from the bare 'firebase/firestore'
+  // specifier) is to eliminate the "two separate SDK copies" bug that pattern caused.
+  const actual = jest.requireActual<typeof import('firebase/firestore')>('firebase/firestore');
+  (actual.Timestamp as any).now = jest.fn(() =>
+    actual.Timestamp.fromDate(new Date('2025-01-02T03:04:05Z'))
+  );
+
+  return {
+    // DI token so TestBed can inject something for Firestore
+    Firestore: class {},
+    Timestamp: actual.Timestamp,
+    // Query building + data functions we call from the service
+    collection: jest.fn(),
+    collectionData: jest.fn(),
+    doc: jest.fn(),
+    docData: jest.fn(),
+    query: jest.fn(),
+    where: jest.fn(),
+    orderBy: jest.fn(),
+    limit: jest.fn(),
+    updateDoc: jest.fn(),
+    deleteDoc: jest.fn(),
+    addDoc: jest.fn(async () => ({ id: 'test-id-123' })),
+  };
+});
 
 jest.mock('firebase/firestore', () => {
   const actual = jest.requireActual<typeof import('firebase/firestore')>('firebase/firestore');
@@ -27,15 +41,8 @@ jest.mock('firebase/firestore', () => {
     actual.Timestamp.fromDate(new Date('2025-01-02T03:04:05Z'))
   );
 
-  // Light stubs for the pieces you use
-  const withConverter = jest.fn().mockReturnValue('mock-collection');
-  const collection = jest.fn(() => ({ withConverter }));
-
   return {
-    ...actual, // keep the real module (incl. real Timestamp class)
-    getFirestore: jest.fn(() => ({ /* your db stub if needed */ })),
-    collection,
-    addDoc: jest.fn(async () => ({ id: 'test-id-123' })),
+    ...actual, // keep the real module (incl. real Timestamp class) for test-fixture use
   };
 });
 
@@ -182,19 +189,20 @@ describe('SessionService (Firestore)', () => {
   });
 
   it('create uses addDoc() and returns the new id', async () => {
-    const getFirestoreMock = fbfs.getFirestore as jest.Mock;
     const collectionMock = afs.collection as jest.Mock;
-    const addDocMock = fbfs.addDoc as jest.Mock;
+    const addDocMock = afs.addDoc as jest.Mock;
 
-    const fakeDb = { __type: 'Db' };
     const fakeColRef = { __type: 'CollectionRef', withConverter: () => ({}) };
-    getFirestoreMock.mockReturnValue(fakeDb);
     collectionMock.mockReturnValue(fakeColRef);
     addDocMock.mockResolvedValue({ id: 'new123' });
 
     const id = await service.create({ practiceTime: 25 } as any);
     expect(id).toBe('new123');
-    expect(collectionMock).toHaveBeenCalledWith(fakeDb, 'users/u1/sessions');
+    // create() must build its collection ref from the injected Firestore instance
+    // (this.fs, provided as {} in this TestBed), not from a fresh getFirestore() call —
+    // that was the actual bug: getFirestore() resolves a separate, uninitialized app
+    // under Vite's dev-server module duplication and throws in the real browser.
+    expect(collectionMock).toHaveBeenCalledWith({}, 'users/u1/sessions');
   });
 
 it('update patches fields on a session', fakeAsync(() => {
@@ -357,13 +365,10 @@ it('update patches fields on a session', fakeAsync(() => {
   // ---------- create payload verification ----------
 
   it('create builds a full payload with ownerUid and defaults date to Timestamp.now()', async () => {
-    const addDocMock = fbfs.addDoc as jest.Mock;
-    const collectionMock = (fbfs as any).collection as jest.Mock;
-    const getFirestoreMock = fbfs.getFirestore as jest.Mock;
+    const addDocMock = afs.addDoc as jest.Mock;
+    const collectionMock = afs.collection as jest.Mock;
 
-    const fakeDb = {};
     const fakeCol = {};
-    getFirestoreMock.mockReturnValue(fakeDb);
     collectionMock.mockReturnValue({ withConverter: () => fakeCol });
     addDocMock.mockResolvedValue({ id: 'new-1' });
 
@@ -387,11 +392,9 @@ it('update patches fields on a session', fakeAsync(() => {
   });
 
   it('create uses provided date instead of Timestamp.now()', async () => {
-    const addDocMock = fbfs.addDoc as jest.Mock;
-    const collectionMock = (fbfs as any).collection as jest.Mock;
-    const getFirestoreMock = fbfs.getFirestore as jest.Mock;
+    const addDocMock = afs.addDoc as jest.Mock;
+    const collectionMock = afs.collection as jest.Mock;
 
-    getFirestoreMock.mockReturnValue({});
     collectionMock.mockReturnValue({ withConverter: () => ({}) });
     addDocMock.mockResolvedValue({ id: 'new-2' });
 
