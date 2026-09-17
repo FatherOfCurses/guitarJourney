@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AutoComplete } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { Message } from 'primeng/message';
@@ -36,7 +35,6 @@ const TYPE_SEVERITY: Record<string, TagSeverity> = {
     FormsModule,
     AutoComplete,
     ButtonModule,
-    Card,
     Dialog,
     InputTextModule,
     Message,
