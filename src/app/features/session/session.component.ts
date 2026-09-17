@@ -1,9 +1,8 @@
-import { Component, DestroyRef, effect, inject, signal, computed } from '@angular/core';
+import { Component, DestroyRef, HostListener, effect, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-import { Toast } from 'primeng/toast';
 import { SessionService } from '@services/session.service';
 import { Router } from '@angular/router';
 import { ResourceService } from '../../services/resource.service';
@@ -15,7 +14,7 @@ export type SessionPhase = 'Before' | 'During' | 'After';
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule, Toast, SessionResourcePickerComponent, SessionResourceComponent],
+  imports: [CommonModule, ReactiveFormsModule, ButtonModule, SessionResourcePickerComponent, SessionResourceComponent],
   templateUrl: './session.component.html',
 })
 export class SessionComponent {
@@ -138,6 +137,21 @@ export class SessionComponent {
     this._status.set('After');
   }
 
+  /**
+   * Warns before the tab closes/reloads while a save is in flight. The real risk window is
+   * between sessionService.create() resolving and saveResources() finishing: the session
+   * document already exists, but any pending resource not yet written only lives in this
+   * component's memory. There's no way to detect or recover that after the fact, so the only
+   * mitigation is asking the user not to leave yet — Angular removes this listener
+   * automatically on destroy, matching every other 'window:' HostListener's lifecycle.
+   */
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (!this._saving()) return;
+    event.preventDefault();
+    event.returnValue = '';
+  }
+
   // Called by AFTER form button(s)
   async onSubmit(): Promise<void> {
     this._loading.set(true);
@@ -150,11 +164,25 @@ export class SessionComponent {
         goalForNextTime: this.goalForNextTimeCtrl.value,
         practiceTime: this.elapsedSeconds() / 60,
       });
-      if (this._pendingResources().length > 0) {
+      const resourceCount = this._pendingResources().length;
+      if (resourceCount > 0) {
         await this.resourceService.saveResources(sessionId, this._pendingResources());
       }
       this._saving.set(false);
       this._loading.set(false);
+      if (resourceCount > 0) {
+        // Every pending resource is already saved to the library automatically (the
+        // memory-first pattern — see saveResources()); this just makes that visible, since
+        // otherwise a resource typed fresh during the session becomes a permanent library
+        // entry with no confirmation the user ever sees. Not sticky: nothing to act on, and
+        // it fires right before navigating away to the dashboard, where the shell's single
+        // global <p-toast/> (not a per-page one) keeps it from being destroyed mid-display.
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Resources saved',
+          detail: `${resourceCount} resource${resourceCount === 1 ? '' : 's'} added to your library.`,
+        });
+      }
       this.router.navigate(['/app']);
     } catch (error) {
       console.error('Error saving session:', error);

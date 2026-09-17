@@ -40,6 +40,14 @@
   --p-font-family: var(--gj-font-body);
 }
 
+/* Tailwind Preflight sets placeholders to gray-400 (#9ca3af) — a cool grey measuring
+   2.44:1 on our cream input surface, below the WCAG AA minimum of 4.5:1. Override once so
+   every input inherits the warm token (4.67:1), including ones with no placeholder class. */
+input::placeholder,
+textarea::placeholder {
+  color: var(--gj-muted);
+}
+
 /* ── Base typography ─────────────────────────────────────────── */
 body {
   background-color: var(--gj-background);

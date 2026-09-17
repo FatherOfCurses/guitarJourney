@@ -15,6 +15,7 @@ import { AutocompleteSuggestionService } from '../../../services/autocomplete-su
 import { Resource } from '../../../models/resource';
 import { SessionResource } from '../../../models/session-resource';
 import { extractYouTubeEmbedUrl, fetchYouTubeOEmbed } from '../../../utils/youtube';
+import { isValidResourceUrl, normalizeTags } from '../../../utils/resource-url';
 
 export type PickerResourceType = 'song' | 'youtube' | 'pdf' | 'chord-sheet' | 'custom';
 
@@ -76,6 +77,28 @@ export class SessionResourcePickerComponent {
   });
 
   tagFilterSuggestions: string[] = [];
+
+  /**
+   * The three most recently used resources, for one-click re-add.
+   *
+   * Sorted client-side from the already-loaded library rather than by a Firestore
+   * `orderBy('lastUsedAt')`, which would need a second query and an index for a list of
+   * three. Resources never pinned to a session have no `lastUsedAt` and are excluded —
+   * "recent" should mean recently used, not recently created.
+   */
+  readonly recentResources = computed(() => {
+    const millis = (r: Resource): number => {
+      const ts = r.lastUsedAt as unknown as { toMillis?: () => number; seconds?: number } | undefined;
+      if (!ts) return 0;
+      if (typeof ts.toMillis === 'function') return ts.toMillis();
+      return (ts.seconds ?? 0) * 1000;
+    };
+
+    return this._allResources()
+      .filter(r => !!r.lastUsedAt && !!r.id)
+      .sort((a, b) => millis(b) - millis(a))
+      .slice(0, 3);
+  });
 
   /** Results appear once the text query is specific enough, or any tag is selected. */
   get isFiltering(): boolean {
@@ -161,20 +184,7 @@ export class SessionResourcePickerComponent {
   private get canAddLink(): boolean {
     // Never let a pending oEmbed response land after the resource is already added.
     if (this._oEmbedLoading()) return false;
-
-    const url = this.newUrl.trim();
-    if (!url) return false;
-
-    let parsed: URL;
-    try {
-      parsed = new URL(url);
-    } catch {
-      return false;
-    }
-    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
-
-    if (this.newType === 'youtube') return extractYouTubeEmbedUrl(url) !== null;
-    return true;
+    return isValidResourceUrl(this.newUrl, this.newType as Exclude<PickerResourceType, 'song'>);
   }
 
   constructor() {
@@ -224,22 +234,12 @@ export class SessionResourcePickerComponent {
   }
 
   // ── TAGS ────────────────────────────────────────────────────
-  /** Tags are stored lowercase; normalize here rather than in the service or converter. */
-  private normalizeTags(tags: string[]): string[] {
-    const seen = new Set<string>();
-    for (const raw of tags ?? []) {
-      const normalized = String(raw).trim().toLowerCase();
-      if (normalized) seen.add(normalized);
-    }
-    return [...seen];
-  }
-
   onTagsChange(tags: string[]): void {
-    this.newTags = this.normalizeTags(tags);
+    this.newTags = normalizeTags(tags);
   }
 
   onTagFiltersChange(tags: string[]): void {
-    this.selectedTagFilters = this.normalizeTags(tags);
+    this.selectedTagFilters = normalizeTags(tags);
   }
 
   searchTagSuggestions(event: AutoCompleteCompleteEvent): void {

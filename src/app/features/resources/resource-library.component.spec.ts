@@ -107,10 +107,10 @@ describe('ResourceLibraryComponent', () => {
     expect(text).not.toContain('No resources yet.');
   });
 
-  it('routes the Add Resource button to the song form for now', async () => {
+  it('routes the Add Resource button to the dedicated resource form', async () => {
     await build([]);
     component.addResource();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(['/app/newSong']);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/app/newResource']);
   });
 
   it('renders the page title and Add Resource button', async () => {

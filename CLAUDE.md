@@ -1,3 +1,13 @@
+## Branching & PRs
+
+Flow is `feature -> develop -> main`.
+
+- `develop` is the integration branch and the default base for pull requests. Branch from it,
+  and target it when opening a PR.
+- `main` is the release branch. It only receives PRs from `develop`, never from a feature
+  branch directly.
+- Never commit straight to `develop` or `main`; always work on a feature branch.
+
 ## Design System
 Always read DESIGN.md before making any visual or UI decisions.
 All font choices, colors, spacing, and aesthetic direction are defined there.

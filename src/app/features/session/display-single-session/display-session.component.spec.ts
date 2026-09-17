@@ -3,6 +3,8 @@ import { provideRouter, Router, ActivatedRoute, convertToParamMap } from '@angul
 import { Subject, of} from 'rxjs';
 import { DisplaySessionComponent } from './display-session.component';
 import { SessionService } from '@services/session.service';
+import { ResourceService } from '../../../services/resource.service';
+import type { SessionResource } from '../../../models/session-resource';
 import type { Session } from '@models/session';
 import { screen } from '@testing-library/angular';
 
@@ -26,6 +28,22 @@ describe('DisplaySessionComponent (standalone)', () => {
   });
 
   let get$!: Subject<Session>;
+  let sessionResources$!: Subject<SessionResource[]>;
+
+  const makeResource = (over: Partial<SessionResource> = {}): SessionResource => ({
+    id: 'sr-1',
+    resourceId: 'res-1',
+    type: 'youtube',
+    url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    label: 'Barre Chord Basics',
+    tags: ['barre'],
+    pinnedAt: { seconds: 0, nanoseconds: 0 } as any,
+    ...(over as any),
+  });
+
+  const resourceSvcMock: any = {
+    getSessionResources: jest.fn(() => sessionResources$ ?? of([])),
+  };
 
   const sessionSvcMock: any = {
     getSessionById: jest.fn((id: string) => get$ ?? of(makeSession())),
@@ -37,6 +55,7 @@ describe('DisplaySessionComponent (standalone)', () => {
   async function setup() {
     paramMap$ = new Subject();
     get$ = new Subject<Session>();
+    sessionResources$ = new Subject<SessionResource[]>();
 
     await TestBed.configureTestingModule({
       providers: [
@@ -50,6 +69,7 @@ describe('DisplaySessionComponent (standalone)', () => {
           },
         },
         { provide: SessionService, useValue: sessionSvcMock },
+        { provide: ResourceService, useValue: resourceSvcMock },
       ],
       imports: [DisplaySessionComponent], // standalone
     }).compileComponents();
@@ -168,6 +188,80 @@ describe('DisplaySessionComponent (standalone)', () => {
     expect(navSpy).toHaveBeenCalledWith(['/app', 'sessions']);
   }));
   */
+
+  // ── Session resources ───────────────────────────────────────
+
+  describe('pinned resources', () => {
+    /** Loads a session so the card body renders, leaving resources for the test to control. */
+    const loadSession = () => {
+      emitId('abc');
+      get$.next(makeSession({ id: 'abc' }));
+      get$.complete();
+    };
+
+    it('requests the resources for the session id in the route', async () => {
+      await setup();
+      loadSession();
+
+      expect(resourceSvcMock.getSessionResources).toHaveBeenCalledWith('abc');
+    });
+
+    it('shows skeletons while the resources are still loading', async () => {
+      await setup();
+      loadSession();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.resourcesLoading()).toBe(true);
+      expect(fixture.nativeElement.querySelector('p-skeleton')).toBeTruthy();
+    });
+
+    it('renders one app-session-resource per pinned resource', async () => {
+      await setup();
+      loadSession();
+      sessionResources$.next([
+        makeResource({ id: 'sr-1', label: 'Barre Chord Basics' }),
+        makeResource({ id: 'sr-2', label: 'Blues Scale PDF', type: 'pdf', url: 'https://example.com/b.pdf' }),
+      ]);
+      fixture.detectChanges();
+
+      const rendered = fixture.nativeElement.querySelectorAll('app-session-resource');
+      expect(rendered.length).toBe(2);
+      expect(fixture.nativeElement.textContent).toContain('Blues Scale PDF');
+    });
+
+    it('renders resources read-only — no remove buttons on the detail page', async () => {
+      await setup();
+      loadSession();
+      sessionResources$.next([makeResource({ type: 'pdf', url: 'https://example.com/b.pdf' })]);
+      fixture.detectChanges();
+
+      const removeBtn = fixture.nativeElement.querySelector('[aria-label^="Remove"]');
+      expect(removeBtn).toBeNull();
+    });
+
+    it('hides the section entirely when the session has no resources', async () => {
+      await setup();
+      loadSession();
+      sessionResources$.next([]);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.hasResources()).toBe(false);
+      expect(fixture.nativeElement.querySelector('#resourcesSection')).toBeNull();
+    });
+
+    it('degrades to no resources when the read fails, leaving the session readable', async () => {
+      await setup();
+      loadSession();
+      sessionResources$.error(new Error('permission denied'));
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.resources()).toEqual([]);
+      expect(fixture.componentInstance.hasResources()).toBe(false);
+      // The session itself must still be on screen.
+      expect(fixture.nativeElement.textContent).toContain('Pentatonics');
+    });
+  });
+
 });
 
 

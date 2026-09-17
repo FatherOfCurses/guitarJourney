@@ -2,6 +2,8 @@
 import { Injectable } from '@angular/core';
 import {
   Firestore,
+  Timestamp,
+  addDoc,
   collection,
   collectionData,
   doc,
@@ -14,7 +16,6 @@ import {
   limit,
 } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
-import { getFirestore, Timestamp, addDoc } from "firebase/firestore";
 import { Observable, from } from 'rxjs';
 import { Session } from '../models/session';
 import { sessionConverter } from "../storage/converters";
@@ -70,7 +71,13 @@ export class SessionService {
 
   /** Create a new session for current user. Provide partial; owner/date filled automatically. */
   create(input: Omit<Session, 'id' | 'ownerUid' | 'date'> & { date?: Timestamp }): Promise<string> {
-    const db = getFirestore();
+    // Use the injected Firestore instance, not a fresh getFirestore() lookup — the latter
+    // resolves the default Firebase app from a separate module registry under Vite's dev-server
+    // dependency pre-bundling, which never saw initializeApp() called and throws
+    // "No Firebase App '[DEFAULT]' has been created". this.fs is already correctly connected
+    // (including to the emulator in dev) via provideFirestore() in app.config.ts, exactly like
+    // every other method in this class already uses.
+    const db = this.fs;
     const uid = this.uid();
     const col = collection(db, `users/${uid}/sessions`).withConverter(sessionConverter);
     const payload: Session = {

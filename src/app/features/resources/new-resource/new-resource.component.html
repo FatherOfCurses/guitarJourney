@@ -1,0 +1,96 @@
+<h1 class="text-2xl font-semibold tracking-tight text-[var(--gj-text)] mb-4">Add Resource</h1>
+
+<div class="max-w-xl space-y-4">
+
+  <!-- Type -->
+  <div>
+    <label for="resType" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Type</label>
+    <p-select
+      inputId="resType"
+      [options]="typeOptions"
+      optionLabel="label"
+      optionValue="value"
+      [(ngModel)]="type"
+      (ngModelChange)="onTypeChange()"
+      styleClass="w-full"
+      ariaLabel="Resource type"
+    />
+  </div>
+
+  <!-- URL -->
+  <div>
+    <label for="resUrl" class="block text-sm font-medium text-[var(--gj-text)] mb-1">
+      URL <span class="text-[var(--gj-error)]">*</span>
+    </label>
+    <input
+      id="resUrl"
+      type="url"
+      pInputText
+      placeholder="https://…"
+      [(ngModel)]="url"
+      (blur)="onUrlBlur()"
+      class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)]
+             placeholder:text-[var(--gj-muted)] px-3 py-2
+             focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+    />
+    @if (type === 'youtube') {
+      <p class="mt-1 text-xs text-[var(--gj-muted)]">
+        Paste a watch, share, shorts or embed link — the title fills in automatically.
+      </p>
+    }
+  </div>
+
+  <!-- oEmbed preview -->
+  @if (oEmbedLoading()) {
+    <p-skeleton height="112px" borderRadius="var(--gj-radius-card)" />
+  } @else if (thumbnailUrl()) {
+    <img [src]="thumbnailUrl()" alt="" class="w-full object-cover rounded-xl" />
+  }
+
+  <!-- Label -->
+  <div>
+    <label for="resLabel" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Label</label>
+    <input
+      id="resLabel"
+      type="text"
+      pInputText
+      placeholder="Defaults to the URL if left blank"
+      [(ngModel)]="label"
+      (input)="onLabelInput()"
+      class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)]
+             placeholder:text-[var(--gj-muted)] px-3 py-2
+             focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
+    />
+  </div>
+
+  <!-- Tags -->
+  <div>
+    <label for="resTags" class="block text-sm font-medium text-[var(--gj-text)] mb-1">Tags</label>
+    <p-autocomplete
+      inputId="resTags"
+      [multiple]="true"
+      [dropdown]="false"
+      [typeahead]="false"
+      [suggestions]="tagSuggestions"
+      (completeMethod)="searchTagSuggestions($event)"
+      [ngModel]="tags"
+      (ngModelChange)="onTagsChange($event)"
+      placeholder="barre, scales, warm-up…"
+      styleClass="w-full"
+    />
+    <p class="mt-1 text-xs text-[var(--gj-muted)]">
+      Tags are lowercased so they group together. Existing tags are suggested as you type.
+    </p>
+  </div>
+
+  <div class="flex gap-2 pt-2">
+    <p-button
+      label="Save"
+      icon="pi pi-check"
+      type="button"
+      [disabled]="!canSave()"
+      (click)="save()"
+    />
+    <p-button label="Cancel" type="button" severity="secondary" [text]="true" (click)="cancel()" />
+  </div>
+</div>

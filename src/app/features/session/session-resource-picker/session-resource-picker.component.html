@@ -18,6 +18,26 @@
         here next time.
       </p-message>
     } @else {
+      @if (recentResources().length > 0) {
+        <div class="mb-3">
+          <p class="text-xs text-[var(--gj-muted)] mb-2">Recently used</p>
+          <div class="flex flex-wrap gap-2">
+            @for (resource of recentResources(); track resource.id) {
+              <p-button
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                size="small"
+                icon="pi pi-plus"
+                [label]="resource.label"
+                [ariaLabel]="'Add ' + resource.label"
+                (click)="onLibrarySelect(resource)"
+              />
+            }
+          </div>
+        </div>
+      }
+
       <div class="flex flex-col md:flex-row gap-2">
         <input
           type="text"
@@ -30,6 +50,7 @@
         <p-autocomplete
           [multiple]="true"
           [dropdown]="false"
+          [typeahead]="false"
           [suggestions]="tagFilterSuggestions"
           (completeMethod)="searchTagFilterSuggestions($event)"
           [ngModel]="selectedTagFilters"
@@ -116,7 +137,7 @@
         [forceSelection]="false"
         placeholder="Song or exercise name"
         class="w-full"
-        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                  focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -134,7 +155,7 @@
         [forceSelection]="false"
         placeholder="Artist or composer"
         class="w-full"
-        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                  focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -150,7 +171,7 @@
         [forceSelection]="false"
         placeholder="Album name (optional)"
         class="w-full"
-        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        inputStyleClass="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                  focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -163,7 +184,7 @@
         pInputText
         placeholder="e.g. Rock, Jazz, Classical (optional)"
         [(ngModel)]="newGenre"
-        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -176,7 +197,7 @@
         pInputText
         placeholder="https://... (optional)"
         [(ngModel)]="newAudioLink"
-        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -189,7 +210,7 @@
         pInputText
         placeholder="https://... (optional)"
         [(ngModel)]="newVideoLink"
-        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -202,7 +223,7 @@
         pInputText
         placeholder="https://music.apple.com/... (optional)"
         [(ngModel)]="newAppleMusicLink"
-        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -215,7 +236,7 @@
         pInputText
         placeholder="https://open.spotify.com/... (optional)"
         [(ngModel)]="newSpotifyLink"
-        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -231,7 +252,7 @@
               pInputText
               placeholder="https://... (optional)"
               [(ngModel)]="newNotationLinks[$index]"
-              class="flex-1 rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+              class="flex-1 rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                      focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
             />
             @if (newNotationLinks.length > 1) {
@@ -240,6 +261,7 @@
                 icon="pi pi-times"
                 [text]="true"
                 severity="danger"
+                [ariaLabel]="'Remove notation link ' + ($index + 1)"
                 (click)="removeNotationLink($index)"
               />
             }
@@ -269,7 +291,7 @@
         placeholder="https://…"
         [(ngModel)]="newUrl"
         (blur)="onUrlBlur()"
-        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
       @if (newType === 'youtube') {
@@ -300,7 +322,7 @@
         placeholder="Defaults to the URL if left blank"
         [(ngModel)]="newLabel"
         (input)="onLabelInput()"
-        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-neutral-400 px-3 py-2
+        class="w-full rounded-md border border-[var(--gj-border)] bg-[var(--gj-surface)] text-[var(--gj-text)] placeholder:text-[var(--gj-muted)] px-3 py-2
                focus:outline-none focus:ring-2 focus:ring-[var(--gj-accent)] focus:border-[var(--gj-accent)]"
       />
     </div>
@@ -312,6 +334,7 @@
         inputId="resTags"
         [multiple]="true"
         [dropdown]="false"
+        [typeahead]="false"
         [suggestions]="tagSuggestions"
         (completeMethod)="searchTagSuggestions($event)"
         [ngModel]="newTags"

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AutoComplete } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { Message } from 'primeng/message';
@@ -36,7 +35,6 @@ const TYPE_SEVERITY: Record<string, TagSeverity> = {
     FormsModule,
     AutoComplete,
     ButtonModule,
-    Card,
     Dialog,
     InputTextModule,
     Message,
@@ -139,9 +137,8 @@ export class ResourceLibraryComponent {
     this.selectedTags.set([]);
   }
 
-  /** Resources are added through the song form for now; a dedicated form is follow-on work. */
   addResource(): void {
-    this.router.navigate(['/app/newSong']);
+    this.router.navigate(['/app/newResource']);
   }
 
   // ---------- DELETE FLOW ----------
