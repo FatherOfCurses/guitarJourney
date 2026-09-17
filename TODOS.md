@@ -35,6 +35,12 @@ review after it shipped. Rationale for the plan-deferred ones is in
 ## Design System
 
 - [x] **P2** — Migrate `neutral-*` Tailwind classes to `--gj-*` CSS custom properties across session, songs, auth, welcome, and display-session views. **Completed:** v0.5.1.0 (2026-06-17)
+- [x] **P2** — Placeholder text: replaced the 25 remaining `placeholder:text-neutral-400`
+  classes with `--gj-muted`, and overrode Tailwind Preflight's `input::placeholder` base
+  (gray-400) in `styles.scss` so inputs with no placeholder class are covered too. This
+  finishes the migration above, which had missed placeholders entirely. Contrast on the
+  cream input surface goes from 2.42:1 (fails WCAG AA) to 4.67:1 (passes).
+  **Completed:** 2026-09-16
 
 ## Completed
 
