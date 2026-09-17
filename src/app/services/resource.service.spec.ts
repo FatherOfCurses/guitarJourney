@@ -178,4 +178,38 @@ describe('ResourceService', () => {
       expect(() => service.getResources()).toThrow('No authenticated user');
     });
   });
+
+  describe('createResource', () => {
+    it('creates a library doc and returns its id when the URL is new', async () => {
+      (afs.getDocs as jest.Mock).mockResolvedValue({ empty: true, docs: [] });
+      (afs.addDoc as jest.Mock).mockResolvedValue({ id: 'new-res' });
+
+      const id = await service.createResource({
+        type: 'youtube',
+        url: 'https://www.youtube.com/watch?v=abc',
+        label: 'Barre',
+        tags: ['barre'],
+      });
+
+      expect(id).toBe('new-res');
+      expect(afs.addDoc).toHaveBeenCalledTimes(1);
+      expect(afs.updateDoc).not.toHaveBeenCalled();
+    });
+
+    it('reuses and touches the existing doc when the URL is already in the library', async () => {
+      (afs.getDocs as jest.Mock).mockResolvedValue({ empty: false, docs: [{ id: 'existing' }] });
+
+      const id = await service.createResource({
+        type: 'youtube',
+        url: 'https://www.youtube.com/watch?v=abc',
+        label: 'Barre',
+        tags: [],
+      });
+
+      expect(id).toBe('existing');
+      expect(afs.addDoc).not.toHaveBeenCalled();
+      expect(afs.updateDoc).toHaveBeenCalled();
+    });
+  });
+
 });

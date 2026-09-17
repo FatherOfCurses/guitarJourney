@@ -15,6 +15,7 @@ import { AutocompleteSuggestionService } from '../../../services/autocomplete-su
 import { Resource } from '../../../models/resource';
 import { SessionResource } from '../../../models/session-resource';
 import { extractYouTubeEmbedUrl, fetchYouTubeOEmbed } from '../../../utils/youtube';
+import { isValidResourceUrl, normalizeTags } from '../../../utils/resource-url';
 
 export type PickerResourceType = 'song' | 'youtube' | 'pdf' | 'chord-sheet' | 'custom';
 
@@ -161,20 +162,7 @@ export class SessionResourcePickerComponent {
   private get canAddLink(): boolean {
     // Never let a pending oEmbed response land after the resource is already added.
     if (this._oEmbedLoading()) return false;
-
-    const url = this.newUrl.trim();
-    if (!url) return false;
-
-    let parsed: URL;
-    try {
-      parsed = new URL(url);
-    } catch {
-      return false;
-    }
-    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return false;
-
-    if (this.newType === 'youtube') return extractYouTubeEmbedUrl(url) !== null;
-    return true;
+    return isValidResourceUrl(this.newUrl, this.newType as Exclude<PickerResourceType, 'song'>);
   }
 
   constructor() {
@@ -224,22 +212,12 @@ export class SessionResourcePickerComponent {
   }
 
   // ── TAGS ────────────────────────────────────────────────────
-  /** Tags are stored lowercase; normalize here rather than in the service or converter. */
-  private normalizeTags(tags: string[]): string[] {
-    const seen = new Set<string>();
-    for (const raw of tags ?? []) {
-      const normalized = String(raw).trim().toLowerCase();
-      if (normalized) seen.add(normalized);
-    }
-    return [...seen];
-  }
-
   onTagsChange(tags: string[]): void {
-    this.newTags = this.normalizeTags(tags);
+    this.newTags = normalizeTags(tags);
   }
 
   onTagFiltersChange(tags: string[]): void {
-    this.selectedTagFilters = this.normalizeTags(tags);
+    this.selectedTagFilters = normalizeTags(tags);
   }
 
   searchTagSuggestions(event: AutoCompleteCompleteEvent): void {

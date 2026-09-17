@@ -137,9 +137,8 @@ export class ResourceLibraryComponent {
     this.selectedTags.set([]);
   }
 
-  /** Resources are added through the song form for now; a dedicated form is follow-on work. */
   addResource(): void {
-    this.router.navigate(['/app/newSong']);
+    this.router.navigate(['/app/newResource']);
   }
 
   // ---------- DELETE FLOW ----------

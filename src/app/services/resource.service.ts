@@ -60,30 +60,7 @@ export class ResourceService {
       let globalResourceId: string;
 
       if (!resource.resourceId) {
-        const dupQ = query(
-          collection(db, `users/${uid}/resources`),
-          where('url', '==', resource.url),
-          limit(1)
-        );
-        const existing = await getDocs(dupQ);
-
-        if (!existing.empty) {
-          globalResourceId = existing.docs[0].id;
-          await this.touchResource(globalResourceId);
-        } else {
-          const ref = await addDoc(
-            collection(db, `users/${uid}/resources`).withConverter(resourceConverter),
-            {
-              type: resource.type,
-              url: resource.url,
-              label: resource.label,
-              tags: resource.tags ?? [],
-              createdAt: serverTimestamp(),
-              useCount: 0,
-            } as any
-          );
-          globalResourceId = ref.id;
-        }
+        globalResourceId = await this.findOrCreateGlobalResource(uid, resource);
       } else {
         globalResourceId = resource.resourceId;
         await this.touchResource(globalResourceId);
@@ -103,6 +80,57 @@ export class ResourceService {
         } as any
       );
     }
+  }
+
+  /**
+   * Returns the id of the library resource for this URL, creating it if absent.
+   * Shared by saveResources() and createResource() so the dedup rule cannot drift
+   * between pinning a resource to a session and adding one straight to the library.
+   */
+  private async findOrCreateGlobalResource(
+    uid: string,
+    resource: Pick<SessionResource, 'type' | 'url' | 'label' | 'tags'>
+  ): Promise<string> {
+    const db = this.fs;
+
+    const dupQ = query(
+      collection(db, `users/${uid}/resources`),
+      where('url', '==', resource.url),
+      limit(1)
+    );
+    const existing = await getDocs(dupQ);
+
+    if (!existing.empty) {
+      const id = existing.docs[0].id;
+      await this.touchResource(id);
+      return id;
+    }
+
+    const ref = await addDoc(
+      collection(db, `users/${uid}/resources`).withConverter(resourceConverter),
+      {
+        type: resource.type,
+        url: resource.url,
+        label: resource.label,
+        tags: resource.tags ?? [],
+        createdAt: serverTimestamp(),
+        useCount: 0,
+      } as any
+    );
+    return ref.id;
+  }
+
+  /**
+   * Adds a resource straight to the library, with no session to pin it to.
+   * Used by the Add Resource form. Deduplicates by URL like saveResources() does, so
+   * re-adding an existing URL touches it rather than creating a second entry.
+   * Returns the library resource id.
+   */
+  async createResource(
+    resource: Pick<SessionResource, 'type' | 'url' | 'label' | 'tags'>
+  ): Promise<string> {
+    const uid = this.uid();
+    return this.findOrCreateGlobalResource(uid, resource);
   }
 
   async deleteResource(resourceId: string): Promise<void> {

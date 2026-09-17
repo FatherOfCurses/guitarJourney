@@ -11,11 +11,12 @@ review after it shipped. Rationale for the plan-deferred ones is in
   `getSessionResources()`, so resources pinned to a session were not shown when you opened it.
   Now reads the session's denormalized resource subcollection and renders each through the
   existing `app-session-resource` component, read-only. **Completed:** 2026-09-17
-- [ ] **P2** — Dedicated Add Resource form at `/app/newResource`: the "Add Resource" button on
-  `/app/resources` routes to `/app/newSong` as an interim measure, so adding a PDF or chord
-  sheet asks for Title and Artist — fields that do not apply. Reuse the type selector and
-  URL/label/tags form already built in `session-resource-picker`, then repoint the button
-  (`ResourceLibraryComponent.addResource()`).
+- [x] **P2** — Dedicated Add Resource form at `/app/newResource`: "Add Resource" previously
+  routed to `/app/newSong`, so adding a PDF or chord sheet asked for Title and Artist. Now a
+  purpose-built form (type, URL, label, tags, YouTube oEmbed) writing through the new
+  `ResourceService.createResource()`. URL validation and tag normalization were extracted to
+  `utils/resource-url.ts` and are shared with the session picker so the rules cannot drift.
+  **Completed:** 2026-09-17
 - [ ] **P2** — Browser QA of the resource flows: the picker, YouTube oEmbed auto-fill and the
   sticky save-error toast have unit and DOM coverage but have never been exercised in a real
   browser or against live YouTube, because the session and library pages sit behind
