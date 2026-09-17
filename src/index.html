@@ -2,12 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Allows the YouTube iframes rendered by app-session-resource. No default-src is set,
-       so this restricts framing only and leaves every other fetch unaffected. Both hosts are
-       listed because extractYouTubeEmbedUrl() passes /embed/ URLs through verbatim, which may
-       omit the www subdomain. If a server-level CSP is ever added to the App Hosting backend,
-       move frame-src there and drop this tag — a header wins over a meta tag. -->
-  <meta http-equiv="Content-Security-Policy" content="frame-src https://www.youtube.com https://youtube.com">
+  <!-- Allows the YouTube iframes rendered by app-session-resource, plus the Auth Emulator's
+       own hidden relay iframe (signInWithPopup posts the sign-in result back through it —
+       without this origin allowed, the browser silently drops that iframe and the Auth
+       Emulator's popup handler fails with "No matching frame"). No default-src is set, so
+       this restricts framing only and leaves every other fetch unaffected. Both YouTube hosts
+       are listed because extractYouTubeEmbedUrl() passes /embed/ URLs through verbatim, which
+       may omit the www subdomain. Both auth-emulator hosts are listed so this keeps working
+       whichever hostname (127.0.0.1 or localhost) connectAuthEmulator() is configured with in
+       app.config.ts. The emulator origin is inert in production (127.0.0.1:9099 only exists
+       on a developer's own machine) — no separate dev/prod CSP is needed. If a server-level
+       CSP is ever added to the App Hosting backend, move frame-src there and drop this tag —
+       a header wins over a meta tag. -->
+  <meta http-equiv="Content-Security-Policy" content="frame-src https://www.youtube.com https://youtube.com http://127.0.0.1:9099 http://localhost:9099">
   <title>Guitar Journey</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
