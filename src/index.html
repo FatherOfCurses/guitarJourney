@@ -2,19 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- Allows the YouTube iframes rendered by app-session-resource, plus the Auth Emulator's
-       own hidden relay iframe (signInWithPopup posts the sign-in result back through it —
-       without this origin allowed, the browser silently drops that iframe and the Auth
-       Emulator's popup handler fails with "No matching frame"). No default-src is set, so
-       this restricts framing only and leaves every other fetch unaffected. Both YouTube hosts
-       are listed because extractYouTubeEmbedUrl() passes /embed/ URLs through verbatim, which
-       may omit the www subdomain. Both auth-emulator hosts are listed so this keeps working
-       whichever hostname (127.0.0.1 or localhost) connectAuthEmulator() is configured with in
-       app.config.ts. The emulator origin is inert in production (127.0.0.1:9099 only exists
-       on a developer's own machine) — no separate dev/prod CSP is needed. If a server-level
-       CSP is ever added to the App Hosting backend, move frame-src there and drop this tag —
-       a header wins over a meta tag. -->
-  <meta http-equiv="Content-Security-Policy" content="frame-src https://www.youtube.com https://youtube.com http://127.0.0.1:9099 http://localhost:9099">
+  <!-- Allows the YouTube iframes rendered by app-session-resource, plus the hidden relay
+       iframe signInWithPopup() embeds in this page to hand the sign-in result back from the
+       popup (a gapi.iframes postMessage bridge) — without its origin allowed, the browser
+       silently drops that iframe and the popup handler fails with "No matching frame". Both
+       YouTube hosts are listed because extractYouTubeEmbedUrl() passes /embed/ URLs through
+       verbatim, which may omit the www subdomain.
+
+       Three relay-iframe origins, not one, because this same failure mode has two independent
+       causes that were fixed separately and must both stay fixed:
+         - guitar-journey-b3295.firebaseapp.com — environment.firebase.authDomain (both
+           environment.ts and environment.prod.ts). This is the one that actually matters in
+           the deployed app; real Google sign-in against production Firebase Auth uses this
+           origin's relay iframe, not the emulator's.
+         - http://127.0.0.1:9099 and http://localhost:9099 — the local Auth Emulator's own
+           relay iframe (connectAuthEmulator() in app.config.ts). Inert in production —
+           127.0.0.1:9099 only exists on a developer's own machine — but needed for local
+           Google sign-in to work at all.
+
+       No default-src is set, so this restricts framing only and leaves every other fetch
+       unaffected. If a server-level CSP is ever added to the App Hosting backend, move
+       frame-src there and drop this tag — a header wins over a meta tag. -->
+  <meta http-equiv="Content-Security-Policy" content="frame-src https://www.youtube.com https://youtube.com https://guitar-journey-b3295.firebaseapp.com http://127.0.0.1:9099 http://localhost:9099">
   <title>Guitar Journey</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
