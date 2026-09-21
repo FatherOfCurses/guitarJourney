@@ -9,12 +9,14 @@ import { ResourceService } from '../../services/resource.service';
 import { SessionResource } from '../../models/session-resource';
 import { SessionResourcePickerComponent } from './session-resource-picker/session-resource-picker.component';
 import { SessionResourceComponent } from './session-resource/session-resource.component';
+import { SessionTimerService } from '../../services/session-timer.service';
 export type SessionPhase = 'Before' | 'During' | 'After';
 
 @Component({
   selector: 'app-session',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, ButtonModule, SessionResourcePickerComponent, SessionResourceComponent],
+  providers: [SessionTimerService],
   templateUrl: './session.component.html',
 })
 export class SessionComponent {
@@ -24,6 +26,7 @@ export class SessionComponent {
   private router = inject(Router);
   private messageService = inject(MessageService);
   private destroyRef = inject(DestroyRef);
+  private timer = inject(SessionTimerService);
 
   // ---------- STATE ----------
   // Session phase for the @switch in the template
@@ -42,31 +45,20 @@ export class SessionComponent {
   saving = this._saving.asReadonly();
 
   // Practice goal (in minutes) set before starting
-  private _practiceGoalMinutes = signal<number>(0);
-  practiceGoalMinutes = this._practiceGoalMinutes.asReadonly();
+  practiceGoalMinutes = this.timer.goalMinutes;
 
-  // Timer
-  private tickHandle: any = null;
-  private _elapsedSeconds = signal(0);
-  elapsedSeconds = this._elapsedSeconds.asReadonly();
+  // Timer — owned by SessionTimerService; these are pass-throughs for the template.
+  elapsedSeconds = this.timer.elapsedSeconds;
 
   // Display the elapsed time as mm:ss in the template
-  timeDisplay = computed(() => {
-    const s = this._elapsedSeconds();
-    const m = Math.floor(s / 60);
-    const ss = String(s % 60).padStart(2, '0');
-    return `${m}:${ss}`;
-  });
+  timeDisplay = this.timer.timeDisplay;
 
   // True once the timer has been running for 90s without being stopped —
   // triggers the idle breath-pulse animation on the timer display.
-  timerIdlePulse = computed(() => this._elapsedSeconds() >= 90);
+  timerIdlePulse = this.timer.idlePulse;
 
   // True once the goal is met/exceeded (timer keeps running!)
-  goalReached = computed(() => {
-    const goal = this._practiceGoalMinutes();
-    return goal > 0 && this._elapsedSeconds() >= goal * 60;
-  });
+  goalReached = this.timer.goalReached;
 
   // Optional: side-effect when user first reaches the goal (toast/log/etc.)
   private onGoalReachOnce = effect(() => {
@@ -115,25 +107,16 @@ export class SessionComponent {
 
   // Called by BEFORE form submit
   start() {
-
-    // Set practice goal in minutes (can be 0 = no goal)
+    // Set practice goal in minutes (can be 0 = no goal). The service resets the clock
+    // and keeps ticking past the goal.
     const goalMinutes = Number(this.practiceTimeCtrl.value) || 0;
-    this._practiceGoalMinutes.set(goalMinutes);
-
-    // Reset timer and move to DURING
-    this._elapsedSeconds.set(0);
+    this.timer.start(goalMinutes);
     this._status.set('During');
-
-    // Start ticking every second; keeps going even after reaching the goal
-    this.clearTick();
-    this.tickHandle = setInterval(() => {
-      this._elapsedSeconds.update(v => v + 1);
-    }, 1000);
   }
 
   // Called by DURING End button
   stopTimer() {
-    this.clearTick();
+    this.timer.stop();
     this._status.set('After');
   }
 
@@ -198,16 +181,6 @@ export class SessionComponent {
     }
   }
 
-  // ---------- UTIL ----------
-  private clearTick() {
-    if (this.tickHandle) {
-      clearInterval(this.tickHandle);
-      this.tickHandle = null;
-    }
-  }
-
-  // Clean up interval on destroy
-  ngOnDestroy() {
-    this.clearTick();
-  }
+  // The practice clock, including interval cleanup on destroy, belongs to
+  // SessionTimerService — provided at this component, so it is destroyed alongside it.
 }
