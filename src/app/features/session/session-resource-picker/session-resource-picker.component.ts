@@ -16,22 +16,16 @@ import { Resource } from '../../../models/resource';
 import { SessionResource } from '../../../models/session-resource';
 import { extractYouTubeEmbedUrl, fetchYouTubeOEmbed } from '../../../utils/youtube';
 import { isValidResourceUrl, normalizeTags } from '../../../utils/resource-url';
+import {
+  TagSeverity,
+  collectTags,
+  filterResources,
+  isFiltering,
+  recentResources,
+  typeSeverity,
+} from '../../../utils/resource-library-filter';
 
 export type PickerResourceType = 'song' | 'youtube' | 'pdf' | 'chord-sheet' | 'custom';
-
-type TagSeverity = 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast';
-
-/** DESIGN.md — PrimeNG badge severity mapping (resource-library). */
-const TYPE_SEVERITY: Record<string, TagSeverity> = {
-  youtube: 'info',
-  pdf: 'danger',
-  'chord-sheet': 'success',
-  custom: 'secondary',
-  song: 'secondary',
-};
-
-/** Library results shown in the listbox at once. */
-const MAX_RESULTS = 50;
 
 @Component({
   selector: 'app-session-resource-picker',
@@ -68,61 +62,20 @@ export class SessionResourcePickerComponent {
   selectedTagFilters: string[] = [];
 
   /** Every distinct tag in the library, for the tag filter's suggestion list. */
-  readonly libraryTags = computed(() => {
-    const seen = new Set<string>();
-    for (const r of this._allResources()) {
-      for (const t of r.tags ?? []) seen.add(t);
-    }
-    return [...seen].sort();
-  });
+  readonly libraryTags = computed(() => collectTags(this._allResources()));
 
   tagFilterSuggestions: string[] = [];
 
-  /**
-   * The three most recently used resources, for one-click re-add.
-   *
-   * Sorted client-side from the already-loaded library rather than by a Firestore
-   * `orderBy('lastUsedAt')`, which would need a second query and an index for a list of
-   * three. Resources never pinned to a session have no `lastUsedAt` and are excluded —
-   * "recent" should mean recently used, not recently created.
-   */
-  readonly recentResources = computed(() => {
-    const millis = (r: Resource): number => {
-      const ts = r.lastUsedAt as unknown as { toMillis?: () => number; seconds?: number } | undefined;
-      if (!ts) return 0;
-      if (typeof ts.toMillis === 'function') return ts.toMillis();
-      return (ts.seconds ?? 0) * 1000;
-    };
-
-    return this._allResources()
-      .filter(r => !!r.lastUsedAt && !!r.id)
-      .sort((a, b) => millis(b) - millis(a))
-      .slice(0, 3);
-  });
+  /** The three most recently used resources, for one-click re-add. */
+  readonly recentResources = computed(() => recentResources(this._allResources()));
 
   /** Results appear once the text query is specific enough, or any tag is selected. */
   get isFiltering(): boolean {
-    return this.searchQuery.trim().length >= 3 || this.selectedTagFilters.length > 0;
+    return isFiltering(this.searchQuery, this.selectedTagFilters);
   }
 
   get searchResults(): Resource[] {
-    if (!this.isFiltering) return [];
-    const q = this.searchQuery.toLowerCase().trim();
-    const tags = this.selectedTagFilters;
-
-    return this._allResources()
-      .filter(r => {
-        if (q.length >= 3) {
-          const matchesText =
-            r.label.toLowerCase().includes(q) ||
-            (r.url ?? '').toLowerCase().includes(q) ||
-            (r.tags ?? []).some(t => t.toLowerCase().includes(q));
-          if (!matchesText) return false;
-        }
-        // All selected tags must be present, not just one.
-        return tags.every(t => (r.tags ?? []).includes(t));
-      })
-      .slice(0, MAX_RESULTS);
+    return filterResources(this._allResources(), this.searchQuery, this.selectedTagFilters);
   }
 
   // ── ADD NEW ─────────────────────────────────────────────────
@@ -201,7 +154,7 @@ export class SessionResourcePickerComponent {
   }
 
   typeSeverity(type: string): TagSeverity {
-    return TYPE_SEVERITY[type] ?? 'secondary';
+    return typeSeverity(type);
   }
 
   // ── MUSICBRAINZ SUGGESTIONS ─────────────────────────────────
